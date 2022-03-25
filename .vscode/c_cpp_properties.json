@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Oscar64",
+            "includePath": [
+                "c:\\Program Files (x86)\\oscar64\\include/**",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.16299.0",
+            "compilerPath": "c:\\Program Files (x86)\\oscar64\\bin\\oscar64.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}

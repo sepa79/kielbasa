@@ -1,0 +1,81 @@
+
+void drawBattery(char character, char energyLevel)
+{
+    VICII->BORDER_COLOR++;
+    char * charBarPtr = CHARACTER_BARS + character * 64;
+    char tableIt = 0;
+    char i = 9;
+    do
+    {
+        if(energyLevel < BATTERY_LEVEL[tableIt])
+        {
+            charBarPtr[i] = BATTERY_ROW_EMPTY;
+        } else {
+            charBarPtr[63] = BATTERY_COLOR[tableIt];
+            break;
+        }
+        tableIt++;
+        i+=3;
+    } while (i<58);
+
+    // rest is full, speed it up
+    if(i<58){
+        do
+        {
+            charBarPtr[i] = BATTERY_ROW_FULL;
+            i+=3;
+        } while (i<58);
+    }
+
+    VICII->BORDER_COLOR--;
+}
+
+// troche szybsze, ale duuuuzo wieksza tabelka
+void drawBattery(char character, char energyLevel)
+{
+    VICII->BORDER_COLOR++;
+    char * charBarPtr = CHARACTER_BARS + character * 64;
+    // charBarPtr[63] = BATTERY_COLOR[tableIt];
+    char max = BATTERY_LEVEL[energyLevel];
+    char i = 9;
+    char it = 0;
+
+    do
+    {
+        it++;
+        charBarPtr[i] = BATTERY_ROW_EMPTY;
+        i++; // compiler generates some stupid tya tay iny :( but still faster than +=3
+        i++;
+        i++;    } while (it < max);
+
+    // rest is full, speed it up
+    if(it<17){
+        do
+        {
+            it++;
+            charBarPtr[i] = BATTERY_ROW_FULL;
+            i++; // compiler generates some stupid tya tay iny :( but still faster than +=3
+            i++;
+            i++;
+        } while (it < 17);
+    }
+
+    VICII->BORDER_COLOR--;
+}
+
+
+
+// __export const char BATTERY_LEVEL[17] = {$64,$5E,$58,$52,$4C,$47,$41,$3B,$35,$2F,$29,$23,$1D,$18,$12,$C,$6};
+__export const char BATTERY_COLOR[17] = {$5,$5,$5,$5,$d,$d,$d,$d,$8,$8,$8,$8,$2,$2,$2,$2,$b};
+
+__export const char BATTERY_LEVEL[101] = {
+    $0,$0,$0,$1,$1,$1,$1,$1,$1,$2,
+    $2,$2,$2,$2,$2,$3,$3,$3,$3,$3,
+    $3,$4,$4,$4,$4,$4,$4,$5,$5,$5,
+    $5,$5,$5,$6,$6,$6,$6,$6,$6,$7,
+    $7,$7,$7,$7,$7,$8,$8,$8,$8,$8,
+    $9,$9,$9,$9,$9,$9,$A,$A,$A,$A,
+    $A,$A,$B,$B,$B,$B,$B,$B,$C,$C,
+    $C,$C,$C,$C,$D,$D,$D,$D,$D,$D,
+    $E,$E,$E,$E,$E,$E,$F,$F,$F,$F,
+    $F,$F,$10,$10,$10,$10,$10,$10,$11,$11,$11};

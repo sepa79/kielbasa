@@ -1,0 +1,25 @@
+no to chyba 'sadzić w III dekadzie kwietnia, zbierac III dekada lipca - II dekada sierpnia' musi wystarczyc do wydumania jakis numreków 
+bo wiecej nie znalazłem na temat łubinu żółtego - coś takiego tylko jeszcze:
+umiarkowane wymagania cieplne: 
+                                                     kiełkowanie – 1-2 oC 
+                                                     siewki    -        (-6 oC) 
+                                                     optymalna  - 13-18 oC
+
+    {2, TXT_IDX_PLANT_NAME_LUPINE,
+      1, 15, 20, 40, 20, 0,
+      13, 18, 15, 40, 70, 0,
+      15, 20, 15, 40, 20, 0,
+    },
+
+    signed char stage2minTemp;
+    signed char stage2maxTemp;
+    char stage2minRain;
+    char stage2maxRain;
+    char stage2timer;
+    char stage2upkeep;
+
+      {1, TXT_IDX_PLANT_NAME_POTATO,
+      8, 20, 20, 40, 15, 0,
+     15, 26, 10, 30, 60, 0,
+     15, 22,  3, 20, 25, 0,
+    },

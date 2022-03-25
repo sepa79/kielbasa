@@ -1,0 +1,13 @@
+Kolony 2106.PL (2009)(AtariOnline.pl)(PL)
+
+Co mnie denerwuje w Kolony 2106 z 2009 roku na małe Atari:
+
+-   Wprowadzenie imienia gracza tylko za pomocą joya.
+
+-   Przy wyborze dużej ilości danej rzeczy do sprzedania, kupienia lub wykorzystania, jest tylko do wyboru "lewo, prawo" z brakiem przyspieszenia "podawania oczekiwanej wartości". Można zmienić licznik tylko o jedną jednostkę.
+
+-   Brak cofania kupna personelu.
+
+-   W głównym oknie gry przydało by się pogląd na bieżąco stanu surowców.
+
+-   Żeby anulować daną akcję np. wysłanie ludzi na pole, trzeba wykonać niedozwoloną akcję zamiast wybrać opcję rezygnacji co przy pomyłce wymusza ponowne "ustawianiu parametrów akcji" od nowa.

@@ -1,0 +1,2 @@
+consts - CAPS_CAPS
+globals - fil_globName (file name abbrevation, var name)
