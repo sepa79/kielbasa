@@ -174,20 +174,20 @@ __interrupt static void _menuShowSprites(){
 
             bool eraseWheel1 = false;
             byte wheelOffset = 0;
-            if((animBusEraserStage == 0) & i > 0){
+            if((animBusEraserStage == 0) && i > 0){
                 eraseWheel1 = true;
                 wheelOffset = 1;
             }
-            if((animBusEraserStage == 1) & i == 64){
+            if((animBusEraserStage == 1) && i == 64){
                 eraseWheel1 = true;
                 wheelOffset = 62;
             }
             bool eraseWheel2 = false;
-            if((animBusEraserStage == 1) & i == 66){
+            if((animBusEraserStage == 1) && i == 66){
                 eraseWheel2 = true;
                 wheelOffset = 66;
             }
-            if((animBusEraserStage == 2) & i < 130){
+            if((animBusEraserStage == 2) && i < 130){
                 eraseWheel2 = true;
                 wheelOffset = 128+2;
             }
