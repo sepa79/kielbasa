@@ -15,7 +15,7 @@ void loadMusic(){
     do {
 #assign y 0
 #repeat
-         ((char*) MSX_DST_ADR)[y + i] = ((char*) MSX_SRC_ADR)[y + i];
+         ((volatile char*) MSX_DST_ADR)[y + i] = ((char*) MSX_SRC_ADR)[y + i];
 #assign y y + 256
 #until y == 0x1000
         i++;

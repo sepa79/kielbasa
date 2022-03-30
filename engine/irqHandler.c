@@ -365,11 +365,12 @@ void initRasterIRQ(){
         lda $dc0d  //by reading this two registers we negate any pending CIA irqs.
         lda $dd0d  //if we don't do this, a pending CIA irq might occur after we finish setting up our irq.
                    //we don't want that to happen.
+        
+        // init music
         lda #$36
         sta $01
         jsr $8000
     }
-    // (*musicInit)();
     // vic.color_back++;
 
     // GFX_1_SCR, GFX_1_FNT

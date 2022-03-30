@@ -49,11 +49,11 @@
 #define GFX_1_SCR ((char *)GFX_1_SCR_ADR)
 // auxiliary sprites, sprite fonts and color tables, copied to destination bank on use
 #define GFX_1_AUX_SRC ((char *)GFX_1_AUX_SRC_ADR)
-#define GFX_1_AUX ((char *)GFX_1_AUX_DST_ADR)
+#define GFX_1_AUX ((volatile char *)GFX_1_AUX_DST_ADR)
 #define GFX_1_FNT_SRC ((char *)GFX_1_FNT_SRC_ADR)
-#define GFX_1_FNT ((char *)GFX_1_FNT_DST_ADR)
+#define GFX_1_FNT ((volatile char *)GFX_1_FNT_DST_ADR)
 #define GFX_1_SPR_SRC ((char *)GFX_1_SPR_SRC_ADR)
-#define GFX_1_SPR ((char *)GFX_1_SPR_DST_ADR)
+#define GFX_1_SPR ((volatile char *)GFX_1_SPR_DST_ADR)
 
 #define GFX_2_BMP ((char *)SEC_BMP_ADR)
 #define GFX_2_SCR ((char *)SEC_SCR_ADR)
