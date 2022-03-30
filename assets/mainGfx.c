@@ -14,7 +14,7 @@ __export const struct SPRITES SpriteResources = {{
     #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
     #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
 },{
-    #embed "assets/sprites/faces.bin"
+    #embed 0xffff 20 "assets/sprites/faces.spd"
 },{
     0
 },{
