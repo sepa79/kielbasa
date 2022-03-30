@@ -9,7 +9,7 @@ dist/
 
 # compiled artefacts and intermediates
 *.crt
-#*.bin sprtes are bin, and old carts were - oscar does not use .bin so all fine now
+*.bin
 *.prg
 *.map
 *.asm
