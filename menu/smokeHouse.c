@@ -19,15 +19,15 @@
 
 #pragma data ( smokeHouseGfxDay )
 __export const char smokeHouseGfx1[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/smokeHouse.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/smokeHouse.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/smokeHouse.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/smokehouse.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/smokehouse.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/smokehouse.kla"
 };
 #pragma data ( smokeHouseGfxNight )
 __export const char smokeHouseGfx2[] = {
-    #embed 0x0100 0x0002 "assets/multicolorGfx/smokeHouse.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/smokeHouse.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/smokeHouse.kla"
+    #embed 0x0100 0x0002 "assets/multicolorGfx/smokehouse.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/smokehouse.kla"
+    #embed 0x01df 0x232a "assets/multicolorGfx/smokehouse.kla"
 };
 
 // menu code is in ROM - data in RAM
