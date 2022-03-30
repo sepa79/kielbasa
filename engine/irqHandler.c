@@ -194,6 +194,7 @@ __interrupt static void controlIRQ1_C() {
     // vic.color_border++;
     // vic.color_back++;
     
+    // Soft scroll
     vic.ctrl2 = _scrollIt;
     showUiSpritesBottom();
     
@@ -221,24 +222,25 @@ __interrupt static void controlIRQ1_C() {
         };
         ((byte *)0x01)[0] = _prevRomCfg;
     }
-    if(!gms_textMode){
-        // Soft scroll
-        if(--_scrollIt==0xff) {
-            _scrollIt = 7;
-            // Hard scroll
-            for(byte i=0;i<39;i++) {
-                GFX_1_SCR[statusLine+i]=GFX_1_SCR[statusLine+i+1]
-            }
-            // Render next char
-            byte c = *SB_TEXT;
-            if(c==0) {
-                SB_TEXT = _emptyStatus;
-                c = *SB_TEXT;
-            }
-            GFX_1_SCR[statusLine+39] = c;
-            SB_TEXT++;
-        }
 
+    if(--_scrollIt==0xff) {
+        _scrollIt = 7;
+        // Hard scroll
+        for(byte i=0;i<39;i++) {
+            GFX_1_SCR[statusLine+i]=GFX_1_SCR[statusLine+i+1]
+        }
+        // Render next char
+        byte c = *SB_TEXT;
+        if(c==0) {
+            SB_TEXT = _emptyStatus;
+            c = *SB_TEXT;
+        }
+        GFX_1_SCR[statusLine+39] = c;
+        SB_TEXT++;
+    }
+
+    // time tick
+    if(!gms_textMode){
         _timeControl();
     }
     // vic.color_border--;
