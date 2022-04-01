@@ -177,7 +177,7 @@ void menuSpriteLoader(){
     do {
 #assign y 0
 #repeat
-       ((char*) MENU_SPRITE_DST)[y + i] = ((char*)MENU_SPRITE_SRC)[y + i];
+       ((volatile char*) MENU_SPRITE_DST)[y + i] = ((char*)MENU_SPRITE_SRC)[y + i];
 #assign y y + 0x100
 #until y == 0x0400
         i++;

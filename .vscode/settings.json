@@ -30,7 +30,8 @@
         "charwin.h": "c",
         "conio.h": "c",
         "stdio.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "stdlib.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }

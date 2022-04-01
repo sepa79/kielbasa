@@ -26,7 +26,10 @@
 #define BUS_ANIM_Y 88
 
 enum ANIM_BUS_STAGES {
-    ANIM_BUS_ARRIVING,
+    ANIM_BUS_ARRIVING1,
+    ANIM_BUS_ARRIVING2,
+    ANIM_BUS_ARRIVING3,
+    ANIM_BUS_DRAWN,
     ANIM_BUS_WAITING,
     ANIM_BUS_LEAVING,
     ANIM_BUS_ERASER1,
@@ -75,24 +78,34 @@ __export const char mainMenuGfx3[] = {
 #pragma data ( mainMenuLoaderData2 )
 __export const int BUS_ANIM_X_0[] = {
     // stage 1 - arriving
-    311,308,305,302,299,296,293,290,287,284,281,278,275,272,269,266,263,260,257,254,252,250,248,246,244,242,240,238,236,234,232,230,228,226,224,223,222,221,220,219,218,217,216,215,214,213,212,211,210,209,208,207,206,205,204,203,202,201,200,199,0,
-    // stage 2 - leaving
+    296,294,292,290,288,286,284,282,280,278,276,274,272,0,
+    244,242,240,238,236,234,232,230,228,226,225,224,223,222,221,220,0,
+    244,242,240,238,236,234,232,230,228,226,224,222,220,0,
+    // stage 2 - arrived
+    219,218,217,216,215,214,213,212,211,210,209,208,207,206,205,204,203,202,201,200,199,0,
+    // stage 3 - leaving
     199,198,197,196,195,194,193,192,191,190,189,188,187,186,185,184,183,182,181,180,179,178,177,176,175,174,173,172,171,170,169,168,167,166,165,164,163,162,161,160,159,158,157,156,155,154,153,152,151,150,149,148,147,146,145,144,142,140,138,0,
-    // stage 3 - eraser
+    // stage 4 - eraser
     136,134,132,130,128,126,124,122,120,118,116,114,0,
     112,110,108,106,104,102,100,98,96,94,92,90,0,
     88,86,84,82,80,78,76,74,72,70,68,66,0
-    };
-__export const byte BUS_ANIM_MIN_X[3] = {136, 112, 88};
+};
+__export const byte BUS_ANIM_MIN_X_PAINT[3] = {270+24, 270, 270-24};
+__export const byte BUS_ANIM_MIN_X_ERASE[3] = {136, 112, 88};
 __export const byte BUS_ANIM_OFFSET[4] = {0, 64, 128, 192};
 
-__export const byte BIT_MASK[9] = {
+__export const byte BIT_MASK_PAINT[9] = {
+    0b11000000,
+    0b11110000,
+    0b11111100,
+    0b11111111
+};
+__export const byte BIT_MASK_ERASE[9] = {
     0b00111111,
     0b00001111,
     0b00000011,
     0b00000000
 };
-
 
 // menu code is in ROM - data in RAM
 #pragma code ( mainMenuCode )
@@ -163,13 +176,31 @@ __interrupt static void _menuShowSprites(){
                 return;
         }
 
+        if(animBusStage < ANIM_BUS_DRAWN){
+            // wait until raster is below bus
+            vic_waitLine(BUS_ANIM_Y+0);
+            byte animBusPainterStage = animBusStage - ANIM_BUS_ARRIVING1;
+
+            byte maskPos = BUS_ANIM_MIN_X_PAINT[animBusPainterStage] - BUS_ANIM_X_0[animBusX];
+            byte mask = BIT_MASK_PAINT[(maskPos & 0b00000111)/2];
+            char i = BUS_ANIM_OFFSET[animBusPainterStage] + (maskPos >> 3);
+
+            do{
+                ((char *)MENU_SPRITE_DST)[i] = ((char *)MENU_SPRITE_SRC)[i] & mask;
+                ((char *)MENU_SPRITE_DST)[64*3+i] = ((char *)MENU_SPRITE_SRC)[64*3+i] & mask;
+                i++;
+                i++;
+                i++;
+            } while (i<BUS_ANIM_OFFSET[animBusPainterStage+1]);
+        }
+
         if(animBusStage > ANIM_BUS_LEAVING){
             // wait until raster is below bus
             vic_waitLine(BUS_ANIM_Y+0);
             byte animBusEraserStage = animBusStage - ANIM_BUS_ERASER1;
 
-            byte maskPos = BUS_ANIM_MIN_X[animBusEraserStage] - BUS_ANIM_X_0[animBusX];
-            byte mask = BIT_MASK[(maskPos & 0b00000111)/2];
+            byte maskPos = BUS_ANIM_MIN_X_ERASE[animBusEraserStage] - BUS_ANIM_X_0[animBusX];
+            byte mask = BIT_MASK_ERASE[(maskPos & 0b00000111)/2];
             char i = BUS_ANIM_OFFSET[animBusEraserStage] + (maskPos >> 3);
 
             bool eraseWheel1 = false;
@@ -235,7 +266,19 @@ static void _menuHandler(){
 
     loadMenuGfx(cal_isDay);
     loadMenuSprites();
-    animBusStage = ANIM_BUS_ARRIVING;
+
+    // zero fill sprites
+    char i = 0;
+    do {
+#assign y 0
+#repeat
+       ((volatile char*) MENU_SPRITE_DST)[y + i] = 0;
+#assign y y + 0x100
+#until y == 0x0400
+        i++;
+    } while (i != 0);
+
+    animBusStage = ANIM_BUS_ARRIVING1;
     animBusX = 0;
     
     // Prepare output window
