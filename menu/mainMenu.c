@@ -178,20 +178,93 @@ __interrupt static void _menuShowSprites(){
 
         if(animBusStage < ANIM_BUS_DRAWN){
             // wait until raster is below bus
-            vic_waitLine(BUS_ANIM_Y+0);
+            vic_waitLine(BUS_ANIM_Y-4);
             byte animBusPainterStage = animBusStage - ANIM_BUS_ARRIVING1;
 
             byte maskPos = BUS_ANIM_MIN_X_PAINT[animBusPainterStage] - BUS_ANIM_X_0[animBusX];
             byte mask = BIT_MASK_PAINT[(maskPos & 0b00000111)/2];
             char i = BUS_ANIM_OFFSET[animBusPainterStage] + (maskPos >> 3);
 
+            bool drawWheel1 = false;
+            byte wheelOffset = 0;
+            if((animBusPainterStage == 0) && i > 0){
+                drawWheel1 = true;
+                wheelOffset = 1;
+            }
+            if((animBusPainterStage == 1) && i == 64){
+                drawWheel1 = true;
+                wheelOffset = 62;
+            }
+            bool drawWheel2 = false;
+            if((animBusPainterStage == 1) && i == 66){
+                drawWheel2 = true;
+                wheelOffset = 66;
+            }
+            if((animBusPainterStage == 2) && i < 130){
+                drawWheel2 = true;
+                wheelOffset = 128+2;
+            }
+            byte busWithoutWheels = BUS_ANIM_OFFSET[animBusPainterStage+1];
+            // bus - all the same for all frames
             do{
                 ((char *)MENU_SPRITE_DST)[i] = ((char *)MENU_SPRITE_SRC)[i] & mask;
                 ((char *)MENU_SPRITE_DST)[64*3+i] = ((char *)MENU_SPRITE_SRC)[64*3+i] & mask;
+                if(drawWheel1){
+                    byte j = i - wheelOffset;
+                    byte wheel = ((char *)MENU_SPRITE_SRC)[64*6+j] & mask;
+                    ((char *)MENU_SPRITE_DST)[64*6+j] = wheel;
+                    ((char *)MENU_SPRITE_DST)[64*7+j] = wheel;
+                    ((char *)MENU_SPRITE_DST)[64*8+j] = wheel;
+                    ((char *)MENU_SPRITE_DST)[64*9+j] = wheel;
+                }
+                if(drawWheel2){
+                    byte j = i - wheelOffset;
+                    byte wheel = ((char *)MENU_SPRITE_SRC)[64*10+j] & mask;
+                    ((char *)MENU_SPRITE_DST)[64*10+j] = wheel;
+                    ((char *)MENU_SPRITE_DST)[64*11+j] = wheel;
+                    ((char *)MENU_SPRITE_DST)[64*12+j] = wheel;
+                    ((char *)MENU_SPRITE_DST)[64*13+j] = wheel;
+                }
                 i++;
                 i++;
                 i++;
-            } while (i<BUS_ANIM_OFFSET[animBusPainterStage+1]);
+            } while (i<busWithoutWheels-4*3);
+            // wheels - different in each frame
+            do{
+                ((char *)MENU_SPRITE_DST)[i] = ((char *)MENU_SPRITE_SRC)[i] & mask;
+                ((char *)MENU_SPRITE_DST)[64*3+i] = ((char *)MENU_SPRITE_SRC)[64*3+i] & mask;
+                if(drawWheel1){
+                    byte j = i - wheelOffset;
+                    byte wheel = ((char *)MENU_SPRITE_SRC)[64*6+j] & mask;
+                    ((char *)MENU_SPRITE_DST)[64*6+j] = wheel;
+
+                    wheel = ((char *)MENU_SPRITE_SRC)[64*7+j] & mask;
+                    ((char *)MENU_SPRITE_DST)[64*7+j] = wheel;
+
+                    wheel = ((char *)MENU_SPRITE_SRC)[64*8+j] & mask;
+                    ((char *)MENU_SPRITE_DST)[64*8+j] = wheel;
+
+                    wheel = ((char *)MENU_SPRITE_SRC)[64*9+j] & mask;
+                    ((char *)MENU_SPRITE_DST)[64*9+j] = wheel;
+                }
+                if(drawWheel2){
+                    byte j = i - wheelOffset;
+                    byte wheel = ((char *)MENU_SPRITE_SRC)[64*10+j] & mask;
+                    ((char *)MENU_SPRITE_DST)[64*10+j] = wheel;
+
+                    wheel = ((char *)MENU_SPRITE_SRC)[64*11+j] & mask;
+                    ((char *)MENU_SPRITE_DST)[64*11+j] = wheel;
+
+                    wheel = ((char *)MENU_SPRITE_SRC)[64*12+j] & mask;
+                    ((char *)MENU_SPRITE_DST)[64*12+j] = wheel;
+
+                    wheel = ((char *)MENU_SPRITE_SRC)[64*13+j] & mask;
+                    ((char *)MENU_SPRITE_DST)[64*13+j] = wheel;
+                }
+                i++;
+                i++;
+                i++;
+            } while (i<busWithoutWheels);
         }
 
         if(animBusStage > ANIM_BUS_LEAVING){
