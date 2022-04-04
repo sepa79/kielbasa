@@ -45,12 +45,12 @@ static void _showCharacterDetails(byte character){
     CharWin cd;
     cwin_init(&cd, GFX_1_SCR, COL_OFFSET_CHARACTERDATA, SCREEN_Y_START, SCREEN_WIDTH-COL_OFFSET_CHARACTERDATA, SCREEN_HEIGHT);
     cwin_clear(&cd);
-    cwin_putat_string(&cd, 0, 0, TXT[allChars_nameIdx[character]], VCOL_YELLOW);
+    cwin_putat_string_raw(&cd, 0, 0, TXT[allChars_nameIdx[character]], VCOL_YELLOW);
 
     CharWin cStory;
     cwin_init(&cStory, GFX_1_SCR, COL_OFFSET_CHARACTERDATA, SCREEN_Y_START+1, SCREEN_WIDTH-COL_OFFSET_CHARACTERDATA, 6);
     cwin_fill(&cStory, 32, VCOL_LT_GREY);
-    cwin_write_string(&cStory, TXT[allChars_storyTxtIdx[character]]);
+    cwin_write_string_raw(&cStory, TXT[allChars_storyTxtIdx[character]]);
 
     cwin_putat_string_raw(&cd, 0, 7, TXT[TXT_IDX_STAT_INT], VCOL_LT_BLUE);
     cwin_putat_string_raw(&cd, 0, 8, TXT[TXT_IDX_STAT_STR], VCOL_LT_BLUE);
@@ -58,11 +58,11 @@ static void _showCharacterDetails(byte character){
 
     byte str[2];
     sprintf(str, "%u", allChars_statInt[character]);
-    cwin_putat_string(&cd, 9, 7, str, VCOL_GREEN);
+    cwin_putat_string_raw(&cd, 9, 7, str, VCOL_GREEN);
     sprintf(str, "%u", allChars_statCun[character]);
-    cwin_putat_string(&cd, 9, 8, str, VCOL_GREEN);
+    cwin_putat_string_raw(&cd, 9, 8, str, VCOL_GREEN);
     sprintf(str, "%u", allChars_statStr[character]);
-    cwin_putat_string(&cd, 9, 9, str, VCOL_GREEN);
+    cwin_putat_string_raw(&cd, 9, 9, str, VCOL_GREEN);
 
     cwin_putat_string_raw(&cd, 11,  7, TXT[TXT_IDX_SKILL_ANI], VCOL_LT_BLUE);
     cwin_putat_string_raw(&cd, 11,  8, TXT[TXT_IDX_SKILL_FRM], VCOL_LT_BLUE);
@@ -70,13 +70,13 @@ static void _showCharacterDetails(byte character){
     cwin_putat_string_raw(&cd, 11, 10, TXT[TXT_IDX_SKILL_TRD], VCOL_LT_BLUE);
 
     sprintf(str, "%u", allChars_skillAni[character]);
-    cwin_putat_string(&cd, 22,  7, str, VCOL_GREEN);
+    cwin_putat_string_raw(&cd, 22,  7, str, VCOL_GREEN);
     sprintf(str, "%u", allChars_skillFrm[character]);
-    cwin_putat_string(&cd, 22,  8, str, VCOL_GREEN);
+    cwin_putat_string_raw(&cd, 22,  8, str, VCOL_GREEN);
     sprintf(str, "%u", allChars_skillBth[character]);
-    cwin_putat_string(&cd, 22,  9, str, VCOL_GREEN);
+    cwin_putat_string_raw(&cd, 22,  9, str, VCOL_GREEN);
     sprintf(str, "%u", allChars_skillTrd[character]);
-    cwin_putat_string(&cd, 22, 10, str, VCOL_GREEN);
+    cwin_putat_string_raw(&cd, 22, 10, str, VCOL_GREEN);
 }
 
 static void _emMenu1(){
@@ -105,7 +105,7 @@ static void _menuHandler(void){
     loadMenuGfx(cal_isDay);
 
     // Prepare output window
-    cwin_init(&cw, GFX_1_SCR, 0, 13, 40, 12);
+    cwin_init(&cw, GFX_1_SCR, 0, 13, 40, 11);
     cwin_clear(&cw);
 
     displayMenu(CREW_MENU);

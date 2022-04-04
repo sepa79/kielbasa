@@ -8,54 +8,72 @@
 // PLANT_STATE array (8)
 // =============================================================================
 const char TXT_PLANT_STATE_NAME_1[] = s" - - - -";
-const char TXT_PLANT_STATE_NAME_2[] = s"Kie\x5ekuje";
-const char TXT_PLANT_STATE_NAME_3[] = s"Ro\x61nie  ";
+const char TXT_PLANT_STATE_NAME_2[] = s"Kie\y5ekuje";
+const char TXT_PLANT_STATE_NAME_3[] = s"Ro\y61nie  ";
 const char TXT_PLANT_STATE_NAME_4[] = s"Dojrzewa";
-const char TXT_PLANT_STATE_NAME_5[] = s"Dojrza\x5ee";
-const char TXT_PLANT_STATE_NAME_6[] = s"Zgni\x5ee  ";
+const char TXT_PLANT_STATE_NAME_5[] = s"Dojrza\y5ee";
+const char TXT_PLANT_STATE_NAME_6[] = s"Zgni\y5ee  ";
 
 // =============================================================================
 // Main texts
 // =============================================================================
-const char TXT_MENU_CANCEL[] = s"\x1fAnuluj";
-const char TXT_MENU_EXIT[] = s"\x1fPowr\x60t";
+const char TXT_MENU_CANCEL[] = s"\y1fAnuluj";
+const char TXT_MENU_EXIT[] = s"\y1fPowr\y60t";
 // fixed width - 28
-const char TXT_TASK_LIST_HEADER[] = underline(s"Zadanie ") "\x7f" underline(s"       Opis        ");
+const char TXT_TASK_LIST_HEADER[] = underline(s"Zadanie ") "\y7f" underline(s"       Opis        ");
 
 const char TXT_MENU_MAIN1[] = underline(s"1") s"Pole";
 const char TXT_MENU_MAIN2[] = underline(s"2") s"Chlewik";
-const char TXT_MENU_MAIN3[] = underline(s"3") s"W\x5ddzarnia";
+const char TXT_MENU_MAIN3[] = underline(s"3") s"W\y5ddzarnia";
 const char TXT_MENU_MAIN4[] = underline(s"4") s"Sklep";
-const char TXT_MENU_MAIN5[] = underline(s"5") s"Za\x5eoga";
+const char TXT_MENU_MAIN5[] = underline(s"5") s"Za\y5eoga";
 
 // =============================================================================
 // Options
 // =============================================================================
-const char TXT_MENU_OPTIONS_LANG[] = s"\xb1J\x5dzyk / Language";
-const char TXT_MENU_OPTIONS_MSX[] = s"\xb2Muzyka on/off";
+const char TXT_MENU_OPTIONS_LANG[] = s"\yb1J\y5dzyk / Language";
+const char TXT_MENU_OPTIONS_MSX[] = s"\yb2Muzyka on/off";
 const char TXT_OPTIONS_HEADER[] = s"Ustawienia gry";
+
+// =============================================================================
+// Task manager
+// =============================================================================
+const char TXT_TASK_MANAGER_HEADER[] = s"Manager zada\y5f";
+const char TXT_TASK_MANAGER_TABLE_HEADER_1[] = 
+//1234567890123456789012345678901234567890
+s"                     \y7f"underline(s"Zdolno")"\ye1\ydc\y7f"underline(s" Zadanie");
+const char TXT_TASK_MANAGER_TABLE_HEADER_2[] = 
+"                     \y7eH\y7eR\y7eM\y7eH \y7e H\y7eR\y7eM\y7eH";
+const char TXT_TASK_MANAGER_TABLE_HEADER_3[] = 
+underline(s"Posta")"\ydc"underline("               ")"\y7f"underline(s"o")"\y7f"underline(s"o")"\y7f"underline(s"a")"\y7f"underline(s"a ")"\y7f"underline(s" o")"\y7f"underline(s"o")"\y7f"underline(s"a")"\y7f"underline(s"a");
+const char TXT_MENU_TASK_MANAGER_W[] = s"w";
+const char TXT_MENU_TASK_MANAGER_S[] = s"s";
+const char TXT_MENU_TASK_MANAGER_A[] = s"a";
+const char TXT_MENU_TASK_MANAGER_D[] = s"d";
+const char TXT_MENU_TASK_MANAGER_PLUS[] = s"-";
+const char TXT_MENU_TASK_MANAGER_MINUS[] = s"+";
 
 // =============================================================================
 // Farmland
 // =============================================================================
 // 4 options in Common
-const char TXT_MENU_FARMLAND5[] = s"\xb1Uprawa";
-const char TXT_MENU_FARMLAND6[] = s"\xb2Opieka";
-const char TXT_MENU_FARMLAND7[] = s"\xb3Zbiory";
+const char TXT_MENU_FARMLAND5[] = s"\yb1Uprawa";
+const char TXT_MENU_FARMLAND6[] = s"\yb2Opieka";
+const char TXT_MENU_FARMLAND7[] = s"\yb3Zbiory";
 // fixed width 
 const char TXT_FIELD_LIST_HEADER[] =
     underline(s"Mg")
-    "\x7f"
+    "\y7f"
     underline(s" Uprawa  ")
-    "\x7f"
+    "\y7f"
     underline(s"  Stan  ")
-    "\x7f"
+    "\y7f"
     underline(s"T  ")
-    "\x7f"
+    "\y7f"
     underline(s"S1 ")
-    "\x7f"
+    "\y7f"
     underline(s"S2 ")
-    "\x7f"
+    "\y7f"
     underline(s"S3 ")
 ;
 
@@ -66,7 +84,7 @@ const char TXT_FARM_PLANT_TXT[]      = s"Uprawa: ";
 // plant names - 10
 const char TXT_PLANT_NAME_NONE[]     = s" - - - - -";
 const char TXT_PLANT_NAME_POTATO[]   = s"Zimnioki  ";
-const char TXT_PLANT_NAME_LUPINE[]   = "\x67" s"ubin     ";
+const char TXT_PLANT_NAME_LUPINE[]   = "\y67" s"ubin     ";
 const char TXT_PLANT_NAME_WHEAT[]    = s"Pszenica  ";
 const char TXT_PLANT_NAME_CORN[]     = s"Kukurydza ";
 
@@ -76,38 +94,38 @@ const char TXT_TASK_FARMLAND_CARE[]  = s"Opieka  ";
 const char TXT_TASK_FARMLAND_REAP[]  = s"Zbiory  ";
 const char TXT_TASK_DSC_FARMLAND_FIELD[]  = s"Pole"; // used in task description
 const char TXT_TASK_DSC_FARMLAND_POTATO[] = s"ziemniaki"; // used in task description
-const char TXT_TASK_DSC_FARMLAND_LUPINE[] = s"\x5eubin"; // used in task description
+const char TXT_TASK_DSC_FARMLAND_LUPINE[] = s"\y5eubin"; // used in task description
 const char TXT_TASK_DSC_FARMLAND_WHEAT[]  = s"pszenica"; // used in task description
 const char TXT_TASK_DSC_FARMLAND_CORN[]   = s"kukurydza"; // used in task description
 
 // =============================================================================
 // Pig pen
 // =============================================================================
-const char TXT_MENU_PIGPEN1[] = s"\xb1Karmienie";
-const char TXT_MENU_PIGPEN2[] = s"\xb2Sprz\x5btanie";
-const char TXT_MENU_PIGPEN3[] = s"\xb3Przebudowa";
+const char TXT_MENU_PIGPEN1[] = s"\yb1Karmienie";
+const char TXT_MENU_PIGPEN2[] = s"\yb2Sprz\y5btanie";
+const char TXT_MENU_PIGPEN3[] = s"\yb3Przebudowa";
 
-const char TXT_MENU_SMOKEHOUSE1[] = s"\xb1Przepisy";
-const char TXT_MENU_SMOKEHOUSE2[] = s"\xb2Sprz\x5btanie";
-const char TXT_MENU_SMOKEHOUSE3[] = s"\xb3Przebudowa";
+const char TXT_MENU_SMOKEHOUSE1[] = s"\yb1Przepisy";
+const char TXT_MENU_SMOKEHOUSE2[] = s"\yb2Sprz\y5btanie";
+const char TXT_MENU_SMOKEHOUSE3[] = s"\yb3Przebudowa";
 
-const char TXT_MENU_SHOPOUT1[] = s"\xb1Wejd\x62";
-const char TXT_MENU_SHOPOUT2[] = s"\xb2Rozmowa";
+const char TXT_MENU_SHOPOUT1[] = s"\yb1Wejd\y62";
+const char TXT_MENU_SHOPOUT2[] = s"\yb2Rozmowa";
 const char TXT_SHOP_DESCRIPTION[] = s"Sklep wieobranzowy 'GS', otwarty 7-11 i 15-19, codziennie.";
 
-const char TXT_MENU_SHOPIN1[] = s"\xb1Kup og\x60ra";
-const char TXT_MENU_SHOPIN2[] = s"\xb2Rozmowa";
+const char TXT_MENU_SHOPIN1[] = s"\yb1Kup og\y60ra";
+const char TXT_MENU_SHOPIN2[] = s"\yb2Rozmowa";
 
-const char TXT_MENU_CREW1[] = s"\xb1Slot 1";
-const char TXT_MENU_CREW2[] = s"\xb2Slot 2";
-const char TXT_MENU_CREW3[] = s"\xb3Slot 3";
-const char TXT_MENU_CREW4[] = s"\xb4Slot 4";
+const char TXT_MENU_CREW1[] = s"\yb1Slot 1";
+const char TXT_MENU_CREW2[] = s"\yb2Slot 2";
+const char TXT_MENU_CREW3[] = s"\yb3Slot 3";
+const char TXT_MENU_CREW4[] = s"\yb4Slot 4";
 
 // =============================================================================
 // Characters
 // =============================================================================
-const char TXT_STAT_INT[] = s"M\x5bdro""\x61\x5c";
-const char TXT_STAT_STR[] = s"Si\x5ea";
+const char TXT_STAT_INT[] = s"M\y5bdro""\y61\y5c";
+const char TXT_STAT_STR[] = s"Si\y5ea";
 const char TXT_STAT_CUN[] = s"Spryt";
 
 const char TXT_SKILL_ANI[] = s"Hodowla";
@@ -116,16 +134,16 @@ const char TXT_SKILL_BTH[] = s"Masarstwo";
 const char TXT_SKILL_TRD[] = s"Handel";
 
 // names are in Common
-const char TXT_CHAR_1_STORY[] = s"Janusz ca\x5ee \x63ycie pracowa\x5e\nw PGR. Na niczym si\x5d tak\nnaprawd\x5d nie zna, ale za to\nma na\x5eogi i jest leniwy.\nJanusz to posta\x5c startowa.";
-const char TXT_CHAR_2_STORY[] = p"Zdzisiek nie jest popularny\nwe wsi. Ludziska pami\x5dtaj\x5b,\n\x63e jego ojciec by\x5e folks-\ndojczem. Zdzisia wyr\x60\x63nia\ninteligencja po tacie.";
-const char TXT_CHAR_3_STORY[] = p"Historia Wie\x61ka M test M test.";
-const char TXT_CHAR_4_STORY[] = p"Historia J\x60zka.";
+const char TXT_CHAR_1_STORY[] = s"Janusz ca\y5ee \y63ycie pracowa\y5e w PGR. Na niczym si\y5d tak naprawd\y5d nie zna, ale za toma na\y5eogi i jest leniwy. Janusz to posta\y5c startowa.";
+const char TXT_CHAR_2_STORY[] = s"Zdzisiek nie jest popularny we wsi. Ludziska pami\y5dtaj\y5b, \y63e jego ojciec by\y5e folks-dojczem. Zdzisia wyr\y60\y63nia inteligencja po tacie.";
+const char TXT_CHAR_3_STORY[] = s"Historia Wie\y61ka M test M test.";
+const char TXT_CHAR_4_STORY[] = s"Historia J\y60zka.";
 
 // =============================================================================
 // Status Bar
 // =============================================================================
 const char SB_PAUSE[]       = s"   P  A  U  Z  A   ";
-const char SB_UNPAUSE[]     = s"   Normalna pr\x5ddko\x61\x5c gry   ";
+const char SB_UNPAUSE[]     = s"   Normalna pr\y5ddko\y61\y5c gry   ";
 const char SB_WELCOME[]     = s"    Witaj! +/-/Space - kontrola czasu    Kielbasa Empire - wersja bardzo alpha.    "
                               s"Credits:    "
                               s"    Wsparcie programistyczne i kompilatory: KickC - Rex/Camelot, Oscar64 - DrMortalWombat    "
@@ -171,6 +189,17 @@ __export const char* TXT[] = {
     TXT_MENU_OPTIONS_LANG,
     TXT_MENU_OPTIONS_MSX,
     TXT_OPTIONS_HEADER,
+
+    TXT_TASK_MANAGER_HEADER,
+    TXT_TASK_MANAGER_TABLE_HEADER_1,
+    TXT_TASK_MANAGER_TABLE_HEADER_2,
+    TXT_TASK_MANAGER_TABLE_HEADER_3,
+    TXT_MENU_TASK_MANAGER_W,
+    TXT_MENU_TASK_MANAGER_S,
+    TXT_MENU_TASK_MANAGER_A,
+    TXT_MENU_TASK_MANAGER_D,
+    TXT_MENU_TASK_MANAGER_PLUS,
+    TXT_MENU_TASK_MANAGER_MINUS,
 
     TXT_MENU_FARMLAND1,
     TXT_MENU_FARMLAND2,

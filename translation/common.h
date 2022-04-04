@@ -25,6 +25,17 @@ enum TEXT_INDEXES {
     TXT_IDX_MENU_OPTIONS_MSX,
     TXT_IDX_OPTIONS_HEADER,
 
+    TXT_IDX_TASK_MANAGER_HEADER,
+    TXT_IDX_TASK_MANAGER_TABLE_HEADER_1,
+    TXT_IDX_TASK_MANAGER_TABLE_HEADER_2,
+    TXT_IDX_TASK_MANAGER_TABLE_HEADER_3,
+    TXT_IDX_MENU_TASK_MANAGER_W,
+    TXT_IDX_MENU_TASK_MANAGER_S,
+    TXT_IDX_MENU_TASK_MANAGER_A,
+    TXT_IDX_MENU_TASK_MANAGER_D,
+    TXT_IDX_MENU_TASK_MANAGER_PLUS,
+    TXT_IDX_MENU_TASK_MANAGER_MINUS,
+
     TXT_IDX_MENU_FARMLAND1,
     TXT_IDX_MENU_FARMLAND2,
     TXT_IDX_MENU_FARMLAND3,
@@ -93,10 +104,10 @@ static const char TXT_MENU_FARMLAND2[] = ">";
 static const char TXT_MENU_FARMLAND3[] = {27,0}; // '['
 static const char TXT_MENU_FARMLAND4[] = {29,0}; // ']'
 
-static const char TXT_CHAR_1_NAME[] = p"Janusz Dobrowolski";
-static const char TXT_CHAR_2_NAME[] = p"Zdzis\x5eaw Hermann";
-static const char TXT_CHAR_3_NAME[] = p"Wies\x5eaw Dobrowolski";
-static const char TXT_CHAR_4_NAME[] = p"J\x60zef Ko\x5eodziej";
+static const char TXT_CHAR_1_NAME[] = s"Janusz Dobrowolski";
+static const char TXT_CHAR_2_NAME[] = s"Zdzis\y5eaw Hermann";
+static const char TXT_CHAR_3_NAME[] = s"Wies\y5eaw Dobrowolski";
+static const char TXT_CHAR_4_NAME[] = s"J\y60zef Ko\y5eodziej";
 
 // fixed width - 8
 static const char TXT_TASK_EMPTY_NAME[] = "        ";

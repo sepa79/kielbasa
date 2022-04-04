@@ -103,7 +103,8 @@ __export char CALENDAR_FONTS[59*7] = {
 // ===========================================================================================
 #pragma data(mainGfxFont)
 __export const char GAME_FONT[0x800] = {
-    #embed 0xffff 2 "assets/fonts.64c"
+    // #embed 0xffff 2 "assets/fonts.64c"
+    #embed 0xffff 2 "assets/game_font2.64c"
 };
 
 // ===========================================================================================

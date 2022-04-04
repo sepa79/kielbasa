@@ -6,6 +6,7 @@
 
 #include <menu/menuSystem.h>
 #include <menu/optionsMenu.h>
+#include <menu/taskManagerMenu.h>
 #include <engine/gameSettings.h>
 #include <engine/uiHandler.h>
 #include <engine/joystick.h>
@@ -23,7 +24,7 @@ byte * sprBankPointer;
 volatile struct JOY_CURSOR joyCursor = {true, false, 0, 0, 0, 0, 0};
 CharWin cw;
 
-bool _optionsMenuOpen = false;
+bool _fullScreenMenuOpen = false;
 byte _lastElementInMenu = 0;
 struct MenuOption *currentMenu;
 
@@ -141,10 +142,11 @@ void checkKeys(){
                 updateGameSpeed();
             }
         }
-        if (key == 135) {
-            // don't go to options while in options
-            if(!_optionsMenuOpen){
-                _optionsMenuOpen = true;
+        // help & options
+        if (key == KEY_F1) {
+            // don't go to menu while in menu
+            if(!_fullScreenMenuOpen){
+                _fullScreenMenuOpen = true;
                 gms_disableTimeControls = true;
                 // vic.color_border = VCOL_BLUE;
                 gms_gameSpeed = SPEED_PAUSED;
@@ -152,8 +154,20 @@ void checkKeys(){
                 showOptionsMenu();
             }
             return;
+        // task manager
+        } else if (key == KEY_F3) {
+            // don't go to menu while in menu
+            if(!_fullScreenMenuOpen){
+                _fullScreenMenuOpen = true;
+                gms_disableTimeControls = true;
+                // vic.color_border = VCOL_BLUE;
+                gms_gameSpeed = SPEED_PAUSED;
+                updateGameSpeed();
+                showTaskManagerMenu();
+            }
+            return;
         }
-        
+
         // joystick
         _moveJoyThroughMenu();
         // check if fire pressed & if so read which element Joy was pointing at
@@ -167,7 +181,7 @@ void checkKeys(){
         // vic.color_border = VCOL_BLUE;
 
         // whatever it is, its not an options menu, as its handled above
-        _optionsMenuOpen = false;
+        _fullScreenMenuOpen = false;
         // block any accidental key presses during transition
         joyCursor.enabled = false;
         // open new menu
