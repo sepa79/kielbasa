@@ -48,6 +48,10 @@ static const byte allChars_skillAni[CHARACTER_COUNT]    = {  3,   2,   1,   6};
 static const byte allChars_skillFrm[CHARACTER_COUNT]    = {  3,   6,   1,   2};
 static const byte allChars_skillBth[CHARACTER_COUNT]    = {  4,   1,   1,   1};
 static const byte allChars_skillTrd[CHARACTER_COUNT]    = {  3,   1,   7,   1};
+static byte allChars_prioAni[CHARACTER_COUNT]           = {  3,   3,   3,   3};
+static byte allChars_prioFrm[CHARACTER_COUNT]           = {  3,   3,   3,   3};
+static byte allChars_prioBth[CHARACTER_COUNT]           = {  3,   3,   3,   3};
+static byte allChars_prioTrd[CHARACTER_COUNT]           = {  3,   3,   3,   3};
 static const byte allChars_salary[CHARACTER_COUNT]      = {  0,   1,   2,   2};
 
 // static const byte slot[CHARACTER_COUNT]

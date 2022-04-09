@@ -46,8 +46,8 @@ const char TXT_EN_MENU_TASK_MANAGER_W[] = s"w";
 const char TXT_EN_MENU_TASK_MANAGER_S[] = s"s";
 const char TXT_EN_MENU_TASK_MANAGER_A[] = s"a";
 const char TXT_EN_MENU_TASK_MANAGER_D[] = s"d";
-const char TXT_EN_MENU_TASK_MANAGER_PLUS[] = s"-";
-const char TXT_EN_MENU_TASK_MANAGER_MINUS[] = s"+";
+const char TXT_EN_MENU_TASK_MANAGER_PLUS[] = s"+";
+const char TXT_EN_MENU_TASK_MANAGER_MINUS[] = s"-";
 
 // =============================================================================
 // Farmland

@@ -269,7 +269,6 @@ __interrupt static void controlIRQ1_C() {
 
     // indicate frame position
     gms_framePos = FRAME_BOTTOM;
-
     // vic.color_border--;
     // vic.color_back--;
 }
@@ -326,17 +325,22 @@ __interrupt static void controlIRQ2_C() {
     showUiSpritesTop();
 
     if(gms_textMode){
-        // set the irq to 1st control routine
+        // wait for right line
+        while (vic.raster != RASTER1_POS){}
+        setSpritesBottomScr();
+        // set the irq to 1st control routine with sprite controller
         *(void **)0x0314 = controlIRQ1;
         vic.raster = CONTROL_IRQ1_POS;
+        // indicate frame position - NOT, as keyboard would not be read in this pos at all. Lets pretend we are a bit higher up.
+        // gms_framePos = FRAME_TOP;
     } else {
         // set the irq to 1st routine
         *(void **)0x0314 = splitScreenIRQ1;
         vic.raster = RASTER1_POS;
     }
-
     // indicate frame position
     gms_framePos = FRAME_TOP_BORDER;
+
 
     // vic.color_border--;
 }

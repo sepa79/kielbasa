@@ -11,48 +11,168 @@
 #include <engine/easyFlashBanks.h>
 #include <engine/gameSettings.h>
 
+static byte _currentCharacter = 2;
+static byte _currentSkill = 2;
+// where to start displaying stats, also used for cursor
+static byte TASK_SHOW_LINE = 7;
+static byte TASK_SHOW_COLUMN = 32;
+
 static void _showTaskPriorities(){
+
+    // TASK_MANAGER_MENU[0].y = TASK_SHOW_LINE + _currentCharacter;
+    // TASK_MANAGER_MENU[0].x = TASK_SHOW_COLUMN + _currentSkill * 2;
+    // TASK_MANAGER_MENU[1].y = TASK_SHOW_LINE + _currentCharacter;
+    // TASK_MANAGER_MENU[1].x = TASK_SHOW_COLUMN + _currentSkill * 2;
+    // TASK_MANAGER_MENU[2].y = TASK_SHOW_LINE + _currentCharacter;
+    // TASK_MANAGER_MENU[2].x = TASK_SHOW_COLUMN + _currentSkill * 2;
+    // TASK_MANAGER_MENU[3].y = TASK_SHOW_LINE + _currentCharacter;
+    // TASK_MANAGER_MENU[3].x = TASK_SHOW_COLUMN + _currentSkill * 2;
 
     cwin_putat_string_raw(&cw, 0, 4, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_1], VCOL_YELLOW);
     cwin_putat_string_raw(&cw, 0, 5, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_2], VCOL_YELLOW);
     cwin_putat_string_raw(&cw, 0, 6, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_3], VCOL_YELLOW);
+
+    byte col1;
+    byte col2[4];
+    byte str[2];
+
     for(byte character = 0; character < CHARACTER_COUNT; character++){
-        byte line = 7+character;
-        cwin_putat_string_raw(&cw, 0, line, TXT[allChars_nameIdx[character]], VCOL_GREEN);
+        byte line = TASK_SHOW_LINE+character;
+        if(character == _currentCharacter){
+            col1 = VCOL_LT_GREEN;
+            col2[0] = VCOL_LT_GREY;
+            col2[1] = VCOL_LT_GREY;
+            col2[2] = VCOL_LT_GREY;
+            col2[3] = VCOL_LT_GREY;
+            // mark current column with white
+            col2[_currentSkill] = VCOL_WHITE;
+        } else {
+            col1 = VCOL_GREEN;
+            col2[0] = VCOL_MED_GREY;
+            col2[1] = VCOL_MED_GREY;
+            col2[2] = VCOL_MED_GREY;
+            col2[3] = VCOL_MED_GREY;
+        }
+
+        cwin_putat_string_raw(&cw, 0, line, TXT[allChars_nameIdx[character]], col1);
 
         cwin_putat_string_raw(&cw, 21, line, "\x7e", VCOL_YELLOW);
 
-        byte str[2];
         sprintf(str, "%u", allChars_skillAni[character]);
-        cwin_putat_string_raw(&cw, 22,  line, str, VCOL_GREEN);
+        cwin_putat_string_raw(&cw, 22,  line, str, col1);
         sprintf(str, "%u", allChars_skillFrm[character]);
-        cwin_putat_string_raw(&cw, 24,  line, str, VCOL_GREEN);
+        cwin_putat_string_raw(&cw, 24,  line, str, col1);
         sprintf(str, "%u", allChars_skillBth[character]);
-        cwin_putat_string_raw(&cw, 26,  line, str, VCOL_GREEN);
+        cwin_putat_string_raw(&cw, 26,  line, str, col1);
         sprintf(str, "%u", allChars_skillTrd[character]);
-        cwin_putat_string_raw(&cw, 28,  line, str, VCOL_GREEN);
+        cwin_putat_string_raw(&cw, 28,  line, str, col1);
         cwin_putat_string_raw(&cw, 23, line, "\x7e", VCOL_YELLOW);
         cwin_putat_string_raw(&cw, 25, line, "\x7e", VCOL_YELLOW);
         cwin_putat_string_raw(&cw, 27, line, "\x7e", VCOL_YELLOW);
         cwin_putat_string_raw(&cw, 30, line, "\x7e", VCOL_YELLOW);
 
-        sprintf(str, "%u", allChars_skillAni[character]);
-        cwin_putat_string_raw(&cw, 32,  line, str, VCOL_MED_GREY);
-        sprintf(str, "%u", allChars_skillFrm[character]);
-        cwin_putat_string_raw(&cw, 34,  line, str, VCOL_MED_GREY);
-        sprintf(str, "%u", allChars_skillBth[character]);
-        cwin_putat_string_raw(&cw, 36,  line, str, VCOL_MED_GREY);
-        sprintf(str, "%u", allChars_skillTrd[character]);
-        cwin_putat_string_raw(&cw, 38,  line, str, VCOL_MED_GREY);
+
+        sprintf(str, "%u", allChars_prioAni[character]);
+        cwin_putat_string_raw(&cw, 32,  line, str, col2[0]);
+        sprintf(str, "%u", allChars_prioFrm[character]);
+        cwin_putat_string_raw(&cw, 34,  line, str, col2[1]);
+        sprintf(str, "%u", allChars_prioBth[character]);
+        cwin_putat_string_raw(&cw, 36,  line, str, col2[2]);
+        sprintf(str, "%u", allChars_prioTrd[character]);
+        cwin_putat_string_raw(&cw, 38,  line, str, col2[3]);
+
         cwin_putat_string_raw(&cw, 33, line, "\x7e", VCOL_YELLOW);
         cwin_putat_string_raw(&cw, 35, line, "\x7e", VCOL_YELLOW);
         cwin_putat_string_raw(&cw, 37, line, "\x7e", VCOL_YELLOW);
+
     }
 }
 
-static void _option1(){
-
+static void _upChar(){
+    if(_currentCharacter > 0){
+        _currentCharacter--;
+    } else {
+        _currentCharacter = CHARACTER_COUNT-1;
+    }
+    _showTaskPriorities();
 }
+static void _downChar(){
+    if(_currentCharacter < CHARACTER_COUNT-1){
+        _currentCharacter++;
+    } else {
+        _currentCharacter = 0;
+    }
+    _showTaskPriorities();
+}
+
+#define SKILL_COUNT 3
+static void _skillLeft(){
+    if(_currentSkill > 0){
+        _currentSkill--;
+    } else {
+        _currentSkill = SKILL_COUNT;
+    }
+    _showTaskPriorities();
+}
+static void _skillRight(){
+    if(_currentSkill < SKILL_COUNT){
+        _currentSkill++;
+    } else {
+        _currentSkill = 0;
+    }
+    _showTaskPriorities();
+}
+
+static byte _getPrio(){
+    if(_currentSkill == 0){
+        return allChars_prioAni[_currentCharacter];
+    } else 
+    if(_currentSkill == 1){
+        return allChars_prioFrm[_currentCharacter];
+    } else 
+    if(_currentSkill == 2){
+        return allChars_prioBth[_currentCharacter];
+    }
+    return allChars_prioTrd[_currentCharacter];
+}
+
+static void _setPrio(byte prio){
+    if(_currentSkill == 0){
+        allChars_prioAni[_currentCharacter] = prio;
+    } else 
+    if(_currentSkill == 1){
+        allChars_prioFrm[_currentCharacter] = prio;
+    } else 
+    if(_currentSkill == 2){
+        allChars_prioBth[_currentCharacter] = prio;
+    } else {
+        allChars_prioTrd[_currentCharacter] = prio;
+    }
+}
+
+#define MAX_PRIO 5
+static void _prioDown(){
+    byte prio = _getPrio();
+    if(prio > 0){
+        prio--;
+    } else {
+        prio = MAX_PRIO;
+    }
+    _setPrio(prio);
+    _showTaskPriorities();
+}
+
+static void _prioUp(){
+    byte prio = _getPrio();
+    if(prio < MAX_PRIO){
+        prio++;
+    } else {
+        prio = 0;
+    }
+    _setPrio(prio);
+    _showTaskPriorities();
+}
+
 static void _backToPreviousMenu(){
     gms_textMode = false;
     gms_disableTimeControls = false;
@@ -73,12 +193,12 @@ void showTaskManagerMenu(){
 }
 
 const struct MenuOption TASK_MANAGER_MENU[] = {
-    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', &_option1, 0, 1, 1},
-    { TXT_IDX_MENU_TASK_MANAGER_S, 's', &_option1, 0, 1, 3},
-    { TXT_IDX_MENU_TASK_MANAGER_A, 'a', &_option1, 0, 0, 2},
-    { TXT_IDX_MENU_TASK_MANAGER_D, 'd', &_option1, 0, 2, 2},
-    { TXT_IDX_MENU_TASK_MANAGER_PLUS, '-', &_option1, 0, 10, 1},
-    { TXT_IDX_MENU_TASK_MANAGER_MINUS, '+', &_option1, 0, 10, 3},
+    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', &_upChar, 0, 2, 1},
+    { TXT_IDX_MENU_TASK_MANAGER_S, 's', &_downChar, 0, 2, 3},
+    { TXT_IDX_MENU_TASK_MANAGER_A, 'a', &_skillLeft, 0, 1, 2},
+    { TXT_IDX_MENU_TASK_MANAGER_D, 'd', &_skillRight, 0, 3, 2},
+    { TXT_IDX_MENU_TASK_MANAGER_PLUS, '+', &_prioDown, 0, 10, 1},
+    { TXT_IDX_MENU_TASK_MANAGER_MINUS, '-', &_prioUp, 0, 10, 3},
     { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, &_backToPreviousMenu, 0, 1, 20},
 
     END_MENU_CHOICES
