@@ -345,6 +345,7 @@ static void _sowPlant(){
     task.minReqFrm = 2;
     task.minReqBth = 0;
     task.minReqTrd = 0;
+    task.reqType = SKILL_FARMING;
     addTask(&task);
 }
 

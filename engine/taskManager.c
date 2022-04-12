@@ -21,6 +21,7 @@ byte task_minReqAni[10];
 byte task_minReqFrm[10];
 byte task_minReqBth[10];
 byte task_minReqTrd[10];
+byte task_reqType[10];
 
 // column offset for printing data
 #define COL_OFFSET_TASKLIST 12
@@ -54,6 +55,7 @@ bool addTask(struct Task * task){
             task_minReqFrm[i] = task->minReqFrm;
             task_minReqBth[i] = task->minReqBth;
             task_minReqTrd[i] = task->minReqTrd;
+            task_reqType[i] = task->reqType;
             strcpy(task_desc[i], task->desc);
             return true;
         }
@@ -75,8 +77,8 @@ void displayTaskList(){
     }
 }
 
-static void findWorker(byte taskIdx) {
-    for(byte charSlot=0;charSlot<4;charSlot++){
+static byte findWorkerForTask(byte reqType) {
+    for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
         // only check active chars
         if(characterSlots[charSlot] != 0xff){
             decEnergyLevel(charSlot, 5);
@@ -92,7 +94,7 @@ void tasksTick(){
             return;
         }
         // task found, delegate
-        findWorker(i);
+        byte worker = findWorkerForTask(task_reqType[i]);
         i++;
     } while (i < 10);
 }

@@ -43,9 +43,23 @@ const char TXT_TASK_MANAGER_TABLE_HEADER_1[] =
 //1234567890123456789012345678901234567890
 s"                     \y7f"underline(s"Zdolno")"\ye1\ydc\y7f"underline(s" Zadanie");
 const char TXT_TASK_MANAGER_TABLE_HEADER_2[] = 
-"                     \y7eH\y7eR\y7eM\y7eH \y7e H\y7eR\y7eM\y7eH";
+s"                     \y7e \y7eR\y7eM\y7e  \y7e  \y7eR\y7eM\y7e ";
 const char TXT_TASK_MANAGER_TABLE_HEADER_3[] = 
-underline(s"Posta")"\ydc"underline("               ")"\y7f"underline(s"o")"\y7f"underline(s"o")"\y7f"underline(s"a")"\y7f"underline(s"a ")"\y7f"underline(s" o")"\y7f"underline(s"o")"\y7f"underline(s"a")"\y7f"underline(s"a");
+s"                     \y7e \y7eo\y7ea\y7e  \y7e  \y7eo\y7ea\y7e ";
+const char TXT_TASK_MANAGER_TABLE_HEADER_4[] = 
+s"                     \y7eH\y7el\y7es\y7e  \y7e H\y7el\y7es\y7e ";
+const char TXT_TASK_MANAGER_TABLE_HEADER_5[] = 
+s"                     \y7eo\y7en\y7ea\y7eH \y7e o\y7en\y7ea\y7eH";
+const char TXT_TASK_MANAGER_TABLE_HEADER_6[] = 
+s"                     \y7ed\y7ei\y7er\y7ea \y7e d\y7ei\y7er\y7ea";
+const char TXT_TASK_MANAGER_TABLE_HEADER_7[] = 
+s"                     \y7eo\y7ec\y7es\y7en \y7e o\y7ec\y7es\y7en";
+const char TXT_TASK_MANAGER_TABLE_HEADER_8[] = 
+s"                     \y7ew\y7et\y7et\y7ed \y7e w\y7et\y7et\y7ed";
+const char TXT_TASK_MANAGER_TABLE_HEADER_9[] = 
+s"                     \y7el\y7ew\y7ew\y7ee \y7e l\y7ew\y7ew\y7ee";
+const char TXT_TASK_MANAGER_TABLE_HEADER_10[] = 
+underline(s"Posta")"\ydc"underline("               ")"\y7f"underline(s"a")"\y7f"underline(s"o")"\y7f"underline(s"o")"\y7f"underline(s"l ")"\y7f"underline(s" a")"\y7f"underline(s"o")"\y7f"underline(s"o")"\y7f"underline(s"l");
 const char TXT_MENU_TASK_MANAGER_W[] = s"w";
 const char TXT_MENU_TASK_MANAGER_S[] = s"s";
 const char TXT_MENU_TASK_MANAGER_A[] = s"a";
@@ -194,6 +208,13 @@ __export const char* TXT[] = {
     TXT_TASK_MANAGER_TABLE_HEADER_1,
     TXT_TASK_MANAGER_TABLE_HEADER_2,
     TXT_TASK_MANAGER_TABLE_HEADER_3,
+    TXT_TASK_MANAGER_TABLE_HEADER_4,
+    TXT_TASK_MANAGER_TABLE_HEADER_5,
+    TXT_TASK_MANAGER_TABLE_HEADER_6,
+    TXT_TASK_MANAGER_TABLE_HEADER_7,
+    TXT_TASK_MANAGER_TABLE_HEADER_8,
+    TXT_TASK_MANAGER_TABLE_HEADER_9,
+    TXT_TASK_MANAGER_TABLE_HEADER_10,
     TXT_MENU_TASK_MANAGER_W,
     TXT_MENU_TASK_MANAGER_S,
     TXT_MENU_TASK_MANAGER_A,

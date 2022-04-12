@@ -4,16 +4,22 @@
 #include <assets/assetsSettings.h>
 #include <engine/gameSettings.h>
 #include <assets/mainGfx.h>
+#include <character/character.h>
 
 volatile char isc_weatherSprite = 0;
 // volatile char characterSlotSpriteBank[4] = {SPR_CHARACTER_PORTRAIT1, SPR_CHARACTER_PORTRAIT2, SPR_CHARACTER_PORTRAIT3, SPR_CHARACTER_PORTRAIT4};
-char* characterSlotSpriteBarPtr[4] = {
-    // (SpriteResources.CHARACTER_BARS + 64*0),
+char* characterSlotSpriteBarPtr[CHARACTER_SLOTS] = {
     SPR_CHARACTER_BAR1,
     SPR_CHARACTER_BAR2,
     SPR_CHARACTER_BAR3,
     SPR_CHARACTER_BAR4
-    };
+};
+char* characterSlotSpritePicPtr[CHARACTER_SLOTS] = {
+    SPR_CHARACTER_PORTRAIT1,
+    SPR_CHARACTER_PORTRAIT2,
+    SPR_CHARACTER_PORTRAIT3,
+    SPR_CHARACTER_PORTRAIT4
+};
 
 #define BATTERY_ROW_EMPTY 0b10000001
 #define BATTERY_ROW_FULL  0b10111111
@@ -42,19 +48,14 @@ void setNormalCursor(){
 }
 
 // copy face to character portrait
-// TODO: ADD METHOD
-void setCharacterSlotPic(char slot, char picture){
-
-}
-
-// copy task icon to character's SPR_CHARACTER_BARX
-void setCharacterSlotIcon(char slot, char * taskIconPtr){
-    char * charBarPtr = characterSlotSpriteBarPtr[slot];
-    char i = 1;
+void setCharacterSlotPic(char charSlot, const char * picturePtr){
+    char * charPicPtr = characterSlotSpritePicPtr[charSlot];
+    char i = 0;
     mmap_set(MMAP_NO_BASIC);
     do{
-        charBarPtr[i] = taskIconPtr[i];
-        charBarPtr[i+1] = taskIconPtr[i+1];
+        charPicPtr[i]   = picturePtr[i];
+        charPicPtr[i+1] = picturePtr[i+1];
+        charPicPtr[i+2] = picturePtr[i+2];
         i++;
         i++;
         i++;
@@ -62,9 +63,26 @@ void setCharacterSlotIcon(char slot, char * taskIconPtr){
     mmap_set(MMAP_ROM);
 }
 
-void drawBattery(char slot, char energy){
+// copy task icon to character's SPR_CHARACTER_BARX
+void setCharacterSlotIcon(char charSlot, const char * taskIconPtr){
+    if(characterSlots[charSlot] != 0xff){
+        char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
+        char i = 1;
+        mmap_set(MMAP_NO_BASIC);
+        do{
+            charBarPtr[i]   = taskIconPtr[i];
+            charBarPtr[i+1] = taskIconPtr[i+1];
+            i++;
+            i++;
+            i++;
+        } while (i<64);
+        mmap_set(MMAP_ROM);
+    }
+}
+
+void drawBattery(char charSlot, char energy){
     // vic.BORDER_COLOR++;
-    char * charBarPtr = characterSlotSpriteBarPtr[slot];
+    char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
     char max = BATTERY_LEVEL[energy];
     charBarPtr[63] = BATTERY_COLOR[max];
     

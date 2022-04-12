@@ -14,7 +14,7 @@
 static byte _currentCharacter = 2;
 static byte _currentSkill = 2;
 // where to start displaying stats, also used for cursor
-static byte TASK_SHOW_LINE = 7;
+static byte TASK_SHOW_LINE = 14;
 static byte TASK_SHOW_COLUMN = 32;
 
 static void _showTaskPriorities(){
@@ -31,60 +31,71 @@ static void _showTaskPriorities(){
     cwin_putat_string_raw(&cw, 0, 4, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_1], VCOL_YELLOW);
     cwin_putat_string_raw(&cw, 0, 5, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_2], VCOL_YELLOW);
     cwin_putat_string_raw(&cw, 0, 6, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_3], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0, 7, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_4], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0, 8, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_5], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0, 9, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_6], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0, 10, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_7], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0, 11, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_8], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0, 12, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_9], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0, 13, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_10], VCOL_YELLOW);
 
     byte col1;
     byte col2[4];
     byte str[2];
 
-    for(byte character = 0; character < CHARACTER_COUNT; character++){
-        byte line = TASK_SHOW_LINE+character;
-        if(character == _currentCharacter){
-            col1 = VCOL_LT_GREEN;
-            col2[0] = VCOL_LT_GREY;
-            col2[1] = VCOL_LT_GREY;
-            col2[2] = VCOL_LT_GREY;
-            col2[3] = VCOL_LT_GREY;
-            // mark current column with white
-            col2[_currentSkill] = VCOL_WHITE;
-        } else {
-            col1 = VCOL_GREEN;
-            col2[0] = VCOL_MED_GREY;
-            col2[1] = VCOL_MED_GREY;
-            col2[2] = VCOL_MED_GREY;
-            col2[3] = VCOL_MED_GREY;
+    for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
+        // only check active chars
+        if(characterSlots[charSlot] != 0xff){
+            byte character = characterSlots[charSlot];
+
+            byte line = TASK_SHOW_LINE+character;
+            if(character == _currentCharacter){
+                col1 = VCOL_LT_GREEN;
+                col2[0] = VCOL_LT_GREY;
+                col2[1] = VCOL_LT_GREY;
+                col2[2] = VCOL_LT_GREY;
+                col2[3] = VCOL_LT_GREY;
+                // mark current column with white
+                col2[_currentSkill] = VCOL_WHITE;
+            } else {
+                col1 = VCOL_GREEN;
+                col2[0] = VCOL_MED_GREY;
+                col2[1] = VCOL_MED_GREY;
+                col2[2] = VCOL_MED_GREY;
+                col2[3] = VCOL_MED_GREY;
+            }
+
+            cwin_putat_string_raw(&cw, 0, line, TXT[allChars_nameIdx[character]], col1);
+
+            cwin_putat_string_raw(&cw, 21, line, "\x7e", VCOL_YELLOW);
+
+            sprintf(str, "%u", allChars_skillAni[character]);
+            cwin_putat_string_raw(&cw, 22,  line, str, col1);
+            sprintf(str, "%u", allChars_skillFrm[character]);
+            cwin_putat_string_raw(&cw, 24,  line, str, col1);
+            sprintf(str, "%u", allChars_skillBth[character]);
+            cwin_putat_string_raw(&cw, 26,  line, str, col1);
+            sprintf(str, "%u", allChars_skillTrd[character]);
+            cwin_putat_string_raw(&cw, 28,  line, str, col1);
+            cwin_putat_string_raw(&cw, 23, line, "\x7e", VCOL_YELLOW);
+            cwin_putat_string_raw(&cw, 25, line, "\x7e", VCOL_YELLOW);
+            cwin_putat_string_raw(&cw, 27, line, "\x7e", VCOL_YELLOW);
+            cwin_putat_string_raw(&cw, 30, line, "\x7e", VCOL_YELLOW);
+
+
+            sprintf(str, "%u", allChars_prioAni[character]);
+            cwin_putat_string_raw(&cw, 32,  line, str, col2[0]);
+            sprintf(str, "%u", allChars_prioFrm[character]);
+            cwin_putat_string_raw(&cw, 34,  line, str, col2[1]);
+            sprintf(str, "%u", allChars_prioBth[character]);
+            cwin_putat_string_raw(&cw, 36,  line, str, col2[2]);
+            sprintf(str, "%u", allChars_prioTrd[character]);
+            cwin_putat_string_raw(&cw, 38,  line, str, col2[3]);
+
+            cwin_putat_string_raw(&cw, 33, line, "\x7e", VCOL_YELLOW);
+            cwin_putat_string_raw(&cw, 35, line, "\x7e", VCOL_YELLOW);
+            cwin_putat_string_raw(&cw, 37, line, "\x7e", VCOL_YELLOW);
         }
-
-        cwin_putat_string_raw(&cw, 0, line, TXT[allChars_nameIdx[character]], col1);
-
-        cwin_putat_string_raw(&cw, 21, line, "\x7e", VCOL_YELLOW);
-
-        sprintf(str, "%u", allChars_skillAni[character]);
-        cwin_putat_string_raw(&cw, 22,  line, str, col1);
-        sprintf(str, "%u", allChars_skillFrm[character]);
-        cwin_putat_string_raw(&cw, 24,  line, str, col1);
-        sprintf(str, "%u", allChars_skillBth[character]);
-        cwin_putat_string_raw(&cw, 26,  line, str, col1);
-        sprintf(str, "%u", allChars_skillTrd[character]);
-        cwin_putat_string_raw(&cw, 28,  line, str, col1);
-        cwin_putat_string_raw(&cw, 23, line, "\x7e", VCOL_YELLOW);
-        cwin_putat_string_raw(&cw, 25, line, "\x7e", VCOL_YELLOW);
-        cwin_putat_string_raw(&cw, 27, line, "\x7e", VCOL_YELLOW);
-        cwin_putat_string_raw(&cw, 30, line, "\x7e", VCOL_YELLOW);
-
-
-        sprintf(str, "%u", allChars_prioAni[character]);
-        cwin_putat_string_raw(&cw, 32,  line, str, col2[0]);
-        sprintf(str, "%u", allChars_prioFrm[character]);
-        cwin_putat_string_raw(&cw, 34,  line, str, col2[1]);
-        sprintf(str, "%u", allChars_prioBth[character]);
-        cwin_putat_string_raw(&cw, 36,  line, str, col2[2]);
-        sprintf(str, "%u", allChars_prioTrd[character]);
-        cwin_putat_string_raw(&cw, 38,  line, str, col2[3]);
-
-        cwin_putat_string_raw(&cw, 33, line, "\x7e", VCOL_YELLOW);
-        cwin_putat_string_raw(&cw, 35, line, "\x7e", VCOL_YELLOW);
-        cwin_putat_string_raw(&cw, 37, line, "\x7e", VCOL_YELLOW);
-
     }
 }
 

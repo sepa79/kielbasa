@@ -14,7 +14,7 @@ __export const struct SPRITES SpriteResources = {{
     #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
     #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
 },{
-    #embed 0xffff 20 "assets/sprites/faces.spd"
+    0
 },{
     0
 },{
@@ -34,6 +34,8 @@ __export const struct SPRITES SpriteResources = {{
 
 __export const struct AUX_GFX AuxResources = {{
     #embed 0xffff 16 "assets/sprites/taskIcons.spd"
+},{
+    #embed 0xffff 20 "assets/sprites/faces.spd"
 }};
 // sprite font - 7 lines high only
 __export char CALENDAR_FONTS[59*7] = {

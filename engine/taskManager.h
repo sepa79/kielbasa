@@ -21,7 +21,8 @@ extern byte task_minReqAni[10];
 extern byte task_minReqFrm[10];
 extern byte task_minReqBth[10];
 extern byte task_minReqTrd[10];
-
+// which skill is used for this task, 0-3
+extern byte task_reqType[10];
 
 // used when creating new tasks
 struct Task {
@@ -41,12 +42,19 @@ struct Task {
     byte minReqFrm;
     byte minReqBth;
     byte minReqTrd;
+    byte reqType;
 };
+
+#define SKILL_HERDING 0
+#define SKILL_FARMING 1
+#define SKILL_BUTCHERY 2
+#define SKILL_TRADE 3
 
 void displayTaskList();
 void initTaskList();
 void tasksTick();
 bool addTask(struct Task * task);
+byte findWorkerForTask(byte reqType);
 
 #pragma compile("taskManager.c")
 
