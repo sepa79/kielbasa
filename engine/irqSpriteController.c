@@ -49,7 +49,8 @@ void setNormalCursor(){
 
 // copy face to character portrait
 void setCharacterSlotPic(char charSlot, const char * picturePtr){
-    if( charSlot < 4){
+    // might be redundant, init checks it, and no pic should be set for empty charslot elsewhere
+    if(characterSlots[charSlot] != 0xff){
         char * charPicPtr = characterSlotSpritePicPtr[charSlot];
         char i = 0;
         mmap_set(MMAP_NO_BASIC);
@@ -68,7 +69,7 @@ void setCharacterSlotPic(char charSlot, const char * picturePtr){
 
 // copy task icon to character's SPR_CHARACTER_BARX
 void setCharacterSlotIcon(char charSlot, const char * taskIconPtr){
-    if( charSlot < 4){
+    if(characterSlots[charSlot] != 0xff){
         char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
         char i = 1;
         mmap_set(MMAP_NO_BASIC);
@@ -84,8 +85,6 @@ void setCharacterSlotIcon(char charSlot, const char * taskIconPtr){
 }
 
 void drawBattery(char charSlot, char energy){
-	
-	if (charSlot < 4) {
     // vic.BORDER_COLOR++;
     char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
     char max = BATTERY_LEVEL[energy];
@@ -119,7 +118,7 @@ void drawBattery(char charSlot, char energy){
         bcc loop2
     done:
     };
-	}
+
     // vic.BORDER_COLOR--;
 }
 
