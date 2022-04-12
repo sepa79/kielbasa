@@ -9,9 +9,11 @@ byte characterSlots[CHARACTER_SLOTS];
 static void _setCharacterToSlot(byte charIdx, byte charSlot){
     characterSlots[charSlot] = charIdx;
 
-    setCharacterSlotPic(charSlot, allChars_picture[charIdx]);
-    setCharacterSlotIcon(charSlot, SPR_TASK_MIA);
-    drawBattery(charSlot, allChars_energy[charIdx]);
+    if(characterSlots[charSlot] != 0xff){
+        setCharacterSlotPic(charSlot, allChars_picture[charIdx]);
+        setCharacterSlotIcon(charSlot, SPR_TASK_MIA);
+        drawBattery(charSlot, allChars_energy[charIdx]);
+    }
 }
 
 void initCharacterList(){
