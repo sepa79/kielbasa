@@ -59,7 +59,8 @@ void setCharacterSlotPic(char charSlot, const char * picturePtr){
         i++;
         i++;
         i++;
-    } while (i<64);
+    } while (i<63);
+    charPicPtr[63] = picturePtr[63];
     mmap_set(MMAP_ROM);
 }
 
@@ -75,7 +76,7 @@ void setCharacterSlotIcon(char charSlot, const char * taskIconPtr){
             i++;
             i++;
             i++;
-        } while (i<64);
+        } while (i<63);
         mmap_set(MMAP_ROM);
     }
 }
