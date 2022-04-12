@@ -49,19 +49,21 @@ void setNormalCursor(){
 
 // copy face to character portrait
 void setCharacterSlotPic(char charSlot, const char * picturePtr){
-    char * charPicPtr = characterSlotSpritePicPtr[charSlot];
-    char i = 0;
-    mmap_set(MMAP_NO_BASIC);
-    do{
-        charPicPtr[i]   = picturePtr[i];
-        charPicPtr[i+1] = picturePtr[i+1];
-        charPicPtr[i+2] = picturePtr[i+2];
-        i++;
-        i++;
-        i++;
-    } while (i<63);
-    charPicPtr[63] = picturePtr[63];
-    mmap_set(MMAP_ROM);
+    if(characterSlots[charSlot] != 0xff){
+        char * charPicPtr = characterSlotSpritePicPtr[charSlot];
+        char i = 0;
+        mmap_set(MMAP_NO_BASIC);
+        do{
+            charPicPtr[i]   = picturePtr[i];
+            charPicPtr[i+1] = picturePtr[i+1];
+            charPicPtr[i+2] = picturePtr[i+2];
+            i++;
+            i++;
+            i++;
+        } while (i<63);
+        // charPicPtr[63] = picturePtr[63];
+        mmap_set(MMAP_ROM);
+    }
 }
 
 // copy task icon to character's SPR_CHARACTER_BARX

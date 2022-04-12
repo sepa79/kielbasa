@@ -8,7 +8,6 @@ byte characterSlots[CHARACTER_SLOTS];
 
 static void _setCharacterToSlot(byte charIdx, byte charSlot){
     characterSlots[charSlot] = charIdx;
-    // allChars_slot[charIdx] = charSlot;
 
     setCharacterSlotPic(charSlot, allChars_picture[charIdx]);
     setCharacterSlotIcon(charSlot, SPR_TASK_MIA);
