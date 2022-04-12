@@ -49,6 +49,7 @@ void setNormalCursor(){
 
 // copy face to character portrait
 void setCharacterSlotPic(char charSlot, const char * picturePtr){
+    // might be redundant, init checks it, and no pic should be set for empty charslot elsewhere
     if(characterSlots[charSlot] != 0xff){
         char * charPicPtr = characterSlotSpritePicPtr[charSlot];
         char i = 0;
