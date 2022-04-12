@@ -50,7 +50,7 @@ void setNormalCursor(){
 // copy face to character portrait
 void setCharacterSlotPic(char charSlot, const char * picturePtr){
     // might be redundant, init checks it, and no pic should be set for empty charslot elsewhere
-    if(characterSlots[charSlot] != 0xff){
+    if(characterSlots[charSlot] != NO_CHARACTER){
         char * charPicPtr = characterSlotSpritePicPtr[charSlot];
         char i = 0;
         mmap_set(MMAP_NO_BASIC);
@@ -69,7 +69,7 @@ void setCharacterSlotPic(char charSlot, const char * picturePtr){
 
 // copy task icon to character's SPR_CHARACTER_BARX
 void setCharacterSlotIcon(char charSlot, const char * taskIconPtr){
-    if(characterSlots[charSlot] != 0xff){
+    if(characterSlots[charSlot] != NO_CHARACTER){
         char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
         char i = 1;
         mmap_set(MMAP_NO_BASIC);

@@ -9,7 +9,7 @@ byte characterSlots[CHARACTER_SLOTS];
 static void _setCharacterToSlot(byte charIdx, byte charSlot){
     characterSlots[charSlot] = charIdx;
 
-    if(characterSlots[charSlot] != 0xff){
+    if(characterSlots[charSlot] != NO_CHARACTER){
         setCharacterSlotPic(charSlot, allChars_picture[charIdx]);
         setCharacterSlotIcon(charSlot, SPR_TASK_MIA);
         drawBattery(charSlot, allChars_energy[charIdx]);
@@ -18,9 +18,9 @@ static void _setCharacterToSlot(byte charIdx, byte charSlot){
 
 void initCharacterList(){
     _setCharacterToSlot(0, 0);
-    _setCharacterToSlot(1, NO_CHARACTER);
-    _setCharacterToSlot(2, NO_CHARACTER);
-    _setCharacterToSlot(3, NO_CHARACTER);
+    _setCharacterToSlot(NO_CHARACTER, 1);
+    _setCharacterToSlot(NO_CHARACTER, 2);
+    _setCharacterToSlot(NO_CHARACTER, 3);
 }
 
 void incEnergyLevel(byte charSlot, byte amount){
@@ -50,7 +50,7 @@ void decEnergyLevel(byte charSlot, byte amount){
 
 void sleepTick(){
     for(byte charSlot = 0; charSlot < CHARACTER_SLOTS; charSlot++){
-        if(characterSlots[charSlot] != 0xff){
+        if(characterSlots[charSlot] != NO_CHARACTER){
             word rnd = rand();
             byte rnd0 = rnd & 15;
             incEnergyLevel(charSlot, rnd0);

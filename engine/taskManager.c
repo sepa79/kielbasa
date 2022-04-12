@@ -80,7 +80,7 @@ void displayTaskList(){
 static byte findWorkerForTask(byte reqType) {
     for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
         // only check active chars
-        if(characterSlots[charSlot] != 0xff){
+        if(characterSlots[charSlot] != NO_CHARACTER){
             decEnergyLevel(charSlot, 5);
         }
     }
