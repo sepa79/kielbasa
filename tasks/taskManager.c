@@ -145,7 +145,7 @@ void displayTaskList(){
 
 // Returns first matching charSlot for a required skill priority value (must not be busy).
 // Returns NO_CHARACTER if none found.
-static byte _findFreeWorkerWithSkillXPrioY(byte reqSkill, byte reqPrio) {
+static byte _findFreeWorkerWithPrioXForSkillY(byte reqPrio, byte reqSkill) {
     for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
         // only check active chars
         if(characterSlots[charSlot] != NO_CHARACTER){
@@ -233,7 +233,7 @@ void tasksTick(){
             // foreach skill X
             for(byte skillIt = 0; skillIt < SKILL_COUNT; skillIt++){
                 // find worker with skill X prio Y (starting at 1)
-                byte charSlot = _findFreeWorkerWithSkillXPrioY(skillIt, prioIt);
+                byte charSlot = _findFreeWorkerWithPrioXForSkillY(prioIt, skillIt);
                     byte str[4];
                     sprintf(str, "%3u", charSlot);
                     cwin_putat_string_raw(&cw, prioIt*6, skillIt, str, VCOL_GREEN);
