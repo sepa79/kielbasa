@@ -22,6 +22,10 @@ extern byte task_minReqStat[TASK_ARRAY_SIZE][3];
 extern byte task_minReqSkill[TASK_ARRAY_SIZE][4];
 // which skill is used for this task, 0-3
 extern byte task_reqType[TASK_ARRAY_SIZE];
+// who does it (when started, also indicates that task is worked on)
+extern byte task_worker[TASK_ARRAY_SIZE];
+// task icon
+extern const char * task_icon[TASK_ARRAY_SIZE];
 
 // used when creating new tasks
 struct Task {
@@ -37,6 +41,7 @@ struct Task {
     
     byte minReqSkill[4];
     byte reqType;
+    const char * icon;
 };
 
 void displayTaskList();

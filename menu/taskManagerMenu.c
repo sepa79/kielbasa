@@ -11,8 +11,8 @@
 #include <engine/easyFlashBanks.h>
 #include <engine/gameSettings.h>
 
-static byte _currentCharacter = 2;
-static byte _currentSkill = 2;
+static byte _currentCharacter = 0;
+static byte _currentSkill = 0;
 // where to start displaying stats, also used for cursor
 static byte TASK_SHOW_LINE = 14;
 static byte TASK_SHOW_COLUMN = 32;

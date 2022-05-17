@@ -347,6 +347,7 @@ static void _sowPlant(){
     task.minReqSkill[SKILL_BUTCHERY] = 0;
     task.minReqSkill[SKILL_TRADE]    = 0;
     task.reqType = SKILL_FARMING;
+    task.icon = SPR_TASK_FARM1;
     addTask(&task);
 }
 

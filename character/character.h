@@ -44,10 +44,10 @@
 static const byte allChars_storyTxtIdx[CHARACTER_COUNT]           = {TXT_IDX_CHAR_1_STORY, TXT_IDX_CHAR_2_STORY, TXT_IDX_CHAR_3_STORY, TXT_IDX_CHAR_4_STORY};
 static const byte allChars_nameIdx[CHARACTER_COUNT]               = {TXT_IDX_CHAR_1_NAME, TXT_IDX_CHAR_2_NAME, TXT_IDX_CHAR_3_NAME, TXT_IDX_CHAR_4_NAME};
 static byte allChars_energy[CHARACTER_COUNT]                      = {100,  80,  50,  30};
-static const char* allChars_picture[CHARACTER_COUNT]              = { SPR_TASK_PORTRAIT01, SPR_TASK_PORTRAIT02, SPR_TASK_PORTRAIT03, SPR_TASK_PORTRAIT04};
+static const char* allChars_picture[CHARACTER_COUNT]              = { SPR_PORTRAIT01, SPR_PORTRAIT02, SPR_PORTRAIT03, SPR_PORTRAIT04};
 static const byte allChars_stats[CHARACTER_COUNT][3]              = { {3,3,3}, {2,3,2}, {4,2,4}, {3,3,4}};
 static const byte allChars_skills[CHARACTER_COUNT][SKILL_COUNT]   = { {3,3,4,3}, {2,6,1,1}, {1,1,1,7}, {6,2,1,1}};
-static byte allChars_prios[CHARACTER_COUNT][SKILL_COUNT]          = { {3,3,3,3}, {3,3,3,3}, {3,3,3,3}, {3,3,3,3}};
+static byte allChars_prios[CHARACTER_COUNT][SKILL_COUNT]          = { {1,2,3,4}, {3,3,3,3}, {3,3,3,3}, {3,3,3,3}};
 static const byte allChars_salary[CHARACTER_COUNT]                = { 0, 1, 2, 2};
 static bool allChars_busy[CHARACTER_COUNT]                        = {false, false, false, false};
 
