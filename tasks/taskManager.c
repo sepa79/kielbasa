@@ -230,9 +230,9 @@ void tasksTick(){
         // iterate through prios starting at 1
         byte prioIt = 1;
         do {
-            // foreach skill X
+            // foreach skill Y
             for(byte skillIt = 0; skillIt < SKILL_COUNT; skillIt++){
-                // find worker with skill X prio Y (starting at 1)
+                // find worker with prio X for skill Y (starting at 1)
                 byte charSlot = _findFreeWorkerWithPrioXForSkillY(prioIt, skillIt);
                     byte str[4];
                     sprintf(str, "%3u", charSlot);
