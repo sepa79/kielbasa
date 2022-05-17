@@ -9,7 +9,7 @@ byte characterSlots[CHARACTER_SLOTS];
 static void _setCharacterToSlot(byte charIdx, byte charSlot){
     characterSlots[charSlot] = charIdx;
 
-    if(characterSlots[charSlot] != NO_CHARACTER){
+    if(charIdx != NO_CHARACTER){
         setCharacterSlotPic(charSlot, allChars_picture[charIdx]);
         setCharacterSlotIcon(charSlot, SPR_TASK_MIA);
         drawBattery(charSlot, allChars_energy[charIdx]);
@@ -23,6 +23,7 @@ void initCharacterList(){
     _setCharacterToSlot(NO_CHARACTER, 3);
 }
 
+// call only on populated slots
 void incEnergyLevel(byte charSlot, byte amount){
     byte charIdx = characterSlots[charSlot];
     byte energy = allChars_energy[charIdx];
@@ -35,6 +36,7 @@ void incEnergyLevel(byte charSlot, byte amount){
     drawBattery(charSlot, energy);
 }
 
+// call only on populated slots
 void decEnergyLevel(byte charSlot, byte amount){
     byte charIdx = characterSlots[charSlot];
     byte energy = allChars_energy[charIdx];

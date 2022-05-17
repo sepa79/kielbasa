@@ -57,11 +57,11 @@ static void _showCharacterDetails(byte character){
     cwin_putat_string_raw(&cd, 0, 9, TXT[TXT_IDX_STAT_CUN], VCOL_LT_BLUE);
 
     byte str[2];
-    sprintf(str, "%u", allChars_statInt[character]);
+    sprintf(str, "%u", allChars_stats[character][STAT_INT]);
     cwin_putat_string_raw(&cd, 9, 7, str, VCOL_GREEN);
-    sprintf(str, "%u", allChars_statCun[character]);
+    sprintf(str, "%u", allChars_stats[character][STAT_STR]);
     cwin_putat_string_raw(&cd, 9, 8, str, VCOL_GREEN);
-    sprintf(str, "%u", allChars_statStr[character]);
+    sprintf(str, "%u", allChars_stats[character][STAT_CUN]);
     cwin_putat_string_raw(&cd, 9, 9, str, VCOL_GREEN);
 
     cwin_putat_string_raw(&cd, 11,  7, TXT[TXT_IDX_SKILL_ANI], VCOL_LT_BLUE);
@@ -69,13 +69,13 @@ static void _showCharacterDetails(byte character){
     cwin_putat_string_raw(&cd, 11,  9, TXT[TXT_IDX_SKILL_BTH], VCOL_LT_BLUE);
     cwin_putat_string_raw(&cd, 11, 10, TXT[TXT_IDX_SKILL_TRD], VCOL_LT_BLUE);
 
-    sprintf(str, "%u", allChars_skillAni[character]);
+    sprintf(str, "%u", allChars_skills[character][SKILL_BREEDING]);
     cwin_putat_string_raw(&cd, 22,  7, str, VCOL_GREEN);
-    sprintf(str, "%u", allChars_skillFrm[character]);
+    sprintf(str, "%u", allChars_skills[character][SKILL_FARMING]);
     cwin_putat_string_raw(&cd, 22,  8, str, VCOL_GREEN);
-    sprintf(str, "%u", allChars_skillBth[character]);
+    sprintf(str, "%u", allChars_skills[character][SKILL_BUTCHERY]);
     cwin_putat_string_raw(&cd, 22,  9, str, VCOL_GREEN);
-    sprintf(str, "%u", allChars_skillTrd[character]);
+    sprintf(str, "%u", allChars_skills[character][SKILL_TRADE]);
     cwin_putat_string_raw(&cd, 22, 10, str, VCOL_GREEN);
 }
 

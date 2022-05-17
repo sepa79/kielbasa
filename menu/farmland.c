@@ -9,7 +9,8 @@
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
 #include <engine/uiHandler.h>
-#include <engine/taskManager.h>
+#include <tasks/taskManager.h>
+#include <character/character.h>
 #include <tick/calendar.h>
 #include <tick/farmlandTick.h>
 
@@ -338,13 +339,13 @@ static void _sowPlant(){
     task.params[2] = 0;
     task.params[3] = 0;
     task.params[4] = 0;
-    task.minReqInt = 1;
-    task.minReqStr = 2;
-    task.minReqCun = 1;
-    task.minReqAni = 0;
-    task.minReqFrm = 2;
-    task.minReqBth = 0;
-    task.minReqTrd = 0;
+    task.minReqStat[STAT_INT] = 1;
+    task.minReqStat[STAT_STR] = 2;
+    task.minReqStat[STAT_CUN] = 1;
+    task.minReqSkill[SKILL_BREEDING] = 0;
+    task.minReqSkill[SKILL_FARMING]  = 2;
+    task.minReqSkill[SKILL_BUTCHERY] = 0;
+    task.minReqSkill[SKILL_TRADE]    = 0;
     task.reqType = SKILL_FARMING;
     addTask(&task);
 }

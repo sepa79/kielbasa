@@ -6,7 +6,6 @@
 
 #include <menu/menuSystem.h>
 #include <menu/mainMenu.h>
-#include <tick/calendar.h>
 #include <engine/easyFlashBanks.h>
 #include <engine/gameSettings.h>
 #include <engine/irqSpriteController.h>
@@ -15,11 +14,10 @@
 #include <assets/assetsSettings.h>
 #include <translation/common.h>
 #include <translation/textsPL.h>
-#include "engine/taskManager.h"
-
+#include <tasks/taskManager.h>
 #include <character/character.h>
-
-#include "tick/farmlandTick.h"
+#include <tick/calendar.h>
+#include <tick/farmlandTick.h>
 
 void prepareScroll(){
     // clear line 25 and its color

@@ -131,7 +131,7 @@ const char TXT_EN_STAT_INT[] = s"Wisdom";
 const char TXT_EN_STAT_STR[] = s"Strength";
 const char TXT_EN_STAT_CUN[] = s"Cunning";
 
-const char TXT_EN_SKILL_ANI[] = s"Herding";
+const char TXT_EN_SKILL_ANI[] = s"Breeding";
 const char TXT_EN_SKILL_FRM[] = s"Farming";
 const char TXT_EN_SKILL_BTH[] = s"Butchery";
 const char TXT_EN_SKILL_TRD[] = s"Trade";

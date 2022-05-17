@@ -45,7 +45,7 @@ static void _showTaskPriorities(){
 
     for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
         // only check active chars
-        if(characterSlots[charSlot] != 0xff){
+        if(characterSlots[charSlot] != NO_CHARACTER){
             byte character = characterSlots[charSlot];
 
             byte line = TASK_SHOW_LINE+character;
@@ -69,13 +69,13 @@ static void _showTaskPriorities(){
 
             cwin_putat_string_raw(&cw, 21, line, "\x7e", VCOL_YELLOW);
 
-            sprintf(str, "%u", allChars_skillAni[character]);
+            sprintf(str, "%u", allChars_skills[character][SKILL_BREEDING]);
             cwin_putat_string_raw(&cw, 22,  line, str, col1);
-            sprintf(str, "%u", allChars_skillFrm[character]);
+            sprintf(str, "%u", allChars_skills[character][SKILL_FARMING]);
             cwin_putat_string_raw(&cw, 24,  line, str, col1);
-            sprintf(str, "%u", allChars_skillBth[character]);
+            sprintf(str, "%u", allChars_skills[character][SKILL_BUTCHERY]);
             cwin_putat_string_raw(&cw, 26,  line, str, col1);
-            sprintf(str, "%u", allChars_skillTrd[character]);
+            sprintf(str, "%u", allChars_skills[character][SKILL_TRADE]);
             cwin_putat_string_raw(&cw, 28,  line, str, col1);
             cwin_putat_string_raw(&cw, 23, line, "\x7e", VCOL_YELLOW);
             cwin_putat_string_raw(&cw, 25, line, "\x7e", VCOL_YELLOW);
@@ -83,13 +83,13 @@ static void _showTaskPriorities(){
             cwin_putat_string_raw(&cw, 30, line, "\x7e", VCOL_YELLOW);
 
 
-            sprintf(str, "%u", allChars_prioAni[character]);
+            sprintf(str, "%u", allChars_prios[character][SKILL_BREEDING]);
             cwin_putat_string_raw(&cw, 32,  line, str, col2[0]);
-            sprintf(str, "%u", allChars_prioFrm[character]);
+            sprintf(str, "%u", allChars_prios[character][SKILL_FARMING]);
             cwin_putat_string_raw(&cw, 34,  line, str, col2[1]);
-            sprintf(str, "%u", allChars_prioBth[character]);
+            sprintf(str, "%u", allChars_prios[character][SKILL_BUTCHERY]);
             cwin_putat_string_raw(&cw, 36,  line, str, col2[2]);
-            sprintf(str, "%u", allChars_prioTrd[character]);
+            sprintf(str, "%u", allChars_prios[character][SKILL_TRADE]);
             cwin_putat_string_raw(&cw, 38,  line, str, col2[3]);
 
             cwin_putat_string_raw(&cw, 33, line, "\x7e", VCOL_YELLOW);
@@ -99,6 +99,7 @@ static void _showTaskPriorities(){
     }
 }
 
+// CHANGE TO ACTIVE CHARACTERS
 static void _upChar(){
     if(_currentCharacter > 0){
         _currentCharacter--;
@@ -116,17 +117,16 @@ static void _downChar(){
     _showTaskPriorities();
 }
 
-#define SKILL_COUNT 3
 static void _skillLeft(){
     if(_currentSkill > 0){
         _currentSkill--;
     } else {
-        _currentSkill = SKILL_COUNT;
+        _currentSkill = SKILL_COUNT-1;
     }
     _showTaskPriorities();
 }
 static void _skillRight(){
-    if(_currentSkill < SKILL_COUNT){
+    if(_currentSkill < SKILL_COUNT-1){
         _currentSkill++;
     } else {
         _currentSkill = 0;
@@ -134,53 +134,25 @@ static void _skillRight(){
     _showTaskPriorities();
 }
 
-static byte _getPrio(){
-    if(_currentSkill == 0){
-        return allChars_prioAni[_currentCharacter];
-    } else 
-    if(_currentSkill == 1){
-        return allChars_prioFrm[_currentCharacter];
-    } else 
-    if(_currentSkill == 2){
-        return allChars_prioBth[_currentCharacter];
-    }
-    return allChars_prioTrd[_currentCharacter];
-}
-
-static void _setPrio(byte prio){
-    if(_currentSkill == 0){
-        allChars_prioAni[_currentCharacter] = prio;
-    } else 
-    if(_currentSkill == 1){
-        allChars_prioFrm[_currentCharacter] = prio;
-    } else 
-    if(_currentSkill == 2){
-        allChars_prioBth[_currentCharacter] = prio;
-    } else {
-        allChars_prioTrd[_currentCharacter] = prio;
-    }
-}
-
-#define MAX_PRIO 5
 static void _prioDown(){
-    byte prio = _getPrio();
+    byte prio = allChars_prios[_currentCharacter][_currentSkill];
     if(prio > 0){
         prio--;
     } else {
         prio = MAX_PRIO;
     }
-    _setPrio(prio);
+    allChars_prios[_currentCharacter][_currentSkill] = prio;
     _showTaskPriorities();
 }
 
 static void _prioUp(){
-    byte prio = _getPrio();
+    byte prio = allChars_prios[_currentCharacter][_currentSkill];
     if(prio < MAX_PRIO){
         prio++;
     } else {
         prio = 0;
     }
-    _setPrio(prio);
+    allChars_prios[_currentCharacter][_currentSkill] = prio;
     _showTaskPriorities();
 }
 
