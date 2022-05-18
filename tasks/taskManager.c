@@ -81,7 +81,7 @@ bool addTask(struct Task * task){
     task_minReqSkill[nextFreeTask][SKILL_TRADE]    = task->minReqSkill[SKILL_TRADE];
     task_reqType[nextFreeTask] = task->reqType;
     strcpy(task_desc[nextFreeTask], task->desc);
-    task_icon[nextFreeTask] = SPR_TASK_MIA;
+    task_icon[nextFreeTask] = task->icon;
     // assigned later during ticks
     task_worker[nextFreeTask] = NO_CHARACTER;
 
@@ -182,7 +182,15 @@ static byte _findUnassignedTaskForSkill(byte skillIt) {
 static byte _assignTaskToWorker(byte taskId, byte charSlot) {
     byte charIdx = characterSlots[charSlot];
     task_worker[taskId] = charIdx;
+    allChars_busy[charIdx] = true;
+
+    byte str[5];
+    sprintf(str, "%3u  %3u", taskId, charSlot);
+    cwin_putat_string_raw(&cw, 0, 5, str, VCOL_WHITE);
+
     setCharacterSlotIcon(charSlot, task_icon[taskId]);
+    updateStatusBar(s"  Task assigned  ");
+
 }
 
 // Called by callendar.c
@@ -234,26 +242,26 @@ void tasksTick(){
             for(byte skillIt = 0; skillIt < SKILL_COUNT; skillIt++){
                 // find worker with prio X for skill Y (starting at 1)
                 byte charSlot = _findFreeWorkerWithPrioXForSkillY(prioIt, skillIt);
-                    byte str[4];
-                    sprintf(str, "%3u", charSlot);
+                    // byte str[4];
+                    // sprintf(str, "%3u", charSlot);
+                    // cwin_putat_string_raw(&cw, prioIt*6, skillIt, str, VCOL_GREEN);
+                if(charSlot != NO_CHARACTER){
+                    // see if there is any task for this max prio skill
+                    byte taskId = _findUnassignedTaskForSkill(skillIt);
+
+                    byte str[5];
+                    sprintf(str, "%3u", taskId);
                     cwin_putat_string_raw(&cw, prioIt*6, skillIt, str, VCOL_GREEN);
-                // if(charSlot != NO_CHARACTER){
-                //     // see if there is any task for this max prio skill
-                //     byte taskId = _findUnassignedTaskForSkill(skillIt);
 
-                //     // byte str[4];
-                //     // sprintf(str, "%3u", taskId);
-                //     // cwin_putat_string_raw(&cw, 0, 1, str, VCOL_GREEN);
-
-                //     // asign it if there is
-                //     if(taskId != NO_TASK){
-                //         _assignTaskToWorker(taskId, charSlot);
-                //         freeWorkersCount--;
-                //         if(freeWorkersCount == 0){
-                //             break;
-                //         }
-                //     }
-                // }
+                    // asign it if there is
+                    if(taskId != NO_TASK){
+                        _assignTaskToWorker(taskId, charSlot);
+                        freeWorkersCount--;
+                        if(freeWorkersCount == 0){
+                            break;
+                        }
+                    }
+                }
                 // nope? ok, next X (find next highest prio)
             }
             // no more skills, but we still got free workers? increase Prio and repeat

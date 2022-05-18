@@ -3,6 +3,7 @@
 #include <c64/types.h>
 
 #include "calendar.h"
+#include <character/character.h>
 #include <assets/mainGfx.h>
 #include <tick/farmlandTick.h>
 
@@ -207,8 +208,16 @@ void timeTick(){
             setCharacterSlotIcon(1, SPR_TASK_SLEEP);
             setCharacterSlotIcon(2, SPR_TASK_SLEEP);
             setCharacterSlotIcon(3, SPR_TASK_SLEEP);
-        }
 
+            // reset busy stats
+            for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
+                // only check active chars
+                if(characterSlots[charSlot] != NO_CHARACTER){
+                    byte charIdx = characterSlots[charSlot];
+                    allChars_busy[charIdx] = false;
+                }
+            }
+        }
         sleepTick();
     } else {
         // temp - tasksTick should do it later
