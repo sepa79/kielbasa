@@ -13,6 +13,7 @@
 #include <character/character.h>
 #include <tick/calendar.h>
 #include <tick/farmlandTick.h>
+#include <tasks/farmlandTask.h>
 
 // column offset for printing data
 #define COL_OFFSET_FIELDLIST 0
@@ -247,7 +248,7 @@ static void _displayFieldList(){
 
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+12, 8+i, "\x7e", VCOL_YELLOW);
         byte stage = field_stage[i];
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+13, 8+i, PLANT_STATE_NAMES[stage], col);
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+13, 8+i, PLANT_STAGE_NAMES[stage], col);
 
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+21, 8+i, "\x7e", VCOL_YELLOW);
         sprintf(str, "%3u", field_timer[i]);
@@ -319,10 +320,16 @@ static void _sowPlant(){
         setErrorCursor();
         return;
     }
+    // don't allow to ruin growth in progress
+    if(field_stage[_currentField] != PLANT_STAGE_NONE){
+        setErrorCursor();
+        return;
+    }
+    // indicate task is assigned
     field_plantId[_currentField] = _currentPlant;
-    field_stage[_currentField]   = PLANT_STAGE_SPROUT;
-    field_timer[_currentField]   = plant_stage1timer[_currentPlant];
-    field_planted[_currentField] = 100; // in percent
+    field_stage[_currentField]   = PLANT_STAGE_SOW_TASK_ASSIGNED;
+    field_timer[_currentField]   = 0;
+    field_planted[_currentField] = 0; // in percent
     field_grown[_currentField]   = 0;
     field_ready[_currentField]   = 0;
     _displayFieldList();
@@ -332,7 +339,7 @@ static void _sowPlant(){
     byte idx = plant_taskDscIdx[_currentPlant];
     // "Field 2, Potatoes"
     sprintf(task.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
-    task.codeRef = nullptr;
+    task.codeRef = &sowFieldTask;
     task.nameIdx = TXT_IDX_TASK_FARMLAND_FARM;
     task.params[0] = _currentPlant;
     task.params[1] = _currentField;

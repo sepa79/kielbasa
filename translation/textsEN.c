@@ -7,12 +7,13 @@
 // =============================================================================
 // PLANT_STATE array (8)
 // =============================================================================
-const char TXT_EN_PLANT_STATE_NAME_1[] = s"- - - - ";
-const char TXT_EN_PLANT_STATE_NAME_2[] = s"Sprouts ";
-const char TXT_EN_PLANT_STATE_NAME_3[] = s"Grows   ";
-const char TXT_EN_PLANT_STATE_NAME_4[] = s"Ripens  ";
-const char TXT_EN_PLANT_STATE_NAME_5[] = s"Ready   ";
-const char TXT_EN_PLANT_STATE_NAME_6[] = s"Rots    ";
+const char TXT_EN_PLANT_STAGE_NONE[]                = s"- - - - ";
+const char TXT_EN_PLANT_STAGE_SOW_TASK_ASSIGNED[]   = s"T: Plant";
+const char TXT_EN_PLANT_STAGE_SPROUT[]              = s"Sprouts ";
+const char TXT_EN_PLANT_STAGE_GROWTH[]              = s"Grows   ";
+const char TXT_EN_PLANT_STAGE_RIPEN[]               = s"Ripens  ";
+const char TXT_EN_PLANT_STAGE_READY[]               = s"Ready   ";
+const char TXT_EN_PLANT_STAGE_REAP_TASK_ASSIGNED[]  = s"T: Reap ";
 
 // =============================================================================
 // Main texts
@@ -38,23 +39,26 @@ const char TXT_EN_OPTIONS_HEADER[] = s"Game settings";
 // =============================================================================
 // Task manager
 // =============================================================================
-const char TXT_EN_TASK_MANAGER_HEADER[] = s"Task manager";
-const char TXT_EN_TASK_MANAGER_TABLE_HEADER_1[] = s"Task manager";
-const char TXT_EN_TASK_MANAGER_TABLE_HEADER_2[] = s"Task manager";
-const char TXT_EN_TASK_MANAGER_TABLE_HEADER_3[] = s"Task manager";
-const char TXT_EN_TASK_MANAGER_TABLE_HEADER_4[] = s"Task manager";
-const char TXT_EN_TASK_MANAGER_TABLE_HEADER_5[] = s"Task manager";
-const char TXT_EN_TASK_MANAGER_TABLE_HEADER_6[] = s"Task manager";
-const char TXT_EN_TASK_MANAGER_TABLE_HEADER_7[] = s"Task manager";
-const char TXT_EN_TASK_MANAGER_TABLE_HEADER_8[] = s"Task manager";
-const char TXT_EN_TASK_MANAGER_TABLE_HEADER_9[] = s"Task manager";
-const char TXT_EN_TASK_MANAGER_TABLE_HEADER_10[] = s"Task manager";
+const char TXT_EN_TASK_MANAGER_PRIO_HEADER[] = s"Task Priority Manager";
+const char TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_1[] = s"Task manager";
+const char TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_2[] = s"Task manager";
+const char TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_3[] = s"Task manager";
+const char TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_4[] = s"Task manager";
+const char TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_5[] = s"Task manager";
+const char TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_6[] = s"Task manager";
+const char TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_7[] = s"Task manager";
+const char TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_8[] = s"Task manager";
+const char TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_9[] = s"Task manager";
+const char TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_10[] = s"Task manager";
 const char TXT_EN_MENU_TASK_MANAGER_W[] = s"w";
 const char TXT_EN_MENU_TASK_MANAGER_S[] = s"s";
 const char TXT_EN_MENU_TASK_MANAGER_A[] = s"a";
 const char TXT_EN_MENU_TASK_MANAGER_D[] = s"d";
 const char TXT_EN_MENU_TASK_MANAGER_PLUS[] = s"+";
 const char TXT_EN_MENU_TASK_MANAGER_MINUS[] = s"-";
+
+const char TXT_EN_MENU_TASK_MANAGER_HEADER[] = s"Task Manager";
+const char TXT_EN_MENU_TASK_MANAGER_TABLE_HEADER[] = underline(s"  Task  ") "\y7f" underline(s"    Description    ");
 
 // =============================================================================
 // Farmland
@@ -167,13 +171,14 @@ __export const char* PLANT_TYPES_TXT_EN[] = {
 };
 
 #pragma data ( txtEnPlantStateNames )
-__export const char* PLANT_STATE_NAMES_EN[6] = {
-    TXT_EN_PLANT_STATE_NAME_1,
-    TXT_EN_PLANT_STATE_NAME_2,
-    TXT_EN_PLANT_STATE_NAME_3,
-    TXT_EN_PLANT_STATE_NAME_4,
-    TXT_EN_PLANT_STATE_NAME_5,
-    TXT_EN_PLANT_STATE_NAME_6
+__export const char* PLANT_STAGE_NAMES_EN[7] = {
+    TXT_EN_PLANT_STAGE_NONE,
+    TXT_EN_PLANT_STAGE_SOW_TASK_ASSIGNED,
+    TXT_EN_PLANT_STAGE_SPROUT,
+    TXT_EN_PLANT_STAGE_GROWTH,
+    TXT_EN_PLANT_STAGE_RIPEN,
+    TXT_EN_PLANT_STAGE_READY,
+    TXT_EN_PLANT_STAGE_REAP_TASK_ASSIGNED
 };
 
 #pragma data ( txtEnMainArray )
@@ -194,23 +199,25 @@ __export const char* TXT_EN_ARRAY[] = {
     TXT_EN_MENU_OPTIONS_MSX,
     TXT_EN_OPTIONS_HEADER,
 
-    TXT_EN_TASK_MANAGER_HEADER,
-    TXT_EN_TASK_MANAGER_TABLE_HEADER_1,
-    TXT_EN_TASK_MANAGER_TABLE_HEADER_2,
-    TXT_EN_TASK_MANAGER_TABLE_HEADER_3,
-    TXT_EN_TASK_MANAGER_TABLE_HEADER_4,
-    TXT_EN_TASK_MANAGER_TABLE_HEADER_5,
-    TXT_EN_TASK_MANAGER_TABLE_HEADER_6,
-    TXT_EN_TASK_MANAGER_TABLE_HEADER_7,
-    TXT_EN_TASK_MANAGER_TABLE_HEADER_8,
-    TXT_EN_TASK_MANAGER_TABLE_HEADER_9,
-    TXT_EN_TASK_MANAGER_TABLE_HEADER_10,
+    TXT_EN_TASK_MANAGER_PRIO_HEADER,
+    TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_1,
+    TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_2,
+    TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_3,
+    TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_4,
+    TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_5,
+    TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_6,
+    TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_7,
+    TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_8,
+    TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_9,
+    TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_10,
     TXT_EN_MENU_TASK_MANAGER_W,
     TXT_EN_MENU_TASK_MANAGER_S,
     TXT_EN_MENU_TASK_MANAGER_A,
     TXT_EN_MENU_TASK_MANAGER_D,
     TXT_EN_MENU_TASK_MANAGER_PLUS,
     TXT_EN_MENU_TASK_MANAGER_MINUS,
+    TXT_EN_MENU_TASK_MANAGER_HEADER,
+    TXT_EN_MENU_TASK_MANAGER_TABLE_HEADER,
 
     TXT_MENU_FARMLAND1,
     TXT_MENU_FARMLAND2,

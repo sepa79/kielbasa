@@ -7,12 +7,13 @@
 // =============================================================================
 // PLANT_STATE array (8)
 // =============================================================================
-const char TXT_PLANT_STATE_NAME_1[] = s" - - - -";
-const char TXT_PLANT_STATE_NAME_2[] = s"Kie\y5ekuje";
-const char TXT_PLANT_STATE_NAME_3[] = s"Ro\y61nie  ";
-const char TXT_PLANT_STATE_NAME_4[] = s"Dojrzewa";
-const char TXT_PLANT_STATE_NAME_5[] = s"Dojrza\y5ee";
-const char TXT_PLANT_STATE_NAME_6[] = s"Zgni\y5ee  ";
+const char TXT_PLANT_STAGE_NONE[]               = s" - - - -";
+const char TXT_PLANT_STAGE_SOW_TASK_ASSIGNED[]  = s"Z: Siew ";
+const char TXT_PLANT_STAGE_SPROUT[]             = s"Kie\y5ekuje";
+const char TXT_PLANT_STAGE_GROWTH[]             = s"Ro\y61nie  ";
+const char TXT_PLANT_STAGE_RIPEN[]              = s"Dojrzewa";
+const char TXT_PLANT_STAGE_READY[]              = s"Dojrza\y5ee";
+const char TXT_PLANT_STAGE_REAP_TASK_ASSIGNED[] = s"Z: Zbi\y60r";
 
 // =============================================================================
 // Main texts
@@ -38,27 +39,27 @@ const char TXT_OPTIONS_HEADER[] = s"Ustawienia gry";
 // =============================================================================
 // Task manager
 // =============================================================================
-const char TXT_TASK_MANAGER_HEADER[] = s"Manager zada\y5f";
-const char TXT_TASK_MANAGER_TABLE_HEADER_1[] = 
+const char TXT_TASK_MANAGER_PRIO_HEADER[] = s"Manager priorytet\y60w zada\y5f";
+const char TXT_TASK_MANAGER_PRIO_TABLE_HEADER_1[] = 
 //1234567890123456789012345678901234567890
 s"                     \y7f"underline(s"Zdolno")"\ye1\ydc\y7f"underline(s" Zadanie");
-const char TXT_TASK_MANAGER_TABLE_HEADER_2[] = 
+const char TXT_TASK_MANAGER_PRIO_TABLE_HEADER_2[] = 
 s"                     \y7e \y7eR\y7eM\y7e  \y7e  \y7eR\y7eM\y7e ";
-const char TXT_TASK_MANAGER_TABLE_HEADER_3[] = 
+const char TXT_TASK_MANAGER_PRIO_TABLE_HEADER_3[] = 
 s"                     \y7e \y7eo\y7ea\y7e  \y7e  \y7eo\y7ea\y7e ";
-const char TXT_TASK_MANAGER_TABLE_HEADER_4[] = 
+const char TXT_TASK_MANAGER_PRIO_TABLE_HEADER_4[] = 
 s"                     \y7eH\y7el\y7es\y7e  \y7e H\y7el\y7es\y7e ";
-const char TXT_TASK_MANAGER_TABLE_HEADER_5[] = 
+const char TXT_TASK_MANAGER_PRIO_TABLE_HEADER_5[] = 
 s"                     \y7eo\y7en\y7ea\y7eH \y7e o\y7en\y7ea\y7eH";
-const char TXT_TASK_MANAGER_TABLE_HEADER_6[] = 
+const char TXT_TASK_MANAGER_PRIO_TABLE_HEADER_6[] = 
 s"                     \y7ed\y7ei\y7er\y7ea \y7e d\y7ei\y7er\y7ea";
-const char TXT_TASK_MANAGER_TABLE_HEADER_7[] = 
+const char TXT_TASK_MANAGER_PRIO_TABLE_HEADER_7[] = 
 s"                     \y7eo\y7ec\y7es\y7en \y7e o\y7ec\y7es\y7en";
-const char TXT_TASK_MANAGER_TABLE_HEADER_8[] = 
+const char TXT_TASK_MANAGER_PRIO_TABLE_HEADER_8[] = 
 s"                     \y7ew\y7et\y7et\y7ed \y7e w\y7et\y7et\y7ed";
-const char TXT_TASK_MANAGER_TABLE_HEADER_9[] = 
+const char TXT_TASK_MANAGER_PRIO_TABLE_HEADER_9[] = 
 s"                     \y7el\y7ew\y7ew\y7ee \y7e l\y7ew\y7ew\y7ee";
-const char TXT_TASK_MANAGER_TABLE_HEADER_10[] = 
+const char TXT_TASK_MANAGER_PRIO_TABLE_HEADER_10[] = 
 underline(s"Posta")"\ydc"underline("               ")"\y7f"underline(s"a")"\y7f"underline(s"o")"\y7f"underline(s"o")"\y7f"underline(s"l ")"\y7f"underline(s" a")"\y7f"underline(s"o")"\y7f"underline(s"o")"\y7f"underline(s"l");
 const char TXT_MENU_TASK_MANAGER_W[] = s"w";
 const char TXT_MENU_TASK_MANAGER_S[] = s"s";
@@ -66,6 +67,9 @@ const char TXT_MENU_TASK_MANAGER_A[] = s"a";
 const char TXT_MENU_TASK_MANAGER_D[] = s"d";
 const char TXT_MENU_TASK_MANAGER_PLUS[] = s"+";
 const char TXT_MENU_TASK_MANAGER_MINUS[] = s"-";
+
+const char TXT_MENU_TASK_MANAGER_HEADER[] = s"Manager zada\y5f";
+const char TXT_MENU_TASK_MANAGER_TABLE_HEADER[] = underline(s"Zadanie ") "\y7f" underline(s"       Opis        ");
 
 // =============================================================================
 // Farmland
@@ -97,7 +101,7 @@ const char TXT_FARM_FIELD_TXT[]      = s"Pole:  ";
 const char TXT_FARM_PLANT_TXT[]      = s"Uprawa: ";
 // plant names - 10
 const char TXT_PLANT_NAME_NONE[]     = s" - - - - -";
-const char TXT_PLANT_NAME_POTATO[]   = s"Zimnioki  ";
+const char TXT_PLANT_NAME_POTATO[]   = s"Ziemniaki ";
 const char TXT_PLANT_NAME_LUPINE[]   = "\y67" s"ubin     ";
 const char TXT_PLANT_NAME_WHEAT[]    = s"Pszenica  ";
 const char TXT_PLANT_NAME_CORN[]     = s"Kukurydza ";
@@ -177,13 +181,14 @@ __export const char* PLANT_TYPES_TXT[] = {
 };
 
 #pragma data ( txtPlPlantStateNames )
-__export const char* PLANT_STATE_NAMES[6] = {
-    TXT_PLANT_STATE_NAME_1,
-    TXT_PLANT_STATE_NAME_2,
-    TXT_PLANT_STATE_NAME_3,
-    TXT_PLANT_STATE_NAME_4,
-    TXT_PLANT_STATE_NAME_5,
-    TXT_PLANT_STATE_NAME_6
+__export const char* PLANT_STAGE_NAMES[7] = {
+    TXT_PLANT_STAGE_NONE,
+    TXT_PLANT_STAGE_SOW_TASK_ASSIGNED,
+    TXT_PLANT_STAGE_SPROUT,
+    TXT_PLANT_STAGE_GROWTH,
+    TXT_PLANT_STAGE_RIPEN,
+    TXT_PLANT_STAGE_READY,
+    TXT_PLANT_STAGE_REAP_TASK_ASSIGNED
 };
 
 #pragma data ( txtPlMainArray )
@@ -204,23 +209,25 @@ __export const char* TXT[] = {
     TXT_MENU_OPTIONS_MSX,
     TXT_OPTIONS_HEADER,
 
-    TXT_TASK_MANAGER_HEADER,
-    TXT_TASK_MANAGER_TABLE_HEADER_1,
-    TXT_TASK_MANAGER_TABLE_HEADER_2,
-    TXT_TASK_MANAGER_TABLE_HEADER_3,
-    TXT_TASK_MANAGER_TABLE_HEADER_4,
-    TXT_TASK_MANAGER_TABLE_HEADER_5,
-    TXT_TASK_MANAGER_TABLE_HEADER_6,
-    TXT_TASK_MANAGER_TABLE_HEADER_7,
-    TXT_TASK_MANAGER_TABLE_HEADER_8,
-    TXT_TASK_MANAGER_TABLE_HEADER_9,
-    TXT_TASK_MANAGER_TABLE_HEADER_10,
+    TXT_TASK_MANAGER_PRIO_HEADER,
+    TXT_TASK_MANAGER_PRIO_TABLE_HEADER_1,
+    TXT_TASK_MANAGER_PRIO_TABLE_HEADER_2,
+    TXT_TASK_MANAGER_PRIO_TABLE_HEADER_3,
+    TXT_TASK_MANAGER_PRIO_TABLE_HEADER_4,
+    TXT_TASK_MANAGER_PRIO_TABLE_HEADER_5,
+    TXT_TASK_MANAGER_PRIO_TABLE_HEADER_6,
+    TXT_TASK_MANAGER_PRIO_TABLE_HEADER_7,
+    TXT_TASK_MANAGER_PRIO_TABLE_HEADER_8,
+    TXT_TASK_MANAGER_PRIO_TABLE_HEADER_9,
+    TXT_TASK_MANAGER_PRIO_TABLE_HEADER_10,
     TXT_MENU_TASK_MANAGER_W,
     TXT_MENU_TASK_MANAGER_S,
     TXT_MENU_TASK_MANAGER_A,
     TXT_MENU_TASK_MANAGER_D,
     TXT_MENU_TASK_MANAGER_PLUS,
     TXT_MENU_TASK_MANAGER_MINUS,
+    TXT_MENU_TASK_MANAGER_HEADER,
+    TXT_MENU_TASK_MANAGER_TABLE_HEADER,
 
     TXT_MENU_FARMLAND1,
     TXT_MENU_FARMLAND2,

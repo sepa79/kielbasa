@@ -7,6 +7,7 @@
 #include <menu/menuSystem.h>
 #include <menu/optionsMenu.h>
 #include <menu/taskManagerMenu.h>
+#include <menu/taskManagerPrioMenu.h>
 #include <engine/gameSettings.h>
 #include <engine/uiHandler.h>
 #include <engine/joystick.h>
@@ -164,6 +165,17 @@ void checkKeys(){
                 gms_gameSpeed = SPEED_PAUSED;
                 updateGameSpeed();
                 showTaskManagerMenu();
+            }
+            return;
+        } else if (key == KEY_F4) {
+            // don't go to menu while in menu
+            if(!_fullScreenMenuOpen){
+                _fullScreenMenuOpen = true;
+                gms_disableTimeControls = true;
+                // vic.color_border = VCOL_BLUE;
+                gms_gameSpeed = SPEED_PAUSED;
+                updateGameSpeed();
+                showTaskManagerPrioMenu();
             }
             return;
         }

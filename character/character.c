@@ -4,6 +4,7 @@
 #include <assets/mainGfx.h>
 #include <engine/irqSpriteController.h>
 
+#define NO_SLOT 0xff
 const byte allChars_storyTxtIdx[CHARACTER_COUNT]           = {TXT_IDX_CHAR_1_STORY, TXT_IDX_CHAR_2_STORY, TXT_IDX_CHAR_3_STORY, TXT_IDX_CHAR_4_STORY};
 const byte allChars_nameIdx[CHARACTER_COUNT]               = {TXT_IDX_CHAR_1_NAME, TXT_IDX_CHAR_2_NAME, TXT_IDX_CHAR_3_NAME, TXT_IDX_CHAR_4_NAME};
 byte allChars_energy[CHARACTER_COUNT]                      = {100,  80,  50,  30};
@@ -13,11 +14,13 @@ const byte allChars_skills[CHARACTER_COUNT][SKILL_COUNT]   = { {3,3,4,3}, {2,6,1
 byte allChars_prios[CHARACTER_COUNT][SKILL_COUNT]          = { {1,2,3,4}, {3,3,3,3}, {3,3,3,3}, {3,3,3,3}};
 const byte allChars_salary[CHARACTER_COUNT]                = { 0, 1, 2, 2};
 bool allChars_busy[CHARACTER_COUNT]                        = {false, false, false, false};
+byte allChars_slot[CHARACTER_COUNT]                    = {NO_SLOT, NO_SLOT, NO_SLOT, NO_SLOT};
 
 byte characterSlots[CHARACTER_SLOTS];
 
 static void _setCharacterToSlot(byte charIdx, byte charSlot){
     characterSlots[charSlot] = charIdx;
+    allChars_slot[charIdx] = charSlot;
 
     if(charIdx != NO_CHARACTER){
         setCharacterSlotPic(charSlot, allChars_picture[charIdx]);

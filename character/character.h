@@ -50,6 +50,7 @@ extern const byte allChars_skills[CHARACTER_COUNT][SKILL_COUNT];
 extern byte allChars_prios[CHARACTER_COUNT][SKILL_COUNT];
 extern const byte allChars_salary[CHARACTER_COUNT];
 extern bool allChars_busy[CHARACTER_COUNT];
+extern byte allChars_slot[CHARACTER_COUNT];
 
 #define STAT_INT 0
 #define STAT_STR 1

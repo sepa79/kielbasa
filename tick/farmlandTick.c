@@ -118,7 +118,7 @@ void _fieldStateGrowth(byte fieldId){
 
     field_timer[fieldId]--;
     if(field_timer[fieldId] == 0){
-        field_stage[fieldId] = PLANT_STAGE_RIPPEN;
+        field_stage[fieldId] = PLANT_STAGE_RIPEN;
         field_timer[fieldId] = plant_stage3timer[plantId];
     }
 }
@@ -126,7 +126,7 @@ void _fieldStateGrowth(byte fieldId){
 // =============================================================================
 // Rippen stage
 
-void _fieldStateRippen(byte fieldId){
+void _fieldStateRipen(byte fieldId){
     // get our plant data
     byte plantId = field_plantId[fieldId];
 
@@ -195,8 +195,8 @@ void _tickField(byte i){
     else if(field_stage[i] == PLANT_STAGE_GROWTH){
         _fieldStateGrowth(i);
     }
-    else if(field_stage[i] == PLANT_STAGE_RIPPEN){
-        _fieldStateRippen(i);
+    else if(field_stage[i] == PLANT_STAGE_RIPEN){
+        _fieldStateRipen(i);
     }
 }
 

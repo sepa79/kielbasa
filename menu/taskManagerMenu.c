@@ -4,156 +4,58 @@
 #include <c64/vic.h>
 #include <c64/easyflash.h>
 
-#include <character/character.h>
+#include <tasks/taskManager.h>
 #include <menu/menuSystem.h>
 #include <translation/common.h>
 #include <assets/assetsSettings.h>
-#include <engine/easyFlashBanks.h>
 #include <engine/gameSettings.h>
 
-static byte _currentCharacter = 0;
-static byte _currentSkill = 0;
-// where to start displaying stats, also used for cursor
-static byte TASK_SHOW_LINE = 14;
-static byte TASK_SHOW_COLUMN = 32;
+#define COL_OFFSET_TASKLIST_TM 2
+#define ROW_OFFSET_TASKLIST_TM 4
+static byte _currentTask = 0;
 
-static void _showTaskPriorities(){
+static void _showTasks(){
+    // header
+    cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST_TM, ROW_OFFSET_TASKLIST_TM-1, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER], VCOL_YELLOW);
 
-    // TASK_MANAGER_MENU[0].y = TASK_SHOW_LINE + _currentCharacter;
-    // TASK_MANAGER_MENU[0].x = TASK_SHOW_COLUMN + _currentSkill * 2;
-    // TASK_MANAGER_MENU[1].y = TASK_SHOW_LINE + _currentCharacter;
-    // TASK_MANAGER_MENU[1].x = TASK_SHOW_COLUMN + _currentSkill * 2;
-    // TASK_MANAGER_MENU[2].y = TASK_SHOW_LINE + _currentCharacter;
-    // TASK_MANAGER_MENU[2].x = TASK_SHOW_COLUMN + _currentSkill * 2;
-    // TASK_MANAGER_MENU[3].y = TASK_SHOW_LINE + _currentCharacter;
-    // TASK_MANAGER_MENU[3].x = TASK_SHOW_COLUMN + _currentSkill * 2;
-
-    cwin_putat_string_raw(&cw, 0, 4, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_1], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 5, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_2], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 6, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_3], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 7, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_4], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 8, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_5], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 9, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_6], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 10, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_7], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 11, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_8], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 12, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_9], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 13, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER_10], VCOL_YELLOW);
-
-    byte col1;
-    byte col2[4];
-    byte str[2];
-
-    for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
-        // only check active chars
-        if(characterSlots[charSlot] != NO_CHARACTER){
-            byte character = characterSlots[charSlot];
-
-            byte line = TASK_SHOW_LINE+character;
-            if(character == _currentCharacter){
-                col1 = VCOL_LT_GREEN;
-                col2[0] = VCOL_LT_GREY;
-                col2[1] = VCOL_LT_GREY;
-                col2[2] = VCOL_LT_GREY;
-                col2[3] = VCOL_LT_GREY;
-                // mark current column with white
-                col2[_currentSkill] = VCOL_WHITE;
-            } else {
-                col1 = VCOL_GREEN;
-                col2[0] = VCOL_MED_GREY;
-                col2[1] = VCOL_MED_GREY;
-                col2[2] = VCOL_MED_GREY;
-                col2[3] = VCOL_MED_GREY;
-            }
-
-            cwin_putat_string_raw(&cw, 0, line, TXT[allChars_nameIdx[character]], col1);
-
-            cwin_putat_string_raw(&cw, 21, line, "\x7e", VCOL_YELLOW);
-
-            sprintf(str, "%u", allChars_skills[character][SKILL_BREEDING]);
-            cwin_putat_string_raw(&cw, 22,  line, str, col1);
-            sprintf(str, "%u", allChars_skills[character][SKILL_FARMING]);
-            cwin_putat_string_raw(&cw, 24,  line, str, col1);
-            sprintf(str, "%u", allChars_skills[character][SKILL_BUTCHERY]);
-            cwin_putat_string_raw(&cw, 26,  line, str, col1);
-            sprintf(str, "%u", allChars_skills[character][SKILL_TRADE]);
-            cwin_putat_string_raw(&cw, 28,  line, str, col1);
-            cwin_putat_string_raw(&cw, 23, line, "\x7e", VCOL_YELLOW);
-            cwin_putat_string_raw(&cw, 25, line, "\x7e", VCOL_YELLOW);
-            cwin_putat_string_raw(&cw, 27, line, "\x7e", VCOL_YELLOW);
-            cwin_putat_string_raw(&cw, 30, line, "\x7e", VCOL_YELLOW);
-
-
-            sprintf(str, "%u", allChars_prios[character][SKILL_BREEDING]);
-            cwin_putat_string_raw(&cw, 32,  line, str, col2[0]);
-            sprintf(str, "%u", allChars_prios[character][SKILL_FARMING]);
-            cwin_putat_string_raw(&cw, 34,  line, str, col2[1]);
-            sprintf(str, "%u", allChars_prios[character][SKILL_BUTCHERY]);
-            cwin_putat_string_raw(&cw, 36,  line, str, col2[2]);
-            sprintf(str, "%u", allChars_prios[character][SKILL_TRADE]);
-            cwin_putat_string_raw(&cw, 38,  line, str, col2[3]);
-
-            cwin_putat_string_raw(&cw, 33, line, "\x7e", VCOL_YELLOW);
-            cwin_putat_string_raw(&cw, 35, line, "\x7e", VCOL_YELLOW);
-            cwin_putat_string_raw(&cw, 37, line, "\x7e", VCOL_YELLOW);
+    // tasks list
+    for(byte i=0;i<TASK_ARRAY_SIZE;i++){
+        byte color = VCOL_GREEN;
+        // print task marker
+        if(_currentTask == i){
+            color = VCOL_LT_GREEN;
+            cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST_TM-2, ROW_OFFSET_TASKLIST_TM+i, s">", VCOL_WHITE);
+        } else {
+            cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST_TM-2, ROW_OFFSET_TASKLIST_TM+i, s" ", VCOL_WHITE);
         }
+
+        byte taskId = taskRef[i];
+        cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST_TM, ROW_OFFSET_TASKLIST_TM+i, TXT[task_nameIdx[taskId]], color);
+        cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST_TM+8, ROW_OFFSET_TASKLIST_TM+i, "\x7e", VCOL_YELLOW);
+        cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST_TM+9, ROW_OFFSET_TASKLIST_TM+i, task_desc[taskId], color);
     }
 }
 
-// CHANGE TO ACTIVE CHARACTERS
-static void _upChar(){
-    if(_currentCharacter > 0){
-        _currentCharacter--;
+static void _upRow(){
+    if(_currentTask > 0){
+        _currentTask--;
     } else {
-        _currentCharacter = CHARACTER_COUNT-1;
+        _currentTask = TASK_ARRAY_SIZE-1;
     }
-    _showTaskPriorities();
+    _showTasks();
 }
-static void _downChar(){
-    if(_currentCharacter < CHARACTER_COUNT-1){
-        _currentCharacter++;
+static void _downRow(){
+    if(_currentTask < TASK_ARRAY_SIZE-1){
+        _currentTask++;
     } else {
-        _currentCharacter = 0;
+        _currentTask = 0;
     }
-    _showTaskPriorities();
-}
-
-static void _skillLeft(){
-    if(_currentSkill > 0){
-        _currentSkill--;
-    } else {
-        _currentSkill = SKILL_COUNT-1;
-    }
-    _showTaskPriorities();
-}
-static void _skillRight(){
-    if(_currentSkill < SKILL_COUNT-1){
-        _currentSkill++;
-    } else {
-        _currentSkill = 0;
-    }
-    _showTaskPriorities();
+    _showTasks();
 }
 
-static void _prioDown(){
-    byte prio = allChars_prios[_currentCharacter][_currentSkill];
-    if(prio > 0){
-        prio--;
-    } else {
-        prio = MAX_PRIO;
-    }
-    allChars_prios[_currentCharacter][_currentSkill] = prio;
-    _showTaskPriorities();
-}
-
-static void _prioUp(){
-    byte prio = allChars_prios[_currentCharacter][_currentSkill];
-    if(prio < MAX_PRIO){
-        prio++;
-    } else {
-        prio = 0;
-    }
-    allChars_prios[_currentCharacter][_currentSkill] = prio;
-    _showTaskPriorities();
+static void _deleteTask(){
+    removeTaskByRef(_currentTask);
+    _showTasks();
 }
 
 static void _backToPreviousMenu(){
@@ -172,17 +74,14 @@ void showTaskManagerMenu(){
     cwin_putat_string_raw(&cw, 0, 0, TXT[TXT_IDX_TASK_MANAGER_HEADER], VCOL_GREEN);
 
     displayMenu(TASK_MANAGER_MENU);
-    _showTaskPriorities();
+    _showTasks();
 }
 
 const struct MenuOption TASK_MANAGER_MENU[] = {
-    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', &_upChar, 0, 2, 1},
-    { TXT_IDX_MENU_TASK_MANAGER_S, 's', &_downChar, 0, 2, 3},
-    { TXT_IDX_MENU_TASK_MANAGER_A, 'a', &_skillLeft, 0, 1, 2},
-    { TXT_IDX_MENU_TASK_MANAGER_D, 'd', &_skillRight, 0, 3, 2},
-    { TXT_IDX_MENU_TASK_MANAGER_PLUS, '+', &_prioDown, 0, 10, 1},
-    { TXT_IDX_MENU_TASK_MANAGER_MINUS, '-', &_prioUp, 0, 10, 3},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, &_backToPreviousMenu, 0, 1, 20},
+    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', &_upRow, 0, 0, ROW_OFFSET_TASKLIST_TM-1 },
+    { TXT_IDX_MENU_TASK_MANAGER_S, 's', &_downRow, 0, 0, ROW_OFFSET_TASKLIST_TM+10 },
+    { TXT_IDX_MENU_TASK_MANAGER_MINUS, '-', &_deleteTask, 0, 0, 20 },
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, &_backToPreviousMenu, 0, 20, 20 },
 
     END_MENU_CHOICES
 };

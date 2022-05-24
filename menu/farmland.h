@@ -1,5 +1,5 @@
-#ifndef FARMLAND_H
-#define FARMLAND_H
+#ifndef FARMLAND_MENU_H
+#define FARMLAND_MENU_H
 
 extern const struct MenuOption FARMLAND_MENU[];
 

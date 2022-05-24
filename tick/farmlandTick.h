@@ -17,14 +17,21 @@ extern volatile word flt_storageCorn = 0;
 //******************************
 // Field
 //******************************
-
+// area of the field
 extern byte field_area[4]      ;
+// fertility left
 extern byte field_fertility[4] ;
+// what plant is on it
 extern byte field_plantId[4]   ;
+// which growth stage is the plant in
 extern byte field_stage[4]     ;
+// how much was planted in stage 1
 extern byte field_planted[4]   ;
+// how much was grown in stage 2
 extern byte field_grown[4]     ;
+// how much has rippened in stage 3
 extern byte field_ready[4]     ;
+// timer till the end of current stage (days)
 extern byte field_timer[4]     ;
 
 //******************************
@@ -57,10 +64,12 @@ static const byte plant_stage3timer[5]            = { 0, 25, 20, 45, 20};
 static const byte plant_stage3upkeep[5]           = { 0,  0,  0,  0,  0};
 
 #define PLANT_STAGE_NONE 0x00
-#define PLANT_STAGE_SPROUT 0x01
-#define PLANT_STAGE_GROWTH 0x02
-#define PLANT_STAGE_RIPPEN 0x03
-#define PLANT_STAGE_READY 0x04
+#define PLANT_STAGE_SOW_TASK_ASSIGNED 0x01
+#define PLANT_STAGE_SPROUT 0x02
+#define PLANT_STAGE_GROWTH 0x03
+#define PLANT_STAGE_RIPEN 0x04
+#define PLANT_STAGE_READY 0x05
+#define PLANT_STAGE_REAP_TASK_ASSIGNED 0x06
 
 void initFarmland();
 void farmlandTick();

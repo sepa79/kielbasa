@@ -24,9 +24,6 @@ const char * task_icon[TASK_ARRAY_SIZE];
 // helper variable, stores last free task entry to speed things up
 static byte _nextFreeTaskRef = 0;
 
-// column offset for printing data
-#define COL_OFFSET_TASKLIST 12
-
 void initTaskList() {
     _nextFreeTaskRef = 0;
     for(byte i=0;i<TASK_ARRAY_SIZE;i++){
@@ -88,36 +85,60 @@ bool addTask(struct Task * task){
     return true;
 }
 
-// Removes taskRef with given ID, shifts remaining ones up. Wipes the target task_reqType.
-void removeTask(byte taskRefId){
+// finds who was working on it, resets his icon, resets task_worker
+static void _unassignTask(byte taskId){
+    byte charId = task_worker[taskId];
+    if(charId != NO_CHARACTER){
+        byte charSlot = allChars_slot[charId];
+        setCharacterSlotIcon(charSlot, SPR_TASK_MIA);
+        allChars_busy[charId] = false;
+        task_worker[taskId] = NO_CHARACTER;
+    }
+}
+
+void removeTaskByRef(byte taskRefId){
     // remove task from taskRef table
     byte nextFreeTask = taskRef[taskRefId];
+
+    // don't try to delete empty tasks
+    if(task_reqType[nextFreeTask] == NO_TASK){
+        setErrorCursor();
+        return;
+    }
+
     // wipe the task in task_ array (just the task_reqType + text fields is enough)
     task_reqType[nextFreeTask] = NO_TASK;
     task_nameIdx[nextFreeTask] = TXT_IDX_TASK_EMPTY_NAME;
     strcpy(task_desc[nextFreeTask], TXT[TXT_IDX_TASK_EMPTY_DESCRIPTION]);
 
     // seal the gap in taskRef[]
-    if(taskRefId < TASK_ARRAY_SIZE-1 && taskRef[taskRefId+1] != NO_TASK){
+    // byte str[5];
+    // sprintf(str, "%3u", taskRefId);
+    // cwin_putat_string_raw(&cw, 0, 0, str, VCOL_GREEN);
+
+    if(taskRefId < TASK_ARRAY_SIZE-1 && task_reqType[taskRefId+1] != NO_TASK){
         do {
-            taskRef[taskRefId] = taskRef[++taskRefId];
-        } while (taskRef[taskRefId] != NO_TASK && taskRefId < TASK_ARRAY_SIZE-1);
+            taskRef[taskRefId] = taskRef[taskRefId+1];
+            taskRefId++;
+        } while (task_reqType[taskRefId] != NO_TASK && taskRefId < TASK_ARRAY_SIZE-1);
     }
     _nextFreeTaskRef = taskRefId;
     taskRef[_nextFreeTaskRef] = nextFreeTask;
 }
 
-void displayTaskList(){
-    // header
-    cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST, 1, TXT[TXT_IDX_TASK_LIST_HEADER], VCOL_YELLOW);
-
-    // tasks list
+// Removes taskRef with given ID, shifts remaining ones up. Wipes the target task_reqType, name and description.
+void removeTask(byte taskId){
+    // remove worker
+    _unassignTask(taskId);
+    // find taskRefId
+    byte taskRefId = 0;
     for(byte i=0;i<TASK_ARRAY_SIZE;i++){
-        byte tRef = taskRef[i];
-        cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST, 2+i, TXT[task_nameIdx[tRef]], VCOL_GREEN);
-        cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST+8, 2+i, "\x7e", VCOL_YELLOW);
-        cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST+9, 2+i, task_desc[tRef], VCOL_GREEN);
+        if(taskRef[i] == taskId){
+            taskId = i;
+            break;
+        }
     }
+    removeTaskByRef(taskRefId);
 }
 
 // Returns best charSlot for a given requirement (must not be busy).
@@ -165,59 +186,56 @@ static byte _findFreeWorkerWithPrioXForSkillY(byte reqPrio, byte reqSkill) {
 
 static byte _findUnassignedTaskForSkill(byte skillIt) {
     for(byte i=0;i<TASK_ARRAY_SIZE;i++){
-        byte tRef = taskRef[i];
+        byte taskId = taskRef[i];
         // NO_TASK found - no more tasks to process
-        if(task_reqType[tRef] == NO_TASK){
+        if(task_reqType[taskId] == NO_TASK){
             return NO_TASK;
         }
         // there is something we can do
-        if(task_reqType[tRef] == skillIt){
-            return i;
+        if(task_reqType[taskId] == skillIt){
+            return taskId;
         }
     }
     // nothing found in the whole array
     return NO_TASK;
 }
 
-static byte _assignTaskToWorker(byte taskId, byte charSlot) {
+static void _assignTaskToWorker(byte taskId, byte charSlot) {
     byte charIdx = characterSlots[charSlot];
     task_worker[taskId] = charIdx;
     allChars_busy[charIdx] = true;
 
     byte str[5];
     sprintf(str, "%3u  %3u", taskId, charSlot);
-    cwin_putat_string_raw(&cw, 0, 5, str, VCOL_WHITE);
+    cwin_putat_string_raw(&cw, 25, 0, str, VCOL_WHITE);
 
     setCharacterSlotIcon(charSlot, task_icon[taskId]);
     updateStatusBar(s"  Task assigned  ");
-
 }
 
 // Called by callendar.c
 void tasksTick(){
-    // process tasks in progress
-    // TODO - redo it
-    // byte i = 0;
-    // do {
-    //     if(task_reqType[i] != NO_TASK){
-    //         // list should have no gaps in it
-    //         return;
-    //     }
-    //     // task found, find a worker for it
-    //     byte charSlot = _findWorkerForTask(task_reqType[i]);
-    //     if(charSlot != NO_CHARACTER){
-    //         // got a worker? tick that task
-    //         (*task_codeRef[i])(charSlot);
-    //     }
-    //     // neeeeext
-    //     i++;
-    // } while (i < 10);
-
     // no point going through the loop if there are no tasks
     if(_nextFreeTaskRef == 0) {
         return;
     }
 
+    // process tasks in progress
+    byte i = 0;
+    byte taskId = 0;
+    do {
+        taskId = taskRef[i];
+        if(task_worker[taskId] != NO_CHARACTER){
+            updateStatusBar(s"  Exec  ");
+            // got a worker? tick that task
+            (*task_codeRef[taskId])(taskId);
+        }
+        // neeeeext
+        i++;
+    // NO_TASK found - no more tasks to process
+    } while (i < TASK_ARRAY_SIZE && task_reqType[taskId] != NO_TASK);
+
+    // assign tasks again, in case new tasks came or new workers are available
     // any free workers?
     byte freeWorkersCount = 0;
     for(byte it = 0; it < CHARACTER_SLOTS; it++){
@@ -229,9 +247,9 @@ void tasksTick(){
         }
     }
     // debug
-    // byte str[4];
-    // sprintf(str, "%3u", freeWorkersCount);
-    // cwin_putat_string_raw(&cw, 0, 0, str, VCOL_GREEN);
+    byte str[4];
+    sprintf(str, "FWC: %3u", freeWorkersCount);
+    cwin_putat_string_raw(&cw, 0, 10, str, VCOL_GREEN);
 
     // find a task for free workers
     if(freeWorkersCount > 0){
@@ -249,9 +267,9 @@ void tasksTick(){
                     // see if there is any task for this max prio skill
                     byte taskId = _findUnassignedTaskForSkill(skillIt);
 
-                    byte str[5];
-                    sprintf(str, "%3u", taskId);
-                    cwin_putat_string_raw(&cw, prioIt*6, skillIt, str, VCOL_GREEN);
+                    // byte str[5];
+                    // sprintf(str, "%3u", taskId);
+                    // cwin_putat_string_raw(&cw, prioIt*6, skillIt, str, VCOL_GREEN);
 
                     // asign it if there is
                     if(taskId != NO_TASK){

@@ -4,6 +4,7 @@
 #include <c64/memmap.h>
 
 #include <menu/menuSystem.h>
+#include <tasks/taskManager.h>
 #include <translation/common.h>
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
@@ -14,6 +15,9 @@
 #include "shopOutside.h"
 #include "shopInside.h"
 #include "crew.h"
+
+// column offset for printing data
+#define COL_OFFSET_TASKLIST 12
 
 #define SPR_BUS_BANK 0xbc
 #define SPR_BUS ((char *)GFX_1_BASE + 64*SPR_BUS_BANK)
@@ -333,6 +337,19 @@ const struct MenuOption MAIN_MENU[] = {
     END_MENU_CHOICES
 };
 
+static void _displayTaskList(){
+    // header
+    cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST, 1, TXT[TXT_IDX_TASK_LIST_HEADER], VCOL_YELLOW);
+
+    // tasks list
+    for(byte i=0;i<TASK_ARRAY_SIZE;i++){
+        byte taskId = taskRef[i];
+        cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST, 2+i, TXT[task_nameIdx[taskId]], VCOL_GREEN);
+        cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST+8, 2+i, "\x7e", VCOL_YELLOW);
+        cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST+9, 2+i, task_desc[taskId], VCOL_GREEN);
+    }
+}
+
 static void _menuHandler(){
     animBusFrame = 0;
     animBusDelay = BUS_ANIM_DELAY;
@@ -359,7 +376,7 @@ static void _menuHandler(){
     cwin_clear(&cw);
     
     displayMenu(MAIN_MENU);
-    displayTaskList();
+    _displayTaskList();
 }
 
 #pragma data ( mainMenuLoaderData )
@@ -370,7 +387,7 @@ __export static const Loaders menuLoaders = {
     .loadMenuSprites = &menuSpriteLoader,
     .showMenu        = &_menuHandler,
     .showSprites     = &_menuShowSprites,
-    .updateMenu      = &displayTaskList,
+    .updateMenu      = &_displayTaskList,
 }
 
 // Switching code generation back to shared section

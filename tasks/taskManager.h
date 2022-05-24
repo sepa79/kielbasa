@@ -12,7 +12,7 @@
 
 // index table - holds indexes of 'real' data tables, used to simplify sorting tasks when elements are added or removed
 extern byte taskRef[TASK_ARRAY_SIZE];
-// Function to handle task
+// Function to handle task, parameter should by task index
 extern void (*task_codeRef[TASK_ARRAY_SIZE])(byte);
 // Short name displayed on screen
 extern byte task_nameIdx[TASK_ARRAY_SIZE];
@@ -44,10 +44,10 @@ struct Task {
     const char * icon;
 };
 
-void displayTaskList();
 void initTaskList();
 void tasksTick();
 bool addTask(struct Task * task);
+void removeTaskByRef(byte taskRefId);
 void removeTask(byte taskRefId);
 
 #pragma compile("taskManager.c")
