@@ -14,7 +14,7 @@
 #include "kielbasa.h"
 
 // Shared code/data region, copied from easyflash bank 0 to ram during startup
-#pragma region( main, 0x0900, 0x4000, , , { code, data, bss, heap, stack } )
+#pragma region( main, 0x0900, 0x6000, , , { code, data, bss, heap, stack } )
 
 // Switching code generation back to shared section
 #pragma code ( code )
@@ -26,7 +26,7 @@
 //  3 - full
 void splashScreen(bool turnOn, char stage) {
     // splash screen
-    char color[8] = {0x0, 0xe,0xe,0x3, 0xf,0xc,0xb, 0x0};
+    static const char color[8] = {0x0, 0xe,0xe,0x3, 0xf,0xc,0xb, 0x0};
     char i = 0;
 
     if(stage & 1){
