@@ -335,6 +335,7 @@ static void _sowPlant(){
     _displayFieldList();
 
     // create Task
+    // TODO: Make it global
     struct Task task;
     byte idx = plant_taskDscIdx[_currentPlant];
     // "Field 2, Potatoes"
