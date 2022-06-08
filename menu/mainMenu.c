@@ -62,9 +62,9 @@ static volatile byte animBusX = 0;
 
 #pragma data ( mainMenuGfxDay )
 __export const byte mainMenuGfx1[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/main_01.04.22.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/main_01.04.22.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/main_01.04.22.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/main_01.04.22_last.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/main_01.04.22_last.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/main_01.04.22_last.kla"
 };
 #pragma data ( mainMenuGfxNight )
 __export const byte mainMenuGfx2[] = {
