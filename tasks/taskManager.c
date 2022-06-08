@@ -98,32 +98,34 @@ static void _unassignTask(byte taskId){
 
 void removeTaskByRef(byte taskRefId){
     // remove task from taskRef table
-    byte nextFreeTask = taskRef[taskRefId];
+    byte taskId = taskRef[taskRefId];
 
     // don't try to delete empty tasks
-    if(task_reqType[nextFreeTask] == NO_TASK){
+    if(task_reqType[taskId] == NO_TASK){
         setErrorCursor();
         return;
     }
 
     // wipe the task in task_ array (just the task_reqType + text fields is enough)
-    task_reqType[nextFreeTask] = NO_TASK;
-    task_nameIdx[nextFreeTask] = TXT_IDX_TASK_EMPTY_NAME;
-    strcpy(task_desc[nextFreeTask], TXT[TXT_IDX_TASK_EMPTY_DESCRIPTION]);
+    task_reqType[taskId] = NO_TASK;
+    task_nameIdx[taskId] = TXT_IDX_TASK_EMPTY_NAME;
+    strcpy(task_desc[taskId], TXT[TXT_IDX_TASK_EMPTY_DESCRIPTION]);
 
     // seal the gap in taskRef[]
     // byte str[5];
     // sprintf(str, "%3u", taskRefId);
     // cwin_putat_string_raw(&cw, 0, 0, str, VCOL_GREEN);
 
-    if(taskRefId < TASK_ARRAY_SIZE-1 && task_reqType[taskRefId+1] != NO_TASK){
+    if(taskRefId < TASK_ARRAY_SIZE){
         do {
             taskRef[taskRefId] = taskRef[taskRefId+1];
             taskRefId++;
-        } while (task_reqType[taskRefId] != NO_TASK && taskRefId < TASK_ARRAY_SIZE-1);
+        } while (taskRefId < TASK_ARRAY_SIZE);
     }
+
+    taskRefId--;
     _nextFreeTaskRef = taskRefId;
-    taskRef[_nextFreeTaskRef] = nextFreeTask;
+    taskRef[_nextFreeTaskRef] = taskId;
 }
 
 // Removes taskRef with given ID, shifts remaining ones up. Wipes the target task_reqType, name and description.
