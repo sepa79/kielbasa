@@ -10,6 +10,11 @@
 #define TASK_ARRAY_SIZE 10
 #define NO_TASK 0xff
 
+#define TASK_STATUS_NOTASK 0
+#define TASK_STATUS_NEW 1
+#define TASK_STATUS_REMOVE 2
+#define TASK_STATUS_DONE 4
+
 // index table - holds indexes of 'real' data tables, used to simplify sorting tasks when elements are added or removed
 extern byte taskRef[TASK_ARRAY_SIZE];
 // Function to handle task, parameter should by task index
@@ -26,6 +31,8 @@ extern byte task_reqType[TASK_ARRAY_SIZE];
 extern byte task_worker[TASK_ARRAY_SIZE];
 // task icon
 extern const char * task_icon[TASK_ARRAY_SIZE];
+// one of the task statuses, tells the task handler why it is called
+extern byte task_status[TASK_ARRAY_SIZE];
 
 // used when creating new tasks
 struct Task {
@@ -42,6 +49,7 @@ struct Task {
     byte minReqSkill[4];
     byte reqType;
     const char * icon;
+    byte status;
 };
 
 void initTaskList();

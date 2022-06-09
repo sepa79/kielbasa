@@ -45,6 +45,8 @@ void initTaskList() {
         task_reqType[i] = NO_TASK;
         task_worker[i] = NO_CHARACTER;
         strcpy(task_desc[i], TXT[TXT_IDX_TASK_EMPTY_DESCRIPTION]);
+        task_icon[i] = SPR_TASK_MIA;
+        task_status[i] = TASK_STATUS_NOTASK;
     }
 }
 
@@ -79,6 +81,7 @@ bool addTask(struct Task * task){
     task_reqType[nextFreeTask] = task->reqType;
     strcpy(task_desc[nextFreeTask], task->desc);
     task_icon[nextFreeTask] = task->icon;
+    task_status[nextFreeTask] = task->status;
     // assigned later during ticks
     task_worker[nextFreeTask] = NO_CHARACTER;
 
@@ -106,32 +109,45 @@ void removeTaskByRef(byte taskRefId){
         return;
     }
 
+    // remove worker
+    _unassignTask(taskId);
+
     // wipe the task in task_ array (just the task_reqType + text fields is enough)
     task_reqType[taskId] = NO_TASK;
     task_nameIdx[taskId] = TXT_IDX_TASK_EMPTY_NAME;
     strcpy(task_desc[taskId], TXT[TXT_IDX_TASK_EMPTY_DESCRIPTION]);
 
-    // seal the gap in taskRef[]
+    // check if the task is done, if so - no need to call task handler.
+    if(task_status[taskId] != TASK_STATUS_DONE){
+        // not done - it's being cancelled somehow - set removal status
+        task_status[taskId] = TASK_STATUS_REMOVE;
+        // call the codeRef, it might need to cleanup
+        (*task_codeRef[taskId])(taskId);
+    }
+
     // byte str[5];
     // sprintf(str, "%3u", taskRefId);
     // cwin_putat_string_raw(&cw, 0, 0, str, VCOL_GREEN);
 
+    // seal the gap in taskRef[]
+    byte currentTask = 0;
     if(taskRefId < TASK_ARRAY_SIZE){
         do {
             taskRef[taskRefId] = taskRef[taskRefId+1];
+            currentTask = taskRef[taskRefId];
             taskRefId++;
-        } while (taskRefId < TASK_ARRAY_SIZE);
+        } while (taskRefId < TASK_ARRAY_SIZE && task_reqType[currentTask] != NO_TASK);
+        taskRefId--;
     }
-
-    taskRefId--;
     _nextFreeTaskRef = taskRefId;
     taskRef[_nextFreeTaskRef] = taskId;
+
+    // update current menu
+    updateMenu();
 }
 
 // Removes taskRef with given ID, shifts remaining ones up. Wipes the target task_reqType, name and description.
 void removeTask(byte taskId){
-    // remove worker
-    _unassignTask(taskId);
     // find taskRefId
     byte taskRefId = 0;
     for(byte i=0;i<TASK_ARRAY_SIZE;i++){
@@ -207,9 +223,9 @@ static void _assignTaskToWorker(byte taskId, byte charSlot) {
     task_worker[taskId] = charIdx;
     allChars_busy[charIdx] = true;
 
-    byte str[5];
-    sprintf(str, "%3u  %3u", taskId, charSlot);
-    cwin_putat_string_raw(&cw, 25, 0, str, VCOL_WHITE);
+    // byte str[5];
+    // sprintf(str, "%3u  %3u", taskId, charSlot);
+    // cwin_putat_string_raw(&cw, 25, 0, str, VCOL_WHITE);
 
     setCharacterSlotIcon(charSlot, task_icon[taskId]);
     updateStatusBar(s"  Task assigned  ");
@@ -249,9 +265,9 @@ void tasksTick(){
         }
     }
     // debug
-    byte str[4];
-    sprintf(str, "FWC: %3u", freeWorkersCount);
-    cwin_putat_string_raw(&cw, 0, 10, str, VCOL_GREEN);
+    // byte str[4];
+    // sprintf(str, "FWC: %3u", freeWorkersCount);
+    // cwin_putat_string_raw(&cw, 0, 10, str, VCOL_GREEN);
 
     // find a task for free workers
     if(freeWorkersCount > 0){
