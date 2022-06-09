@@ -51,7 +51,10 @@ __interrupt void showSprites(){
 // Call currently mounted CRT bank's updateMenu() function, every midnight.
 // Default noop function is _menuNoop().
 void updateMenu(){
-    ((Loaders *)0x8000)->updateMenu();
+    // don't update when in any of the option menus - time is stopped, they handle their own screens
+    if(!gms_disableTimeControls){
+        ((Loaders *)0x8000)->updateMenu();
+    }
 }
 
 #pragma section( sharedMenuCode, 0 )
