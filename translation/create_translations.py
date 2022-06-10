@@ -11,9 +11,7 @@ def encode_charset( text ):
     text = list( text )
 
     for idx, c in enumerate( text ):
-        if c == '|':
-            text[ idx ] = '0x7e'
-        elif c in charset:
+        if c in charset:
             text[ idx ] = '0x%02x' % charset.index( c )
     return ", ".join( text )
 
@@ -21,9 +19,7 @@ def underline_text_pl( text, mask ):
     text = list( text )
 
     for idx, c in enumerate( text ):
-        if c == "|":
-            text[ idx ] = '0x7f'
-        elif c in charset:
+        if c in charset:
             text[ idx ] = '0x%02x' % ( charset.index( c ) + 128 )
     return ", ".join( text )
 

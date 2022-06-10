@@ -5,5 +5,5 @@ pqrstuvwxyz[~]~\
 ~ABCDEFGHIJKLMNO
 PQRSTUVWXYZąćęłń
 óśźżĄĆĘŁŃÓŚŹŻ~~~
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~|~
 
