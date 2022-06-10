@@ -1,0 +1,10 @@
+#include <translation/common.h>
+#include <engine/easyFlashBanks.h>
+#include <assets/assetsSettings.h>
+
+{{ content }}
+
+// Switching code generation back to shared section
+#pragma code ( code )
+#pragma data ( data )
+

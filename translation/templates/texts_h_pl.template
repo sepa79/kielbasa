@@ -1,0 +1,28 @@
+#ifndef TEXTS_{{ LANGUAGE_U }}_H
+#define TEXTS_{{ LANGUAGE_U }}_H
+
+// Sections and regions
+#pragma section( txt{{ LANGUAGE_C }}PlantTypes, 0 )
+#pragma section( txt{{ LANGUAGE_C }}PlantStateNames, 0 )
+#pragma section( txt{{ LANGUAGE_C }}MainArray, 0 )
+#pragma section( txt{{ LANGUAGE_C }}TxtData, 0 )
+#pragma region( bankTxt{{ LANGUAGE_C }}1, 0x8000, 0x8050, , TRANSLATION_{{ LANGUAGE_U }}_BANK, { txt{{ LANGUAGE_C }}PlantTypes }, 0x6000 )
+#pragma region( bankTxt{{ LANGUAGE_C }}2, 0x8050, 0x8100, , TRANSLATION_{{ LANGUAGE_U }}_BANK, { txt{{ LANGUAGE_C }}PlantStateNames }, 0x6050 )
+#pragma region( bankTxt{{ LANGUAGE_C }}Array, 0x8100, 0x8200, , TRANSLATION_{{ LANGUAGE_U }}_BANK, { txt{{ LANGUAGE_C }}MainArray }, 0x6100 )
+#pragma region( bankTxt{{ LANGUAGE_C }}Data, 0x8200, 0x8eff, , TRANSLATION_{{ LANGUAGE_U }}_BANK, { txt{{ LANGUAGE_C }}TxtData }, 0x6200 )
+
+#pragma section( txtCommonCode, 0 )
+#pragma section( txtCommonData, 0 )
+#pragma region( bankTxtCommonCode, 0x8f00, 0x8fff, , {TRANSLATION_PL_BANK, TRANSLATION_EN_BANK}, { txtCommonCode, txtCommonData } )
+
+#pragma code ( txtCommonCode )
+#pragma data ( txtCommonData )
+
+void loadTranslation();
+
+// Switching code generation back to shared section
+#pragma code ( code )
+#pragma data ( data )
+
+#pragma compile("texts{{ LANGUAGE_U }}.c")
+#endif
