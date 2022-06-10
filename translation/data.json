@@ -84,13 +84,15 @@
     "contents": [
       {
         "id": "MENU_CANCEL",
-        "pl": "\\y1fAnuluj",
-        "en": "\\y1fCancel"
+        "menu_opt": "<",
+        "pl": "Anuluj",
+        "en": "Cancel"
       },
       {
         "id": "MENU_EXIT",
-        "pl": "\\y1fPowrót",
-        "en": "\\y1fBack"
+        "menu_opt": "<",
+        "pl": "Powrót",
+        "en": "Back"
       },
       {
         "comment": "// fixed width - 8",

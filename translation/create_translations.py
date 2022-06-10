@@ -6,28 +6,33 @@ def load_charset( filename ):
     return  open( filename, "r").read().replace( '\n', '' )
 
 charset = load_charset( "charset_pl.txt" )
-charset_underline_pl = load_charset( "charset_pl_underline.txt" )
 
 def encode_charset( text ):
     text = list( text )
 
     for idx, c in enumerate( text ):
-        if c in charset:
-            text[ idx ] = '\\y%02x' % charset.index( c )
-    return "".join( text )
+        if c == '|':
+            text[ idx ] = '0x7e'
+        elif c in charset:
+            text[ idx ] = '0x%02x' % charset.index( c )
+    return ", ".join( text )
 
 def underline_text_pl( text, mask ):
     text = list( text )
 
     for idx, c in enumerate( text ):
         if c == "|":
-            text[ idx ] = '\\y7f'
-        elif c in charset_underline_pl:
-            text[ idx ] = '\\y%02x' % ( charset_underline_pl.index( c ) + 128 )
-    return "".join( text )
+            text[ idx ] = '0x7f'
+        elif c in charset:
+            text[ idx ] = '0x%02x' % ( charset.index( c ) + 128 )
+    return ", ".join( text )
 
-def menu_opt( nr ):
-    return '\\y%02x' % ( ord( nr ) + 128 )
+def menu_opt( option ):
+    if option == '<':
+        option = '0x1f, '
+    else:
+        option = '0x%02x, ' % ( charset.index( option ) + 128 )
+    return option
 
 def generate_common_h_index_array( config ):
     out = []
@@ -46,7 +51,7 @@ def generate_common_h_index_array( config ):
                         text = encode_charset( p[ 'common' ] )
                     if p.get( 'menu_opt' ):
                         text = menu_opt( p.get( "menu_opt" ) ) + text
-                    common.append( '%s s"%s";' % (p1, text))
+                    common.append( '%s {%s, 0x00};' % (p1, text))
     out[ -1 ] = out[ -1 ].strip(',')            # delete comma in last array element
     out.append( '};\n' )
     out.extend( common )
@@ -98,7 +103,7 @@ def generate_c_file_text_arrays( config, lang, text_filter ):
                 # in index array part
                 pass
             else:
-                p1 = 'const char %s_%s_%s[] = ' %( prefix, lang.upper(), p['id'] )
+                p1 = 'const char %s_%s_%s[] =' %( prefix, lang.upper(), p['id'] )
                 text = p[ lang ]
                 mask = "%s_m" % lang
                 if p.get( mask ):
@@ -107,7 +112,7 @@ def generate_c_file_text_arrays( config, lang, text_filter ):
                     text = text_filter( text )
                 if p.get( "menu_opt" ):
                     text = menu_opt( p.get( "menu_opt" ) ) + text
-                out.append( f"{p1} s\"{text}\";" )
+                out.append( "%s {%s, 0x00};" % ( p1, text ) )
     return out
 
 def read_json_config_file( filename ):
