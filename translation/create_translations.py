@@ -2,11 +2,17 @@
 
 import json
 
+# Load given filename
 def load_charset( filename ):
     return  open( filename, "r").read().replace( '\n', '' )
 
+# load pl charset into variable
+# char position is directly translatego into byte value
+# first char is 0x00, second is 0x01, third 0x02
+# '\n' - newline characters are stripped
 charset = load_charset( "charset_pl.txt" )
 
+# convert ascii text into byte array
 def encode_charset( text ):
     text = list( text )
 
@@ -15,6 +21,7 @@ def encode_charset( text ):
             text[ idx ] = '0x%02x' % charset.index( c )
     return ", ".join( text )
 
+# convert ascii text into byte array + $80 ( underline charset )
 def underline_text_pl( text, mask ):
     text = list( text )
 
@@ -23,6 +30,7 @@ def underline_text_pl( text, mask ):
             text[ idx ] = '0x%02x' % ( charset.index( c ) + 128 )
     return ", ".join( text )
 
+# insert number or arrow from $80 charset before string
 def menu_opt( option ):
     if option == '<':
         option = '0x1f, '
@@ -30,14 +38,18 @@ def menu_opt( option ):
         option = '0x%02x, ' % ( charset.index( option ) + 128 )
     return option
 
+# generate indexes for the 'c' language common.h file
 def generate_common_h_index_array( config ):
     out = []
     common = []
     if config.get( 'main_contents' ):
         if config[ 'main_contents' ].get( 'contents' ):
             for p in config[ 'main_contents' ][ 'contents' ]:
+                # if there is 'main_contents' and 'contents' in 'data.json' file
                 prefix = 'TXT' if not p.get( 'prefix' ) else p[ 'prefix' ]
                 out.append( '    %s_IDX_%s,' % ( prefix, p[ 'id' ] )  )
+                # if there is a 'common' in *.json file entry then create variable in common.h file
+                # it will be common for all language files ( texts*.c )
                 if p.get( 'common' ):
                     p1 = 'static const char %s_%s[] =' % ( prefix, p[ 'id' ] )
                     text = p[ 'common' ]
@@ -54,6 +66,7 @@ def generate_common_h_index_array( config ):
     out.append( '' )
     return out
 
+# generate index array for given 'lang'
 def generate_texts_c_generic_lang_file_index_arrays( config, lang ):
     out = []
     for k, v in config.items():
@@ -71,6 +84,7 @@ def generate_texts_c_generic_lang_file_index_arrays( config, lang ):
         out.append( "};" )
     return out
 
+# generate index array for 'pl' language
 def generate_texts_c_pl_file_index_arrays( config, lang ):
     out = []
     for k, v in config.items():
@@ -88,6 +102,7 @@ def generate_texts_c_pl_file_index_arrays( config, lang ):
         out.append( "};" )
     return out
 
+# generate text arrays for texts*.c file, with given 'lang' and apply text_filter
 def generate_c_file_text_arrays( config, lang, text_filter ):
     out = []
     for k, v in config.items():
@@ -111,18 +126,21 @@ def generate_c_file_text_arrays( config, lang, text_filter ):
                 out.append( "%s {%s, 0x00};" % ( p1, text ) )
     return out
 
+# read json config file, no error checking so be careful
 def read_json_config_file( filename ):
     fh = open("data.json", "r")
     content = json.load(fh)
     fh.close()
     return content
 
+# write common.h file in templates/ directory
 def write_common_h_file( index_array ):
     fh = open("common.h", "w")
     template = open( "templates/common_h.template", "r" ).read()
     fh.write( template.replace( "{{ content }}", "\n".join( index_array ) ) )
     fh.close()
 
+# write texts{{ LANGUAGE }}.c file with given template, text arrays, index array and language
 def write_texts_c_file( template, text_array, index_array, lang ):
     out = []
     out.append( "#pragma data ( txt%sTxtData )\n" % lang.capitalize() )
@@ -135,6 +153,7 @@ def write_texts_c_file( template, text_array, index_array, lang ):
     fh.write( template.replace( "{{ content }}", "\n".join( out ) ) )
     fh.close()
 
+# create texts{{ LANGUAGE }}.h file
 def create_h_file_text_arrays( template, lang ):
     content = open( template, "r" ).read()
     content = content.replace( "{{ LANGUAGE_U }}", lang.upper() )
@@ -145,6 +164,8 @@ def create_h_file_text_arrays( template, lang ):
     fh.writelines( content )
     fh.close()
 
+# master function
+# creates texts{{ LANGUAGE }}.c file and texts{{ LANGUAGE }}.h file
 def create_lang_files( config, lang ):
     # texts{{ lang }}.c
     txt_array = generate_c_file_text_arrays( config, lang, encode_charset )
@@ -153,6 +174,8 @@ def create_lang_files( config, lang ):
     # texts{{ lang }}.h
     create_h_file_text_arrays( "templates/texts_h.template", lang )
 
+# master function
+# creates textsPL.c file and textsPL.h file
 def create_pl_files( config ):
     # textsPL.c
     txt_array = generate_c_file_text_arrays( config, "pl", encode_charset )
@@ -161,15 +184,24 @@ def create_pl_files( config ):
     # textsPL.h
     create_h_file_text_arrays(  "templates/texts_h_pl.template", "pl" )
 
+# master function for creating common.h file
 def create_common_h_file( config ):
     index_array = generate_common_h_index_array( config )
     write_common_h_file( index_array )
 
 if __name__ == "__main__":
 
+    # read config file
     config = read_json_config_file( "data.json" )
+
+    # create common.h file basing on data.json file
     create_common_h_file( config )
+
+    # create textsPL.c and textsPL.h files
     create_pl_files( config )
+
+    # create files from data.json with given language 
+    # if it exists in 'data.json'
     create_lang_files( config, "en" )
 
 
