@@ -44,8 +44,8 @@ def generate_common_h_index_array( config ):
     common = []
     if config.get( 'main_contents' ):
         if config[ 'main_contents' ].get( 'contents' ):
+            # if there is 'main_contents' and 'contents' in 'data.json' file
             for p in config[ 'main_contents' ][ 'contents' ]:
-                # if there is 'main_contents' and 'contents' in 'data.json' file
                 prefix = 'TXT' if not p.get( 'prefix' ) else p[ 'prefix' ]
                 out.append( '    %s_IDX_%s,' % ( prefix, p[ 'id' ] )  )
                 # if there is a 'common' in *.json file entry then create variable in common.h file
@@ -109,13 +109,16 @@ def generate_c_file_text_arrays( config, lang, text_filter ):
         for p in v.get( "contents" ):
             prefix = "TXT" if not p.get("prefix") else p["prefix"]
             if p.get( "common" ):
-                # this definition is already in common.h file
+                # "common" definition is already in common.h file
                 # so we will get index from common.h file
                 # in index array part
                 pass
             else:
                 p1 = 'const char %s_%s_%s[] =' %( prefix, lang.upper(), p['id'] )
                 text = p[ lang ]
+                # support for json multiline values
+                if isinstance(text, list):
+                    text = "".join( text )
                 mask = "%s_m" % lang
                 if p.get( mask ):
                     text = underline_text_pl( text, p[ mask ] )
