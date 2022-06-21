@@ -35,7 +35,7 @@ def menu_opt( option ):
     if option == '<':
         option = '0x1f, '
     else:
-        option = '0x%02x, ' % ( charset.index( option ) + 128 )
+        option = '0x%02x, ' % ( charset.index( option ) + 192 )
     return option
 
 # generate indexes for the 'c' language common.h file
