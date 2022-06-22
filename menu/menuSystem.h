@@ -46,7 +46,8 @@ struct MenuOption {
     byte y;
 };
 
-#define END_MENU_CHOICES {0x00, 0x00, nullptr, 0x00, 0x00, 0x00}
+/* #define END_MENU_CHOICES {0x00, 0x00, nullptr, 0x00, 0x00, 0x00} */
+#define END_MENU_CHOICES {0x00, 0x00, 0x00, nullptr, 0x00, 0x00, 0x00}
 
 // Loaders vector table used in each menu
 struct Loaders {
