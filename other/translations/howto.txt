@@ -1,0 +1,87 @@
+
+# "common"
+#
+# użycie mnemonika "common" sprawia że mnemoniki językowe są ignorowane
+# czyli ewentualnie dopisane poniżej mnemoniki:
+#
+# ...
+# "pl": "Anuluj",
+# "en": "Cancel"
+# ...
+# 
+# zostaną całkowicie zignorowane.
+
+
+{
+  "jakas tam nazwa informacyjnie nigdzie nie uzywana":
+  {
+    "pragma_label": "PoleWymagane-CapitalizedWords",
+    "array_label": "POLE_WYMAGANE_-_UPPERCASE_BEZ_SPACJI",
+    "contents": [
+      "id": "UPPERCASE_WYMAGANE",
+      "common": " taki sobie napis"             <----- mnemonik "common"
+    ]
+  }
+}
+
+
+
+#
+# używanie wersji językowej czyli "pl": "Anuluj", "en": "Cancel"
+#
+
+{
+  "jakas tam nazwa informacyjnie nigdzie nie uzywana":
+  {
+    "pragma_label": "PoleWymagane-CapitalizedWords",
+    "array_label": "POLE_WYMAGANE_-_UPPERCASE_BEZ_SPACJI",
+    "contents": [
+      "id": "UPPERCASE_WYMAGANE",
+      "pl": "Anuluj",                       <----- mnemoniki językowe
+      "en": "Cancel"                        <----- mnemoniki językowe
+    ]
+  }
+}
+
+
+#
+# używanie "underline"
+#
+# "pl":   "Anuluj",
+# "pl_m": "------"
+#
+# użycie mnemonika językowego z dopiskiem "_m" czyli maska
+# oznaczające które znaki zastąpić znakami z charsetu z podkreśleniem
+#
+# maskować można pojedyńcze wybrany litery np.:
+#
+# "pl":   "Anuluj",
+# "pl_m": " - - -"
+#
+# sprawi że litery "nlj" zostaną wyświetlone z podkreśleniem
+# a litery "Auu" bez podkreślenia
+#
+# UWAGA:
+# funkcja nie ma zabezpieczenia, więc pewnie się wywali jeśli
+# string maski będzie miał więcej znaków niż string maskowany
+#
+
+{
+  "jakas tam nazwa informacyjnie nigdzie nie uzywana":
+  {
+    "pragma_label": "PoleWymagane-CapitalizedWords",
+    "array_label": "POLE_WYMAGANE_-_UPPERCASE_BEZ_SPACJI",
+    "contents": [
+      "id": "UPPERCASE_WYMAGANE",
+      "pl":   "Anuluj",
+      "pl_m": "------",                       <----- maska do underline
+      "en": "Cancel"
+    ]
+  }
+}
+
+
+
+
+
+

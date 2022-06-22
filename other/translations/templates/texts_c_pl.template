@@ -1,0 +1,28 @@
+#include <translation/common.h>
+#include <engine/easyFlashBanks.h>
+#include <assets/assetsSettings.h>
+
+{{ content }}
+
+// =============================================================================
+// Copy code
+// =============================================================================
+#pragma code ( txtCommonCode )
+#pragma data ( txtCommonData )
+
+void loadTranslation(){
+    char i = 0;
+    do {
+#assign y 0
+#repeat
+        TRANSLATION_DST[y + i] = TRANSLATION_SRC[y + i];
+#assign y y + 0x100
+#until y == 0x100*0xf
+        i++;
+    } while (i != 0);
+}
+
+// Switching code generation back to shared section
+#pragma code ( code )
+#pragma data ( data )
+

@@ -329,11 +329,11 @@ __interrupt static void _menuShowSprites(){
 }
 
 const struct MenuOption MAIN_MENU[] = {
-    {TXT_IDX_MENU_MAIN1, '1', &showMenu, MENU_BANK_FARMLAND, 1, 1},
-    {TXT_IDX_MENU_MAIN2, '2', &showMenu, MENU_BANK_PIG_PEN, 1, 2},
-    {TXT_IDX_MENU_MAIN3, '3', &showMenu, MENU_BANK_SMOKE_HOUSE, 1, 3},
-    {TXT_IDX_MENU_MAIN4, '4', &showMenu, MENU_BANK_SHOP, 1, 4},
-    {TXT_IDX_MENU_MAIN5, '5', &showMenu, MENU_BANK_CREW, 1, 5},
+    {TXT_IDX_MENU_MAIN1, '1', UI_LR, &showMenu, MENU_BANK_FARMLAND, 1, 1},
+    {TXT_IDX_MENU_MAIN2, '2', UI_LR, &showMenu, MENU_BANK_PIG_PEN, 1, 2},
+    {TXT_IDX_MENU_MAIN3, '3', UI_LR, &showMenu, MENU_BANK_SMOKE_HOUSE, 1, 3},
+    {TXT_IDX_MENU_MAIN4, '4', UI_LR, &showMenu, MENU_BANK_SHOP, 1, 4},
+    {TXT_IDX_MENU_MAIN5, '5', UI_LR, &showMenu, MENU_BANK_CREW, 1, 5},
     END_MENU_CHOICES
 };
 

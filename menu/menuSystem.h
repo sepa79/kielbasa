@@ -20,12 +20,21 @@
 #define SCREEN_HEIGHT 12
 #define BIG_SCREEN_HEIGHT 24
 
+#define UI_U 1
+#define UI_R 2
+#define UI_D 4
+#define UI_L 8
+#define UI_LR 16
+#define UI_UD 32
+
 /* Represents a single menu option */
 struct MenuOption {
     /* Text to display */
     byte textIdx;
     /* Key that will call the option if pressed */
     byte key;
+    // ui mode - should it be bound to joy direction (U/D/L/R), or part of a group to navigate through (UD/LR)
+    byte uiMode;
     /* Jump Pointer to code that handles the option */
     void (*jmpPtr)(void);
     /* Bank to copy code from, 00 - don't copy */
@@ -35,8 +44,6 @@ struct MenuOption {
     byte x;
     /* Y position of text on screen*/
     byte y;
-    // unused, added to make struct a multiply of 2
-    byte padding;
 };
 
 #define END_MENU_CHOICES {0x00, 0x00, nullptr, 0x00, 0x00, 0x00}

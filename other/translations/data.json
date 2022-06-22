@@ -1,0 +1,538 @@
+
+{
+
+  "plant_types":
+  {
+    "pragma_label": "PlantTypes",
+    "array_label": "PLANT_TYPES_TXT",
+    "contents": [
+      {
+        "id": "PLANT_NAME_NONE",
+        "pl": " - - - - -",
+        "en": ""
+      },
+      {
+        "id": "PLANT_NAME_POTATO",
+        "pl": "Ziemniaki ",
+        "en": ""
+      },
+      {
+        "id": "PLANT_NAME_LUPINE",
+        "pl": "Łubin     ",
+        "en": ""
+      },
+      {
+        "id": "PLANT_NAME_WHEAT",
+        "pl": "Pszenica  ",
+        "en": ""
+      },
+      {
+        "id": "PLANT_NAME_CORN",
+        "pl": "Kukurydza ",
+        "en": ""
+      }
+    ]
+  },
+
+  "plant_names":
+  {
+    "pragma_label": "PlantStateNames",
+    "array_label": "PLANT_STAGE_NAMES",
+    "contents": [
+      {
+        "id": "PLANT_STAGE_NONE",
+        "pl": " - - - -",
+        "en": "- - - - "
+      },
+      {
+        "id": "PLANT_STAGE_SOW_TASK_ASSIGNED",
+        "pl": "Z: Siew ",
+        "en": "T: Plant"
+      },
+      {
+        "id": "PLANT_STAGE_SPROUT",
+        "pl": "Kiełkuje",
+        "en": "Sprouts"
+      },
+      {
+        "id": "PLANT_STAGE_GROWTH",
+        "pl": "Rośnie",
+        "en": "Grows"
+      },
+      {
+        "id": "PLANT_STAGE_RIPEN",
+        "pl": "Dojrzewa",
+        "en": "Ripens"
+      },
+      {
+        "id": "PLANT_STAGE_READY",
+        "pl": "Dojrzały",
+        "en": "Ready"
+      },
+      {
+        "id": "PLANT_STAGE_REAP_TASK_ASSIGNED",
+        "pl": "Z: Zbiór",
+        "en": "T: Reap"
+      }
+    ]
+  },
+
+  "main_contents":
+  {
+    "pragma_label": "MainArray",
+    "array_label": "TXT",
+    "contents": [
+      {
+        "id": "MENU_CANCEL",
+        "pl": "\\y1fAnuluj",
+        "en": "\\y1fCancel"
+      },
+      {
+        "id": "MENU_EXIT",
+        "pl": "\\y1fPowrót",
+        "en": "\\y1fBack"
+      },
+      {
+        "comment": "// fixed width - 8",
+        "id": "TASK_EMPTY_NAME",
+        "common": "        "
+      },
+      {
+        "comment": "fixed width - 18",
+        "id": "TASK_EMPTY_DESCRIPTION",
+        "common": "                  "
+      },
+      {
+        "id": "TASK_LIST_HEADER",
+        "pl":   "Zadanie |       Opis        ",
+        "pl_m": "----------------------------",
+        "en":   "  Task  |    Description    ",
+        "en_m": "----------------------------"
+      },
+      {
+        "id": "MENU_MAIN1",
+        "menu_opt": "1",
+        "pl": "Pole",
+        "en": "Farmland"
+      },
+      {
+        "id": "MENU_MAIN2",
+        "menu_opt": "2",
+        "pl": "Chlewik",
+        "en": "Pigpen"
+      },
+      {
+        "id": "MENU_MAIN3",
+        "menu_opt": "3",
+        "pl": "Wędzarnia",
+        "en": "Smokehouse"
+      },
+      {
+        "id": "MENU_MAIN4",
+        "menu_opt": "4",
+        "pl": "Sklep",
+        "en": "Shop"
+      },
+      {
+        "id": "MENU_MAIN5",
+        "menu_opt": "5",
+        "pl": "Załoga",
+        "en": "Crew"
+      },
+      {
+        "id": "MENU_OPTIONS_LANG",
+        "menu_opt": "1",
+        "pl": "Język / Language",
+        "en": "Language / Język"
+      },
+      {
+        "id": "MENU_OPTIONS_MSX",
+        "menu_opt": "2",
+        "pl": "Muzyka on/off",
+        "en": "Music on/off"
+      },
+      {
+        "id": "OPTIONS_HEADER",
+        "pl": "Ustawienia gry",
+        "en": "Game settings"
+      },
+      {
+        "id": "TASK_MANAGER_PRIO_HEADER",
+        "pl": "Manager priorytetów zadań",
+        "en": "Task Priority Manager"
+      },
+      {
+        "id": "TASK_MANAGER_PRIO_TABLE_HEADER_1",
+        "pl":   "                     |Zdolność| Zadanie",
+        "pl_m": "                     ------------------",
+        "en": "Task manager"
+      }, {
+        "id": "TASK_MANAGER_PRIO_TABLE_HEADER_2",
+        "pl":   "                     | |R|M|  |  |R|M| ",
+        "en": "Task manager"
+      }, {
+        "id": "TASK_MANAGER_PRIO_TABLE_HEADER_3",
+        "pl": "                     | |o|a|  |  |o|a| ",
+        "en": "Task manager"
+      }, {
+        "id": "TASK_MANAGER_PRIO_TABLE_HEADER_4",
+        "pl": "                     |H|l|s|  | H|l|s| ",
+        "en": "Task manager"
+      }, {
+        "id": "TASK_MANAGER_PRIO_TABLE_HEADER_5",
+        "pl": "                     |o|n|a|H | o|n|a|H",
+        "en": "Task manager"
+      }, {
+        "id": "TASK_MANAGER_PRIO_TABLE_HEADER_6",
+        "pl": "                     |d|i|r|a | d|i|r|a",
+        "en": "Task manager"
+      }, {
+        "id": "TASK_MANAGER_PRIO_TABLE_HEADER_7",
+        "pl": "                     |o|c|s|n | o|c|s|n",
+        "en": "Task manager"
+      }, {
+        "id": "TASK_MANAGER_PRIO_TABLE_HEADER_8",
+        "pl": "                     |w|t|t|d | w|t|t|d",
+        "en": "Task manager"
+      }, {
+        "id": "TASK_MANAGER_PRIO_TABLE_HEADER_9",
+        "pl": "                     |l|w|w|e | l|w|w|e",
+        "en": "Task manager"
+      }, {
+        "id": "TASK_MANAGER_PRIO_TABLE_HEADER_10",
+        "pl":   "Postać               |a|o|o|l | a|o|o|l",
+        "pl_m": "---------------------------------------",
+        "en": "Task manager"
+      },
+      {
+        "id": "MENU_TASK_MANAGER_W",
+        "pl": "w",
+        "en": ""
+      },
+      {
+        "id": "MENU_TASK_MANAGER_S",
+        "pl": "s",
+        "en": ""
+      },
+      {
+        "id": "MENU_TASK_MANAGER_A",
+        "pl": "a",
+        "en": ""
+      },
+      {
+        "id": "MENU_TASK_MANAGER_D",
+        "pl": "d",
+        "en": ""
+      },
+      {
+        "id": "MENU_TASK_MANAGER_PLUS",
+        "pl": "+",
+        "en": ""
+      },
+      {
+        "id": "MENU_TASK_MANAGER_MINUS",
+        "pl": "-",
+        "en": ""
+      },
+      {
+        "id": "TASK_MANAGER_HEADER",
+        "pl": "Manager zadań",
+        "en": "Task Manager"
+      },
+      {
+        "id": "TASK_MANAGER_TABLE_HEADER",
+        "pl":   "Zadanie |       Opis        ",
+        "pl_m": "----------------------------",
+        "en":   "  Task  |    Description    ",
+        "en_m": "----------------------------"
+      },
+      {
+        "id": "MENU_FARMLAND1",
+        "common": "<"
+      },
+      {
+        "id": "MENU_FARMLAND2",
+        "common": ">"
+      },
+      {
+        "id": "MENU_FARMLAND3",
+        "common": "["
+      },
+      {
+        "id": "MENU_FARMLAND4",
+        "common": "]"
+      },
+      {
+        "id": "MENU_FARMLAND5",
+        "menu_opt": "1",
+        "pl": "Uprawa",
+        "en": "Grow"
+      },
+      {
+        "id": "MENU_FARMLAND6",
+        "menu_opt": "2",
+        "pl": "Opieka",
+        "en": "Care"
+      },
+      {
+        "id": "MENU_FARMLAND7",
+        "menu_opt": "3",
+        "pl": "Zbiory",
+        "en": "Reap"
+      },
+      {
+        "id": "FIELD_LIST_HEADER",
+        "pl":   "Mg| Uprawa  |  Stan  |T  |S1 |S2 |S3 ",
+        "pl_m": "-------------------------------------",
+        "en":   "Mg| Farming | State  |T  |S1 |S2 |S3 ",
+        "en_m": "-------------------------------------"
+      },
+      {
+        "id": "FARM_FIELD_TXT",
+        "pl": "Pole:  ",
+        "en": "Field: "
+      },
+      {
+        "id": "FARM_PLANT_TXT",
+        "pl": "Uprawa: ",
+        "en": "Growing:"
+      },
+      {
+        "id": "TASK_FARMLAND_FARM",
+        "pl": "Uprawa  ",
+        "en": "Farm"
+      },
+      {
+        "id": "TASK_FARMLAND_CARE",
+        "pl": "Opieka  ",
+        "en": "Care"
+      },
+      {
+        "id": "TASK_FARMLAND_REAP",
+        "pl": "Zbiory  ",
+        "en": "Reap"
+      },
+      {
+        "id": "TASK_DSC_FARMLAND_FIELD",
+        "pl": "Pole",
+        "en": "Field"
+      },
+      {
+        "id": "TASK_DSC_FARMLAND_POTATO",
+        "pl": "ziemniaki",
+        "en": "potatoes"
+      },
+      {
+        "id": "TASK_DSC_FARMLAND_LUPINE",
+        "pl": "łubin",
+        "en": "lupine"
+      },
+      {
+        "id": "TASK_DSC_FARMLAND_WHEAT",
+        "pl": "przenica",
+        "en": "wheat"
+      },
+      {
+        "id": "TASK_DSC_FARMLAND_CORN",
+        "pl": "kukurydza",
+        "en": "corn"
+      },
+      {
+        "id": "MENU_PIGPEN1",
+        "menu_opt": "1",
+        "pl": "Karmienie",
+        "en": "Feed"
+      },
+      {
+        "id": "MENU_PIGPEN2",
+        "menu_opt": "2",
+        "pl": "Sprzątanie",
+        "en": "Cleanup"
+      },
+      {
+        "id": "MENU_PIGPEN3",
+        "menu_opt": "3",
+        "pl": "Przebudowa",
+        "en": "Upgrade"
+      },
+      {
+        "id": "MENU_SMOKEHOUSE1",
+        "menu_opt": "1",
+        "pl": "Przepisy",
+        "en": "Recipies"
+      },
+      {
+        "id": "MENU_SMOKEHOUSE2",
+        "menu_opt": "2",
+        "pl": "Sprzątanie",
+        "en": "Cleanup"
+      },
+      {
+        "id": "MENU_SMOKEHOUSE3",
+        "menu_opt": "3",
+        "pl": "Przebudowa",
+        "en": "Upgrade"
+      },
+      {
+        "id": "MENU_SHOPOUT1",
+        "menu_opt": "1",
+        "pl": "Wejdź",
+        "en": "Go in"
+      },
+      {
+        "id": "MENU_SHOPOUT2",
+        "menu_opt": "2",
+        "pl": "Rozmowa",
+        "en": "Chat"
+      },
+      {
+        "id": "SHOP_DESCRIPTION",
+        "pl": "Sklep wielobranżoy 'GS', otwarty 7-11 i 15-19, codziennie.",
+        "en": "A general store, open 7-11, then 15-19, everyday"
+      },
+      {
+        "id": "MENU_SHOPIN1",
+        "menu_opt": "1",
+        "pl": "Kup ogóra",
+        "en": "Buy gherkin"
+      },
+      {
+        "id": "MENU_SHOPIN2",
+        "menu_opt": "2",
+        "pl": "Rozmowa",
+        "en": "Chat"
+      },
+      {
+        "id": "MENU_CREW1",
+        "menu_opt": "1",
+        "pl": "Slot 1",
+        "en": "Char 1"
+      },
+      {
+        "id": "MENU_CREW2",
+        "menu_opt": "2",
+        "pl": "Slot 2",
+        "en": "Char 2"
+      },
+      {
+        "id": "MENU_CREW3",
+        "menu_opt": "3",
+        "pl": "Slot 3",
+        "en": "Char 3"
+      },
+      {
+        "id": "MENU_CREW4",
+        "menu_opt": "4",
+        "pl": "Slot 4",
+        "en": "Char 4"
+      },
+      {
+        "id": "STAT_INT",
+        "pl": "Mądrość",
+        "en": "Wisdom"
+      },
+      {
+        "id": "STAT_STR",
+        "pl": "Siła",
+        "en": "Strength"
+      },
+      {
+        "id": "STAT_CUN",
+        "pl": "Spryt",
+        "en": "Cunning"
+      },
+      {
+        "id": "SKILL_ANI",
+        "pl": "Hodowla",
+        "en": "Breeding"
+      },
+      {
+        "id": "SKILL_FRM",
+        "pl": "Rolnictwo",
+        "en": "Farming"
+      },
+      {
+        "id": "SKILL_BTH",
+        "pl": "Masarstwo",
+        "en": "Butchery"
+      },
+      {
+        "id": "SKILL_TRD",
+        "pl": "Handel",
+        "en": "Trade"
+      },
+      {
+        "id": "CHAR_1_NAME",
+        "common": "Janusz Dobrowolski"
+      },
+      {
+        "id": "CHAR_1_STORY",
+        "pl": "Janusz całe życie pracował w PGR. Na niczym się tak naprawdę nie zna, ale za to ma nałogi i jest leniwy. Janusz to postać startowa.",
+        "en": "Janusz spent his whole life working in PGR. He does not really excel in anything, but thankfully he is lazy and an addict. He is your main character."
+      },
+      {
+        "id": "CHAR_2_NAME",
+        "common": "Zdzisław Hermann"
+      },
+      {
+        "id": "CHAR_2_STORY",
+        "pl": "Zdzisiek nie jest popularny we wsi. Ludziska pamiętają, że jego ojciec był folks-dojczem. Zdzisia wyróżnia inteligencja po tacie.",
+        "en": "Zdzisiek is not very popularin the villiage. Folks reme-mber that his father was a volksdeustch. He is bright - like his father - and that makes him stand out."
+      },
+      {
+        "id": "CHAR_3_NAME",
+        "common": "Wiesław Dobrowolski"
+      },
+      {
+        "id": "CHAR_3_STORY",
+        "pl": "Historia Wieśka M test M test",
+        "en": "Wiesiek's story will be here."
+      },
+      {
+        "id": "CHAR_4_NAME",
+        "common": "Józef Kołodziej"
+      },
+      {
+        "id": "CHAR_4_STORY",
+        "pl": "Historia Józka",
+        "en": "Józek's story will be here."
+      },
+      {
+        "id": "PAUSE",
+        "prefix": "SB",
+        "pl": "   P  A  U  Z  A   ",
+        "en": "   P  A  U  S  E  " 
+      },
+      {
+        "id": "UNPAUSE",
+        "prefix": "SB",
+        "pl": "   Normalna prędkość gry   ",
+        "en": "   Normal game speed   "
+      },
+      {
+        "id": "WELCOME",
+        "prefix": "SB",
+        "pl": "    Witaj! +/-/Space - kontrola czasu    Kielbasa Empire - wersja bardzo alpha.    Credits:        Wsparcie programistyczne i kompilatory: KickC - Rex/Camelot, Oscar64 - DrMortalWombat        Gra: Kod - Sepa, Gfx - Juras, Model3 & Saturnz, Msx - Taurus, Support - Angry Andy, Fonts - Sepa    ",
+        "en": "    Hello! +/-/Space - time control    Kielbasa Empire - very early alpha.    Credits:        Code support and compilers: KickC - Rex/Camelot    Oscar64 - DrMortalWombat    Game: Code - Sepa, Gfx - Juras, Model3 & Saturnz, Msx - Taurus, Support - Angry Andy, Fonts - Sepa "
+      },
+      {
+        "id": "SHOP_CLOSED",
+        "prefix": "SB",
+        "pl": "   Sklep jest zamkniety   ",
+        "en": "   Shop is closed   "
+      }
+    ]
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
