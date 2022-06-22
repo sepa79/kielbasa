@@ -67,7 +67,7 @@ static void _showTaskPriorities(){
 
             cwin_putat_string_raw(&cw, 0, line, TXT[allChars_nameIdx[character]], col1);
 
-            cwin_putat_string_raw(&cw, 21, line, "\x7e", VCOL_YELLOW);
+            cwin_putat_string_raw(&cw, 21, line, TBL_V, VCOL_YELLOW);
 
             sprintf(str, "%u", allChars_skills[character][SKILL_BREEDING]);
             cwin_putat_string_raw(&cw, 22,  line, str, col1);
@@ -77,10 +77,10 @@ static void _showTaskPriorities(){
             cwin_putat_string_raw(&cw, 26,  line, str, col1);
             sprintf(str, "%u", allChars_skills[character][SKILL_TRADE]);
             cwin_putat_string_raw(&cw, 28,  line, str, col1);
-            cwin_putat_string_raw(&cw, 23, line, "\x7e", VCOL_YELLOW);
-            cwin_putat_string_raw(&cw, 25, line, "\x7e", VCOL_YELLOW);
-            cwin_putat_string_raw(&cw, 27, line, "\x7e", VCOL_YELLOW);
-            cwin_putat_string_raw(&cw, 30, line, "\x7e", VCOL_YELLOW);
+            cwin_putat_string_raw(&cw, 23, line, TBL_V, VCOL_YELLOW);
+            cwin_putat_string_raw(&cw, 25, line, TBL_V, VCOL_YELLOW);
+            cwin_putat_string_raw(&cw, 27, line, TBL_V, VCOL_YELLOW);
+            cwin_putat_string_raw(&cw, 30, line, TBL_V, VCOL_YELLOW);
 
 
             sprintf(str, "%u", allChars_prios[character][SKILL_BREEDING]);
@@ -92,9 +92,9 @@ static void _showTaskPriorities(){
             sprintf(str, "%u", allChars_prios[character][SKILL_TRADE]);
             cwin_putat_string_raw(&cw, 38,  line, str, col2[3]);
 
-            cwin_putat_string_raw(&cw, 33, line, "\x7e", VCOL_YELLOW);
-            cwin_putat_string_raw(&cw, 35, line, "\x7e", VCOL_YELLOW);
-            cwin_putat_string_raw(&cw, 37, line, "\x7e", VCOL_YELLOW);
+            cwin_putat_string_raw(&cw, 33, line, TBL_V, VCOL_YELLOW);
+            cwin_putat_string_raw(&cw, 35, line, TBL_V, VCOL_YELLOW);
+            cwin_putat_string_raw(&cw, 37, line, TBL_V, VCOL_YELLOW);
         }
     }
 }

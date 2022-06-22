@@ -345,7 +345,7 @@ static void _displayTaskList(){
     for(byte i=0;i<TASK_ARRAY_SIZE;i++){
         byte taskId = taskRef[i];
         cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST, 2+i, TXT[task_nameIdx[taskId]], VCOL_GREEN);
-        cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST+8, 2+i, "\x7e", VCOL_YELLOW);
+        cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST+8, 2+i, TBL_V, VCOL_YELLOW);
         cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST+9, 2+i, task_desc[taskId], VCOL_GREEN);
     }
 }

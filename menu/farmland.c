@@ -241,28 +241,28 @@ static void _displayFieldList(){
         }
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST, 8+i, str, col);
 
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+2, 8+i, "\x7e", VCOL_YELLOW);
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+2, 8+i, TBL_V, VCOL_YELLOW);
 
         byte plantId = field_plantId[i];
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+3, 8+i, PLANT_TYPES_TXT[plantId], col);
 
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+12, 8+i, "\x7e", VCOL_YELLOW);
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+12, 8+i, TBL_V, VCOL_YELLOW);
         byte stage = field_stage[i];
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+13, 8+i, PLANT_STAGE_NAMES[stage], col);
 
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+21, 8+i, "\x7e", VCOL_YELLOW);
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+21, 8+i, TBL_V, VCOL_YELLOW);
         sprintf(str, "%3u", field_timer[i]);
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+22, 8+i, str, col);
 
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+25, 8+i, "\x7e", VCOL_YELLOW);
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+25, 8+i, TBL_V, VCOL_YELLOW);
         sprintf(str, "%3u", field_planted[i]);
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+26, 8+i, str, col);
 
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+29, 8+i, "\x7e", VCOL_YELLOW);
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+29, 8+i, TBL_V, VCOL_YELLOW);
         sprintf(str, "%3u", field_grown[i]);
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+30, 8+i, str, col);
 
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+33, 8+i, "\x7e", VCOL_YELLOW);
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+33, 8+i, TBL_V, VCOL_YELLOW);
         sprintf(str, "%3u", field_ready[i]);
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+34, 8+i, str, col);
     }

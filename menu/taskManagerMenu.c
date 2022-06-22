@@ -31,7 +31,7 @@ static void _showTasks(){
 
         byte taskId = taskRef[i];
         cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST_TM, ROW_OFFSET_TASKLIST_TM+i, TXT[task_nameIdx[taskId]], color);
-        cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST_TM+8, ROW_OFFSET_TASKLIST_TM+i, "\x7e", VCOL_YELLOW);
+        cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST_TM+8, ROW_OFFSET_TASKLIST_TM+i, TBL_V, VCOL_YELLOW);
         cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST_TM+9, ROW_OFFSET_TASKLIST_TM+i, task_desc[taskId], color);
 
     byte str[10];
