@@ -45,10 +45,10 @@ static void _shMenu3(){
 }
 
 const struct MenuOption SMOKE_HOUSE_MENU[] = {
-    { TXT_IDX_MENU_SMOKEHOUSE1, '1', &_shMenu1, 0, 1, 1},
-    { TXT_IDX_MENU_SMOKEHOUSE2, '2', &_shMenu2, 0, 1, 2},
-    { TXT_IDX_MENU_SMOKEHOUSE3, '3', &_shMenu3, 0, 1, 3},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
+    { TXT_IDX_MENU_SMOKEHOUSE1, '1', UI_LR, &_shMenu1, 0, 1, 1},
+    { TXT_IDX_MENU_SMOKEHOUSE2, '2', UI_LR, &_shMenu2, 0, 1, 2},
+    { TXT_IDX_MENU_SMOKEHOUSE3, '3', UI_LR, &_shMenu3, 0, 1, 3},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LR, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
     END_MENU_CHOICES
 };
 

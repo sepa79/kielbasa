@@ -56,9 +56,9 @@ static void _backToPreviousMenu(){
 }
 
 const struct MenuOption OPTIONS_MENU[] = {
-    { TXT_IDX_MENU_OPTIONS_LANG, '1', &_changeLanguage, 0, 2, 1},
-    { TXT_IDX_MENU_OPTIONS_MSX, '2', &_toggleMusic, 0, 2, 2},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, &_backToPreviousMenu, 0, 1, 20},
+    { TXT_IDX_MENU_OPTIONS_LANG, '1', UI_LR, &_changeLanguage, 0, 2, 1},
+    { TXT_IDX_MENU_OPTIONS_MSX, '2', UI_LR, &_toggleMusic, 0, 2, 2},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LR, &_backToPreviousMenu, 0, 1, 20},
 
     END_MENU_CHOICES
 };

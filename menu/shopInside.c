@@ -77,9 +77,9 @@ static void _siMenu2(){
 }
 
 const struct MenuOption SHOP_INSIDE_MENU[] = {
-    { TXT_IDX_MENU_SHOPIN1, '1', &_siMenu1, 0, 1, 1},
-    { TXT_IDX_MENU_SHOPIN2, '2', &_siMenu2, 0, 1, 2},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, &showMenu, MENU_BANK_SHOP, 2, 3},
+    { TXT_IDX_MENU_SHOPIN1, '1', UI_LR, &_siMenu1, 0, 1, 1},
+    { TXT_IDX_MENU_SHOPIN2, '2', UI_LR, &_siMenu2, 0, 1, 2},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LR, &showMenu, MENU_BANK_SHOP, 2, 3},
     END_MENU_CHOICES
 };
 

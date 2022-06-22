@@ -83,10 +83,10 @@ void showTaskManagerMenu(){
 }
 
 const struct MenuOption TASK_MANAGER_MENU[] = {
-    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', &_upRow, 0, 0, ROW_OFFSET_TASKLIST_TM-1 },
-    { TXT_IDX_MENU_TASK_MANAGER_S, 's', &_downRow, 0, 0, ROW_OFFSET_TASKLIST_TM+10 },
-    { TXT_IDX_MENU_TASK_MANAGER_MINUS, '-', &_deleteTask, 0, 0, 20 },
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, &_backToPreviousMenu, 0, 20, 20 },
+    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', UI_U, &_upRow, 0, 0, ROW_OFFSET_TASKLIST_TM-1 },
+    { TXT_IDX_MENU_TASK_MANAGER_S, 's', UI_D, &_downRow, 0, 0, ROW_OFFSET_TASKLIST_TM+10 },
+    { TXT_IDX_MENU_TASK_MANAGER_MINUS, '-', UI_LR,&_deleteTask, 0, 0, 20 },
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LR, &_backToPreviousMenu, 0, 20, 20 },
 
     END_MENU_CHOICES
 };

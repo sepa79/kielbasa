@@ -78,4 +78,6 @@
 // static char * const MENU_CODE_SRC = (char *)0x8000;
 // static char * const MENU_CODE_DST = (char *)0x7000;
 
+#define "\x7e"
+
 #endif
