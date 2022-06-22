@@ -25,9 +25,16 @@ byte * sprBankPointer;
 volatile struct JOY_CURSOR joyCursor = {true, false, 0, 0, 0, 0, 0};
 CharWin cw;
 
-bool _fullScreenMenuOpen = false;
-byte _lastElementInMenu = 0;
+static bool _fullScreenMenuOpen = false;
+static byte _lastElementInMenu = 0;
 struct MenuOption *currentMenu;
+static byte _menuUiMode = 0;
+static byte _key = 0;
+#define NOT_ATTACHED 0xff
+static byte _joyU = 0;
+static byte _joyD = 0;
+static byte _joyL = 0;
+static byte _joyR = 0;
 
 static void _setJoyCursorPos(byte menuPos){
     joyCursor.x = (currentMenu[menuPos].x + cw.sx) * 8 + BORDER_XPOS_LEFT - 1;
@@ -42,9 +49,29 @@ static void _setJoyCursorPos(byte menuPos){
 /* Displays text and colors, sets _lastElementInMenu */
 static void _displayMenuText(){
     byte i = 0;
+    _joyL = NOT_ATTACHED;
+    _joyR = NOT_ATTACHED;
+    _joyU = NOT_ATTACHED;
+    _joyD = NOT_ATTACHED;
+
     while (currentMenu[i].key != 0){
+        // display text
         byte idx = currentMenu[i].textIdx;
         cwin_putat_string_raw(&cw, currentMenu[i].x, currentMenu[i].y, TXT[idx], VCOL_MED_GREY);
+
+        // detect what kind of menu we have - LR or UD
+        if(currentMenu[i].uiMode & (UI_LR + UI_UD)){
+            _menuUiMode = currentMenu[i].uiMode;
+        } else if(currentMenu[i].uiMode & UI_L){
+            _joyL = i;
+        } else if(currentMenu[i].uiMode & UI_R){
+            _joyR = i;
+        } else if(currentMenu[i].uiMode & UI_U){
+            _joyU = i;
+        } else if(currentMenu[i].uiMode & UI_D){
+            _joyD = i;
+        }
+        
         i++;
     }
     _lastElementInMenu = i - 1;
@@ -64,26 +91,71 @@ void displayMenu(struct MenuOption * menu){
     _setJoyCursorPos(joyCursor.menuPos);
 }
 
-static void _moveJoyThroughMenu(){
+static void _incMenuPos(){
+    bool done = false;
+    while(!done){
+        joyCursor.menuPos++;
+        // check if we need to go around
+        if(currentMenu[joyCursor.menuPos].key == 0){
+            joyCursor.menuPos = 0;
+        }
+        //check if next element is ok to move to
+        if(currentMenu[joyCursor.menuPos].uiMode & (UI_LR + UI_UD)){
+            // yep, exit loop
+            done = true;
+        }
+    }
+    // only call update pos if movement occured
+    _setJoyCursorPos(joyCursor.menuPos);
+}
+static void _decMenuPos(){
+    bool done = false;
+    while(!done){
+        // go around
+        if(joyCursor.menuPos == 0){
+            joyCursor.menuPos = _lastElementInMenu;
+        } else {
+            joyCursor.menuPos--;
+        }
+        //check if next element is ok to move to
+        if(currentMenu[joyCursor.menuPos].uiMode & (UI_LR + UI_UD)){
+            // yep, exit loop
+            done = true;
+        }
+    }
+    // only call update pos if movement occured
+    _setJoyCursorPos(joyCursor.menuPos);
+}
+
+static void _moveJoyThroughMenuUD(){
     if(!joyCursor.moveDelayCurrent){
         if(!(_joy2Status & JOY_UP)){
-            // go around
-            if(joyCursor.menuPos == 0){
-                joyCursor.menuPos = _lastElementInMenu;
-            } else {
-                joyCursor.menuPos--;
-            }
-            // only call update pos if movement occured
-            _setJoyCursorPos(joyCursor.menuPos);
+            _decMenuPos();
         }
         if(!(_joy2Status & JOY_DOWN)){
-            joyCursor.menuPos++;
-            // go around
-            if(currentMenu[joyCursor.menuPos].key == 0){
-                joyCursor.menuPos = 0;
-            }
-            // only call update pos if movement occured
-            _setJoyCursorPos(joyCursor.menuPos);
+            _incMenuPos();
+        }
+        if(!(_joy2Status & JOY_LEFT) && _joyL != NOT_ATTACHED){
+           _key = currentMenu[_joyL].key;
+        }
+        if(!(_joy2Status & JOY_RIGHT) && _joyR != NOT_ATTACHED){
+           _key = currentMenu[_joyR].key;
+        }
+    }
+}
+static void _moveJoyThroughMenuLR(){
+    if(!joyCursor.moveDelayCurrent){
+        if(!(_joy2Status & JOY_UP) && _joyU != NOT_ATTACHED){
+           _key = currentMenu[_joyU].key;
+        }
+        if(!(_joy2Status & JOY_DOWN) && _joyD != NOT_ATTACHED){
+           _key = currentMenu[_joyD].key;
+        }
+        if(!(_joy2Status & JOY_LEFT)){
+            _decMenuPos();
+        }
+        if(!(_joy2Status & JOY_RIGHT)){
+            _incMenuPos();
         }
     }
 }
@@ -101,13 +173,21 @@ static bool _checkJoyFire(){
 
 // check keys that were pressed, including joystick, and load appropriate menu option
 void checkKeys(){
+    // get the key
     keyb_poll();
-    byte key = keyb_codes[keyb_key & 0x7f];
+    _key = keyb_codes[keyb_key & 0x7f];
+    // now get the joystick - some keys might be same as joy, so these will simulate keypresses if needed
+    if(_menuUiMode == UI_UD) {
+        _moveJoyThroughMenuUD();
+    } else {
+        _moveJoyThroughMenuLR();
+    }
+
     byte i = 0;
     bool selected = false;
 
     while (i <= _lastElementInMenu){
-        if (key == currentMenu[i].key){
+        if (_key == currentMenu[i].key){
             // vic.color_border = VCOL_RED;
             joyCursor.menuPos = i;
             _setJoyCursorPos(joyCursor.menuPos);
@@ -122,17 +202,17 @@ void checkKeys(){
         // vic.color_border++;
         // game speed control
         if(!gms_disableTimeControls){
-            if (key == '+'){
+            if (_key == '+'){
                 if(gms_gameSpeed < SPEED_FASTEST){
                     gms_gameSpeed++;
                     updateGameSpeed();
                 }
-            } else if (key == '-'){
+            } else if (_key == '-'){
                 if(gms_gameSpeed > 0){
                     gms_gameSpeed--;
                     updateGameSpeed();
                 }
-            } else if (key == ' '){
+            } else if (_key == ' '){
                 if(gms_gameSpeed){
                     gms_gameSpeed = SPEED_PAUSED;
                     updateStatusBar(TXT[SB_IDX_PAUSE]);
@@ -144,7 +224,7 @@ void checkKeys(){
             }
         }
         // help & options
-        if (key == KEY_F1) {
+        if (_key == KEY_F1) {
             // don't go to menu while in menu
             if(!_fullScreenMenuOpen){
                 _fullScreenMenuOpen = true;
@@ -156,7 +236,7 @@ void checkKeys(){
             }
             return;
         // task manager
-        } else if (key == KEY_F3) {
+        } else if (_key == KEY_F3) {
             // don't go to menu while in menu
             if(!_fullScreenMenuOpen){
                 _fullScreenMenuOpen = true;
@@ -167,7 +247,7 @@ void checkKeys(){
                 showTaskManagerMenu();
             }
             return;
-        } else if (key == KEY_F4) {
+        } else if (_key == KEY_F4) {
             // don't go to menu while in menu
             if(!_fullScreenMenuOpen){
                 _fullScreenMenuOpen = true;
@@ -181,7 +261,7 @@ void checkKeys(){
         }
 
         // joystick
-        _moveJoyThroughMenu();
+        // _moveJoyThroughMenu();
         // check if fire pressed & if so read which element Joy was pointing at
         if(_checkJoyFire()){
             i = joyCursor.menuPos;

@@ -176,13 +176,13 @@ void showTaskManagerPrioMenu(){
 }
 
 const struct MenuOption TASK_MANAGER_PRIO_MENU[] = {
-    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', UI_U, &_upChar, 0, 2, 1},
-    { TXT_IDX_MENU_TASK_MANAGER_S, 's', UI_D, &_downChar, 0, 2, 3},
+    { TXT_IDX_MENU_TASK_MANAGER_W, ',', UI_UD, &_upChar, 0, 2, 1},
+    { TXT_IDX_MENU_TASK_MANAGER_S, '.', UI_UD, &_downChar, 0, 2, 3},
     { TXT_IDX_MENU_TASK_MANAGER_A, 'a', UI_L, &_skillLeft, 0, 1, 2},
     { TXT_IDX_MENU_TASK_MANAGER_D, 'd', UI_R, &_skillRight, 0, 3, 2},
-    { TXT_IDX_MENU_TASK_MANAGER_PLUS, '+', UI_LR, &_prioDown, 0, 10, 1},
-    { TXT_IDX_MENU_TASK_MANAGER_MINUS, '-', UI_LR, &_prioUp, 0, 10, 3},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LR, &_backToPreviousMenu, 0, 1, 20},
+    { TXT_IDX_MENU_TASK_MANAGER_PLUS, '+', UI_UD, &_prioDown, 0, 10, 1},
+    { TXT_IDX_MENU_TASK_MANAGER_MINUS, '-', UI_UD, &_prioUp, 0, 10, 3},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_UD, &_backToPreviousMenu, 0, 1, 20},
 
     END_MENU_CHOICES
 };

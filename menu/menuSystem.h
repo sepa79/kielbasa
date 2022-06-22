@@ -26,6 +26,7 @@
 #define UI_L 8
 #define UI_LR 16
 #define UI_UD 32
+#define UI_HIDE 64
 
 /* Represents a single menu option */
 struct MenuOption {
@@ -46,7 +47,7 @@ struct MenuOption {
     byte y;
 };
 
-/* #define END_MENU_CHOICES {0x00, 0x00, nullptr, 0x00, 0x00, 0x00} */
+/* #define END_MENU_CHOICES {0x00, 0x00, 0x00, nullptr, 0x00, 0x00, 0x00} */
 #define END_MENU_CHOICES {0x00, 0x00, 0x00, nullptr, 0x00, 0x00, 0x00}
 
 // Loaders vector table used in each menu
