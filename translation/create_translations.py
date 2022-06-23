@@ -27,7 +27,10 @@ def underline_text_pl( text, mask ):
 
     for idx, c in enumerate( text ):
         if c in charset:
-            text[ idx ] = '0x%02x' % ( charset.index( c ) + 128 )
+            char = charset.index( c )
+            if mask[ idx ] == '-':
+                char += 128
+            text[ idx ] = '0x%02x' % char
     return ", ".join( text )
 
 # insert number or arrow from $80 charset before string
