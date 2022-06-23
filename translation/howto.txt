@@ -71,10 +71,10 @@
 {
   "jakas tam nazwa informacyjnie nigdzie nie uzywana":
   {
-    "pragma_label": "PoleWymagane-CapitalizedWords",
-    "array_label": "POLE_WYMAGANE_-_UPPERCASE_BEZ_SPACJI",
+    "pragma_label": "CapitalizedLabelsWithoutSpacesRequired",
+    "array_label": "UPPERCASE_STRING_WITH_UNDERLINES_REQUIRED",
     "contents": [
-      "id": "UPPERCASE_WYMAGANE",
+      "id": "UPPERCASE_REQUIRED",
       "pl":   "Anuluj",
       "pl_m": "------",                       <----- maska do underline
       "en": "Cancel"
@@ -98,10 +98,26 @@
 
 # Mnemonik "comment": "tutaj se jakiś komentarz blebleblaba"
 #
-# mnemoniki inne niż "menu_opt", "pl", "en", "common" i wymagane
+# mnemoniki inne niż "menu_opt", "pl", "en", "common" i inne wymagane
 # wymienione powyżej są całkowicie ignorowane i mogą posłużyć jako komentarze.
 
 
+############
+### BUGS ###
+############
+#
+# definiowanie mnemoników z tekstem o długości zerowej spowoduje błąd, np:
+#
+# "common": "",
+# "pl": "",
+# "en": ""
+# itp
+#
+# przykładowe ROZWIĄZANIE - jakikolwiek pojedynczy znak np spacja:
+# lub całkowite usunięcie mnemonika
+#
+# "common": " "
+#
 
 
 
