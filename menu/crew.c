@@ -21,15 +21,15 @@
 
 #pragma data ( crewGfxDay )
 __export const char crewGfx1[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/newTitleWIP.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/newTitleWIP.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/newTitleWIP.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/ramka1.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/ramka1.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/ramka1.kla"
 };
 #pragma data ( crewGfxNight )
 __export const char crewGfx2[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/newTitleWIP.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/newTitleWIP.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/newTitleWIP.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/ramka1.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/ramka1.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/ramka1.kla"
 };
 
 // menu code is in ROM - data in RAM
@@ -38,6 +38,26 @@ __export const char crewGfx2[] = {
 
 // column offset for printing character data
 #define COL_OFFSET_CHARACTERDATA 12
+
+static byte _faceSprBank = 0;
+
+static void _showStatsSprites() {
+    vic.spr_enable   = 0b00000001;
+    vic.spr_expand_x = 0b00000001;
+    vic.spr_expand_y = 0b00000001;
+    vic.spr_priority = 0b00000000;
+    vic.spr_mcolor0  = SPR_CHARACTER_PORTRAIT_MULTICOLOR_1;
+    vic.spr_mcolor1  = SPR_CHARACTER_PORTRAIT_MULTICOLOR_2;
+    vic.spr_multi    = 0b00000001;
+    vic.spr_msbx     = 0b00000000;
+
+    vic.spr_pos[0].x = 5*8+24;
+    vic.spr_pos[0].y = 5*8+50;
+    vic.spr_color[0] =  SpriteResources.CHARACTER_PORTRAITS[64*0 + 63];
+
+    GFX_1_SCR[OFFSET_SPRITE_PTRS] = SPR_BANK_CHARACTER_PORTRAIT1;
+
+}
 
 // Shows character data on the left side of the screen.
 static void _showCharacterDetails(byte character){
@@ -118,7 +138,7 @@ __export static const Loaders menuLoaders = {
     .loadMenuGfx     = &menuGfxLoader,
     .loadMenuSprites = &menuSpriteLoader,
     .showMenu        = &_menuHandler,
-    .showSprites     = &menuNoop,
+    .showSprites     = &_showStatsSprites,
     .updateMenu      = &menuNoop,
 }
 
