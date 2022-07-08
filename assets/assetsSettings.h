@@ -26,7 +26,7 @@
 
 // any sprites and data that are only copied into Vic bank as needed (can be outside VIC addressable memory)
 #define GFX_1_AUX_SRC_ADR 0x9000
-#define GFX_1_AUX_DST_ADR 0x9000
+// #define GFX_1_AUX_DST_ADR 0xa000
 
 // main font
 #define GFX_1_FNT_SRC_ADR 0xb000
@@ -35,12 +35,16 @@
 // screen and bitmap addresses
 #define GFX_1_SCR_ADR 0xc000
 #define GFX_1_BMP_ADR 0xe000
-#define SEC_SCR_ADR 0x8000
-#define SEC_BMP_ADR 0xa000
+// used for title screen
+#define SEC_SCR_ADR 0xc000
+#define SEC_BMP_ADR 0xe000
 
 // music
 #define MSX_SRC_ADR 0x8000
 #define MSX_DST_ADR 0x8000
+#define MSX_INIT $8000
+#define MSX_PLAY $8003
+#define MSX_ROM $36
 
 // *****************************
 // pointers made from the above

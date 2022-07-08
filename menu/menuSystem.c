@@ -9,7 +9,7 @@
 #pragma code ( code )
 #pragma data ( data )
 
-static byte _menuBank = 0;
+byte _menuBank = 0;
 
 // Switch bank, load any code into RAM if needed.
 // Default noop loader is _menuNoop().

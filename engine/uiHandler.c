@@ -3,7 +3,10 @@
 #include <c64/charwin.h>
 #include <c64/keyboard.h>
 #include <c64/memmap.h>
+#include <c64/easyflash.h>
 
+#include <engine/easyFlashBanks.h>
+#include <assets/mainGfx.h>
 #include <menu/menuSystem.h>
 #include <menu/optionsMenu.h>
 #include <menu/taskManagerMenu.h>
@@ -305,15 +308,19 @@ void copyCharToSprite(byte c, byte col, byte row){
     byte si = colOffset[col] + rowOffset[row];
     unsigned int pos = c;
     pos = pos * 7;
-    mmap_set(MMAP_NO_BASIC);
+    // mmap_set(MMAP_NO_BASIC);
+    // byte previousEfBank = eflash.bank;
+    eflash.bank = MAIN_GFX_BANK;
     do{
-        sprBankPointer[si] = CALENDAR_FONTS[pos+i];
+        sprBankPointer[si] = AuxResources.CALENDAR_FONTS[pos+i];
         i++;
         si++;
         si++;
         si++;
     } while (i<7);
-    mmap_set(MMAP_ROM);
+    // mmap_set(MMAP_ROM);
+    eflash.bank = _menuBank;
+    for(int i=0;i<500;i++){}
 }
 
 // Does not need to be called more than once - at new game

@@ -275,10 +275,10 @@ static void _updateFieldView(){
     _updateSprite(flt_storagePotato);
     sprBankPointer = SPR_LUPINE_UI;
     _updateSprite(flt_storageLupine);
-    sprBankPointer = SPR_CORN_UI;
-    _updateSprite(flt_storageCorn);
     sprBankPointer = SPR_WHEAT_UI;
     _updateSprite(flt_storageWheat);
+    sprBankPointer = SPR_CORN_UI;
+    _updateSprite(flt_storageCorn);
 
     _displayFieldList();
 }

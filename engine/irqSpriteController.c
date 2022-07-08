@@ -1,13 +1,14 @@
 #include <c64/vic.h>
 #include <c64/memmap.h>
+#include <c64/easyflash.h>
 
+#include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
 #include <engine/gameSettings.h>
 #include <assets/mainGfx.h>
 #include <character/character.h>
 
 volatile char isc_weatherSprite = 0;
-// volatile char characterSlotSpriteBank[4] = {SPR_CHARACTER_PORTRAIT1, SPR_CHARACTER_PORTRAIT2, SPR_CHARACTER_PORTRAIT3, SPR_CHARACTER_PORTRAIT4};
 char* characterSlotSpriteBarPtr[CHARACTER_SLOTS] = {
     SPR_CHARACTER_BAR1,
     SPR_CHARACTER_BAR2,
@@ -53,7 +54,8 @@ void setCharacterSlotPic(char charSlot, const char * picturePtr){
     if(characterSlots[charSlot] != NO_CHARACTER){
         char * charPicPtr = characterSlotSpritePicPtr[charSlot];
         char i = 0;
-        mmap_set(MMAP_NO_BASIC);
+        eflash.bank = MAIN_GFX_BANK;
+        // mmap_set(MMAP_NO_BASIC);
         do{
             charPicPtr[i]   = picturePtr[i];
             charPicPtr[i+1] = picturePtr[i+1];
@@ -63,7 +65,8 @@ void setCharacterSlotPic(char charSlot, const char * picturePtr){
             i++;
         } while (i<63);
         charPicPtr[63] = picturePtr[63];
-        mmap_set(MMAP_ROM);
+        // mmap_set(MMAP_ROM);
+        eflash.bank = _menuBank;
     }
 }
 
@@ -72,7 +75,8 @@ void setCharacterSlotIcon(char charSlot, const char * taskIconPtr){
     if(characterSlots[charSlot] != NO_CHARACTER){
         char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
         char i = 1;
-        mmap_set(MMAP_NO_BASIC);
+        eflash.bank = MAIN_GFX_BANK;
+        // mmap_set(MMAP_NO_BASIC);
         do{
             charBarPtr[i]   = taskIconPtr[i];
             charBarPtr[i+1] = taskIconPtr[i+1];
@@ -80,7 +84,8 @@ void setCharacterSlotIcon(char charSlot, const char * taskIconPtr){
             i++;
             i++;
         } while (i<63);
-        mmap_set(MMAP_ROM);
+        // mmap_set(MMAP_ROM);
+        eflash.bank = _menuBank;
     }
 }
 

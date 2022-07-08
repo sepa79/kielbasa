@@ -216,9 +216,9 @@ __interrupt static void controlIRQ1_C() {
     if(gms_enableMusic){
         _prevRomCfg = ((byte *)0x01)[0];
         __asm {
-            lda #$36
+            lda #MSX_ROM
             sta $01
-            jsr $8003
+            jsr MSX_PLAY
         };
         ((byte *)0x01)[0] = _prevRomCfg;
     }
@@ -371,9 +371,9 @@ void initRasterIRQ(){
                    //we don't want that to happen.
         
         // init music
-        lda #$36
+        lda #MSX_ROM
         sta $01
-        jsr $8000
+        jsr MSX_INIT
     }
     // vic.color_back++;
 

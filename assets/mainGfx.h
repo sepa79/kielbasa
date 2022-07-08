@@ -124,7 +124,13 @@ const struct AUX_GFX {
     char TASK_ICONS[64*14];
     // Portraits
     char PORTRAITS[64*4];
+    // sprite fonts
+    char CALENDAR_FONTS[59*7];
 }
+
+// #define TASK_ICONS  ((char *)GFX_1_AUX_DST_ADR)
+// #define PORTRAITS  ((char *)GFX_1_AUX_DST_ADR+64*14)
+// #define CALENDAR_FONTS  ((char *)GFX_1_AUX_DST_ADR+64*18)
 
 extern __export const struct SPRITES SpriteResources;
 extern __export const struct AUX_GFX AuxResources;
@@ -145,8 +151,8 @@ extern const char SPR_JOY_CURSOR_COLORS_ERROR[16];
 #pragma region( bankMainGfx1, GFX_1_SPR_SRC_ADR, GFX_1_AUX_SRC_ADR, , MAIN_GFX_BANK, { mainGfxSprites }, GFX_1_SPR_DST_ADR )
 #pragma region( bankMainGfx2, GFX_1_AUX_SRC_ADR, GFX_1_AUX_SRC_ADR + 0x1000, , MAIN_GFX_BANK, { mainGfxAux })
 // !!! $1000 gap here for Faces or some other sprites
-#pragma region( bankMainGfx3, GFX_1_FNT_SRC_ADR, 0xb800, , MAIN_GFX_BANK, { mainGfxFont }, GFX_1_FNT_DST_ADR )
-#pragma region( bankMainGfx4, 0xb800, 0xbfff, , MAIN_GFX_BANK, { mainGfxCode, mainGfxData } )
+#pragma region( bankMainGfx3, GFX_1_FNT_SRC_ADR, GFX_1_FNT_SRC_ADR + 0x0800, , MAIN_GFX_BANK, { mainGfxFont }, GFX_1_FNT_DST_ADR )
+#pragma region( bankMainGfx4, GFX_1_FNT_SRC_ADR + 0x0800, GFX_1_FNT_SRC_ADR + 0x0fff, , MAIN_GFX_BANK, { mainGfxCode, mainGfxData } )
 
 #pragma code ( mainGfxCode )
 #pragma data ( mainGfxData )
