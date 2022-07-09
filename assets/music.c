@@ -4,8 +4,8 @@
 #pragma data ( musicPlayer )
 
 __export const char music[] = {
-    #embed 0xffff 2 "assets/music/Piggy_8000.out"
-    // #embed 0xffff 2 "assets/music/FarmGame.prg"
+    // #embed 0xffff 2 "assets/music/Piggy_8000.out"
+    #embed 0xffff 2 "assets/music/FarmGame.prg"
 };
 
 #pragma code ( musicCode )

@@ -320,7 +320,7 @@ void copyCharToSprite(byte c, byte col, byte row){
     } while (i<7);
     // mmap_set(MMAP_ROM);
     eflash.bank = _menuBank;
-    for(int i=0;i<500;i++){}
+    // for(int i=0;i<500;i++){}
 }
 
 // Does not need to be called more than once - at new game
