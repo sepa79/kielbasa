@@ -309,7 +309,7 @@ void copyCharToSprite(byte c, byte col, byte row){
     unsigned int pos = c;
     pos = pos * 7;
     // mmap_set(MMAP_NO_BASIC);
-    // byte previousEfBank = eflash.bank;
+    mnu_alternateMenuBank = MAIN_GFX_BANK;
     eflash.bank = MAIN_GFX_BANK;
     do{
         sprBankPointer[si] = AuxResources.CALENDAR_FONTS[pos+i];
@@ -319,8 +319,8 @@ void copyCharToSprite(byte c, byte col, byte row){
         si++;
     } while (i<7);
     // mmap_set(MMAP_ROM);
-    eflash.bank = _menuBank;
-    // for(int i=0;i<500;i++){}
+    mnu_alternateMenuBank = NO_ALTERNATE_MENU_BANK;
+    eflash.bank = mnu_currentMenuBank;
 }
 
 // Does not need to be called more than once - at new game

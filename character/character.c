@@ -14,15 +14,15 @@ const byte allChars_skills[CHARACTER_COUNT][SKILL_COUNT]   = { {3,3,4,3}, {2,6,1
 byte allChars_prios[CHARACTER_COUNT][SKILL_COUNT]          = { {1,2,3,4}, {3,3,3,3}, {3,3,3,3}, {3,3,3,3}};
 const byte allChars_salary[CHARACTER_COUNT]                = { 0, 1, 2, 2};
 bool allChars_busy[CHARACTER_COUNT]                        = {false, false, false, false};
-byte allChars_slot[CHARACTER_COUNT]                    = {NO_SLOT, NO_SLOT, NO_SLOT, NO_SLOT};
+byte allChars_slot[CHARACTER_COUNT]                        = {NO_SLOT, NO_SLOT, NO_SLOT, NO_SLOT};
 
 byte characterSlots[CHARACTER_SLOTS];
 
 static void _setCharacterToSlot(byte charIdx, byte charSlot){
     characterSlots[charSlot] = charIdx;
-    allChars_slot[charIdx] = charSlot;
 
     if(charIdx != NO_CHARACTER){
+        allChars_slot[charIdx] = charSlot;
         setCharacterSlotPic(charSlot, allChars_picture[charIdx]);
         setCharacterSlotIcon(charSlot, SPR_TASK_MIA);
         drawBattery(charSlot, allChars_energy[charIdx]);

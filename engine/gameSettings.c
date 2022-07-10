@@ -16,4 +16,4 @@ volatile bool gms_textMode = false;
 
 volatile bool gms_disableTimeControls = false;
 volatile bool gms_enableMenuSprites = true;
-volatile bool gms_enableMusic = false;
+volatile bool gms_enableMusic = true;

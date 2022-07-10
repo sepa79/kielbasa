@@ -9,6 +9,7 @@
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
 #include <engine/uiHandler.h>
+#include <engine/gameSettings.h>
 #include <tasks/taskManager.h>
 #include <character/character.h>
 #include <tick/calendar.h>

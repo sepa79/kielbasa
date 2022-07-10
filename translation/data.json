@@ -515,16 +515,18 @@
         "id": "WELCOME",
         "prefix": "SB",
         "pl": [
-          "    Witaj! +/-/Space - kontrola czasu    Kielbasa Empire - wersja bardzo alpha.    ",
-          "Credits:    ",
-          "    Wsparcie programistyczne i kompilatory: KickC - Rex/Camelot, Oscar64 - DrMortalWombat    ",
-          "    Gra: Kod - Sepa, manianac, Gfx - Juras, Model3 & Saturnz, Msx - Taurus, Support - Angry Andy, Fonts - Sepa    "
+          "    Witaj! +/-/Space - kontrola czasu    Kielbasa Empire - wersja bardzo alpha. ",
+          "    Credits: ",
+          "    Wsparcie programistyczne i kompilator: Oscar64 - DrMortalWombat ",
+          "    Gra: Kod - Sepa, manianac, Gfx - Juras, Model3 & Saturnz, Msx - Crisps, Support - Angry Andy, Fonts - Sepa ",
+          "    Specialne podziekowania dla Rex/Camelot za pomoc przy KickC "
         ],
         "en": [
-          "    Hello! +/-/Space - time control    Kielbasa Empire - very early alpha.    ",
-          "Credits:    ",
-          "    Code support and compilers: KickC - Rex/Camelot    Oscar64 - DrMortalWombat    ",
-          "Game: Code - Sepa, manianac, Gfx - Juras, Model3 & Saturnz, Msx - Taurus, Support - Angry Andy, Fonts - Sepa "
+          "    Hello! +/-/Space - time control    Kielbasa Empire - very early alpha. ",
+          "    Credits: ",
+          "    Code support and compiler: Oscar64 - DrMortalWombat ",
+          "    Game: Code - Sepa, manianac, Gfx - Juras, Model3 & Saturnz, Msx - Taurus, Support - Angry Andy, Fonts - Sepa ",
+          "    Special thanks for KicK support: KickC - Rex/Camelot,"
         ]
       },
       {
@@ -536,15 +538,3 @@
     ]
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-

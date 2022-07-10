@@ -2,6 +2,7 @@
 #include <c64/memmap.h>
 #include <c64/easyflash.h>
 
+#include <menu/menuSystem.h>
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
 #include <engine/gameSettings.h>
@@ -54,6 +55,7 @@ void setCharacterSlotPic(char charSlot, const char * picturePtr){
     if(characterSlots[charSlot] != NO_CHARACTER){
         char * charPicPtr = characterSlotSpritePicPtr[charSlot];
         char i = 0;
+        mnu_alternateMenuBank = MAIN_GFX_BANK;
         eflash.bank = MAIN_GFX_BANK;
         // mmap_set(MMAP_NO_BASIC);
         do{
@@ -66,7 +68,8 @@ void setCharacterSlotPic(char charSlot, const char * picturePtr){
         } while (i<63);
         charPicPtr[63] = picturePtr[63];
         // mmap_set(MMAP_ROM);
-        eflash.bank = _menuBank;
+        mnu_alternateMenuBank = NO_ALTERNATE_MENU_BANK;
+        eflash.bank = mnu_currentMenuBank;
     }
 }
 
@@ -75,6 +78,7 @@ void setCharacterSlotIcon(char charSlot, const char * taskIconPtr){
     if(characterSlots[charSlot] != NO_CHARACTER){
         char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
         char i = 1;
+        mnu_alternateMenuBank = MAIN_GFX_BANK;
         eflash.bank = MAIN_GFX_BANK;
         // mmap_set(MMAP_NO_BASIC);
         do{
@@ -85,7 +89,8 @@ void setCharacterSlotIcon(char charSlot, const char * taskIconPtr){
             i++;
         } while (i<63);
         // mmap_set(MMAP_ROM);
-        eflash.bank = _menuBank;
+        mnu_alternateMenuBank = NO_ALTERNATE_MENU_BANK;
+        eflash.bank = mnu_currentMenuBank;
     }
 }
 

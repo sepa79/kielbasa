@@ -340,8 +340,6 @@ __interrupt static void controlIRQ2_C() {
     }
     // indicate frame position
     gms_framePos = FRAME_TOP_BORDER;
-
-
     // vic.color_border--;
 }
 
@@ -373,6 +371,7 @@ void initRasterIRQ(){
         // init music
         lda #MSX_ROM
         sta $01
+        lda #$01
         jsr MSX_INIT
     }
     // vic.color_back++;

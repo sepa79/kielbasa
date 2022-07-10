@@ -1,5 +1,5 @@
 #!/bin/python3
-
+# -*- coding: utf-8 -*-
 import json
 
 # Load given filename
