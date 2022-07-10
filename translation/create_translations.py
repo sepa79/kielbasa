@@ -7,7 +7,7 @@ def load_charset( filename ):
     return  open( filename, "r").read().replace( '\n', '' )
 
 # load pl charset into variable
-# char position is directly translatego into byte value
+# char position is directly translated into byte value
 # first char is 0x00, second is 0x01, third 0x02
 # '\n' - newline characters are stripped
 charset = load_charset( "charset_pl.txt" )
