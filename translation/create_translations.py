@@ -4,7 +4,7 @@ import json
 
 # Load given filename
 def load_charset( filename ):
-    return  open( filename, "r").read().replace( '\n', '' )
+    return  open( filename, "r", encoding="utf-8").read().replace( '\n', '' )
 
 # load pl charset into variable
 # char position is directly translated into byte value
