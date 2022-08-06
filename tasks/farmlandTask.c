@@ -4,6 +4,12 @@
 #include <tasks/taskManager.h>
 #include <assets/assetsSettings.h>
 
+// 9 as per skill range, + 3 on each 'side' of the scale for possible bonuses/penalties
+const byte fieldPlantedTable[9+6] = {
+    2, 5, 8,
+    10, 12, 13, 15, 17, 20, 25, 34, 50,
+    66, 85, 110
+};
 
 // for now anybody can do it.
 // later: energy used should depend on skills and stats, and one can't finish it if he runs out of energy
@@ -18,12 +24,22 @@ void sowFieldTask(byte taskId){
     byte fieldId = task_params[taskId][1];
 
     if(task_status[taskId] == TASK_STATUS_NEW){
+        // how much can be sown depends on:
+        // - how many plant seeds are left (end if 0)
+        // - field size
+        // - skill of the farmer
+        // Formula:
+        // field_stage_planted += how much was planted (skill based)
+        // task_done += how much % was covered (skill based) 
+        //              (when reach 100% task is done, unless there will be a shortage of seeds - in that case we end early)
+        // seeds left -= seeds used (based on skill + Int)
+
         field_plantId[fieldId] = plantId;
         field_stage[fieldId]   = PLANT_STAGE_SPROUT;
         field_timer[fieldId]   = plant_stage1timer[plantId];
-        field_planted[fieldId] = 100; // in percent
-        field_grown[fieldId]   = 0;
-        field_ready[fieldId]   = 0;
+        field_stage_planted[fieldId] = 100; // in percent*field size
+        field_stage_grown[fieldId]   = 0;
+        field_stage_ready[fieldId]   = 0; // reap takes this / SOME_DIVIDER
 
         // task done, set status & remove
         task_status[taskId] = TASK_STATUS_DONE;

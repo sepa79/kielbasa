@@ -19,6 +19,7 @@ byte task_minReqStat[TASK_ARRAY_SIZE][3];
 byte task_minReqSkill[TASK_ARRAY_SIZE][4];
 byte task_reqType[TASK_ARRAY_SIZE];
 byte task_worker[TASK_ARRAY_SIZE];
+byte task_done[TASK_ARRAY_SIZE];
 const char * task_icon[TASK_ARRAY_SIZE];
 
 // helper variable, stores last free task entry to speed things up
@@ -35,15 +36,9 @@ void initTaskList() {
         task_params[i][2] = 0;
         task_params[i][3] = 0;
         task_params[i][4] = 0;
-        task_minReqStat[i][0] = 0;
-        task_minReqStat[i][1] = 0;
-        task_minReqStat[i][2] = 0;
-        task_minReqSkill[i][0] = 0;
-        task_minReqSkill[i][1] = 0;
-        task_minReqSkill[i][2] = 0;
-        task_minReqSkill[i][3] = 0;
         task_reqType[i] = NO_TASK;
         task_worker[i] = NO_CHARACTER;
+        task_done[i] = 0;
         strcpy(task_desc[i], TXT[TXT_IDX_TASK_EMPTY_DESCRIPTION]);
         task_icon[i] = SPR_TASK_MIA;
         task_status[i] = TASK_STATUS_NOTASK;
@@ -71,20 +66,13 @@ bool addTask(struct Task * task){
     task_params[nextFreeTask][2] = task->params[2];
     task_params[nextFreeTask][3] = task->params[3];
     task_params[nextFreeTask][4] = task->params[4];
-    task_minReqStat[nextFreeTask][STAT_INT] = task->minReqStat[STAT_INT];
-    task_minReqStat[nextFreeTask][STAT_STR] = task->minReqStat[STAT_STR];
-    task_minReqStat[nextFreeTask][STAT_CUN] = task->minReqStat[STAT_CUN];
-    task_minReqSkill[nextFreeTask][SKILL_BREEDING] = task->minReqSkill[SKILL_BREEDING];
-    task_minReqSkill[nextFreeTask][SKILL_FARMING]  = task->minReqSkill[SKILL_FARMING];
-    task_minReqSkill[nextFreeTask][SKILL_BUTCHERY] = task->minReqSkill[SKILL_BUTCHERY];
-    task_minReqSkill[nextFreeTask][SKILL_TRADE]    = task->minReqSkill[SKILL_TRADE];
     task_reqType[nextFreeTask] = task->reqType;
     strcpy(task_desc[nextFreeTask], task->desc);
     task_icon[nextFreeTask] = task->icon;
     task_status[nextFreeTask] = task->status;
     // assigned later during ticks
     task_worker[nextFreeTask] = NO_CHARACTER;
-
+    task_done[nextFreeTask] = 0;
     return true;
 }
 

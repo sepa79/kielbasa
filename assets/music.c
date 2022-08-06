@@ -5,7 +5,8 @@
 
 __export const char music[] = {
     // #embed 0xffff 2 "assets/music/Piggy_8000.out"
-    #embed 0xffff 2 "assets/music/FarmGame.out"
+    // #embed 0xffff 2 "assets/music/FarmGame.out"
+    #embed 0xffff 136 "assets/music/FarmGame.sid"
 };
 
 #pragma code ( musicCode )
@@ -18,7 +19,7 @@ void loadMusic(){
 #repeat
          ((volatile char*) MSX_DST_ADR)[y + i] = ((char*) MSX_SRC_ADR)[y + i];
 #assign y y + 256
-#until y == 0x1000
+#until y == 0x2000
         i++;
     } while (i != 0);
 

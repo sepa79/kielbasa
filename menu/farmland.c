@@ -256,15 +256,15 @@ static void _displayFieldList(){
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+22, 8+i, str, col);
 
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+25, 8+i, TBL_V, VCOL_YELLOW);
-        sprintf(str, "%3u", field_planted[i]);
+        sprintf(str, "%3u", field_stage_planted[i]);
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+26, 8+i, str, col);
 
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+29, 8+i, TBL_V, VCOL_YELLOW);
-        sprintf(str, "%3u", field_grown[i]);
+        sprintf(str, "%3u", field_stage_grown[i]);
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+30, 8+i, str, col);
 
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+33, 8+i, TBL_V, VCOL_YELLOW);
-        sprintf(str, "%3u", field_ready[i]);
+        sprintf(str, "%3u", field_stage_ready[i]);
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+34, 8+i, str, col);
     }
 }
@@ -330,9 +330,9 @@ static void _sowPlant(){
     field_plantId[_currentField] = _currentPlant;
     field_stage[_currentField]   = PLANT_STAGE_SOW_TASK_ASSIGNED;
     field_timer[_currentField]   = 0;
-    field_planted[_currentField] = 0; // in percent
-    field_grown[_currentField]   = 0;
-    field_ready[_currentField]   = 0;
+    field_stage_planted[_currentField] = 0; // in percent
+    field_stage_grown[_currentField]   = 0;
+    field_stage_ready[_currentField]   = 0;
     _displayFieldList();
 
     // create Task
@@ -348,13 +348,6 @@ static void _sowPlant(){
     task.params[2] = 0;
     task.params[3] = 0;
     task.params[4] = 0;
-    task.minReqStat[STAT_INT] = 1;
-    task.minReqStat[STAT_STR] = 2;
-    task.minReqStat[STAT_CUN] = 1;
-    task.minReqSkill[SKILL_BREEDING] = 0;
-    task.minReqSkill[SKILL_FARMING]  = 2;
-    task.minReqSkill[SKILL_BUTCHERY] = 0;
-    task.minReqSkill[SKILL_TRADE]    = 0;
     task.reqType = SKILL_FARMING;
     task.icon = SPR_TASK_FARM1;
     task.status = TASK_STATUS_NEW;

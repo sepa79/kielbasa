@@ -6,7 +6,8 @@
 #pragma data ( titleScreenGfx )
 
 __export const char titleScreen[] = {
-    #embed 0xffff 2 "assets/multicolorGfx/kielbasaEmpire.kla"
+    #embed 0xffff 2 "assets/multicolorGfx/title150622.kla"
+    // #embed 0xffff 2 "assets/multicolorGfx/kielbasaEmpire.kla"
 };
 
 #pragma code ( titleScreenCode )

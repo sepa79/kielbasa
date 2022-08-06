@@ -26,11 +26,11 @@ extern byte field_plantId[4]   ;
 // which growth stage is the plant in
 extern byte field_stage[4]     ;
 // how much was planted in stage 1
-extern byte field_planted[4]   ;
+extern int field_stage_planted[4]   ;
 // how much was grown in stage 2
-extern byte field_grown[4]     ;
+extern int field_stage_grown[4]     ;
 // how much has rippened in stage 3
-extern byte field_ready[4]     ;
+extern int field_stage_ready[4]     ;
 // timer till the end of current stage (days)
 extern byte field_timer[4]     ;
 
@@ -44,6 +44,7 @@ extern byte field_timer[4]     ;
 // TXT_PLANT_NAME_WHEAT,
 // TXT_PLANT_NAME_CORN,
 static const byte plant_taskDscIdx[5]             = { TXT_IDX_TASK_EMPTY_DESCRIPTION, TXT_IDX_TASK_DSC_FARMLAND_POTATO, TXT_IDX_TASK_DSC_FARMLAND_LUPINE, TXT_IDX_TASK_DSC_FARMLAND_WHEAT, TXT_IDX_TASK_DSC_FARMLAND_CORN};
+// static const byte plant_plantingTimeMg[5]         = { 0, 20, 20,  5,  5};
 static const signed char plant_stage1minTemp[5]   = { 0,  8,  1, -5, -5};
 static const signed char plant_stage1maxTemp[5]   = { 0, 20, 15, 15, 30};
 static const byte plant_stage1minRain[5]          = { 0, 20, 20,  5,  5};
@@ -55,6 +56,7 @@ static const signed char plant_stage2maxTemp[5]   = { 0, 26, 18, 25, 30};
 static const byte plant_stage2minRain[5]          = { 0, 10, 15, 10, 10};
 static const byte plant_stage2maxRain[5]          = { 0, 30, 40, 40, 40};
 static const byte plant_stage2timer[5]            = { 0, 60, 70, 90, 40};
+// static const byte plant_stage2growthFactor[5]       = { 0, 4, 70, 2, 40};
 static const byte plant_stage2upkeep[5]           = { 0,  0,  0,  0,  0};
 static const signed char plant_stage3minTemp[5]   = { 0, 15, 15, 20, 10};
 static const signed char plant_stage3maxTemp[5]   = { 0, 22, 20, 30, 30};

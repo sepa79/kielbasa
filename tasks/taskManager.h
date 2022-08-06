@@ -23,12 +23,13 @@ extern void (*task_codeRef[TASK_ARRAY_SIZE])(byte);
 extern byte task_nameIdx[TASK_ARRAY_SIZE];
 extern byte task_desc[TASK_ARRAY_SIZE][19];
 extern byte task_params[TASK_ARRAY_SIZE][TASK_PARAMS_SIZE];
-extern byte task_minReqStat[TASK_ARRAY_SIZE][3];
-extern byte task_minReqSkill[TASK_ARRAY_SIZE][4];
 // which skill is used for this task, 0-3
 extern byte task_reqType[TASK_ARRAY_SIZE];
 // who does it (when started, also indicates that task is worked on)
 extern byte task_worker[TASK_ARRAY_SIZE];
+// percentage done - shown in the table - does not need to go to 100, its just an indicator
+// e.g. sowing fields can 'finish' at any percent if there are not enough seeds
+extern byte task_percentDone[TASK_ARRAY_SIZE];
 // task icon
 extern const char * task_icon[TASK_ARRAY_SIZE];
 // one of the task statuses, tells the task handler why it is called
@@ -44,9 +45,6 @@ struct Task {
     byte desc[19];
     byte params[TASK_PARAMS_SIZE];
 
-    byte minReqStat[3];
-    
-    byte minReqSkill[4];
     byte reqType;
     const char * icon;
     byte status;

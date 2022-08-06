@@ -15,9 +15,9 @@ __export byte field_area[4]      = {0,0,0,0};
 __export byte field_fertility[4] = {127,127,127,127};
 __export byte field_plantId[4]   = {0,0,0,0};
 __export byte field_stage[4]     = {0,0,0,0};
-__export byte field_planted[4]   = {0,0,0,0};
-__export byte field_grown[4]     = {0,0,0,0};
-__export byte field_ready[4]     = {0,0,0,0};
+__export int field_stage_planted[4]   = {0,0,0,0};
+__export int field_stage_grown[4]     = {0,0,0,0};
+__export int field_stage_ready[4]     = {0,0,0,0};
 __export byte field_timer[4]     = {0,0,0,0};
 
 void initFarmland(){
@@ -75,22 +75,22 @@ void _fieldStateSprout(byte fieldId){
     // printf("+ rain diff %-5u ", diff);
 
     if(diff != 0){
-        byte planted = field_planted[fieldId];
+        byte planted = field_stage_planted[fieldId];
         if(diff < planted) {
-            field_planted[fieldId] = planted - diff;
+            field_stage_planted[fieldId] = planted - diff;
         } else {
-            field_planted[fieldId] = 0;
+            field_stage_planted[fieldId] = 0;
         }
     }
 
     field_timer[fieldId]--;
     if(field_timer[fieldId] == 0){
-        if(field_planted[fieldId] == 0){
+        if(field_stage_planted[fieldId] == 0){
             // everything died, end growing cycle
             field_stage[fieldId] = PLANT_STAGE_NONE;
         } else {
             field_stage[fieldId] = PLANT_STAGE_GROWTH;
-            field_grown[fieldId] = field_planted[fieldId];
+            field_stage_grown[fieldId] = field_stage_planted[fieldId];
             field_timer[fieldId] = plant_stage2timer[plantId];
         }
     }
@@ -113,7 +113,7 @@ void _fieldStateGrowth(byte fieldId){
     // printf("+ rain diff %-5u ", diff);
 
     if(diff == 0){
-        field_grown[fieldId]++;
+        field_stage_grown[fieldId]++;
     }
 
     field_timer[fieldId]--;
@@ -140,9 +140,9 @@ void _fieldStateRipen(byte fieldId){
     // printf("temp + rain diff %-5u ", diff);
 
     if(diff == 0){
-        field_ready[fieldId] += 10;
-        if(field_ready[fieldId] > 100)
-            field_ready[fieldId] = 100;
+        field_stage_ready[fieldId] += 10;
+        if(field_stage_ready[fieldId] > 100)
+            field_stage_ready[fieldId] = 100;
     }
 
     field_timer[fieldId]--;
