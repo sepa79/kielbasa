@@ -38,19 +38,20 @@ __interrupt void msxIrq1(){
 	}
 	else if (CrossDelay > 0)
 		CrossDelay--;
-    
+
+    copyCannonL60();
+
     // play music
     __asm {
-        jsr MSX_PLAY
+        // jsr MSX_PLAY
         dec $d020
     }
 }
 
 __interrupt void msxIrq2(){
     vic.color_border++;
-
     __asm {
-        jsr MSX_PLAY
+        // jsr MSX_PLAY
         dec $d020
     }
 }

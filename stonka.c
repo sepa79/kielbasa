@@ -31,13 +31,13 @@ RIRQCode bottom, top;
 __export const char GFX_FILE[] = {
     #embed 0xffff 2 "assets/multicolorGfx/dziao_pion_2.kla"
 };
-// __export const char CANNON_FILE[] = {
-//     #embed 0xffff 2 "assets/multicolorGfx/dzialoAnim.kla"
-// };
-__export const char MSX_FILE[] = {
-    // #embed 0xffff 2 "assets/music/FarmGame.out"
-    #embed 0xffff 136 "assets/music/FarmGame.sid"
+__export const char CANNON_FILE[] = {
+    #embed 0xffff 2 "assets/multicolorGfx/dzialoAnim.kla"
 };
+// __export const char MSX_FILE[] = {
+//     // #embed 0xffff 2 "assets/music/FarmGame.out"
+//     #embed 0xffff 136 "assets/music/FarmGame.sid"
+// };
 
 #define STONKA_KOALA_BMP GFX_FILE
 #define STONKA_KOALA_SCR ((char *)GFX_FILE + 0x1f40)
@@ -287,30 +287,63 @@ void loadGfx(){
     } while (i != 0);
 }
 
-void loadMusic(){
-    char i = 0;
-    do {
-#assign _y 0
-#repeat
-         ((volatile char*) MSX_DST_ADR)[_y + i] = ((char*) MSX_FILE)[_y + i];
-#assign _y _y + 256
-#until _y == 0x2000
-        i++;
-    } while (i != 0);
+// void loadMusic(){
+//     char i = 0;
+//     do {
+// #assign _y 0
+// #repeat
+//          ((volatile char*) MSX_DST_ADR)[_y + i] = ((char*) MSX_FILE)[_y + i];
+// #assign _y _y + 256
+// #until _y == 0x2000
+//         i++;
+//     } while (i != 0);
 
-}
+// }
 
 // void copyCannonUp(){
 
 // }
 // void copyCannonL60(){
 //     // load bitmap - 8x5 chars square, starting 0,0
+// #assign _y 0
+// #repeat
+// #assign _x 0
+// #repeat
+//             GFX_1_BMP[_y + _x] = STONKA_ANIM_BMP[_y + _x];
+// #assign _x _x + 1
+// #until _x == 8*8
+// #assign _y _y + 40*8
+// #until _y == 40*8*5
+
 //     for(char y=0; y<5; y++){
-//         #pragma unroll(full)
-//         for(char x=0; x<8*8; x++)
-//             GFX_1_BMP[y*40*8 + x] = STONKA_ANIM_BMP[y*40*8 + x];
+//         // #pragma unroll(full)
+//         for(char x=0; x<8; x++){
+//             GFX_1_SCR[y*40 + x] = STONKA_ANIM_SCR[y*40 + x];
+//             COLOR_RAM[y*40 + x] = STONKA_ANIM_COL[y*40 + x];
+//         }
 //     }
 // }
+
+void copyCannonL60(){
+    // load bitmap - 8x5 chars square, starting 0,0
+#assign _y 0
+#repeat
+#assign _x 0
+#repeat
+            GFX_1_BMP[_y + _x] = STONKA_ANIM_BMP[_y + _x];
+#assign _x _x + 1
+#until _x == 8*8
+#assign _y _y + 40*8
+#until _y == 40*8*5
+
+    for(char y=0; y<5; y++){
+        // #pragma unroll(full)
+        for(char x=0; x<8; x++){
+            GFX_1_SCR[y*40 + x] = STONKA_ANIM_SCR[y*40 + x];
+            COLOR_RAM[y*40 + x] = STONKA_ANIM_COL[y*40 + x];
+        }
+    }
+}
 
 // ---------------------------------------------------------------------------------------------
 // DrMortalWombat's great screen writing code
@@ -478,12 +511,12 @@ int main(void){
     // screen off
     vic.ctrl1 = VIC_CTRL1_BMM | VIC_CTRL1_RSEL | 3;
 
-    loadMusic();
-    __asm {
-        // init music
-        lda #$02
-        jsr MSX_INIT
-    }
+    // loadMusic();
+    // __asm {
+    //     // init music
+    //     lda #$02
+    //     jsr MSX_INIT
+    // }
 
     // Activate trampoline
     mmap_trampoline();
@@ -497,7 +530,6 @@ int main(void){
     // initialize raster IRQ
     rirq_init(true);
 
-    loadGfx();
 
     // Top - MSX
     rirq_build(&top, 1);
@@ -505,9 +537,9 @@ int main(void){
     rirq_set(0, IRQ1RAS, &top);
 
     // Bottom - MSX, Joy
-    rirq_build(&bottom, 1);
-    rirq_call(&bottom, 0, msxIrq2);
-    rirq_set(1, IRQ2RAS, &bottom);
+    // rirq_build(&bottom, 1);
+    // rirq_call(&bottom, 0, msxIrq2);
+    // rirq_set(1, IRQ2RAS, &bottom);
 
     // sort the raster IRQs
     rirq_sort();
@@ -515,6 +547,7 @@ int main(void){
     // start raster IRQ processing
     rirq_start();
 
+    loadGfx();
     // vic.ctrl2 = VIC_CTRL2_MCM | VIC_CTRL2_CSEL | 0;
     // cia2.pra = dd00_gfx1;
     // vic.memptr = d018_gfx1;
@@ -535,7 +568,7 @@ int main(void){
     // Init cross hair sprite
     spr_init(GFX_1_SCR);
     spr_set(0, true, CrossX + 14, CrossY + 40, 16, 1, false, false, false);
-    // copyCannonL60();
+    copyCannonL60();
     // start game state machine
 	// game_state(GS_READY);
 
