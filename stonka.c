@@ -1,3 +1,4 @@
+#include <c64/keyboard.h>
 #include <c64/vic.h>
 #include <c64/memmap.h>
 #include <c64/sprites.h>
@@ -28,8 +29,11 @@ RIRQCode bottom, top;
 // ---------------------------------------------------------------------------------------------
 
 __export const char GFX_FILE[] = {
-    #embed 0xffff 2 "assets/multicolorGfx/88_31.07.22.kla"
+    #embed 0xffff 2 "assets/multicolorGfx/dziao_pion_2.kla"
 };
+// __export const char CANNON_FILE[] = {
+//     #embed 0xffff 2 "assets/multicolorGfx/dzialoAnim.kla"
+// };
 __export const char MSX_FILE[] = {
     // #embed 0xffff 2 "assets/music/FarmGame.out"
     #embed 0xffff 136 "assets/music/FarmGame.sid"
@@ -38,6 +42,9 @@ __export const char MSX_FILE[] = {
 #define STONKA_KOALA_BMP GFX_FILE
 #define STONKA_KOALA_SCR ((char *)GFX_FILE + 0x1f40)
 #define STONKA_KOALA_COL ((char *)GFX_FILE + 0x2328)
+#define STONKA_ANIM_BMP CANNON_FILE
+#define STONKA_ANIM_SCR ((char *)CANNON_FILE + 0x1f40)
+#define STONKA_ANIM_COL ((char *)CANNON_FILE + 0x2328)
 
 char SPR_FILE[] = {
     0x00, 0x00, 0x00,
@@ -240,43 +247,42 @@ char SPR_FILE[] = {
 };
 
 void screen_init(void){
+    vic.color_border = VCOL_BLACK;
+    vic.color_back  = VCOL_BLACK;
     // load colors
     char i = 0;
     do {
-#assign y 0
+#assign _y 0
 #repeat
-        GFX_1_SCR[y + i] = STONKA_KOALA_SCR[y + i];
-        COLOR_RAM[y + i] = STONKA_KOALA_COL[y + i];
-#assign y y + 256
-#until y == 1024
+        GFX_1_SCR[_y + i] = STONKA_KOALA_SCR[_y + i];
+        COLOR_RAM[_y + i] = STONKA_KOALA_COL[_y + i];
+#assign _y _y + 256
+#until _y == 1024
         i++;
     } while (i != 0);
 
     // load bitmap
     i = 0;
     do {
-#assign y 0
+#assign _y 0
 #repeat
-        GFX_1_BMP[y + i] = STONKA_KOALA_BMP[y + i];
-#assign y y + 256
-#until y == 8192
+        GFX_1_BMP[_y + i] = STONKA_KOALA_BMP[_y + i];
+#assign _y _y + 256
+#until _y == 8192
         i++;
     } while (i != 0);
 }
 
 void loadGfx(){
-    vic.color_border = VCOL_BLACK;
-    vic.color_back  = VCOL_BLACK;
-
     screen_init();
     // sprites
     char i = 0;
     do {
-#assign y 0
+#assign _y 0
 #repeat
-        GFX_1_SPR[y + i] = SPR_FILE[y + i];
-#assign y y + 0x100
-#until y < 0x40*0x09
+        GFX_1_SPR[_y + i] = SPR_FILE[_y + i];
+#assign _y _y + 0x100
+#until _y < 0x40*0x09
         i++;
     } while (i != 0);
 }
@@ -284,26 +290,38 @@ void loadGfx(){
 void loadMusic(){
     char i = 0;
     do {
-#assign y 0
+#assign _y 0
 #repeat
-         ((volatile char*) MSX_DST_ADR)[y + i] = ((char*) MSX_FILE)[y + i];
-#assign y y + 256
-#until y == 0x2000
+         ((volatile char*) MSX_DST_ADR)[_y + i] = ((char*) MSX_FILE)[_y + i];
+#assign _y _y + 256
+#until _y == 0x2000
         i++;
     } while (i != 0);
 
 }
+
+// void copyCannonUp(){
+
+// }
+// void copyCannonL60(){
+//     // load bitmap - 8x5 chars square, starting 0,0
+//     for(char y=0; y<5; y++){
+//         #pragma unroll(full)
+//         for(char x=0; x<8*8; x++)
+//             GFX_1_BMP[y*40*8 + x] = STONKA_ANIM_BMP[y*40*8 + x];
+//     }
+// }
 
 // ---------------------------------------------------------------------------------------------
 // DrMortalWombat's great screen writing code
 // ---------------------------------------------------------------------------------------------
 // Charset assets
 const char MissileChars[] = {
-#embed "assets/missilechars.bin"    
+#embed "assets/missilechars.64c"    
 };
 // Display bitmap
 Bitmap            sbm;
-const ClipRect    scr = { 0, 0, 320, 200 };
+// const ClipRect    scr = { 0, 0, 320, 200 };
 
 // Expand an 8x8 charactor to 16x16 on screen
 void char_put(char cx, char cy, char c, char color){
@@ -313,146 +331,147 @@ void char_put(char cx, char cy, char c, char color){
     // Loop over all pixel
     for(char y=0; y<8; y++)
     {
-        // char cl = sp[y];
-        // for(char x=0; x<8; x++)
-        // {
-        //     // Draw two pixel if bit is set
-        //     if (cl & 128)
-        //     {
-        //         bmmc_put(&sbm, cx + 2 * x, cy + 2 * y + 0, color);
-        //         bmmc_put(&sbm, cx + 2 * x, cy + 2 * y + 1, color);
-        //     }
+        char cl = sp[y];
+        for(char x=0; x<8; x++)
+        {
+            // Draw two pixel if bit is set
+            if (cl & 128)
+            {
+                bmmc_put(&sbm, cx + 2 * x, cy + 2 * y + 0, color);
+                bmmc_put(&sbm, cx + 2 * x, cy + 2 * y + 1, color);
+            }
 
-        //     // Next bit
-        //     cl <<= 1;
-        // }
+            // Next bit
+            cl <<= 1;
+        }
     }
 }
 
 // Write a zero terminated string on screen
 void char_write(char cx, char cy, const char * s, char color)
 {
-    // // Loop over all characters
-    // while (*s)
-    // {
-    //     char_put(cx, cy, *s, color);
-    //     s++;
-    //     cx += 16;
-    // }
+    // Loop over all characters
+    while (*s)
+    {
+        char_put(cx, cy, *s, color);
+        s++;
+        cx += 16;
+    }
 }
 
 // ---------------------------------------------------------------------------------------------
 // Game code
 // ---------------------------------------------------------------------------------------------
 
-enum GameState
-{
-    GS_READY,     // Getting ready
-    GS_PLAYING,   // Playing the game
-    GS_END        // Wait for restart
-};
+// enum GameState
+// {
+//     GS_READY,     // Getting ready
+//     GS_PLAYING,   // Playing the game
+//     GS_END        // Wait for restart
+// };
 
-// State of the game
-struct Game
-{
-    GameState state;    
-    byte      score, count;
+// // State of the game
+// struct Game
+// {
+//     GameState state;    
+//     byte      score, count;
 
-} TheGame;    // Only one game, so global variable
+// } TheGame;    // Only one game, so global variable
 
 
-void game_state(GameState state)
-{
+// void game_state(GameState state)
+// {
 
-    TheGame.state = state;
+//     TheGame.state = state;
 
-    switch(state)
-    {
-    case GS_READY:    
-        // Start of new game
-        // score_reset();
-        screen_init();
-        char_write(40, 100, s"READY PLAYER 1", 3);
-        break;
+//     switch(state)
+//     {
+//     case GS_READY:    
+//         // Start of new game
+//         // score_reset();
+//         screen_init();
+//         // char_write(40, 100, s"READY PLAYER 1", 3);
+//         TheGame.count = 150;
+//         break;
 
-    case GS_PLAYING:
-        // Avoid old fire request
-        CrossP = false;
+//     case GS_PLAYING:
+//         // Avoid old fire request
+//         CrossP = false;
 
-        // Setup display
-        screen_init();
-        // missile_init();
-        // explosion_init();
-        // icbm_init();
+//         // Setup display
+//         screen_init();
+//         // missile_init();
+//         // explosion_init();
+//         // icbm_init();
 
-        TheGame.count = 15;
-        break;
+//         TheGame.count = 15;
+//         break;
 
-    case GS_END:
-        char_write(104, 92, s"THE END", 0);
-        TheGame.count = 120;
-        break;
-    }
-}
+//     case GS_END:
+//         // char_write(104, 92, s"THE END", 0);
+//         TheGame.count = 120;
+//         break;
+//     }
+// }
 
-// Main game play code
-void game_play(void)
-{
-    // Check if fire request
-    if (CrossP)
-    {
-        // Find lauch site
-        int    sx = 160;
-        if (CrossX < 120)
-            sx = 24;
-        else if (CrossX > 200)
-            sx = 296
+// // Main game play code
+// void game_play(void)
+// {
+//     // Check if fire request
+//     if (CrossP)
+//     {
+//         // Find lauch site
+//         int    sx = 160;
+//         if (CrossX < 120)
+//             sx = 24;
+//         else if (CrossX > 200)
+//             sx = 296
 
-        // Fire missile
+//         // Fire missile
 
-        // Reset request
-        CrossP = false;
-    }
+//         // Reset request
+//         CrossP = false;
+//     }
 
-    // Wait for next ICMB to enter the game
-    if (!--TheGame.count)
-    {    
+//     // Wait for next ICMB to enter the game
+//     if (!--TheGame.count)
+//     {    
 
-        // Next lauch time
-        TheGame.count = 8 + (rand() & 63);
-    }
+//         // Next lauch time
+//         TheGame.count = 8 + (rand() & 63);
+//     }
 
-    // Advance defending missiles by four pixels
-    // for(char i=0; i<4; i++)        
-    //     missile_animate();
+//     // Advance defending missiles by four pixels
+//     // for(char i=0; i<4; i++)        
+//     //     missile_animate();
 
-    // Advance ICBMs
-    // icbm_animate();
+//     // Advance ICBMs
+//     // icbm_animate();
 
-    // Show explosions
-    // explosion_animate();
-}
+//     // Show explosions
+//     // explosion_animate();
+// }
 
-// Main game loop, entered every VSYNC
-void game_loop(){
-    switch(TheGame.state){
-    case GS_READY:
-        if (!--TheGame.count)
-            game_state(GS_PLAYING);
-        break;
+// // Main game loop, entered every VSYNC
+// void game_loop(){
+//     switch(TheGame.state){
+//     case GS_READY:
+//         if (!--TheGame.count)
+//             game_state(GS_PLAYING);
+//         break;
 
-    case GS_PLAYING:
-        game_play();
+//     case GS_PLAYING:
+//         game_play();
 
-        // Check for level and game end coditions
-        break;
+//         // Check for level and game end coditions
+//         break;
 
-    case GS_END:
-        if (!--TheGame.count)
-            game_state(GS_READY);
-        break;
-    }
-}
+//     case GS_END:
+//         if (!--TheGame.count)
+//             game_state(GS_READY);
+//         break;
+//     }
+// }
 
 
 int main(void){
@@ -496,10 +515,10 @@ int main(void){
     // start raster IRQ processing
     rirq_start();
 
-    // vic_setmode(VICM_HIRES_MC, GFX_1_SCR, GFX_1_BMP);
-    vic.ctrl2 = VIC_CTRL2_MCM | VIC_CTRL2_CSEL | 0;
-    cia2.pra = dd00_gfx1;
-    vic.memptr = d018_gfx1;
+    // vic.ctrl2 = VIC_CTRL2_MCM | VIC_CTRL2_CSEL | 0;
+    // cia2.pra = dd00_gfx1;
+    // vic.memptr = d018_gfx1;
+	vic_setmode(VICM_HIRES_MC, GFX_1_SCR, GFX_1_BMP);
 
     // Init bitmap
     bm_init(&sbm, GFX_1_BMP, 40, 25);
@@ -511,12 +530,18 @@ int main(void){
     // do { keyb_poll(); } while (!keyb_key);
     // keyb_key = 0;
 
+	bmmcu_rect_fill(&sbm, 0, 8, 320, 176, 2);	
+    char_write(40, 100, s"Ratuj kartofle!", 3);
     // Init cross hair sprite
     spr_init(GFX_1_SCR);
     spr_set(0, true, CrossX + 14, CrossY + 40, 16, 1, false, false, false);
+    // copyCannonL60();
+    // start game state machine
+	// game_state(GS_READY);
+
     for(;;)
     {
-        game_loop();
+        // game_loop();
         rirq_wait();
     }
 
