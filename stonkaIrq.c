@@ -3,6 +3,15 @@
 #include <c64/joystick.h>
 #include <c64/sprites.h>
 
+// needs better home, duplicated
+enum CannonPos {
+    CANNON_UP,
+    CANNON_L60,
+    CANNON_R60,
+    CANNON_L75,
+    CANNON_R75
+};
+
 // Raster IRQ Routine playing music
 __interrupt void msxIrq1(){
     vic.color_border++;
@@ -39,11 +48,20 @@ __interrupt void msxIrq1(){
 	else if (CrossDelay > 0)
 		CrossDelay--;
 
-    copyCannonL60();
+    if(CrossX < 60)
+        copyCannonL60();
+    else if(CrossX < 140)
+        copyCannonL75();
+    else if(CrossX < 180)
+        copyCannonUp();
+    else if(CrossX < 260)
+        copyCannonR75();
+    else
+        copyCannonR60();
 
     // play music
     __asm {
-        // jsr MSX_PLAY
+        jsr MSX_PLAY
         dec $d020
     }
 }
@@ -51,7 +69,7 @@ __interrupt void msxIrq1(){
 __interrupt void msxIrq2(){
     vic.color_border++;
     __asm {
-        // jsr MSX_PLAY
+        jsr MSX_PLAY
         dec $d020
     }
 }

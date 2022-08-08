@@ -29,22 +29,23 @@ RIRQCode bottom, top;
 // ---------------------------------------------------------------------------------------------
 
 __export const char GFX_FILE[] = {
-    #embed 0xffff 2 "assets/multicolorGfx/dziao_pion_2.kla"
+    #embed 0xffff 2 "assets/multicolorGfx/554.kla"
 };
-__export const char CANNON_FILE[] = {
-    #embed 0xffff 2 "assets/multicolorGfx/dzialoAnim.kla"
-};
-// __export const char MSX_FILE[] = {
-//     // #embed 0xffff 2 "assets/music/FarmGame.out"
-//     #embed 0xffff 136 "assets/music/FarmGame.sid"
+// const char CANNON_FILE[] = {
+//     #embed 0xffff 2 "assets/multicolorGfx/dzialoAnim.kla"
 // };
+__export const char MSX_FILE[] = {
+    // #embed 0xffff 2 "assets/music/FarmGame.out"
+    #embed 0xffff 136 "assets/music/FarmGame.sid"
+};
+#define MSX_SIZE 5386-136
 
 #define STONKA_KOALA_BMP GFX_FILE
 #define STONKA_KOALA_SCR ((char *)GFX_FILE + 0x1f40)
 #define STONKA_KOALA_COL ((char *)GFX_FILE + 0x2328)
-#define STONKA_ANIM_BMP CANNON_FILE
-#define STONKA_ANIM_SCR ((char *)CANNON_FILE + 0x1f40)
-#define STONKA_ANIM_COL ((char *)CANNON_FILE + 0x2328)
+// #define STONKA_ANIM_BMP CANNON_FILE
+// #define STONKA_ANIM_SCR ((char *)CANNON_FILE + 0x1f40)
+// #define STONKA_ANIM_COL ((char *)CANNON_FILE + 0x2328)
 
 char SPR_FILE[] = {
     0x00, 0x00, 0x00,
@@ -249,101 +250,184 @@ char SPR_FILE[] = {
 void screen_init(void){
     vic.color_border = VCOL_BLACK;
     vic.color_back  = VCOL_BLACK;
-    // load colors
-    char i = 0;
-    do {
-#assign _y 0
-#repeat
-        GFX_1_SCR[_y + i] = STONKA_KOALA_SCR[_y + i];
-        COLOR_RAM[_y + i] = STONKA_KOALA_COL[_y + i];
-#assign _y _y + 256
-#until _y == 1024
-        i++;
-    } while (i != 0);
+    memcpy(GFX_1_SCR, STONKA_KOALA_SCR, 1000);
+    memcpy(COLOR_RAM, STONKA_KOALA_COL, 1000);
+    memcpy(GFX_1_BMP, STONKA_KOALA_BMP, 0x1f40);
 
-    // load bitmap
-    i = 0;
-    do {
-#assign _y 0
-#repeat
-        GFX_1_BMP[_y + i] = STONKA_KOALA_BMP[_y + i];
-#assign _y _y + 256
-#until _y == 8192
-        i++;
-    } while (i != 0);
-}
-
-void loadGfx(){
-    screen_init();
-    // sprites
-    char i = 0;
-    do {
-#assign _y 0
-#repeat
-        GFX_1_SPR[_y + i] = SPR_FILE[_y + i];
-#assign _y _y + 0x100
-#until _y < 0x40*0x09
-        i++;
-    } while (i != 0);
-}
-
-// void loadMusic(){
+//     // load colors
 //     char i = 0;
 //     do {
 // #assign _y 0
 // #repeat
-//          ((volatile char*) MSX_DST_ADR)[_y + i] = ((char*) MSX_FILE)[_y + i];
+//         GFX_1_SCR[_y + i] = STONKA_KOALA_SCR[_y + i];
+//         COLOR_RAM[_y + i] = STONKA_KOALA_COL[_y + i];
 // #assign _y _y + 256
-// #until _y == 0x2000
+// #until _y == 1024
 //         i++;
 //     } while (i != 0);
 
-// }
-
-// void copyCannonUp(){
-
-// }
-// void copyCannonL60(){
-//     // load bitmap - 8x5 chars square, starting 0,0
+//     // load bitmap
+//     i = 0;
+//     do {
 // #assign _y 0
 // #repeat
-// #assign _x 0
+//         GFX_1_BMP[_y + i] = STONKA_KOALA_BMP[_y + i];
+// #assign _y _y + 256
+// #until _y == 8192
+//         i++;
+//     } while (i != 0);
+}
+
+void loadGfx(){
+    screen_init();
+    
+    // sprites
+    memcpy(GFX_1_SPR, SPR_FILE, 0x40*0x09);
+//     char i = 0;
+//     do {
+// #assign _y 0
 // #repeat
-//             GFX_1_BMP[_y + _x] = STONKA_ANIM_BMP[_y + _x];
-// #assign _x _x + 1
-// #until _x == 8*8
-// #assign _y _y + 40*8
-// #until _y == 40*8*5
+//         GFX_1_SPR[_y + i] = SPR_FILE[_y + i];
+// #assign _y _y + 0x100
+// #until _y < 0x40*0x09
+//         i++;
+//     } while (i != 0);
+}
 
-//     for(char y=0; y<5; y++){
-//         // #pragma unroll(full)
-//         for(char x=0; x<8; x++){
-//             GFX_1_SCR[y*40 + x] = STONKA_ANIM_SCR[y*40 + x];
-//             COLOR_RAM[y*40 + x] = STONKA_ANIM_COL[y*40 + x];
-//         }
-//     }
-// }
-
-void copyCannonL60(){
-    // load bitmap - 8x5 chars square, starting 0,0
+void loadMusic(){
+	// memcpy(MSX_DST_ADR, MSX_FILE, MSX_SIZE);
+    char i = 0;
+    do {
 #assign _y 0
 #repeat
-#assign _x 0
-#repeat
-            GFX_1_BMP[_y + _x] = STONKA_ANIM_BMP[_y + _x];
-#assign _x _x + 1
-#until _x == 8*8
-#assign _y _y + 40*8
-#until _y == 40*8*5
+         ((volatile char*) MSX_DST_ADR)[_y + i] = ((char*) MSX_FILE)[_y + i];
+#assign _y _y + 256
+#until _y == 0x2000
+        i++;
+    } while (i != 0);
+}
 
-    for(char y=0; y<5; y++){
-        // #pragma unroll(full)
-        for(char x=0; x<8; x++){
-            GFX_1_SCR[y*40 + x] = STONKA_ANIM_SCR[y*40 + x];
-            COLOR_RAM[y*40 + x] = STONKA_ANIM_COL[y*40 + x];
+#define CANNON_X_POS 16
+#define CANNON_Y_POS 19
+
+// copy cannon bitmap - 8x5 chars square, starting 0,0
+void copyCannonUp(){
+    #define CANNON_FRAME 0
+    #pragma unroll(full)
+    for(char y=0; y<5; y++)
+    {
+        #pragma unroll(full)
+        for(char x=0; x<8*8; x++)
+        {
+            GFX_1_BMP[40 * 8 * (CANNON_Y_POS + y) + x + CANNON_X_POS*8] = STONKA_KOALA_BMP[40 * 8 * y + x + CANNON_FRAME*8*8];
+        }
+    }
+
+    #pragma unroll(full)
+    for(char y=0; y<5; y++)
+    {
+        #pragma unroll(full)
+        for(char x=0; x<8; x++)
+        {
+            GFX_1_SCR[40 * (CANNON_Y_POS + y) + x + CANNON_X_POS] = STONKA_KOALA_SCR[40*y + x + CANNON_FRAME*8];
+            COLOR_RAM[40 * (CANNON_Y_POS + y) + x + CANNON_X_POS] = STONKA_KOALA_COL[40*y + x + CANNON_FRAME*8];
         }
     }
 }
+
+void copyCannonL60(){
+    #define CANNON_FRAME 1
+    #pragma unroll(full)
+    for(char y=0; y<5; y++)
+    {
+        #pragma unroll(full)
+        for(char x=0; x<8*8; x++)
+        {
+            GFX_1_BMP[40 * 8 * (CANNON_Y_POS + y) + x + CANNON_X_POS*8] = STONKA_KOALA_BMP[40 * 8 * y + x + CANNON_FRAME*8*8];
+        }
+    }
+
+    #pragma unroll(full)
+    for(char y=0; y<5; y++)
+    {
+        #pragma unroll(full)
+        for(char x=0; x<8; x++)
+        {
+            GFX_1_SCR[40 * (CANNON_Y_POS + y) + x + CANNON_X_POS] = STONKA_KOALA_SCR[40*y + x + CANNON_FRAME*8];
+            COLOR_RAM[40 * (CANNON_Y_POS + y) + x + CANNON_X_POS] = STONKA_KOALA_COL[40*y + x + CANNON_FRAME*8];
+        }
+    }
+}
+void copyCannonR60(){
+    #define CANNON_FRAME 2
+    #pragma unroll(full)
+    for(char y=0; y<5; y++)
+    {
+        #pragma unroll(full)
+        for(char x=0; x<8*8; x++)
+        {
+            GFX_1_BMP[40 * 8 * (CANNON_Y_POS + y) + x + CANNON_X_POS*8] = STONKA_KOALA_BMP[40 * 8 * y + x + CANNON_FRAME*8*8];
+        }
+    }
+
+    #pragma unroll(full)
+    for(char y=0; y<5; y++)
+    {
+        #pragma unroll(full)
+        for(char x=0; x<8; x++)
+        {
+            GFX_1_SCR[40 * (CANNON_Y_POS + y) + x + CANNON_X_POS] = STONKA_KOALA_SCR[40*y + x + CANNON_FRAME*8];
+            COLOR_RAM[40 * (CANNON_Y_POS + y) + x + CANNON_X_POS] = STONKA_KOALA_COL[40*y + x + CANNON_FRAME*8];
+        }
+    }
+}
+void copyCannonL75(){
+    #define CANNON_FRAME 3
+    #pragma unroll(full)
+    for(char y=0; y<5; y++)
+    {
+        #pragma unroll(full)
+        for(char x=0; x<8*8; x++)
+        {
+            GFX_1_BMP[40 * 8 * (CANNON_Y_POS + y) + x + CANNON_X_POS*8] = STONKA_KOALA_BMP[40 * 8 * y + x + CANNON_FRAME*8*8];
+        }
+    }
+
+    #pragma unroll(full)
+    for(char y=0; y<5; y++)
+    {
+        #pragma unroll(full)
+        for(char x=0; x<8; x++)
+        {
+            GFX_1_SCR[40 * (CANNON_Y_POS + y) + x + CANNON_X_POS] = STONKA_KOALA_SCR[40*y + x + CANNON_FRAME*8];
+            COLOR_RAM[40 * (CANNON_Y_POS + y) + x + CANNON_X_POS] = STONKA_KOALA_COL[40*y + x + CANNON_FRAME*8];
+        }
+    }
+}
+void copyCannonR75(){
+    #define CANNON_FRAME 4
+    #pragma unroll(full)
+    for(char y=0; y<5; y++)
+    {
+        #pragma unroll(full)
+        for(char x=0; x<8*8; x++)
+        {
+            GFX_1_BMP[40 * 8 * (CANNON_Y_POS + y) + x + CANNON_X_POS*8] = STONKA_KOALA_BMP[40 * 8 * y + x + CANNON_FRAME*8*8];
+        }
+    }
+
+    #pragma unroll(full)
+    for(char y=0; y<5; y++)
+    {
+        #pragma unroll(full)
+        for(char x=0; x<8; x++)
+        {
+            GFX_1_SCR[40 * (CANNON_Y_POS + y) + x + CANNON_X_POS] = STONKA_KOALA_SCR[40*y + x + CANNON_FRAME*8];
+            COLOR_RAM[40 * (CANNON_Y_POS + y) + x + CANNON_X_POS] = STONKA_KOALA_COL[40*y + x + CANNON_FRAME*8];
+        }
+    }
+}
+
 
 // ---------------------------------------------------------------------------------------------
 // DrMortalWombat's great screen writing code
@@ -511,17 +595,17 @@ int main(void){
     // screen off
     vic.ctrl1 = VIC_CTRL1_BMM | VIC_CTRL1_RSEL | 3;
 
-    // loadMusic();
-    // __asm {
-    //     // init music
-    //     lda #$02
-    //     jsr MSX_INIT
-    // }
+    loadMusic();
+    __asm {
+        // init music
+        lda #$02
+        jsr MSX_INIT
+    }
 
     // Activate trampoline
     mmap_trampoline();
     // if you use the mmap_trampoline() you have to call the mmap_set() at least once to init the shadow variable
-    mmap_set(MMAP_ROM);
+    mmap_set(MMAP_NO_ROM);
 
     // Disable CIA interrupts, we do not want interference
     // with our joystick interrupt
@@ -537,9 +621,9 @@ int main(void){
     rirq_set(0, IRQ1RAS, &top);
 
     // Bottom - MSX, Joy
-    // rirq_build(&bottom, 1);
-    // rirq_call(&bottom, 0, msxIrq2);
-    // rirq_set(1, IRQ2RAS, &bottom);
+    rirq_build(&bottom, 1);
+    rirq_call(&bottom, 0, msxIrq2);
+    rirq_set(1, IRQ2RAS, &bottom);
 
     // sort the raster IRQs
     rirq_sort();
@@ -555,6 +639,7 @@ int main(void){
 
     // Init bitmap
     bm_init(&sbm, GFX_1_BMP, 40, 25);
+	bmmcu_rect_fill(&sbm, 0, 0, 320, 100, 0);	
 
     // splash and turn screen on
     splashScreen(true, 3);
@@ -563,14 +648,15 @@ int main(void){
     // do { keyb_poll(); } while (!keyb_key);
     // keyb_key = 0;
 
-	bmmcu_rect_fill(&sbm, 0, 8, 320, 176, 2);	
-    char_write(40, 100, s"Ratuj kartofle!", 3);
+    char_write(31, 60, s"Ratuj kartofle!", 1);
     // Init cross hair sprite
     spr_init(GFX_1_SCR);
     spr_set(0, true, CrossX + 14, CrossY + 40, 16, 1, false, false, false);
-    copyCannonL60();
+    
+    copyCannonUp();
     // start game state machine
 	// game_state(GS_READY);
+    // vic.color_back  = VCOL_BROWN;
 
     for(;;)
     {
