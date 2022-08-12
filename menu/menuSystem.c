@@ -70,7 +70,8 @@ void updateMenu(){
      MENU_BANK_SMOKE_HOUSE,
      MENU_BANK_SHOP,
      MENU_BANK_SHOP_IN,
-     MENU_BANK_CREW
+     MENU_BANK_CREW,
+     MENU_BANK_PIGSLE_COMMAND
     }, { sharedMenuCode } )
 
 // Code shared by all menu banks

@@ -5,6 +5,7 @@
 #include <c64/easyflash.h>
 #include <c64/charwin.h>
 
+#include <engine/titleScreenIrq.h>
 #include <engine/easyFlashBanks.h>
 #include <assets/titleScreen.h>
 #include <assets/mainGfx.h>
@@ -21,20 +22,6 @@
 #pragma data ( data )
 
 #include "common.h"
-
-// Raster IRQ Routine playing music
-__interrupt void irqPlay(){
-    __asm {
-        lda #MSX_ROM
-        sta $01
-        jsr MSX_PLAY
-        lda #$37
-        sta $01
-        asl $d019   // Ack interrupt
-        jmp $ea81   // System IRQ routine
-    }
-}
-
 
 int main(void){
     // Enable ROM
@@ -88,7 +75,7 @@ int main(void){
         lda #$00
         jsr MSX_INIT
     }
-    *(void **)0x0314 = irqPlay;     // Install interrupt routine
+    *(void **)0x0314 = titleScreenIrq1;     // Install interrupt routine
     vic.intr_enable = 1;             // Enable raster interrupt
     vic.ctrl1 &= 0x7f;               // Set raster line for IRQ
     vic.raster = 0;
