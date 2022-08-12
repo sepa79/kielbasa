@@ -334,6 +334,7 @@ const struct MenuOption MAIN_MENU[] = {
     {TXT_IDX_MENU_MAIN3, '3', UI_UD, &showMenu, MENU_BANK_SMOKE_HOUSE, 1, 3},
     {TXT_IDX_MENU_MAIN4, '4', UI_UD, &showMenu, MENU_BANK_SHOP, 1, 4},
     {TXT_IDX_MENU_MAIN5, '5', UI_UD, &showMenu, MENU_BANK_CREW, 1, 5},
+    {TXT_IDX_MENU_MAIN6, '6', UI_UD, &showMenu, MENU_BANK_PIGISLE_COMMAND, 1, 6},
     END_MENU_CHOICES
 };
 

@@ -13,6 +13,9 @@
 #include "common.h"
 #include "stonkaIrq.h"
 
+// Make some room
+#pragma region(main, 0x0a00, 0xc800, , , {code, data, bss, heap, stack} )
+
 // Joystick and crosshair control
 volatile int  CrossX = 160, CrossY = 100;
 volatile bool CrossP = false;
@@ -23,6 +26,27 @@ volatile char CrossDelay = 0;
 
 // Interrupts for msx1 and joystick/msx2 routine
 RIRQCode bottom, top;
+// Display bitmap
+Bitmap sbm;
+const ClipRect scr = { 0, 0, 320, 200 };
+
+#define ANIM_EXPLOSION_DELAY 20
+#define ANIM_DELAY 2
+
+// Structure for a explosion
+struct Explosion{
+    int         x, y;    // Center of circle
+    char        f;       // frame
+    char        d;       // delay
+    char        s;       // sprite index
+    Explosion * next;    // Next explosion in list
+};
+
+// Storage space for explosion
+#define EXPLOSION_COUNT 3
+Explosion explosions[EXPLOSION_COUNT+1];
+// First free and first used explosion
+Explosion * efree, * eused;
 
 // ---------------------------------------------------------------------------------------------
 // Sprites, gfx and their load routines
@@ -34,11 +58,10 @@ __export const char GFX_FILE[] = {
 // const char CANNON_FILE[] = {
 //     #embed 0xffff 2 "assets/multicolorGfx/dzialoAnim.kla"
 // };
-__export const char MSX_FILE[] = {
-    // #embed 0xffff 2 "assets/music/FarmGame.out"
-    #embed 0xffff 136 "assets/music/FarmGame.sid"
-};
-#define MSX_SIZE 5386-136
+// __export const char MSX_FILE[] = {
+//     #embed 0xffff 136 "assets/music/FarmGame.sid"
+// };
+// #define MSX_SIZE 5386-136
 
 #define STONKA_KOALA_BMP GFX_FILE
 #define STONKA_KOALA_SCR ((char *)GFX_FILE + 0x1f40)
@@ -47,212 +70,18 @@ __export const char MSX_FILE[] = {
 // #define STONKA_ANIM_SCR ((char *)CANNON_FILE + 0x1f40)
 // #define STONKA_ANIM_COL ((char *)CANNON_FILE + 0x2328)
 
-char SPR_FILE[] = {
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x28, 0x00,
-    0x00, 0x28, 0x00,
-    0x00, 0x28, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x14, 0x00,
-    0x00, 0x69, 0x00,
-    0x00, 0xAA, 0x00,
-    0x00, 0xAA, 0x00,
-    0x00, 0x69, 0x00,
-    0x00, 0x14, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x3C, 0x00,
-    0x00, 0xD7, 0x00,
-    0x03, 0x69, 0xC0,
-    0x01, 0xAA, 0x40,
-    0x02, 0xAA, 0x80,
-    0x02, 0xAA, 0x80,
-    0x02, 0xAA, 0x80,
-    0x02, 0xAA, 0x80,
-    0x01, 0xAA, 0x40,
-    0x03, 0x69, 0xC0,
-    0x00, 0xD7, 0x00,
-    0x00, 0x3C, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-
-    0x00, 0x00, 0x00,
-    0x00, 0x3C, 0x00,
-    0x00, 0xFF, 0x00,
-    0x03, 0xD7, 0xC0,
-    0x03, 0x69, 0xF0,
-    0x0D, 0xAA, 0x70,
-    0x0E, 0xAA, 0x7C,
-    0x3E, 0xAA, 0xBC,
-    0x36, 0xAA, 0x9C,
-    0x36, 0xAA, 0x9C,
-    0x36, 0xAA, 0x9C,
-    0x36, 0xAA, 0x9C,
-    0x36, 0xAA, 0x9C,
-    0x0E, 0xAA, 0xB0,
-    0x0D, 0xAA, 0x70,
-    0x0F, 0x69, 0xC0,
-    0x03, 0xD7, 0xC0,
-    0x00, 0xFF, 0x00,
-    0x00, 0x3C, 0x00,
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-
-    0x00, 0xFF, 0x00,
-    0x03, 0xD7, 0xC0,
-    0x0F, 0x69, 0xF0,
-    0x0D, 0xAA, 0x70,
-    0x3E, 0xAA, 0x7C,
-    0x36, 0xAA, 0x9C,
-    0xF6, 0xAA, 0x9F,
-    0xDA, 0xAA, 0xAF,
-    0xDA, 0xAA, 0xA7,
-    0xDA, 0xAA, 0xA7,
-    0xDA, 0xAA, 0xA7,
-    0xDA, 0xAA, 0xA7,
-    0xFA, 0xAA, 0xAC,
-    0x36, 0xAA, 0xAC,
-    0x36, 0xAA, 0x9C,
-    0x3D, 0xAA, 0x7C,
-    0x0D, 0xAA, 0x70,
-    0x0F, 0x69, 0xF0,
-    0x03, 0xD7, 0xC0,
-    0x00, 0xFF, 0x00,
-    0x00, 0x00, 0x00,
-
-    0x00, 0xFF, 0x00,
-    0x03, 0x55, 0xC0,
-    0x0D, 0xAA, 0x70,
-    0x06, 0xAA, 0x90,
-    0x36, 0x82, 0x9C,
-    0x1A, 0x00, 0xAC,
-    0xDA, 0x00, 0xA7,
-    0xE8, 0x00, 0x27,
-    0xE8, 0x00, 0x2B,
-    0xE8, 0x00, 0x2B,
-    0xE8, 0x00, 0x2B,
-    0xE8, 0x00, 0x2B,
-    0xD8, 0x00, 0x24,
-    0x1A, 0x00, 0xA4,
-    0x3A, 0x00, 0xAC,
-    0x36, 0x82, 0xAC,
-    0x06, 0xAA, 0x90,
-    0x0D, 0xAA, 0x70,
-    0x03, 0x55, 0xC0,
-    0x00, 0xFF, 0x00,
-    0x00, 0x00, 0x00,
-
-    0x00, 0xFF, 0x00,
-    0x03, 0x55, 0xC0,
-    0x0D, 0xAA, 0x70,
-    0x06, 0x00, 0x90,
-    0x34, 0x00, 0x1C,
-    0x18, 0x00, 0x2C,
-    0xD0, 0x00, 0x27,
-    0xE0, 0x00, 0x07,
-    0xE0, 0x00, 0x0B,
-    0xE0, 0x00, 0x0B,
-    0xE0, 0x00, 0x0B,
-    0xE0, 0x00, 0x0B,
-    0xD0, 0x00, 0x04,
-    0x18, 0x00, 0x04,
-    0x38, 0x00, 0x2C,
-    0x34, 0x00, 0x2C,
-    0x06, 0x00, 0x90,
-    0x0D, 0xAA, 0x70,
-    0x03, 0x55, 0xC0,
-    0x00, 0xFF, 0x00,
-    0x00, 0x00, 0x00,
-
-    0x00, 0xFF, 0x00,
-    0x03, 0xAA, 0xC0,
-    0x0E, 0x00, 0xB0,
-    0x08, 0x00, 0x20,
-    0x34, 0x00, 0x1C,
-    0x24, 0x00, 0x1C,
-    0xE0, 0x00, 0x0B,
-    0xE0, 0x00, 0x0B,
-    0xE0, 0x00, 0x0B,
-    0xE0, 0x00, 0x0B,
-    0xE0, 0x00, 0x0B,
-    0xE0, 0x00, 0x0B,
-    0xE0, 0x00, 0x08,
-    0x20, 0x00, 0x08,
-    0x30, 0x00, 0x0C,
-    0x34, 0x00, 0x1C,
-    0x08, 0x00, 0x20,
-    0x0E, 0x00, 0xB0,
-    0x03, 0xAA, 0xC0,
-    0x00, 0xFF, 0x00,
-    0x00, 0x00, 0x00,
-
-    0x00, 0xFF, 0x00,
-    0x03, 0x00, 0xC0,
-    0x0C, 0x00, 0x30,
-    0x00, 0x00, 0x00,
-    0x30, 0x00, 0x0C,
-    0x00, 0x00, 0x0C,
-    0xC0, 0x00, 0x03,
-    0xC0, 0x00, 0x03,
-    0xC0, 0x00, 0x03,
-    0xC0, 0x00, 0x03,
-    0xC0, 0x00, 0x03,
-    0xC0, 0x00, 0x03,
-    0xC0, 0x00, 0x00,
-    0x00, 0x00, 0x00,
-    0x30, 0x00, 0x0C,
-    0x30, 0x00, 0x0C,
-    0x00, 0x00, 0x00,
-    0x0C, 0x00, 0x30,
-    0x03, 0x00, 0xC0,
-    0x00, 0xFF, 0x00,
-    0x00, 0x00, 0x00
+#define ANIM_EXPLOSION_BANK 16
+#define ANIM_AIM_BANK 16
+__export const char SPR_FILE[] = {
+    #embed 0xffff 20 "assets/sprites/wybuch.spd"
+    // #embed 0xffff 20 "assets/sprites/wybuch2.spd"
 };
 
 void screen_init(void){
     vic.color_border = VCOL_BLACK;
     vic.color_back  = VCOL_BLACK;
-    memcpy(GFX_1_SCR, STONKA_KOALA_SCR, 1000);
-    memcpy(COLOR_RAM, STONKA_KOALA_COL, 1000);
-    memcpy(GFX_1_BMP, STONKA_KOALA_BMP, 0x1f40);
+    // delete any texts that might have been on screen
+    bmmcu_rect_fill(&sbm, 0, 0, 320, 100, 0);
 
 //     // load colors
 //     char i = 0;
@@ -279,10 +108,13 @@ void screen_init(void){
 }
 
 void loadGfx(){
+    memcpy(GFX_1_SCR, STONKA_KOALA_SCR, 1000);
+    memcpy(COLOR_RAM, STONKA_KOALA_COL, 1000);
+    memcpy(GFX_1_BMP, STONKA_KOALA_BMP, 0x1f40);
     screen_init();
-    
+
     // sprites
-    memcpy(GFX_1_SPR, SPR_FILE, 0x40*0x09);
+    memcpy(GFX_1_SPR, SPR_FILE, 0x40*17);
 //     char i = 0;
 //     do {
 // #assign _y 0
@@ -294,18 +126,18 @@ void loadGfx(){
 //     } while (i != 0);
 }
 
-void loadMusic(){
-	// memcpy(MSX_DST_ADR, MSX_FILE, MSX_SIZE);
-    char i = 0;
-    do {
-#assign _y 0
-#repeat
-         ((volatile char*) MSX_DST_ADR)[_y + i] = ((char*) MSX_FILE)[_y + i];
-#assign _y _y + 256
-#until _y == 0x2000
-        i++;
-    } while (i != 0);
-}
+// void loadMusic(){
+//     // memcpy(MSX_DST_ADR, MSX_FILE, MSX_SIZE);
+//     char i = 0;
+//     do {
+// #assign _y 0
+// #repeat
+//          ((volatile char*) MSX_DST_ADR)[_y + i] = ((char*) MSX_FILE)[_y + i];
+// #assign _y _y + 256
+// #until _y < MSX_SIZE
+//         i++;
+//     } while (i != 0);
+// }
 
 #define CANNON_X_POS 16
 #define CANNON_Y_POS 19
@@ -434,11 +266,8 @@ void copyCannonR75(){
 // ---------------------------------------------------------------------------------------------
 // Charset assets
 const char MissileChars[] = {
-#embed "assets/missilechars.64c"    
+#embed "assets/missilechars.64c"
 };
-// Display bitmap
-Bitmap            sbm;
-// const ClipRect    scr = { 0, 0, 320, 200 };
 
 // Expand an 8x8 charactor to 16x16 on screen
 void char_put(char cx, char cy, char c, char color){
@@ -480,127 +309,197 @@ void char_write(char cx, char cy, const char * s, char color)
 // Game code
 // ---------------------------------------------------------------------------------------------
 
-// enum GameState
-// {
-//     GS_READY,     // Getting ready
-//     GS_PLAYING,   // Playing the game
-//     GS_END        // Wait for restart
-// };
+// Initialize explosion list
+void explosion_init(void){
+    // No explosion active
+    eused = nullptr;
 
-// // State of the game
-// struct Game
-// {
-//     GameState state;    
-//     byte      score, count;
+    // First free explosion element
+    efree = explosions;
+    // Build list
+    for(char i=0; i<EXPLOSION_COUNT; i++){
+        explosions[i].s = i + 1; // sprite 0 is aim, so +1 here
+        explosions[i].f = 0;
+        explosions[i].d = ANIM_DELAY;
+        explosions[i].next = explosions + i + 1;
+    }
+    // Terminate last element
+    explosions[EXPLOSION_COUNT].next = nullptr;
+}
 
-// } TheGame;    // Only one game, so global variable
+// Start a new explosion
+void explosion_start(int x, int y){
+    // Free slot in list of explosions?
+    if (efree) {
+        // Move entry from free to used list
+        Explosion * e = efree;
+        efree = e->next;
+        e->next = eused;
+        eused = e;
 
+        // Initialize position and size
+        e->x = x;
+        e->y = y;
+        spr_set(e->s, true, e->x + 14, e->y + 40, e->f + ANIM_EXPLOSION_BANK, 2, true, false, false);
+    }
+}
 
-// void game_state(GameState state)
-// {
+// Animate all explosions
+void explosion_animate(void){
+    // Loop over active explosions with "e", use "ep" to point
+    // to previous explosion, so we can remove the current explosion
+    // from the list
+    Explosion * e = eused, * ep = nullptr;
+    while (e){
+        // Remember next entry in list
+        Explosion * en = e->next;
 
-//     TheGame.state = state;
+        e->d--;
+        if(!e->d){
+            e->d = ANIM_DELAY;
+            // Increment phase
+            e->f++;
+        }
+        // first ANIM_EXPLOSION_DELAY frames are delay
+        if (e->f > ANIM_EXPLOSION_DELAY) {
+            spr_set(e->s, true, e->x + 14, e->y + 40, e->f + ANIM_EXPLOSION_BANK - ANIM_EXPLOSION_DELAY, 2, true, false, false);
+        }
+        // End of explosion live
+        if (e->f == 9 + ANIM_EXPLOSION_DELAY) {
+            // Remove explosion from used list
+            if (ep)
+                ep->next = e->next;
+            else
+                eused = e->next;
 
-//     switch(state)
-//     {
-//     case GS_READY:    
-//         // Start of new game
-//         // score_reset();
-//         screen_init();
-//         // char_write(40, 100, s"READY PLAYER 1", 3);
-//         TheGame.count = 150;
-//         break;
+            // disable sprite, reset anim
+            spr_set(e->s, false, e->x + 14, e->y + 40, ANIM_EXPLOSION_BANK, 2, true, false, false);
+            e->f = 0;
+            e->d = ANIM_DELAY;
 
-//     case GS_PLAYING:
-//         // Avoid old fire request
-//         CrossP = false;
+            // Prepend it to free list
+            e->next = efree;
+            efree = e;
+        }
+        else
+            ep = e;
 
-//         // Setup display
-//         screen_init();
-//         // missile_init();
-//         // explosion_init();
-//         // icbm_init();
+        // set sprite
 
-//         TheGame.count = 15;
-//         break;
+        // Next explosion in list
+        e = en;
+    }
+}
 
-//     case GS_END:
-//         // char_write(104, 92, s"THE END", 0);
-//         TheGame.count = 120;
-//         break;
-//     }
-// }
+enum GameState
+{
+    GS_READY,     // Getting ready
+    GS_PLAYING,   // Playing the game
+    GS_END        // Wait for restart
+};
 
-// // Main game play code
-// void game_play(void)
-// {
-//     // Check if fire request
-//     if (CrossP)
-//     {
-//         // Find lauch site
-//         int    sx = 160;
-//         if (CrossX < 120)
-//             sx = 24;
-//         else if (CrossX > 200)
-//             sx = 296
+// State of the game
+struct Game
+{
+    GameState state;
+    byte      score, count;
 
-//         // Fire missile
+} TheGame;    // Only one game, so global variable
 
-//         // Reset request
-//         CrossP = false;
-//     }
+void game_state(GameState state){
 
-//     // Wait for next ICMB to enter the game
-//     if (!--TheGame.count)
-//     {    
+    TheGame.state = state;
 
-//         // Next lauch time
-//         TheGame.count = 8 + (rand() & 63);
-//     }
+    switch(state) {
+    case GS_READY:
+        // Start of new game
+        // score_reset();
+        screen_init();
+        char_write(31, 60, s"Ratuj kartofle!", 1);
+        TheGame.count = 15;
+        break;
 
-//     // Advance defending missiles by four pixels
-//     // for(char i=0; i<4; i++)        
-//     //     missile_animate();
+    case GS_PLAYING:
+        // Avoid old fire request
+        CrossP = false;
 
-//     // Advance ICBMs
-//     // icbm_animate();
+        // Setup display
+        screen_init();
+        // missile_init();
+        explosion_init();
+        // icbm_init();
 
-//     // Show explosions
-//     // explosion_animate();
-// }
+        TheGame.count = 15;
+        break;
 
-// // Main game loop, entered every VSYNC
-// void game_loop(){
-//     switch(TheGame.state){
-//     case GS_READY:
-//         if (!--TheGame.count)
-//             game_state(GS_PLAYING);
-//         break;
+    case GS_END:
+        char_write(104, 60, s"THE END", 0);
+        TheGame.count = 120;
+        break;
+    }
+}
 
-//     case GS_PLAYING:
-//         game_play();
+// Main game play code
+void game_play(void)
+{
+    // Check if fire request
+    if (CrossP) {
+        // boom!
+        explosion_start(CrossX, CrossY);
+        // Reset request
+        CrossP = false;
+    }
 
-//         // Check for level and game end coditions
-//         break;
+    // Wait for next ICMB to enter the game
+    if (!--TheGame.count){
 
-//     case GS_END:
-//         if (!--TheGame.count)
-//             game_state(GS_READY);
-//         break;
-//     }
-// }
+        // Next lauch time
+        TheGame.count = 8 + (rand() & 63);
+    }
+
+    // Advance defending missiles by four pixels
+    // for(char i=0; i<4; i++)
+    //     missile_animate();
+
+    // Advance ICBMs
+    // icbm_animate();
+
+    // Show explosions
+    explosion_animate();
+}
+
+// Main game loop, entered every VSYNC
+void game_loop(){
+    switch(TheGame.state){
+    case GS_READY:
+        if (!--TheGame.count)
+            game_state(GS_PLAYING);
+        break;
+
+    case GS_PLAYING:
+        game_play();
+
+        // Check for level and game end coditions
+        break;
+
+    case GS_END:
+        if (!--TheGame.count)
+            game_state(GS_READY);
+        break;
+    }
+}
 
 
 int main(void){
     // screen off
     vic.ctrl1 = VIC_CTRL1_BMM | VIC_CTRL1_RSEL | 3;
 
-    loadMusic();
-    __asm {
-        // init music
-        lda #$02
-        jsr MSX_INIT
-    }
+    // loadMusic();
+    // __asm {
+    //     // init music
+    //     lda #$02
+    //     jsr MSX_INIT
+    // }
 
     // Activate trampoline
     mmap_trampoline();
@@ -631,15 +530,11 @@ int main(void){
     // start raster IRQ processing
     rirq_start();
 
-    loadGfx();
-    // vic.ctrl2 = VIC_CTRL2_MCM | VIC_CTRL2_CSEL | 0;
-    // cia2.pra = dd00_gfx1;
-    // vic.memptr = d018_gfx1;
-	vic_setmode(VICM_HIRES_MC, GFX_1_SCR, GFX_1_BMP);
-
     // Init bitmap
+    vic_setmode(VICM_HIRES_MC, GFX_1_SCR, GFX_1_BMP);
     bm_init(&sbm, GFX_1_BMP, 40, 25);
-	bmmcu_rect_fill(&sbm, 0, 0, 320, 100, 0);	
+    loadGfx();
+    copyCannonUp();
 
     // splash and turn screen on
     splashScreen(true, 3);
@@ -648,21 +543,20 @@ int main(void){
     // do { keyb_poll(); } while (!keyb_key);
     // keyb_key = 0;
 
-    char_write(31, 60, s"Ratuj kartofle!", 1);
     // Init cross hair sprite
     spr_init(GFX_1_SCR);
     spr_set(0, true, CrossX + 14, CrossY + 40, 16, 1, false, false, false);
     
-    copyCannonUp();
     // start game state machine
-	// game_state(GS_READY);
-    // vic.color_back  = VCOL_BROWN;
+    game_state(GS_READY);
+    // vic.color_back = VCOL_BROWN;
 
     for(;;)
     {
-        // game_loop();
+        game_loop();
         rirq_wait();
     }
 
     return 0;
 }
+
