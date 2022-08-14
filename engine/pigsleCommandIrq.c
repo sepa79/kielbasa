@@ -64,7 +64,7 @@ __interrupt static void pigsleCmdIrq1_C() {
     else if (CrossDelay > 0)
         CrossDelay--;
 
-    // _prevRomCfgPC = ((byte *)0x01)[0];
+    _prevRomCfgPC = ((byte *)0x01)[0];
     mmap_set(MMAP_ROM);
     eflash.bank = MENU_BANK_PIGSLE_COMMAND;
 
@@ -79,7 +79,7 @@ __interrupt static void pigsleCmdIrq1_C() {
     else
         copyCannonR60();
 
-    // ((byte *)0x01)[0] = _prevRomCfgPC;
+    ((byte *)0x01)[0] = _prevRomCfgPC;
 
     // set the irq to 2nd routine
     *(void **)0x0314 = pigsleCmdIrq2;

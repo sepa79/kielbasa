@@ -1,6 +1,9 @@
 #include <c64/vic.h>
 #include <c64/charwin.h>
 #include <c64/keyboard.h>
+#include <c64/easyflash.h>
+#include <c64/memmap.h>
+#include <gfx/mcbitmap.h>
 
 #include <menu/menuSystem.h>
 #include <translation/common.h>
@@ -13,170 +16,32 @@
 #pragma section( pigsleCommandLoaderData, 0 )
 #pragma section( pigsleCommandCode, 0 )
 #pragma section( pigsleCommandGfx1, 0 )
+#pragma section( pigsleCommandGfx1Loaders, 0 )
 #pragma region( bankpigsleCommandC, 0x8000, 0xafff, , MENU_BANK_PIGSLE_COMMAND, { pigsleCommandLoaderData, pigsleCommandCode } )
-#pragma region( bankpigsleCommandG1, 0x8000, 0xafff, , MENU_BANK_PIGSLE_COMMAND_GFX_1, { pigsleCommandGfx1 } )
+#pragma region( bankpigsleCommandG1, 0x8000, 0xafff, , MENU_BANK_PIGSLE_COMMAND_GFX_1, { pigsleCommandGfx1, pigsleCommandGfx1Loaders } )
+
+// ---------------------------------------------------------------------------------------------
+// Cannon Animation and sprite bank + loaders code
+// ---------------------------------------------------------------------------------------------
 
 #pragma data ( pigsleCommandGfx1 )
 __export const char pigsleCommandGfxBg[] = {
-    #embed 0xffff 0x0002 "assets/multicolorGfx/dziao_13.08.22_final.kla"
+    #embed 0x2713 0x0002 "assets/multicolorGfx/dziao_13.08.22_final.kla"
 };
 
 const char pigsleCommandGfxCannonAnim[] = {
     #embed 0xffff 0x0002 "assets/multicolorGfx/flak_88_10.08.22.kla"
 };
 
-// #define ANIM_EXPLOSION_BANK 16
-// #define ANIM_AIM_BANK 16
-// __export const char SPR_FILE[] = {
-//     #embed 0xffff 20 "assets/sprites/wybuch.spd"
-//     // #embed 0xffff 20 "assets/sprites/wybuch2.spd"
-// };
+#define PIGSLE_CMD_ANIM_EXPLOSION_BANK 16
+#define PIGSLE_CMD_ANIM_AIM_BANK 16
+__export const char PIGSLE_CMD_SPR_FILE[] = {
+    #embed 0xffff 20 "assets/sprites/wybuch.spd"
+    // #embed 0xffff 20 "assets/sprites/wybuch2.spd"
+};
 
-// menu code is in ROM - data in RAM
-#pragma code ( pigsleCommandCode )
+#pragma code ( pigsleCommandGfx1Loaders )
 #pragma data ( data )
-
-// Joystick and crosshair control
-volatile int  CrossX = 160, CrossY = 100;
-volatile bool CrossP = false;
-volatile char CrossDelay = 0;
-
-// ---------------------------------------------------------------------------------------------
-// Cannon Animation handling
-// ---------------------------------------------------------------------------------------------
-
-#define STONKA_KOALA_BMP pigsleCommandGfxBg
-#define STONKA_KOALA_SCR ((char *)pigsleCommandGfxBg + 0x1f40)
-#define STONKA_KOALA_COL ((char *)pigsleCommandGfxBg + 0x2328)
-
-#define CANNON_X_POS 16
-#define CANNON_Y_POS 19
-
-// load bitmap - 8x5 chars square, starting 0,0
-void copyCannonUp(){
-        vic.color_back++;
-#define CANNON_FRAME 0
-// #assign _y 0
-// #repeat
-// #assign _x 0
-// #repeat
-//     GFX_1_BMP[40 * 8 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS*8] = STONKA_KOALA_BMP[40 * 8 * _y + _x + CANNON_FRAME*8*8];
-// #assign _x _x + 1
-// #until _x == 8*8
-// #assign _y _y + 1
-// #until _y == 5
-
-// #assign _y 0
-// #repeat
-// #assign _x 0
-// #repeat
-//     GFX_1_SCR[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_SCR[40*_y + _x + CANNON_FRAME*8];
-//     COLOR_RAM[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_COL[40*_y + _x + CANNON_FRAME*8];
-// #assign _x _x + 1
-// #until _x == 8
-// #assign _y _y + 1
-// #until _y == 5
-}
-
-// load bitmap - 8x5 chars square
-void copyCannonL60(){
-// #define CANNON_FRAME 1
-// #assign _y 0
-// #repeat
-// #assign _x 0
-// #repeat
-//     GFX_1_BMP[40 * 8 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS*8] = STONKA_KOALA_BMP[40 * 8 * _y + _x + CANNON_FRAME*8*8];
-// #assign _x _x + 1
-// #until _x == 8*8
-// #assign _y _y + 1
-// #until _y == 5
-
-// #assign _y 0
-// #repeat
-// #assign _x 0
-// #repeat
-//     GFX_1_SCR[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_SCR[40*_y + _x + CANNON_FRAME*8];
-//     COLOR_RAM[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_COL[40*_y + _x + CANNON_FRAME*8];
-// #assign _x _x + 1
-// #until _x == 8
-// #assign _y _y + 1
-// #until _y == 5
-}
-
-// load bitmap - 8x5 chars square
-void copyCannonR60(){
-// #define CANNON_FRAME 2
-// #assign _y 0
-// #repeat
-// #assign _x 0
-// #repeat
-//     GFX_1_BMP[40 * 8 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS*8] = STONKA_KOALA_BMP[40 * 8 * _y + _x + CANNON_FRAME*8*8];
-// #assign _x _x + 1
-// #until _x == 8*8
-// #assign _y _y + 1
-// #until _y == 5
-
-// #assign _y 0
-// #repeat
-// #assign _x 0
-// #repeat
-//     GFX_1_SCR[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_SCR[40*_y + _x + CANNON_FRAME*8];
-//     COLOR_RAM[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_COL[40*_y + _x + CANNON_FRAME*8];
-// #assign _x _x + 1
-// #until _x == 8
-// #assign _y _y + 1
-// #until _y == 5
-}
-
-// load bitmap - 8x5 chars square
-void copyCannonL75(){
-// #define CANNON_FRAME 3
-// #assign _y 0
-// #repeat
-// #assign _x 0
-// #repeat
-//     GFX_1_BMP[40 * 8 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS*8] = STONKA_KOALA_BMP[40 * 8 * _y + _x + CANNON_FRAME*8*8];
-// #assign _x _x + 1
-// #until _x == 8*8
-// #assign _y _y + 1
-// #until _y == 5
-
-// #assign _y 0
-// #repeat
-// #assign _x 0
-// #repeat
-//     GFX_1_SCR[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_SCR[40*_y + _x + CANNON_FRAME*8];
-//     COLOR_RAM[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_COL[40*_y + _x + CANNON_FRAME*8];
-// #assign _x _x + 1
-// #until _x == 8
-// #assign _y _y + 1
-// #until _y == 5
-}
-
-// load bitmap - 8x5 chars square, starting 0,0
-void copyCannonR75(){
-// #define CANNON_FRAME 4
-// #assign _y 0
-// #repeat
-// #assign _x 0
-// #repeat
-//     GFX_1_BMP[40 * 8 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS*8] = STONKA_KOALA_BMP[40 * 8 * _y + _x + CANNON_FRAME*8*8];
-// #assign _x _x + 1
-// #until _x == 8*8
-// #assign _y _y + 1
-// #until _y == 5
-
-// #assign _y 0
-// #repeat
-// #assign _x 0
-// #repeat
-//     GFX_1_SCR[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_SCR[40*_y + _x + CANNON_FRAME*8];
-//     COLOR_RAM[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_COL[40*_y + _x + CANNON_FRAME*8];
-// #assign _x _x + 1
-// #until _x == 8
-// #assign _y _y + 1
-// #until _y == 5
-}
 
 static void _loadFullKoala(){
     // load colors
@@ -202,6 +67,170 @@ static void _loadFullKoala(){
         i++;
     } while (i != 0);
 
+}
+
+static void _spriteLoader(){
+    char i = 0;
+    do {
+#assign y 0
+#repeat
+       ((volatile char*) GFX_1_SPR_DST_ADR)[y + i] = ((char*)PIGSLE_CMD_SPR_FILE)[y + i];
+#assign y y + 0x100
+#until y == 0x0400
+        i++;
+    } while (i != 0);
+}
+
+// ---------------------------------------------------------------------------------------------
+// Variables for main Pigsle code
+// ---------------------------------------------------------------------------------------------
+
+// menu code is in ROM - data in RAM
+#pragma code ( pigsleCommandCode )
+#pragma data ( data )
+
+// Joystick and crosshair control
+volatile int  CrossX = 160, CrossY = 100;
+volatile bool CrossP = false;
+volatile char CrossDelay = 0;
+
+// Display bitmap
+Bitmap sbm;
+
+// ---------------------------------------------------------------------------------------------
+// Cannon Animation handling
+// ---------------------------------------------------------------------------------------------
+
+#define STONKA_KOALA_BMP pigsleCommandGfxCannonAnim
+#define STONKA_KOALA_SCR ((char *)pigsleCommandGfxCannonAnim + 0x1f40)
+#define STONKA_KOALA_COL ((char *)pigsleCommandGfxCannonAnim + 0x2328)
+
+#define CANNON_X_POS 16
+#define CANNON_Y_POS 19
+
+// load bitmap - 8x5 chars square, starting 0,0
+void copyCannonUp(){
+#define CANNON_FRAME 0
+#assign _y 0
+#repeat
+#assign _x 0
+#repeat
+    GFX_1_BMP[40 * 8 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS*8] = STONKA_KOALA_BMP[40 * 8 * _y + _x + CANNON_FRAME*8*8];
+#assign _x _x + 1
+#until _x == 8*8
+#assign _y _y + 1
+#until _y == 5
+
+#assign _y 0
+#repeat
+#assign _x 0
+#repeat
+    GFX_1_SCR[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_SCR[40*_y + _x + CANNON_FRAME*8];
+    COLOR_RAM[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_COL[40*_y + _x + CANNON_FRAME*8];
+#assign _x _x + 1
+#until _x == 8
+#assign _y _y + 1
+#until _y == 5
+}
+
+// load bitmap - 8x5 chars square
+void copyCannonL60(){
+#define CANNON_FRAME 1
+#assign _y 0
+#repeat
+#assign _x 0
+#repeat
+    GFX_1_BMP[40 * 8 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS*8] = STONKA_KOALA_BMP[40 * 8 * _y + _x + CANNON_FRAME*8*8];
+#assign _x _x + 1
+#until _x == 8*8
+#assign _y _y + 1
+#until _y == 5
+
+#assign _y 0
+#repeat
+#assign _x 0
+#repeat
+    GFX_1_SCR[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_SCR[40*_y + _x + CANNON_FRAME*8];
+    COLOR_RAM[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_COL[40*_y + _x + CANNON_FRAME*8];
+#assign _x _x + 1
+#until _x == 8
+#assign _y _y + 1
+#until _y == 5
+}
+
+// load bitmap - 8x5 chars square
+void copyCannonR60(){
+#define CANNON_FRAME 2
+#assign _y 0
+#repeat
+#assign _x 0
+#repeat
+    GFX_1_BMP[40 * 8 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS*8] = STONKA_KOALA_BMP[40 * 8 * _y + _x + CANNON_FRAME*8*8];
+#assign _x _x + 1
+#until _x == 8*8
+#assign _y _y + 1
+#until _y == 5
+
+#assign _y 0
+#repeat
+#assign _x 0
+#repeat
+    GFX_1_SCR[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_SCR[40*_y + _x + CANNON_FRAME*8];
+    COLOR_RAM[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_COL[40*_y + _x + CANNON_FRAME*8];
+#assign _x _x + 1
+#until _x == 8
+#assign _y _y + 1
+#until _y == 5
+}
+
+// load bitmap - 8x5 chars square
+void copyCannonL75(){
+#define CANNON_FRAME 3
+#assign _y 0
+#repeat
+#assign _x 0
+#repeat
+    GFX_1_BMP[40 * 8 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS*8] = STONKA_KOALA_BMP[40 * 8 * _y + _x + CANNON_FRAME*8*8];
+#assign _x _x + 1
+#until _x == 8*8
+#assign _y _y + 1
+#until _y == 5
+
+#assign _y 0
+#repeat
+#assign _x 0
+#repeat
+    GFX_1_SCR[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_SCR[40*_y + _x + CANNON_FRAME*8];
+    COLOR_RAM[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_COL[40*_y + _x + CANNON_FRAME*8];
+#assign _x _x + 1
+#until _x == 8
+#assign _y _y + 1
+#until _y == 5
+}
+
+// load bitmap - 8x5 chars square, starting 0,0
+void copyCannonR75(){
+#define CANNON_FRAME 4
+#assign _y 0
+#repeat
+#assign _x 0
+#repeat
+    GFX_1_BMP[40 * 8 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS*8] = STONKA_KOALA_BMP[40 * 8 * _y + _x + CANNON_FRAME*8*8];
+#assign _x _x + 1
+#until _x == 8*8
+#assign _y _y + 1
+#until _y == 5
+
+#assign _y 0
+#repeat
+#assign _x 0
+#repeat
+    GFX_1_SCR[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_SCR[40*_y + _x + CANNON_FRAME*8];
+    COLOR_RAM[40 * (CANNON_Y_POS + _y) + _x + CANNON_X_POS] = STONKA_KOALA_COL[40*_y + _x + CANNON_FRAME*8];
+#assign _x _x + 1
+#until _x == 8
+#assign _y _y + 1
+#until _y == 5
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -241,6 +270,13 @@ static void _pigsleCmdInit(void){
         jsr MSX_INIT
     }
 
+    // Load GFX
+    mmap_set(MMAP_ROM);
+    eflash.bank = MENU_BANK_PIGSLE_COMMAND_GFX_1;
+    _loadFullKoala();
+    _spriteLoader();
+    eflash.bank = MENU_BANK_PIGSLE_COMMAND;
+
     *(void **)0x0314 = pigsleCmdIrq1;     // Install interrupt routine
     vic.intr_enable = 1;             // Enable raster interrupt
     vic.ctrl1 &= 0x7f;               // Set raster line for IRQ
@@ -250,8 +286,15 @@ static void _pigsleCmdInit(void){
         cli
     }
 
-    // Load GFX
-    _loadFullKoala();
+    // Init bitmap
+    vic_setmode(VICM_HIRES_MC, GFX_1_SCR, GFX_1_BMP);
+    bm_init(&sbm, GFX_1_BMP, 40, 25);
+    copyCannonUp();
+
+    // splash and turn screen on
+    splashScreen(true, 3);
+
+    // Init cross hair sprite
 
     // main loop
     for(;;)

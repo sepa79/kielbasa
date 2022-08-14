@@ -35,7 +35,8 @@
         "kielbasa.h": "c",
         "taskmanagerpriomenu.h": "c",
         "pigslecommand.h": "c",
-        "stonkairq.h": "c"
+        "stonkairq.h": "c",
+        "mcbitmap.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }
