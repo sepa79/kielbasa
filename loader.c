@@ -46,7 +46,7 @@ int main(void){
     
     // this goes directly from ROM - need to switch bank
     eflash.bank = TITLE_SCREEN_BANK;
-    loadAndShowTitleScreen();
+    loadTitleScreen();
 
     // splash and turn screen on
     splashScreen(true, 3);

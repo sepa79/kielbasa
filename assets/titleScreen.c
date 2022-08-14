@@ -39,7 +39,7 @@ static void _loadFullKoalaToBMP2(){
 
 }
 
-void loadAndShowTitleScreen(){
+void loadTitleScreen(){
     vic.color_border  = VCOL_BLACK;
     vic.color_back  = VCOL_BLACK;
 

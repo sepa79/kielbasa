@@ -12,7 +12,7 @@
 #pragma code ( titleScreenCode )
 #pragma data ( titleScreenData )
 
-void loadAndShowTitleScreen();
+void loadTitleScreen();
 
 // Switching code generation back to shared section
 #pragma code ( code )

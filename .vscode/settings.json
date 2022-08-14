@@ -34,7 +34,8 @@
         "stdlib.h": "c",
         "kielbasa.h": "c",
         "taskmanagerpriomenu.h": "c",
-        "pigslecommand.h": "c"
+        "pigslecommand.h": "c",
+        "stonkairq.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }

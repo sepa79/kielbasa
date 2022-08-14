@@ -64,14 +64,13 @@ void updateMenu(){
 
 #pragma section( sharedMenuCode, 0 )
 #pragma region( sharedMenuCodeBank, 0xbc00, 0xc000, , {
-     MENU_BANK_MAIN_MENU,
-     MENU_BANK_FARMLAND,
-     MENU_BANK_PIG_PEN,
-     MENU_BANK_SMOKE_HOUSE,
-     MENU_BANK_SHOP,
-     MENU_BANK_SHOP_IN,
-     MENU_BANK_CREW,
-     MENU_BANK_PIGSLE_COMMAND
+    MENU_BANK_MAIN_MENU,
+    MENU_BANK_FARMLAND,
+    MENU_BANK_PIG_PEN,
+    MENU_BANK_SMOKE_HOUSE,
+    MENU_BANK_SHOP,
+    MENU_BANK_SHOP_IN,
+    MENU_BANK_CREW
     }, { sharedMenuCode } )
 
 // Code shared by all menu banks
