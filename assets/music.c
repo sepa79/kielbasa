@@ -9,6 +9,11 @@ __export const char music[] = {
     #embed 0xffff 136 "assets/music/FarmGame.sid"
 };
 
+#pragma data ( radioMsx1 )
+__export const char radioMsx01[] = {
+    #embed 0xffff 136 "assets/music/FarmGameRadio1.sid"
+};
+
 #pragma code ( musicCode )
 #pragma data ( musicData )
 

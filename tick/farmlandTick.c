@@ -36,6 +36,8 @@ void initFarmland(){
 // =============================================================================
 // Tick code
 // =============================================================================
+// ticks code
+// #pragma code ( ticksCode )
 
 byte _tempCheck(signed char min, signed char max){
     if(cal_currentTemp < min){
@@ -213,3 +215,7 @@ void farmlandTick(){
         fieldId++;
     } while (fieldId <= FIELDS_COUNT);
 }
+
+// Switching code generation back to shared section
+#pragma code ( code )
+#pragma data ( data )

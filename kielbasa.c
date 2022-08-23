@@ -3,6 +3,7 @@
 #include <c64/types.h>
 #include <c64/cia.h>
 #include <stdbool.h>
+#include <c64/easyflash.h>
 
 #include <menu/menuSystem.h>
 #include <menu/mainMenu.h>
@@ -42,6 +43,7 @@ void prepareScroll(){
 }
 
 void mainLoop(){
+    // TODO: Switch to CRT here
     initCharacterList();
     initTaskList();
     initFarmland();
@@ -72,10 +74,14 @@ void mainLoop(){
             // reset wait time
             updateGameSpeed();
 
+            eflash.bank = TICKS_BANK;
             timeTick();
+            eflash.bank = mnu_currentMenuBank;
+
         }
         // do this once per frame only - carefull with FRAME_MIDDLE as its not fired in gms_textMode
         if(gms_framePos == FRAME_BOTTOM && !oncePerFrameFinished){
+            // keep that in RAM as it changes banks a lot to display menus and their code
             checkKeys();
             oncePerFrameFinished = true;
         }

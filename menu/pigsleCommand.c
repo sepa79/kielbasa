@@ -17,8 +17,8 @@
 #pragma section( pigsleCommandCode, 0 )
 #pragma section( pigsleCommandGfx1, 0 )
 #pragma section( pigsleCommandGfx1Loaders, 0 )
-#pragma region( bankpigsleCommandC, 0x8000, 0xafff, , MENU_BANK_PIGSLE_COMMAND, { pigsleCommandLoaderData, pigsleCommandCode } )
-#pragma region( bankpigsleCommandG1, 0x8000, 0xafff, , MENU_BANK_PIGSLE_COMMAND_GFX_1, { pigsleCommandGfx1, pigsleCommandGfx1Loaders } )
+#pragma region( bankpigsleCommandC, 0x8000, 0xbfff, , MENU_BANK_PIGSLE_COMMAND, { pigsleCommandLoaderData, pigsleCommandCode } )
+#pragma region( bankpigsleCommandG1, 0x8000, 0xbfff, , MENU_BANK_PIGSLE_COMMAND_GFX_1, { pigsleCommandGfx1, pigsleCommandGfx1Loaders } )
 
 // ---------------------------------------------------------------------------------------------
 // Cannon Animation and sprite bank + loaders code
@@ -29,6 +29,7 @@ __export const char pigsleCommandGfxBg[] = {
     #embed 0x2713 0x0002 "assets/multicolorGfx/dziao_13.08.22_final.kla"
 };
 
+// this should never be in mem, just used by loaders code
 const char pigsleCommandGfxCannonAnim[] = {
     #embed 0xffff 0x0002 "assets/multicolorGfx/flak_88_10.08.22.kla"
 };
@@ -90,9 +91,10 @@ static void _spriteLoader(){
 #pragma data ( data )
 
 // Joystick and crosshair control
-volatile int  CrossX = 160, CrossY = 100;
-volatile bool CrossP = false;
-volatile char CrossDelay = 0;
+int  CrossX = 160;
+char CrossY = 100;
+bool CrossP = false;
+char CrossDelay = 0;
 
 // Display bitmap
 Bitmap sbm;

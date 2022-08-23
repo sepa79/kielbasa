@@ -1,11 +1,14 @@
 #include <c64/vic.h>
 #include <c64/charwin.h>
 #include <c64/keyboard.h>
+#include <c64/easyflash.h>
+#include <c64/memmap.h>
 
 #include <menu/menuSystem.h>
 #include <translation/common.h>
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
+#include <assets/music.h>
 #include <engine/uiHandler.h>
 
 #define SHOP_INSIDE_ANIM_1_FRAMES 6
@@ -65,6 +68,98 @@ __export const char shopInGfx3[] = {
     #embed 0x0400 16 "assets/sprites/gherkinAnim.spd"
 };
 
+// Switching code generation back to shared section
+// TODO: this can go to menu memory section, be loaded on demand and then dumped when not needed
+#pragma code ( code )
+#pragma data ( data )
+
+static char radioPlaylist = 0;
+
+void _loadRadioMsx(){
+    // vic.color_back++;
+    joyCursor.enabled = false;
+    if(gms_enableMusic) {
+        // set Radio bank
+        mnu_alternateMenuBank = MUSIC_BANK_RADIO_1;
+        eflash.bank = MUSIC_BANK_RADIO_1;
+
+        // stop music
+        gms_enableMusic = false;
+        ((byte *)0xd418)[0] &= ~0xf;
+
+        // load different MSX file
+        loadMusic();
+
+        // init it
+        __asm {
+            lda #MSX_ROM
+            sta $01
+            lda radioPlaylist
+            jsr MSX_INIT
+        };
+
+        // advance playlist
+        radioPlaylist++;
+        if(radioPlaylist > RADIO_1_SONGS)
+            radioPlaylist = 0;
+
+        // set ROM back
+        mmap_set(MMAP_ROM);
+
+        // reenable music
+        // gms_musicSpeed2x = true;
+        gms_enableMusic = true;
+
+        // revert menu bank
+        mnu_alternateMenuBank = NO_ALTERNATE_MENU_BANK;
+        eflash.bank = MENU_BANK_SHOP_IN;
+    }
+    joyCursor.enabled = true;
+    // vic.color_back--;
+}
+
+void _goBackToPrvMenu(){
+    // vic.color_back++;
+    joyCursor.enabled = false;
+
+    if(gms_enableMusic) {
+        // set Radio bank
+        mnu_alternateMenuBank = MUSIC_BANK;
+        eflash.bank = MUSIC_BANK;
+
+        // stop music
+        gms_enableMusic = false;
+        ((byte *)0xd418)[0] &= ~0xf;
+
+        // load different MSX file
+        loadMusic();
+
+        // init it
+        __asm {
+            lda #MSX_ROM
+            sta $01
+            lda #$01
+            jsr MSX_INIT
+        };
+
+        // set ROM back
+        mmap_set(MMAP_ROM);
+
+        // reenable music
+        // gms_musicSpeed2x = false;
+        gms_enableMusic = true;
+
+        // revert menu bank
+        mnu_alternateMenuBank = NO_ALTERNATE_MENU_BANK;
+        eflash.bank = MENU_BANK_SHOP_IN;
+    }
+
+    loadMenu(MENU_BANK_SHOP);
+    showMenu();
+    joyCursor.enabled = true;
+    // vic.color_back--;
+}
+
 // menu code is in ROM - data in RAM
 #pragma code ( shopInCode )
 #pragma data ( data )
@@ -79,7 +174,7 @@ static void _siMenu2(){
 const struct MenuOption SHOP_INSIDE_MENU[] = {
     { TXT_IDX_MENU_SHOPIN1, '1', UI_LR, &_siMenu1, 0, 1, 1},
     { TXT_IDX_MENU_SHOPIN2, '2', UI_LR, &_siMenu2, 0, 1, 2},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LR, &showMenu, MENU_BANK_SHOP, 2, 3},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LR, &_goBackToPrvMenu, 0, 2, 3},
     END_MENU_CHOICES
 };
 
@@ -120,6 +215,9 @@ static void _menuHandler(void){
     
     loadMenuGfx(cal_isDay);
     loadMenuSprites();
+
+    // load music
+    _loadRadioMsx();
 
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);

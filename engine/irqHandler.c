@@ -126,6 +126,16 @@ __interrupt static void splitScreenIRQ2_C() {
 
     setSpritesBottomScr();
 
+    if(gms_enableMusic){
+        _prevRomCfg = ((byte *)0x01)[0];
+        __asm {
+            lda #MSX_ROM
+            sta $01
+            jsr MSX_PLAY
+        };
+        ((byte *)0x01)[0] = _prevRomCfg;
+    }
+
     // tick the game
     _timeControl();
 
