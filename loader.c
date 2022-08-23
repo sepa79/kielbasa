@@ -4,6 +4,11 @@
 #include <c64/vic.h>
 #include <c64/easyflash.h>
 #include <c64/charwin.h>
+#include <string.h>
+
+// Main code & data region
+#pragma section( mainCode, 0 )
+#pragma section( mainData, 0 )
 
 #include <engine/titleScreenIrq.h>
 #include <engine/easyFlashBanks.h>
@@ -13,19 +18,23 @@
 #include <translation/textsPL.h>
 #include <translation/textsEN.h>
 #include "kielbasa.h"
-
-// Shared code/data region, copied from easyflash bank 0 to ram during startup
-#pragma region( main, 0x0900, 0x6000, , , { code, data, bss, heap, stack } )
-
-// Switching code generation back to shared section
-#pragma code ( mainCode )
-#pragma data ( mainData )
-
 #include "common.h"
 
-int main(void){
+// Shared code/data region, copied from easyflash bank 0 to ram during startup
+/* #pragma region( main, 0x0900, 0x6000, , , { code, data, bss, heap, stack } ) */
+/* #pragma region( main, 0x7000, 0x7fff, , , { code, data, bss, heap, stack } ) */
+#pragma region( main, 0x7000, 0xbfff, , , { code, data, bss, heap, stack } )
+#pragma region( mainCodeRegion1, 0x0900, 0x5fff, , MAIN_CODE_BANK_1, { mainCode, mainData, bss, heap, stack } )
+
+// Switching code generation back to shared section
+#pragma code ( code )
+#pragma data ( data )
+
+void gameStartup(){
+    // obsolete, done in main()
     // Enable ROM
-    mmap_set(MMAP_ROM);
+    /* mmap_set(MMAP_ROM); */
+
     // screen off
     vic.ctrl1 = VIC_CTRL1_BMM | VIC_CTRL1_RSEL | 3;
 
@@ -97,6 +106,25 @@ int main(void){
     mainLoop();
 }
 
+int main(void) {        // _mainLoader() {}
+    // [done] copy mainCode and mainData from CRT banks to RAM
+
+    // [done] make sure crt is visible
+    mmap_set(MMAP_ROM);
+
+    // mount a bank
+    eflash.bank = MAIN_CODE_BANK_1;
+
+    // copy to RAM
+    memcpy((char*)0x0900, (char*)0x8000, 0xbfff);
+
+    // run main routine
+    gameStartup();
+}
+
+#pragma code ( mainCode )
+#pragma data ( mainData )
+
 //-------------------------------------------------------------
 // could do with a better home
 //-------------------------------------------------------------
@@ -127,3 +155,9 @@ void cwin_write_string_raw(CharWin * win, const char * buffer)
 	}	
 
 }
+
+
+
+
+
+
