@@ -70,8 +70,8 @@ __export const char shopInGfx3[] = {
 
 // Switching code generation back to shared section
 // TODO: this can go to menu memory section, be loaded on demand and then dumped when not needed
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )
 
 static char radioPlaylist = 0;
 
@@ -162,7 +162,7 @@ void _goBackToPrvMenu(){
 
 // menu code is in ROM - data in RAM
 #pragma code ( shopInCode )
-#pragma data ( data )
+#pragma data ( mainData )
 
 static void _siMenu1(){
     updateStatusBar("   Sklep menu, opcja 1");
@@ -238,5 +238,5 @@ __export static const Loaders menuLoaders = {
 }
 
 // Switching code generation back to shared section
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )

@@ -34,7 +34,7 @@ __export const char crewGfx2[] = {
 
 // menu code is in ROM - data in RAM
 #pragma code ( crewCode )
-#pragma data ( data )
+#pragma data ( mainData )
 
 // column offset for printing character data
 #define COL_OFFSET_CHARACTERDATA 12
@@ -143,5 +143,5 @@ __export static const Loaders menuLoaders = {
 }
 
 // Switching code generation back to shared section
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )

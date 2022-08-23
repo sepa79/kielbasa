@@ -32,7 +32,7 @@ __export const char smokeHouseGfx2[] = {
 
 // menu code is in ROM - data in RAM
 #pragma code ( smokeHouseCode )
-#pragma data ( data )
+#pragma data ( mainData )
 
 static void _shMenu1(){
     updateStatusBar("   smokeHouse menu, opcja 1");
@@ -74,5 +74,5 @@ __export static const Loaders menuLoaders = {
 }
 
 // Switching code generation back to shared section
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )

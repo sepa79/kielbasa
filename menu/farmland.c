@@ -97,7 +97,7 @@ __export char SPR_DATA_PLANTS_[64*4] = {0};
 
 // menu code is in ROM - data in RAM
 #pragma code ( farmlandCode )
-#pragma data ( data )
+#pragma data ( mainData )
 
 static void _updateSprite(unsigned int num) {
     byte num2str[4];
@@ -420,5 +420,6 @@ __export static const Loaders menuLoaders = {
 }
 
 // Switching code generation back to shared section
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )
+

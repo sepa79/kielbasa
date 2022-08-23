@@ -165,8 +165,8 @@ void loadMainGfx(){
     mmap_set(MMAP_ROM);
 }
 // Switching code generation back to shared section
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )
 
 // used often, kept in RAM
 __export const char SPR_CURRENCY_COLORS[1] = {0x9};

@@ -38,7 +38,7 @@ __export const char shopOutGfx2[] = {
 
 // menu code is in ROM - data in RAM
 #pragma code ( shopOutCode )
-#pragma data ( data )
+#pragma data ( mainData )
 
 static bool _checkIfOpen(){
     // weekdays
@@ -55,8 +55,8 @@ static bool _checkIfOpen(){
 
 // Switching code generation back to shared section
 // this method must operate from RAM, as it switches banks
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )
 static void _getInside(){
     if(!_checkIfOpen()){
         updateStatusBar(TXT[SB_IDX_SHOP_CLOSED]);
@@ -74,7 +74,7 @@ static void _getInside(){
 
 // menu code is in ROM - data in RAM
 #pragma code ( shopOutCode )
-#pragma data ( data )
+#pragma data ( mainData )
 
 static void _soMenu2(){
     updateStatusBar("   Sklep menu, opcja 2");
@@ -111,5 +111,5 @@ __export static const Loaders menuLoaders = {
 }
 
 // Switching code generation back to shared section
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )

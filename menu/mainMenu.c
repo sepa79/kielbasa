@@ -114,7 +114,7 @@ __export const byte BIT_MASK_ERASE[9] = {
 
 // menu code is in ROM - data in RAM
 #pragma code ( mainMenuCode )
-#pragma data ( data )
+#pragma data ( mainData )
 
 __interrupt static void _menuShowSprites(){
     if(animBusStage == ANIM_BUS_FINISHED){
@@ -393,5 +393,5 @@ __export static const Loaders menuLoaders = {
 }
 
 // Switching code generation back to shared section
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )

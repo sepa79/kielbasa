@@ -18,8 +18,8 @@
 #pragma region( main, 0x0900, 0x6000, , , { code, data, bss, heap, stack } )
 
 // Switching code generation back to shared section
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )
 
 #include "common.h"
 

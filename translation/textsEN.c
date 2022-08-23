@@ -202,6 +202,6 @@ __export const char* TXT_EN[] = {
 };
 
 // Switching code generation back to shared section
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )
 

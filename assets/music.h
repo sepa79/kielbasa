@@ -19,8 +19,8 @@ void loadMusic();
 #define RADIO_1_SONGS 5
 
 // Switching code generation back to shared section
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )
 
 #pragma compile("music.c")
 

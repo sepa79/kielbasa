@@ -6,8 +6,8 @@
 #include <assets/assetsSettings.h>
 #include <engine/gameSettings.h>
 
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )
 
 volatile byte mnu_currentMenuBank = 0;
 volatile byte mnu_alternateMenuBank = 0;
@@ -193,5 +193,5 @@ void menuSpriteLoader(){
 }
 
 // Switching code generation back to shared section
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )

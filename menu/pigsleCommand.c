@@ -42,7 +42,7 @@ __export const char PIGSLE_CMD_SPR_FILE[] = {
 };
 
 #pragma code ( pigsleCommandGfx1Loaders )
-#pragma data ( data )
+#pragma data ( mainData )
 
 static void _loadFullKoala(){
     // load colors
@@ -88,7 +88,7 @@ static void _spriteLoader(){
 
 // menu code is in ROM - data in RAM
 #pragma code ( pigsleCommandCode )
-#pragma data ( data )
+#pragma data ( mainData )
 
 // Joystick and crosshair control
 int  CrossX = 160;
@@ -249,8 +249,8 @@ const struct MenuOption PIGSLE_COMMAND_MENU[] = {
 };
 
 // this code needs to be in main block, as it switches banks
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )
 
 static void _pigsleCmdInit(void){
     // stop IRQs and change to ours
@@ -319,5 +319,5 @@ __export static const Loaders menuLoaders = {
 }
 
 // Switching code generation back to shared section
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( mainCode )
+#pragma data ( mainData )
