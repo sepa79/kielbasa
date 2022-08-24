@@ -1,3 +1,7 @@
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
+
 #include <stdlib.h>
 #include <stdbool.h>
 #include <c64/types.h>
@@ -6,7 +10,9 @@
 #include <character/character.h>
 #include <assets/mainGfx.h>
 #include <tick/farmlandTick.h>
-
+#include <menu/menuSystem.h>
+#include <engine/irqSpriteController.h>
+#include <tasks/taskManager.h>
 
 // Sections and regions
 // #pragma section( ticksCode, 0 )

@@ -1,3 +1,7 @@
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
+
 #include <c64/vic.h>
 #include <c64/memmap.h>
 #include <c64/easyflash.h>

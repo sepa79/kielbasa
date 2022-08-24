@@ -1,5 +1,9 @@
 #ifndef UI_HANDLER_H
 #define UI_HANDLER_H
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
+
 #include <c64/types.h>
 #include <c64/charwin.h>
 

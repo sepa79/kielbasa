@@ -1,5 +1,9 @@
 #ifndef FARMLAND_TICK_H
 #define FARMLAND_TICK_H
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
+
 #include <c64/types.h>
 #include <translation/common.h>
 

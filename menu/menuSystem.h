@@ -1,5 +1,8 @@
 #ifndef MENU_STRUCTS_H
 #define MENU_STRUCTS_H
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
 
 #include <c64/types.h>
 

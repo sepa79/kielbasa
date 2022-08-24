@@ -1,3 +1,7 @@
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
+
 #include <c64/types.h>
 
 #include <translation/common.h>
@@ -215,7 +219,3 @@ void farmlandTick(){
         fieldId++;
     } while (fieldId <= FIELDS_COUNT);
 }
-
-// Switching code generation back to shared section
-#pragma code ( mainCode )
-#pragma data ( mainData )

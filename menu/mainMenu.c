@@ -1,3 +1,7 @@
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
+
 #include <c64/charwin.h>
 #include <c64/vic.h>
 #include <c64/types.h>
@@ -9,13 +13,13 @@
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
 #include <engine/uiHandler.h>
-#include "farmland.h"
-#include "pigPen.h"
-#include "smokeHouse.h"
-#include "shopOutside.h"
-#include "shopInside.h"
-#include "crew.h"
-#include "pigsleCommand.h"
+// #include "farmland.h"
+// #include "pigPen.h"
+// #include "smokeHouse.h"
+// #include "shopOutside.h"
+// #include "shopInside.h"
+// #include "crew.h"
+// #include "pigsleCommand.h"
 
 // column offset for printing data
 #define COL_OFFSET_TASKLIST 12

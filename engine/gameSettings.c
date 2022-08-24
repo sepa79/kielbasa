@@ -1,3 +1,7 @@
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
+
 #include <engine/gameSettings.h>
 #include <c64/types.h>
 

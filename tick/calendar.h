@@ -1,5 +1,9 @@
 #ifndef CALENDAR_H
 #define CALENDAR_H
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
+
 #include <stdbool.h>
 #include <c64/types.h>
 

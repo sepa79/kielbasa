@@ -1,6 +1,9 @@
 #ifndef GAME_SETTINGS_H
 #define GAME_SETTINGS_H
 #include <c64/types.h>
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
 
 // game speed control
 enum GMS_WAIT_TIMES_ENUM {

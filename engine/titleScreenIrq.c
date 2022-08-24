@@ -1,3 +1,7 @@
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
+
 #include <assets/assetsSettings.h>
 #include <c64/vic.h>
 

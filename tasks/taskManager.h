@@ -1,5 +1,9 @@
 #ifndef TASK_MANAGER_H
 #define TASK_MANAGER_H
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
+
 #include <c64/types.h>
 #include <stdbool.h>
 

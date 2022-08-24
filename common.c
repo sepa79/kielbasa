@@ -1,3 +1,6 @@
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
 
 #include <c64/vic.h>
 #include <c64/charwin.h>
@@ -46,4 +49,33 @@ void splashScreen(bool turnOn, char stage) {
             i++;
         } while (i<8);
     }
+}
+
+//-------------------------------------------------------------
+inline signed char babs(signed char val){
+    if(val < 0){
+        return -val;
+    }
+    return val;
+}
+
+void cwin_write_string_raw(CharWin * win, const char * buffer)
+{
+	char * dp = win->sp;
+	for(char y=0; y<win->wy; y++)
+	{
+		for(char x=0; x<win->wx; x++)
+		{
+			char ch = *buffer;
+			if (ch)
+			{
+				dp[x] = ch;
+				buffer++;
+			}
+			else
+				dp[x] = ' ';
+		}
+		dp += 40;
+	}	
+
 }

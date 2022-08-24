@@ -1,3 +1,7 @@
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
+
 #include <c64/easyflash.h>
 #include <c64/vic.h>
 
@@ -5,9 +9,6 @@
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
 #include <engine/gameSettings.h>
-
-#pragma code ( mainCode )
-#pragma data ( mainData )
 
 volatile byte mnu_currentMenuBank = 0;
 volatile byte mnu_alternateMenuBank = 0;

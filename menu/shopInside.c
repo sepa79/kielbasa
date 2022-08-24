@@ -1,3 +1,7 @@
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
+
 #include <c64/vic.h>
 #include <c64/charwin.h>
 #include <c64/keyboard.h>

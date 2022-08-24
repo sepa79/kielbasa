@@ -1,34 +1,34 @@
+#include <engine/easyFlashBanks.h>
+// Main code & data region
+#pragma section( mainCode, 0 )
+#pragma section( mainData, 0 )
+// Shared code/data region, copied from easyflash bank 0 to ram during startup
+/* #pragma region( main, 0x0900, 0x6000, , , { code, data, bss, heap, stack } ) */
+/* #pragma region( main, 0x7000, 0x7fff, , , { code, data, bss, heap, stack } ) */
+#pragma region( main, 0x0900, 0x3fff, , , { code, data } )
+#pragma region( mainCodeRegion1, 0x0900, 0x5fff, , MAIN_CODE_BANK_1, { mainCode, mainData, bss, heap, stack } )
+
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
+
 #include <c64/keyboard.h>
 #include <c64/memmap.h>
 #include <c64/cia.h>
 #include <c64/vic.h>
 #include <c64/easyflash.h>
 #include <c64/charwin.h>
-#include <string.h>
-
-// Main code & data region
-#pragma section( mainCode, 0 )
-#pragma section( mainData, 0 )
+// #include <string.h>
+#include <stdio.h>
 
 #include <engine/titleScreenIrq.h>
-#include <engine/easyFlashBanks.h>
 #include <assets/titleScreen.h>
 #include <assets/mainGfx.h>
 #include <assets/music.h>
-#include <translation/textsPL.h>
-#include <translation/textsEN.h>
-#include "kielbasa.h"
+// #include <translation/textsPL.h>
+// #include <translation/textsEN.h>
+// #include "kielbasa.h"
 #include "common.h"
-
-// Shared code/data region, copied from easyflash bank 0 to ram during startup
-/* #pragma region( main, 0x0900, 0x6000, , , { code, data, bss, heap, stack } ) */
-/* #pragma region( main, 0x7000, 0x7fff, , , { code, data, bss, heap, stack } ) */
-#pragma region( main, 0x7000, 0xbfff, , , { code, data, bss, heap, stack } )
-#pragma region( mainCodeRegion1, 0x0900, 0x5fff, , MAIN_CODE_BANK_1, { mainCode, mainData, bss, heap, stack } )
-
-// Switching code generation back to shared section
-#pragma code ( code )
-#pragma data ( data )
 
 void gameStartup(){
     // obsolete, done in main()
@@ -40,6 +40,7 @@ void gameStartup(){
 
     // Init CIAs (no kernal rom was executed so far)
     cia_init();
+        printf("S 2 temp diff %-5u ", 123);
 
     __asm {
         // same init stuff the kernel calls after reset
@@ -85,8 +86,8 @@ void gameStartup(){
         jsr MSX_INIT
     }
     *(void **)0x0314 = titleScreenIrq1;     // Install interrupt routine
-    vic.intr_enable = 1;             // Enable raster interrupt
-    vic.ctrl1 &= 0x7f;               // Set raster line for IRQ
+    vic.intr_enable = 1;                    // Enable raster interrupt
+    vic.ctrl1 &= 0x7f;                      // Set raster line for IRQ
     vic.raster = 0;
 
     __asm {
@@ -94,7 +95,7 @@ void gameStartup(){
     }
 
     eflash.bank = TRANSLATION_PL_BANK;
-    loadTranslation();
+    // loadTranslation();
 
     // ready steady GO
     do { keyb_poll(); } while (!keyb_key);
@@ -103,8 +104,11 @@ void gameStartup(){
     // splash and turn screen off
     splashScreen(false, 1);
 
-    mainLoop();
+    // mainLoop();
 }
+
+#pragma code ( code )
+#pragma data ( data )
 
 int main(void) {        // _mainLoader() {}
     // [done] copy mainCode and mainData from CRT banks to RAM
@@ -116,48 +120,12 @@ int main(void) {        // _mainLoader() {}
     eflash.bank = MAIN_CODE_BANK_1;
 
     // copy to RAM
-    memcpy((char*)0x0900, (char*)0x8000, 0xbfff);
+    // memcpy((char*)0x0900, (char*)0x8000, 0xbfff);
 
     // run main routine
     gameStartup();
 }
 
+// Switching code generation to shared section
 #pragma code ( mainCode )
 #pragma data ( mainData )
-
-//-------------------------------------------------------------
-// could do with a better home
-//-------------------------------------------------------------
-inline signed char babs(signed char val){
-    if(val < 0){
-        return -val;
-    }
-    return val;
-}
-
-void cwin_write_string_raw(CharWin * win, const char * buffer)
-{
-	char * dp = win->sp;
-	for(char y=0; y<win->wy; y++)
-	{
-		for(char x=0; x<win->wx; x++)
-		{
-			char ch = *buffer;
-			if (ch)
-			{
-				dp[x] = ch;
-				buffer++;
-			}
-			else
-				dp[x] = ' ';
-		}
-		dp += 40;
-	}	
-
-}
-
-
-
-
-
-

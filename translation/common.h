@@ -1,5 +1,8 @@
 #ifndef COMMON_TRANSLATION_H
 #define COMMON_TRANSLATION_H
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
 
 // DrMortalWombat's magic spell to simplify using underlied chars (+$80 in Kielbasa's charset)
 #define underline(x) \

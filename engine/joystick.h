@@ -1,6 +1,10 @@
 #ifndef JOYSTICK_H
 #define JOYSTICK_H
 
+// Switching code generation to shared section
+#pragma code ( mainCode )
+#pragma data ( mainData )
+
 enum JOY_DIR {
     JOY_UP=1,
     JOY_DOWN=2,
