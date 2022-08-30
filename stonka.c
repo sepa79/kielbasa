@@ -489,6 +489,39 @@ void game_loop(){
     }
 }
 
+void game_state(GameState state){
+
+    TheGame.state = state;
+
+    switch(state) {
+    case GS_READY:
+        // Start of new game
+        // score_reset();
+        screen_init();
+        char_write(31, 60, s"Ratuj kartofle!", 1);
+        TheGame.count = 15;
+        break;
+
+    case GS_PLAYING:
+        // Avoid old fire request
+        CrossP = false;
+
+        // Setup display
+        screen_init();
+        // missile_init();
+        explosion_init();
+        // icbm_init();
+
+        TheGame.count = 15;
+        break;
+
+    case GS_END:
+        char_write(104, 60, s"THE END", 0);
+        TheGame.count = 120;
+        break;
+    }
+}
+
 
 int main(void){
     // screen off

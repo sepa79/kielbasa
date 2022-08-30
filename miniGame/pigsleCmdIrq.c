@@ -6,16 +6,10 @@
 #include <engine/easyFlashBanks.h>
 #include <c64/memmap.h>
 
+#include <miniGame/pigsleCmdAnims.h>
+
 #define IRQ1RAS 50
 #define IRQ2RAS IRQ1RAS + 152
-
-enum CannonPos {
-    CANNON_UP,
-    CANNON_L60,
-    CANNON_R60,
-    CANNON_L75,
-    CANNON_R75
-};
 
 static byte _prevRomCfgPC;
 
@@ -66,7 +60,7 @@ __interrupt static void pigsleCmdIrq1_C() {
 
     _prevRomCfgPC = ((byte *)0x01)[0];
     mmap_set(MMAP_ROM);
-    eflash.bank = MENU_BANK_PIGSLE_COMMAND;
+    changeBank(MENU_BANK_PIGSLE_COMMAND_1);
 
     if(CrossX < 60)
         copyCannonL60();
@@ -79,6 +73,7 @@ __interrupt static void pigsleCmdIrq1_C() {
     else
         copyCannonR60();
 
+    restoreBank();
     ((byte *)0x01)[0] = _prevRomCfgPC;
 
     // set the irq to 2nd routine

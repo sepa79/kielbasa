@@ -74,9 +74,9 @@ void mainLoop(){
             // reset wait time
             updateGameSpeed();
 
-            eflash.bank = TICKS_BANK;
+            changeBank(TICKS_BANK);
             timeTick();
-            eflash.bank = mnu_currentMenuBank;
+            restoreBank();
 
         }
         // do this once per frame only - carefull with FRAME_MIDDLE as its not fired in gms_textMode

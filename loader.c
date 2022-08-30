@@ -45,17 +45,17 @@ int main(void){
     }
     
     // this goes directly from ROM - need to switch bank
-    eflash.bank = TITLE_SCREEN_BANK;
+    setBank(TITLE_SCREEN_BANK);
     loadTitleScreen();
 
     // splash and turn screen on
     splashScreen(true, 3);
 
     // get the main sprites, fonts etc
-    eflash.bank = MAIN_GFX_BANK;
+    setBank(MAIN_GFX_BANK);
     loadMainGfx();
 
-    eflash.bank = MUSIC_BANK;
+    setBank(MUSIC_BANK);
     loadMusic();
 
     __asm {
@@ -84,7 +84,7 @@ int main(void){
         cli
     }
 
-    eflash.bank = TRANSLATION_PL_BANK;
+    setBank(TRANSLATION_PL_BANK);
     loadTranslation();
 
     // ready steady GO

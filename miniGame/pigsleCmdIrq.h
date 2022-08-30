@@ -4,6 +4,6 @@
 void pigsleCmdIrq1();
 void pigsleCmdIrq2();
 
-#pragma compile("pigsleCommandIrq.c")
+#pragma compile("pigsleCmdIrq.c")
 
 #endif
