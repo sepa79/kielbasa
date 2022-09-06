@@ -80,8 +80,7 @@ void _loadRadioMsx(){
     joyCursor.enabled = false;
     if(gms_enableMusic) {
         // set Radio bank
-        mnu_alternateMenuBank = MUSIC_BANK_RADIO_1;
-        eflash.bank = MUSIC_BANK_RADIO_1;
+        changeBank(MUSIC_BANK_RADIO_1);
 
         // stop music
         gms_enableMusic = false;
@@ -111,8 +110,7 @@ void _loadRadioMsx(){
         gms_enableMusic = true;
 
         // revert menu bank
-        mnu_alternateMenuBank = NO_ALTERNATE_MENU_BANK;
-        eflash.bank = MENU_BANK_SHOP_IN;
+        restoreBank();
     }
     joyCursor.enabled = true;
     // vic.color_back--;
@@ -123,9 +121,8 @@ void _goBackToPrvMenu(){
     joyCursor.enabled = false;
 
     if(gms_enableMusic) {
-        // set Radio bank
-        mnu_alternateMenuBank = MUSIC_BANK;
-        eflash.bank = MUSIC_BANK;
+        // set Main Music bank
+        changeBank(MUSIC_BANK);
 
         // stop music
         gms_enableMusic = false;
@@ -150,8 +147,7 @@ void _goBackToPrvMenu(){
         gms_enableMusic = true;
 
         // revert menu bank
-        mnu_alternateMenuBank = NO_ALTERNATE_MENU_BANK;
-        eflash.bank = MENU_BANK_SHOP_IN;
+        restoreBank();
     }
 
     loadMenu(MENU_BANK_SHOP);

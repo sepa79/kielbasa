@@ -61,8 +61,8 @@ struct Loaders {
     void (*updateMenu)(void);
 };
 
-extern volatile byte mnu_currentMenuBank;
-extern volatile byte mnu_alternateMenuBank;
+// extern volatile byte mnu_currentMenuBank;
+// extern volatile byte mnu_alternateMenuBank;
 
 void loadMenu(byte bank);
 void loadMenuGfx(bool isDay);

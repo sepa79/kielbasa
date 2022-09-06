@@ -9,14 +9,10 @@
 #pragma code ( code )
 #pragma data ( data )
 
-volatile byte mnu_currentMenuBank = 0;
-volatile byte mnu_alternateMenuBank = 0;
-
 // Switch bank, load any code into RAM if needed.
 // Default noop loader is _menuNoop().
 void loadMenu(char bank){
     setBank(bank);
-    mnu_currentMenuBank = bank;
     ((Loaders *)0x8000)->loadMenuCode();
 }
 
@@ -40,20 +36,15 @@ void loadMenuSprites(){
 // No defaults here.
 void showMenu(){
     resetBank();
-    // eflash.bank = mnu_currentMenuBank;
     ((Loaders *)0x8000)->showMenu();
 }
 
 // Call currently mounted CRT bank's showSprites() function - has to be interrupt safe, called every frame on top Split IRQ.
 // Default noop function is _menuNoop().
 __interrupt void showSprites(){
-    // changeBank(mnu_currentMenuBank);
-    // eflash.bank = mnu_currentMenuBank;
-    // ((Loaders *)0x8000)->showSprites();
-    // if(mnu_alternateMenuBank != NO_ALTERNATE_MENU_BANK){
-    //     eflash.bank = mnu_alternateMenuBank;
-    // }
-    // restoreBank();
+    changeBankToMain();
+    ((Loaders *)0x8000)->showSprites();
+    restoreBank();
 }
 
 // Call currently mounted CRT bank's updateMenu() function, every midnight.

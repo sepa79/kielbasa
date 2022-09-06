@@ -42,8 +42,9 @@ static void _changeLanguage(){
         _currentLang = 0;
     }
     
-    eflash.bank = LANGUAGE_BANKS[_currentLang];
+    changeBank(LANGUAGE_BANKS[_currentLang]);
     loadTranslation();
+    restoreBank();
     showOptionsMenu();
 }
 
