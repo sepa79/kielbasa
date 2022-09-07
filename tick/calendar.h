@@ -2,6 +2,7 @@
 #define CALENDAR_H
 #include <stdbool.h>
 #include <c64/types.h>
+#include <engine/easyFlashBanks.h>
 
 extern volatile signed char cal_currentTemp;
 extern volatile byte cal_currentRain;
@@ -34,7 +35,14 @@ extern const byte WEEKLY_AVG_RAIN[53];
 extern const byte WEEKLY_SUNRISE[53];
 extern const byte WEEKLY_SUNSET[53];
 
+// Sections and regions
+#pragma section( ticksCode, 0 )
+#pragma section( ticksData, 0 )
+#pragma region( ticksCodeRegion, 0x8000, 0xbfff, , TICKS_BANK, { ticksCode, ticksData } )
+
+#pragma code ( ticksCode )
 void timeTick();
+#pragma code ( code )
 
 #pragma compile("calendar.c")
 

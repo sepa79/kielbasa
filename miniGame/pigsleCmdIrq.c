@@ -4,9 +4,9 @@
 #include <c64/joystick.h>
 #include <c64/sprites.h>
 #include <c64/easyflash.h>
-#include <engine/easyFlashBanks.h>
 #include <c64/memmap.h>
 
+#include <engine/easyFlashBanks.h>
 #include <miniGame/pigsleCmdAnims.h>
 
 #define IRQ1RAS 50

@@ -6,12 +6,10 @@
 #include <character/character.h>
 #include <assets/mainGfx.h>
 #include <tick/farmlandTick.h>
+#include <engine/easyFlashBanks.h>
 
-
-// Sections and regions
-// #pragma section( ticksCode, 0 )
-// #pragma section( ticksData, 0 )
-// #pragma region( ticksCodeRegion, 0x8000, 0xbfff, , MENU_BANK_PIGSLE_COMMAND, { ticksCode, ticksData } )
+// dynamic data - in RAM
+#pragma data ( data )
 
 volatile signed char cal_currentTemp;
 volatile byte cal_currentRain;
@@ -35,7 +33,7 @@ byte sunSetHour = 15;
 volatile byte weatherSprite = 0; // cache for night, hourly tick updates isc_weatherSprite
 
 // static data
-// #pragma data ( ticksData )
+#pragma data ( ticksData )
 
 const byte MONTH_DAYS[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 // temp is in C
@@ -80,7 +78,7 @@ const byte WEEKLY_SUNSET[53] = {
 };
 
 // ticks code
-// #pragma code ( ticksCode )
+#pragma code ( ticksCode )
 
 static void _weatherTick(){
     unsigned int rnd = rand();

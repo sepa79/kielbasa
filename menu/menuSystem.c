@@ -52,7 +52,9 @@ __interrupt void showSprites(){
 void updateMenu(){
     // don't update when in any of the option menus - time is stopped, they handle their own screens
     if(!gms_disableTimeControls){
+        changeBankToMain();
         ((Loaders *)0x8000)->updateMenu();
+        restoreBank();
     }
 }
 

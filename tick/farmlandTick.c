@@ -3,6 +3,9 @@
 #include <translation/common.h>
 #include "farmlandTick.h"
 
+// dynamic data - in RAM
+#pragma data ( data )
+
 // how much water is in the ground, aka irrigation (max 100)
 volatile byte flt_waterLevel = 50;
 volatile word flt_storagePotato = 0;
@@ -37,7 +40,7 @@ void initFarmland(){
 // Tick code
 // =============================================================================
 // ticks code
-// #pragma code ( ticksCode )
+#pragma code ( ticksCode )
 
 byte _tempCheck(signed char min, signed char max){
     if(cal_currentTemp < min){
