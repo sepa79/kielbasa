@@ -1,15 +1,6 @@
 #include <assets/assetsSettings.h>
 #include <engine/easyFlashBanks.h>
 
-
-// Sections and regions
-#pragma section( pigsleCommandAnimCode, 0 )
-#pragma region( bankpigsleCommandCA, 0x8000, 0xbfff, , MENU_BANK_PIGSLE_COMMAND_2, { pigsleCommandAnimCode } )
-
-
-#pragma code ( pigsleCommandAnimCode )
-#pragma data ( data )
-
 // this should never be in mem, just used by loaders code
 const char pigsleCommandGfxCannonAnim[] = {
     #embed 0xffff 0x0002 "assets/multicolorGfx/flak_88_10.08.22.kla"
@@ -17,6 +8,7 @@ const char pigsleCommandGfxCannonAnim[] = {
 // ---------------------------------------------------------------------------------------------
 // Cannon Animation handling
 // ---------------------------------------------------------------------------------------------
+#pragma data ( pigsleCommandRAMData )
 
 #define STONKA_KOALA_BMP pigsleCommandGfxCannonAnim
 #define STONKA_KOALA_SCR ((char *)pigsleCommandGfxCannonAnim + 0x1f40)
@@ -149,7 +141,3 @@ void copyCannonR75(){
 #assign _y _y + 1
 #until _y == 5
 }
-
-// Switching code generation back to shared section
-#pragma code ( code )
-#pragma data ( data )

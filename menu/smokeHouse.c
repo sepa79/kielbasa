@@ -13,9 +13,9 @@
 #pragma section( smokeHouseCode, 0 )
 #pragma section( smokeHouseGfxDay, 0 )
 #pragma section( smokeHouseGfxNight, 0 )
-#pragma region( bankSmokeHouseC, 0x8000, 0x9000, , MENU_BANK_SMOKE_HOUSE, { smokeHouseLoaderData, smokeHouseCode } )
-#pragma region( bankSmokeHouseG1, DAY_GFX_BMP, DAY_GFX_BMP+0x1400, , MENU_BANK_SMOKE_HOUSE, { smokeHouseGfxDay } )
-#pragma region( bankSmokeHouseG2, NIGHT_GFX_BMP, NIGHT_GFX_BMP+0x1400, , MENU_BANK_SMOKE_HOUSE, { smokeHouseGfxNight } )
+#pragma region( regionSmokeHouseC, 0x8000, 0x9000, , MENU_BANK_SMOKE_HOUSE, { smokeHouseLoaderData, smokeHouseCode } )
+#pragma region( regionSmokeHouseG1, DAY_GFX_BMP, DAY_GFX_BMP+0x1400, , MENU_BANK_SMOKE_HOUSE, { smokeHouseGfxDay } )
+#pragma region( regionSmokeHouseG2, NIGHT_GFX_BMP, NIGHT_GFX_BMP+0x1400, , MENU_BANK_SMOKE_HOUSE, { smokeHouseGfxNight } )
 
 #pragma data ( smokeHouseGfxDay )
 __export const char smokeHouseGfx1[] = {

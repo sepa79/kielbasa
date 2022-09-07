@@ -15,7 +15,7 @@
 #include "shopOutside.h"
 #include "shopInside.h"
 #include "crew.h"
-// #include "pigsleCommand.h"
+#include "pigsleCommand.h"
 
 // column offset for printing data
 #define COL_OFFSET_TASKLIST 12

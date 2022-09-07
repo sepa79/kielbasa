@@ -1,3 +1,4 @@
+
 #include <c64/vic.h>
 #include <assets/assetsSettings.h>
 #include <c64/joystick.h>
@@ -28,7 +29,7 @@ __interrupt static void pigsleCmdIrq1_C() {
     }
 
     // Poll joystick
-    joy_poll(0);
+    // joy_poll(0);
 
     // // Move crosshair coordinates
     CrossX += 2 * joyx[0]; CrossY += 2 * joyy[0];
@@ -44,7 +45,7 @@ __interrupt static void pigsleCmdIrq1_C() {
         CrossY = 172;
 
     // Move crosshair sprite
-    spr_move(0, CrossX + 14, CrossY + 40);
+    // spr_move(0, CrossX + 14, CrossY + 40);
 
     // Check button
     if (joyb[0]){

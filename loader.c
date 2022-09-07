@@ -15,7 +15,9 @@
 #include "kielbasa.h"
 
 // Shared code/data region, copied from easyflash bank 0 to ram during startup
-#pragma region( main, 0x0900, 0x6000, , , { code, data, bss, heap, stack } )
+#pragma section( startup, 0 )
+#pragma region( startup, 0x0100, 0x0200, , , { startup } )
+#pragma region( main, 0x0400, 0x6000, , , { code, data, bss, heap, stack } )
 
 // Switching code generation back to shared section
 #pragma code ( code )

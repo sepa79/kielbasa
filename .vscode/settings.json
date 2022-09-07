@@ -38,7 +38,9 @@
         "stonkairq.h": "c",
         "mcbitmap.h": "c",
         "pigslecommandirq.h": "c",
-        "titlescreenirq.h": "c"
+        "titlescreenirq.h": "c",
+        "sprites.h": "c",
+        "pigslecmdanims.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }
