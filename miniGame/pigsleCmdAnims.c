@@ -8,6 +8,7 @@ const char pigsleCommandGfxCannonAnim[] = {
 // ---------------------------------------------------------------------------------------------
 // Cannon Animation handling
 // ---------------------------------------------------------------------------------------------
+#pragma code ( pigsleCommandAnimCode )
 #pragma data ( pigsleCommandRAMData )
 
 #define STONKA_KOALA_BMP pigsleCommandGfxCannonAnim

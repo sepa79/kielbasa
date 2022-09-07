@@ -12,6 +12,9 @@
 #define IRQ1RAS 50
 #define IRQ2RAS IRQ1RAS + 152
 
+#pragma code ( pigsleCommandRAMCode )
+#pragma data ( pigsleCommandRAMData )
+
 static byte _prevRomCfgPC;
 
 // ================================================================================

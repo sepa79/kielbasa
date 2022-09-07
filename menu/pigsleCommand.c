@@ -30,7 +30,7 @@
 // ---------------------------------------------------------------------------------------------
 #pragma code ( pigsleCommandCode )
 static void _pigsleCmdCodeLoader(){
-    // source is where the regionPigsleCommandMemC section starts in real mem
+    // source is where the regionPigsleCommandRam section starts in real mem
     memcpy(MENU_CODE_DST, (char *)0xb000, 0x0100);
 }
 
