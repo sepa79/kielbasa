@@ -32,7 +32,7 @@ __interrupt static void pigsleCmdIrq1_C() {
     }
 
     // Poll joystick
-    // joy_poll(0);
+    joy_poll(0);
 
     // // Move crosshair coordinates
     CrossX += 2 * joyx[0]; CrossY += 2 * joyy[0];
@@ -48,7 +48,7 @@ __interrupt static void pigsleCmdIrq1_C() {
         CrossY = 172;
 
     // Move crosshair sprite
-    // spr_move(0, CrossX + 14, CrossY + 40);
+    spr_move(0, CrossX + 14, CrossY + 40);
 
     // Check button
     if (joyb[0]){
@@ -64,7 +64,7 @@ __interrupt static void pigsleCmdIrq1_C() {
 
     _prevRomCfgPC = ((byte *)0x01)[0];
     mmap_set(MMAP_ROM);
-    changeBank(MENU_BANK_PIGSLE_COMMAND_1);
+    changeBank(MENU_BANK_PIGSLE_COMMAND_2);
 
     if(CrossX < 60)
         copyCannonL60();

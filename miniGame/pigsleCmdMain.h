@@ -6,7 +6,7 @@
 #define EXPLOSION_COUNT 3
 
 // Structure for a explosion
-struct Explosion{
+struct Explosion {
     int         x, y;    // Center of circle
     char        f;       // frame
     char        d;       // delay
@@ -14,8 +14,7 @@ struct Explosion{
     Explosion * next;    // Next explosion in list
 };
 
-enum GameState
-{
+enum GameState {
     GS_READY,     // Getting ready
     GS_PLAYING,   // Playing the game
     GS_END        // Wait for restart
@@ -24,7 +23,7 @@ enum GameState
 // Joystick and crosshair control
 extern volatile int  CrossX;
 extern volatile char CrossY;
-extern volatile bool CrossP
+extern volatile bool CrossP;
 extern volatile char CrossDelay;
 
 void pigsleScreenInit();

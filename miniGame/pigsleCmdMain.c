@@ -9,7 +9,7 @@
 #pragma region( regionPigsleCommandG1, 0x8000, 0xbfff, , MENU_BANK_PIGSLE_COMMAND_GFX_1, { pigsleCommandGfx1, pigsleCommandGfx1Loaders } )
 
 // ---------------------------------------------------------------------------------------------
-// Cannon Animation and sprite bank + loaders code
+// Main screen and sprite bank + loaders code
 // ---------------------------------------------------------------------------------------------
 
 #pragma data ( pigsleCommandGfx1 )
@@ -27,14 +27,14 @@ __export const char PIGSLE_CMD_SPR_FILE[] = {
 #pragma code ( pigsleCommandGfx1Loaders )
 #pragma data ( pigsleCommandRAMData )
 
-void pigsleScreenInit(){
+static void _screenInit(){
     // load colors
     char i = 0;
     do {
 #assign _y 0
 #repeat
-        GFX_1_SCR[_y + i] = FULL_KOALA_SCR[_y + i];
-        COLOR_RAM[_y + i] = FULL_KOALA_COL[_y + i];
+        GFX_1_SCR[_y + i] = pigsleCommandGfxBg[0x1f40 + _y + i];
+        COLOR_RAM[_y + i] = pigsleCommandGfxBg[0x2328 + _y + i];
 #assign _y _y + 256
 #until _y == 1024
         i++;
@@ -45,15 +45,15 @@ void pigsleScreenInit(){
     do {
 #assign _y 0
 #repeat
-        GFX_1_BMP[_y + i] = FULL_KOALA_BMP[_y + i];
+        GFX_1_BMP[_y + i] = pigsleCommandGfxBg[_y + i];
 #assign _y _y + 256
-#until _y == 8192
+#until _y >= 8000
         i++;
     } while (i != 0);
 
 }
 
-void pigsleSpriteLoader(){
+void void _spriteLoader(){
     char i = 0;
     do {
 #assign _y 0
@@ -69,15 +69,20 @@ void pigsleSpriteLoader(){
 #pragma code ( pigsleCommandRAMCode )
 #pragma data ( pigsleCommandRAMData )
 
-static void screenInit(void){
+void pigsleScreenInit(void){
     // vic.color_border = VCOL_RED;
     // vic.color_back  = VCOL_RED;
     // mmap_set(MMAP_ROM);
     changeBank(MENU_BANK_PIGSLE_COMMAND_GFX_1);
-    pigsleScreenInit();
+    _screenInit();
     restoreBank();
 }
 
+void pigsleSpriteLoader(){
+    changeBank(MENU_BANK_PIGSLE_COMMAND_GFX_1);
+    _spriteLoader();
+    restoreBank();
+}
 // ---------------------------------------------------------------------------------------------
 // Variables for main Pigsle code
 // ---------------------------------------------------------------------------------------------
