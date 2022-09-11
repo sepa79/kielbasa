@@ -17,7 +17,7 @@ void changeBank(char bank){
     eflash.bank = bank;
     bankHistory[bankHistoryPos] = bank;
     
-    vic.color_border++;
+    // vic.color_border++;
     // debug
     if(bankHistoryPos == MAX_BANK_HISTORY){
         for(;;){
@@ -27,7 +27,7 @@ void changeBank(char bank){
 }
 
 void restoreBank(){
-    vic.color_border--;
+    // vic.color_border--;
 
     if(bankHistoryPos > 0)
         bankHistoryPos--;

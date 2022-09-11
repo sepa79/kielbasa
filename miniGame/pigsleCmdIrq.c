@@ -8,14 +8,17 @@
 
 #include <engine/easyFlashBanks.h>
 #include <miniGame/pigsleCmdAnims.h>
+#include <miniGame/pigsleCmdMain.h>
 
 #define IRQ1RAS 50
 #define IRQ2RAS IRQ1RAS + 152
+#define CROSSHAIR_MAX_Y 0x8a
 
 #pragma code ( pigsleCommandRAMCode )
 #pragma data ( pigsleCommandRAMData )
 
 static byte _prevRomCfgPC;
+volatile byte _flashDelay = 2;
 
 // ================================================================================
 // Top raster
@@ -35,7 +38,7 @@ __interrupt static void pigsleCmdIrq1_C() {
     joy_poll(0);
 
     // // Move crosshair coordinates
-    CrossX += 2 * joyx[0]; CrossY += 2 * joyy[0];
+    CrossX += 1 * joyx[0]; CrossY += 1 * joyy[0];
 
     // Stop at edges of screen
     if (CrossX < 8)
@@ -44,8 +47,8 @@ __interrupt static void pigsleCmdIrq1_C() {
         CrossX = 312;
     if (CrossY < 20)
         CrossY = 20;
-    else if (CrossY > 172)
-        CrossY = 172;
+    else if (CrossY > CROSSHAIR_MAX_Y)
+        CrossY = CROSSHAIR_MAX_Y;
 
     // Move crosshair sprite
     spr_move(0, CrossX + 14, CrossY + 40);
@@ -61,6 +64,9 @@ __interrupt static void pigsleCmdIrq1_C() {
     }
     else if (CrossDelay > 0)
         CrossDelay--;
+
+    if(!CrossDelay && efree)
+        GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK;
 
     _prevRomCfgPC = ((byte *)0x01)[0];
     mmap_set(MMAP_ROM);
@@ -89,12 +95,12 @@ __interrupt static void pigsleCmdIrq1_C() {
 // a bit awkward looking, but necessary so Oscar64 can handle IRQs in assembly and C correctly.
 void pigsleCmdIrq1(){
     __asm {
-        inc $d020
+        // inc $d020
 
         // call C routine
         jsr pigsleCmdIrq1_C
 
-        dec $d020
+        // dec $d020
         asl $d019   // Ack interrupt
         jmp $ea81   // System IRQ routine
     }
@@ -114,6 +120,16 @@ __interrupt static void pigsleCmdIrq2_C() {
         ((byte *)0x01)[0] = _prevRomCfgPC;
     }
 
+    _flashDelay--;
+    if(!_flashDelay){
+        joyCursor.colorIdx++;
+        if(SPR_JOY_CURSOR_COLORS[joyCursor.colorIdx] == 0){
+            joyCursor.colorIdx = 0;
+        }
+        vic.spr_color[0] = SPR_JOY_CURSOR_COLORS[joyCursor.colorIdx];
+        _flashDelay = 2;
+    }
+
     // set the irq to 1st routine
     *(void **)0x0314 = pigsleCmdIrq1;
     vic.ctrl1 &= 0x7f;
@@ -123,12 +139,12 @@ __interrupt static void pigsleCmdIrq2_C() {
 // a bit awkward looking, but necessary so Oscar64 can handle IRQs in assembly and C correctly.
 void pigsleCmdIrq2(){
     __asm {
-        inc $d020
+        // inc $d020
 
         // call C routine
         jsr pigsleCmdIrq2_C
 
-        dec $d020
+        // dec $d020
         asl $d019   // Ack interrupt
         jmp $ea81   // System IRQ routine
     }

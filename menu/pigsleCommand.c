@@ -20,10 +20,7 @@
 #pragma section( pigsleCommandLoaderData, 0 )
 #pragma section( pigsleCommandCode, 0 )
 #pragma section( pigsleCommandConsts, 0 )
-// #pragma section( pigsleCommandRAMCode, 0 )
-// #pragma section( pigsleCommandRAMData, 0 )
 #pragma region( regionPigsleCommandCrt, 0x8000, 0xafff, , MENU_BANK_PIGSLE_COMMAND_1, { pigsleCommandLoaderData, pigsleCommandCode, pigsleCommandConsts } )
-// #pragma region( regionPigsleCommandRam, 0xb000, 0xbfff, , MENU_BANK_PIGSLE_COMMAND_1, { pigsleCommandRAMCode, pigsleCommandRAMData }, 0x7000 )
 
 // ---------------------------------------------------------------------------------------------
 // Menu code
@@ -41,9 +38,6 @@ static void _pigsleCmdNoop(){
 
 #pragma code ( pigsleCommandRAMCode )
 #pragma data ( pigsleCommandRAMData )
-
-// Display bitmap
-Bitmap sbm;
 
 const struct MenuOption PIGSLE_COMMAND_MENU[] = {
     END_MENU_CHOICES
@@ -83,32 +77,55 @@ static void _pigsleCmdInit(void){
     // Load GFX
     pigsleScreenInit();
     pigsleSpriteLoader();
-    changeBank(MENU_BANK_PIGSLE_COMMAND_2);
-    copyCannonUp();
-    restoreBank();
+    // changeBank(MENU_BANK_PIGSLE_COMMAND_2);
+    // copyCannonUp();
+    // restoreBank();
+
+    // Init cross hair sprite
+    vic.spr_enable   = 0b00000000;
+    spr_init(GFX_1_SCR);
+    
+    vic.spr_expand_x = 0b00000000;
+    vic.spr_expand_y = 0b00000000;
+    vic.spr_priority = 0b00000000;
+    vic.spr_multi    = 0b11111110;
+    vic.spr_msbx     = 0b00000000;
+    
+    // explosion
+    vic.spr_mcolor0 = VCOL_WHITE;
+    vic.spr_mcolor1 = VCOL_RED;
+
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK;
+    vic.spr_color[0] = VCOL_WHITE;
 
     // Init bitmap
     vic_setmode(VICM_HIRES_MC, GFX_1_SCR, GFX_1_BMP);
-    bm_init(&sbm, GFX_1_BMP, 40, 25);
+    // bm_init(&sbm, GFX_1_BMP, 40, 25);
 
     // splash and turn screen on
     splashScreen(true, 3);
+    
+    // sprites 
+    // spr_set(0, true, CrossX + 14, CrossY + 40, PIGSLE_CMD_ANIM_AIM_BANK, 1, false, false, false);
+    vic.spr_enable = 0b00000001;
 
-    // Init cross hair sprite
-    spr_init(GFX_1_SCR);
-    spr_set(0, true, CrossX + 14, CrossY + 40, 16, 1, false, false, false);
+    // init crosshair pos
+    CrossX = 159;
+    CrossY = 100;
+    CrossP = false;
+    CrossDelay = 0;
     
     // start game state machine
-    // game_state(GS_READY);
+    game_state(GS_READY);
 
     // main loop
     for(;;)
     {
-        vic.color_border++;
+        // vic.color_border++;
 
-        // game_loop();
+        game_loop();
         vic_waitFrame();
-        vic.color_border--;
+        // vic.color_border--;
 
     }
 

@@ -1,8 +1,11 @@
 #include <c64/vic.h>
 #include <c64/easyflash.h>
+#include <c64/sprites.h>
+#include <string.h>
 
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
+#include <miniGame/pigsleCmdMain.h>
 
 #pragma section( pigsleCommandGfx1, 0 )
 #pragma section( pigsleCommandGfx1Loaders, 0 )
@@ -14,55 +17,49 @@
 
 #pragma data ( pigsleCommandGfx1 )
 __export const char pigsleCommandGfxBg[] = {
-    #embed 0x2713 0x0002 "assets/multicolorGfx/dziao_13.08.22_final.kla"
+    #embed 0x2713 0x0002 "assets/multicolorGfx/dzialo110922.kla"
+    // #embed 0x2713 0x0002 "assets/multicolorGfx/flak_88_dark.kla"
 };
 
-#define PIGSLE_CMD_ANIM_EXPLOSION_BANK 16
-#define PIGSLE_CMD_ANIM_AIM_BANK 16
-__export const char PIGSLE_CMD_SPR_FILE[] = {
+const char PIGSLE_CMD_SPR_FILE_AIM[] = {
+    #embed 0x0080 20 "assets/sprites/crosshair.spd"
+};
+const char PIGSLE_CMD_SPR_FILE_1[] = {
     #embed 0xffff 20 "assets/sprites/wybuch.spd"
-    // #embed 0xffff 20 "assets/sprites/wybuch2.spd"
+};
+const char PIGSLE_CMD_SPR_FILE_2[] = {
+    #embed 0xffff 20 "assets/sprites/wybuch2.spd"
 };
 
 #pragma code ( pigsleCommandGfx1Loaders )
 #pragma data ( pigsleCommandRAMData )
 
+// Display bitmap
+// Bitmap sbm;
+
 static void _screenInit(){
     // load colors
-    char i = 0;
-    do {
-#assign _y 0
-#repeat
-        GFX_1_SCR[_y + i] = pigsleCommandGfxBg[0x1f40 + _y + i];
-        COLOR_RAM[_y + i] = pigsleCommandGfxBg[0x2328 + _y + i];
-#assign _y _y + 256
-#until _y == 1024
-        i++;
-    } while (i != 0);
+    #pragma unroll(page)
+    for(int i=0; i<1000; i++){
+        GFX_1_SCR[i] = pigsleCommandGfxBg[0x1f40 + i];
+        COLOR_RAM[i] = pigsleCommandGfxBg[0x2328 + i];
+    }
 
     // load bitmap
-    i = 0;
-    do {
-#assign _y 0
-#repeat
-        GFX_1_BMP[_y + i] = pigsleCommandGfxBg[_y + i];
-#assign _y _y + 256
-#until _y >= 8000
-        i++;
-    } while (i != 0);
-
+    #pragma unroll(page)
+    for(int i=0; i<8000; i++){
+        GFX_1_BMP[i] = pigsleCommandGfxBg[i];
+    }
 }
 
 static void _spriteLoader(){
-    char i = 0;
-    do {
-#assign _y 0
-#repeat
-       ((volatile char*) GFX_1_SPR_DST_ADR)[_y + i] = ((char*)PIGSLE_CMD_SPR_FILE)[_y + i];
-#assign _y _y + 0x100
-#until _y == 0x0400
-        i++;
-    } while (i != 0);
+    memcpy((char *)GFX_1_SPR_DST_ADR, PIGSLE_CMD_SPR_FILE_AIM, 0x80);
+    // memcpy((char *)GFX_1_SPR_DST_ADR+0x40, PIGSLE_CMD_SPR_FILE, 0x400);
+    #pragma unroll(page)
+    for(int i=0; i<64*ANIM_FRAMES; i++){
+       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80 + i] = ((char*)PIGSLE_CMD_SPR_FILE_1)[i];
+       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*ANIM_FRAMES + i] = ((char*)PIGSLE_CMD_SPR_FILE_2)[i];
+    }
 }
 
 // this code needs to be in main block, as it switches banks
@@ -92,24 +89,28 @@ void pigsleSpriteLoader(){
 #pragma data ( pigsleCommandRAMData )
 
 // Joystick and crosshair control
-volatile int  CrossX = 160;
+volatile int  CrossX = 159;
 volatile char CrossY = 100;
 volatile bool CrossP = false;
 volatile char CrossDelay = 0;
 
-// // First free and first used explosion
-// Explosion * efree, * eused;
-// Explosion explosions[EXPLOSION_COUNT+1];
+// First free and first used explosion
+Explosion * efree;
+Explosion * eused;
+Explosion explosions[EXPLOSION_COUNT];
 
-// // ---------------------------------------------------------------------------------------------
-// // DrMortalWombat's great screen writing code
-// // ---------------------------------------------------------------------------------------------
-// #pragma data ( pigsleCommandConsts )
+// ---------------------------------------------------------------------------------------------
+// DrMortalWombat's great screen writing code
+// ---------------------------------------------------------------------------------------------
+#pragma data ( pigsleCommandConsts )
+
 // // Charset assets
 // const char MissileChars[] = {
-// #embed "assets/missilechars.64c"
+//     #embed "assets/missilechars.64c"
 // };
-// #pragma data ( data )
+
+// #pragma code ( pigsleCommandRAMCode )
+// #pragma data ( pigsleCommandRAMData )
 
 // // Expand an 8x8 charactor to 16x16 on screen
 // void char_put(char cx, char cy, char c, char color){
@@ -138,6 +139,7 @@ volatile char CrossDelay = 0;
 // // Write a zero terminated string on screen
 // void char_write(char cx, char cy, const char * s, char color)
 // {
+//     changeBank(MENU_BANK_PIGSLE_COMMAND_1);
 //     // Loop over all characters
 //     while (*s)
 //     {
@@ -145,180 +147,203 @@ volatile char CrossDelay = 0;
 //         s++;
 //         cx += 16;
 //     }
+//     restoreBank();
 // }
 
-// // Initialize explosion list
-// static void explosion_init(void){
-//     // No explosion active
-//     eused = nullptr;
+// ---------------------------------------------------------------------------------------------
+// Game code
+// ---------------------------------------------------------------------------------------------
+#pragma code ( pigsleCommandCode )
+#pragma data ( pigsleCommandRAMData )
 
-//     // First free explosion element
-//     efree = explosions;
-//     // Build list
-//     for(char i=0; i<EXPLOSION_COUNT; i++){
-//         explosions[i].s = i + 1; // sprite 0 is aim, so +1 here
-//         explosions[i].f = 0;
-//         explosions[i].d = ANIM_DELAY;
-//         explosions[i].next = explosions + i + 1;
-//     }
-//     // Terminate last element
-//     explosions[EXPLOSION_COUNT].next = nullptr;
-// }
+static void _randomizeExplosion(Explosion * e){
+    char rnd = rand();
+    char sprIdxOffset = 0;
+    if(rnd > 0x80){
+        sprIdxOffset = ANIM_FRAMES;
+    }
+    e->sprIdxOffset = sprIdxOffset; // sprite 0 is aim, so +1 here
+}
 
-// // Start a new explosion
-// static void explosion_start(int x, int y){
-//     // Free slot in list of explosions?
-//     if (efree) {
-//         // Move entry from free to used list
-//         Explosion * e = efree;
-//         efree = e->next;
-//         e->next = eused;
-//         eused = e;
+// Initialize explosion list
+static void explosion_init(void){
+    // No explosion active
+    eused = nullptr;
 
-//         // Initialize position and size
-//         e->x = x;
-//         e->y = y;
-//         spr_set(e->s, true, e->x + 14, e->y + 40, e->f + PIGSLE_CMD_ANIM_EXPLOSION_BANK, 2, true, false, false);
-//     }
-// }
+    // First free explosion element
+    efree = explosions;
+    // Build list
+    for(char i=0; i<EXPLOSION_COUNT; i++){
+        _randomizeExplosion((Explosion *)explosions[i]);
+        explosions[i].sprIdx = i + 1; // sprite 0 is aim, so +1 here
+        explosions[i].frame = 0;
+        explosions[i].delay = ANIM_DELAY;
+        explosions[i].next = explosions + i + 1;
+    }
+    // Terminate last element
+    explosions[EXPLOSION_COUNT-1].next = nullptr;
+}
 
-// // Animate all explosions
-// static void explosion_animate(void){
-//     // Loop over active explosions with "e", use "ep" to point
-//     // to previous explosion, so we can remove the current explosion
-//     // from the list
-//     Explosion * e = eused, * ep = nullptr;
-//     while (e){
-//         // Remember next entry in list
-//         Explosion * en = e->next;
+// Start a new explosion
+static void explosion_start(int x, int y){
+    // Free slot in list of explosions?
+    if (efree) {
+        // Move entry from free to used list
+        Explosion * e = efree;
+        efree = e->next;
+        e->next = eused;
+        eused = e;
 
-//         e->d--;
-//         if(!e->d){
-//             e->d = ANIM_DELAY;
-//             // Increment phase
-//             e->f++;
-//         }
-//         // first ANIM_EXPLOSION_DELAY frames are delay
-//         if (e->f > ANIM_EXPLOSION_DELAY) {
-//             spr_set(e->s, true, e->x + 14, e->y + 40, e->f + PIGSLE_CMD_ANIM_EXPLOSION_BANK - ANIM_EXPLOSION_DELAY, 2, true, false, false);
-//         }
-//         // End of explosion live
-//         if (e->f == 9 + ANIM_EXPLOSION_DELAY) {
-//             // Remove explosion from used list
-//             if (ep)
-//                 ep->next = e->next;
-//             else
-//                 eused = e->next;
+        // Initialize position and size
+        e->x = x + EXPLOSION_X_OFFSET;
+        e->y = y + EXPLOSION_Y_OFFSET;
+        // x -1 to offset initial 'dot', later anim frames will not use it
+        spr_set(e->sprIdx, true, e->x - 1, e->y, e->sprIdxOffset + e->frame + PIGSLE_CMD_ANIM_EXPLOSION_BANK, VCOL_YELLOW, true, false, false);
+    }
+}
 
-//             // disable sprite, reset anim
-//             spr_set(e->s, false, e->x + 14, e->y + 40, PIGSLE_CMD_ANIM_EXPLOSION_BANK, 2, true, false, false);
-//             e->f = 0;
-//             e->d = ANIM_DELAY;
+// Animate all explosions
+static void explosion_animate(void){
+    // Loop over active explosions with "e", use "ep" to point
+    // to previous explosion, so we can remove the current explosion
+    // from the list
+    Explosion * e = eused, * ep = nullptr;
+    while (e){
+        // Remember next entry in list
+        Explosion * en = e->next;
 
-//             // Prepend it to free list
-//             e->next = efree;
-//             efree = e;
-//         }
-//         else
-//             ep = e;
+        e->delay--;
+        if(!e->delay){
+            e->delay = ANIM_DELAY;
+            // Increment phase
+            e->frame++;
+        }
+        // first ANIM_EXPLOSION_DELAY frames are delay
+        if (e->frame > ANIM_EXPLOSION_DELAY) {
+            spr_set(e->sprIdx, true, e->x, e->y, e->sprIdxOffset + e->frame + PIGSLE_CMD_ANIM_EXPLOSION_BANK - ANIM_EXPLOSION_DELAY, VCOL_YELLOW, true, false, false);
+        }
+        // End of explosion live
+        if (e->frame == 9 + ANIM_EXPLOSION_DELAY) {
+            // Remove explosion from used list
+            if (ep)
+                ep->next = e->next;
+            else
+                eused = e->next;
 
-//         // set sprite
+            // disable sprite, reset anim
+            spr_set(e->sprIdx, false, e->x, e->y, PIGSLE_CMD_ANIM_EXPLOSION_BANK, VCOL_YELLOW, true, false, false);
+            e->frame = 0;
+            e->delay = ANIM_DELAY;
+            _randomizeExplosion(e);
+            
+            // Prepend it to free list
+            e->next = efree;
+            efree = e;
+        }
+        else
+            ep = e;
 
-//         // Next explosion in list
-//         e = en;
-//     }
-// }
+        // set sprite
 
-// // State of the game
-// struct Game
-// {
-//     GameState state;
-//     byte      score, count;
+        // Next explosion in list
+        e = en;
+    }
+}
 
-// } TheGame;    // Only one game, so global variable
+// State of the game
+struct Game {
+    GameState state;
+    byte      score, count;
 
-// static void game_state(GameState state){
+} TheGame;    // Only one game, so global variable
 
-//     TheGame.state = state;
+void game_state(GameState state){
 
-//     switch(state) {
-//     case GS_READY:
-//         // Start of new game
-//         // score_reset();
-//         screenInit();
-//         char_write(31, 60, s"Ratuj kartofle!", 1);
-//         TheGame.count = 25;
-//         break;
+    TheGame.state = state;
 
-//     case GS_PLAYING:
-//         // Avoid old fire request
-//         CrossP = false;
+    switch(state) {
+    case GS_READY:
+        // Start of new game
+        // score_reset();
+        pigsleScreenInit();
+        // bmmcu_rect_fill(&sbm, 0, 56, 320, 24, 2);
+        // memset(GFX_1_SCR+7*40, 0x67, 3*40);
+        // memset(COLOR_RAM+7*40, 0x02, 3*40);
+        // char_write(31, 60, s"Ratuj kartofle!", 0);
+        TheGame.count = 255;
+        break;
 
-//         // Setup display
-//         screenInit();
-//         // missile_init();
-//         explosion_init();
-//         // icbm_init();
+    case GS_PLAYING:
+        // Avoid old fire request
+        CrossP = false;
 
-//         TheGame.count = 15;
-//         break;
+        // Setup display
+        pigsleScreenInit();
+        // missile_init();
+        explosion_init();
+        // icbm_init();
 
-//     case GS_END:
-//         char_write(104, 60, s"THE END", 0);
-//         TheGame.count = 120;
-//         break;
-//     }
-// }
+        TheGame.count = 15;
+        break;
 
-// // Main game play code
-// static void game_play(void)
-// {
-//     vic.color_border++;
-//     // Check if fire request
-//     if (CrossP) {
-//         // boom!
-//         explosion_start(CrossX, CrossY);
-//         // Reset request
-//         CrossP = false;
-//     }
+    case GS_END:
+        // char_write(104, 60, s"THE END", 0);
+        TheGame.count = 120;
+        break;
+    }
+}
 
-//     // Wait for next ICMB to enter the game
-//     if (!--TheGame.count){
+// Main game play code
+static void game_play(void)
+{
+    // vic.color_border++;
+    // Check if fire request
+    if (CrossP) {
+        // change crosshair
+        GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = PIGSLE_CMD_ANIM_CROSSHAIR_EMPTY_BANK;
+        // boom!
+        explosion_start(CrossX, CrossY);
+        // Reset request
+        CrossP = false;
+    }
 
-//         // Next lauch time
-//         TheGame.count = 8 + (rand() & 63);
-//     }
+    // Wait for next ICMB to enter the game
+    if (!--TheGame.count){
 
-//     // Advance defending missiles by four pixels
-//     // for(char i=0; i<4; i++)
-//     //     missile_animate();
+        // Next lauch time
+        TheGame.count = 8 + (rand() & 63);
+    }
 
-//     // Advance ICBMs
-//     // icbm_animate();
+    // Advance defending missiles by four pixels
+    // for(char i=0; i<4; i++)
+    //     missile_animate();
 
-//     // Show explosions
-//     explosion_animate();
-// }
+    // Advance ICBMs
+    // icbm_animate();
 
-// // Main game loop, entered every VSYNC
-// static void game_loop(){
+    // Show explosions
+    explosion_animate();
+}
 
-//     switch(TheGame.state){
-//     case GS_READY:
-//         if (!--TheGame.count)
-//             game_state(GS_PLAYING);
-//         break;
+// Main game loop, entered every VSYNC
+static void game_loop(){
 
-//     case GS_PLAYING:
-//         game_play();
+    switch(TheGame.state){
+    case GS_READY:
+        if (!--TheGame.count)
+            game_state(GS_PLAYING);
+        break;
 
-//         // Check for level and game end coditions
-//         break;
+    case GS_PLAYING:
+        game_play();
 
-//     case GS_END:
-//         if (!--TheGame.count)
-//             game_state(GS_READY);
-//         break;
-//     }
+        // Check for level and game end coditions
+        break;
 
-// }
+    case GS_END:
+        if (!--TheGame.count)
+            game_state(GS_READY);
+        break;
+    }
+
+}

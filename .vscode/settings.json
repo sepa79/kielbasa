@@ -40,7 +40,8 @@
         "pigslecommandirq.h": "c",
         "titlescreenirq.h": "c",
         "sprites.h": "c",
-        "pigslecmdanims.h": "c"
+        "pigslecmdanims.h": "c",
+        "pigslecmdmain.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }
