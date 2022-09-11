@@ -30,7 +30,7 @@ enum FARMLAND_SPRITE_VIC_BANKS {
     SPR_BANK_LUPINE_UI,
     SPR_BANK_WHEAT_UI,
     SPR_BANK_CORN_UI
-}
+};
 
 #define SPR_THERMO_BAR_1 ((char *)GFX_1_BASE + 64*SPR_BANK_THERMO_BAR_1)
 #define SPR_THERMO_BAR_2 ((char *)GFX_1_BASE + 64*SPR_BANK_THERMO_BAR_2)
@@ -417,7 +417,7 @@ __export static const Loaders menuLoaders = {
     .showMenu        = &_menuHandler,
     .showSprites     = &_menuShowSprites,
     .updateMenu      = &_updateFieldView,
-}
+};
 
 // Switching code generation back to shared section
 #pragma code ( code )

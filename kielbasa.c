@@ -27,7 +27,7 @@ void prepareScroll(){
         GFX_1_SCR[40*24+i] = p' ';
         COLOR_RAM[40*24+i] = VCOL_LT_GREY;
         i++;
-    } while (i < 40)
+    } while (i < 40);
 
     COLOR_RAM[40*24+0] = VCOL_DARK_GREY;
     COLOR_RAM[40*24+1] = VCOL_DARK_GREY;

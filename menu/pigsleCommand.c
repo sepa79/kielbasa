@@ -123,7 +123,7 @@ __export static const Loaders menuLoaders = {
     .showMenu        = &_pigsleCmdInit,
     .showSprites     = &_pigsleCmdNoop,
     .updateMenu      = &_pigsleCmdNoop,
-}
+};
 
 // Switching code generation back to shared section
 #pragma code ( code )

@@ -29,7 +29,7 @@ enum SHOPIN_SPRITE_VIC_BANKS {
     SPR_BANK_GHERKIN_ANIM4,
     SPR_BANK_GHERKIN_ANIM5,
     SPR_BANK_GHERKIN_ANIM6,
-}
+};
 
 // not really needed
 #define SPR_GHERKIN_ANIM1 ((char *)GFX_1_BASE + 64*SPR_BANK_GHERKIN_ANIM1)
@@ -231,7 +231,7 @@ __export static const Loaders menuLoaders = {
     .showMenu        = &_menuHandler,
     .showSprites     = &_shopInsideShowSprites,
     .updateMenu      = &menuNoop,
-}
+};
 
 // Switching code generation back to shared section
 #pragma code ( code )

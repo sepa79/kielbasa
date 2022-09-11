@@ -237,7 +237,7 @@ __interrupt static void controlIRQ1_C() {
         _scrollIt = 7;
         // Hard scroll
         for(byte i=0;i<39;i++) {
-            GFX_1_SCR[statusLine+i]=GFX_1_SCR[statusLine+i+1]
+            GFX_1_SCR[statusLine+i]=GFX_1_SCR[statusLine+i+1];
         }
         // Render next char
         byte c = *SB_TEXT;

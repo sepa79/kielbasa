@@ -53,7 +53,7 @@ static void _screenInit(){
 
 }
 
-void void _spriteLoader(){
+static void _spriteLoader(){
     char i = 0;
     do {
 #assign _y 0

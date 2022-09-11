@@ -140,7 +140,7 @@ __export static const Loaders menuLoaders = {
     .showMenu        = &_menuHandler,
     .showSprites     = &_showStatsSprites,
     .updateMenu      = &menuNoop,
-}
+};
 
 // Switching code generation back to shared section
 #pragma code ( code )

@@ -20,7 +20,9 @@ void loadMenu(char bank){
 // Default loader is _menuGfxLoader(bool isDay).
 // Default noop loader is _menuNoop().
 void loadMenuGfx(bool isDay){
+    changeBankToMain();
     ((Loaders *)0x8000)->loadMenuGfx(isDay);
+    restoreBank();
 }
 
 // Call currently mounted CRT bank's loadMenuSprites() function.

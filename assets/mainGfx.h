@@ -126,7 +126,7 @@ const struct AUX_GFX {
     char PORTRAITS[64*4];
     // sprite fonts
     char CALENDAR_FONTS[59*7];
-}
+};
 
 // #define TASK_ICONS  ((char *)GFX_1_AUX_DST_ADR)
 // #define PORTRAITS  ((char *)GFX_1_AUX_DST_ADR+64*14)
