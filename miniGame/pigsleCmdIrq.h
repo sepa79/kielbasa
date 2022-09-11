@@ -1,9 +1,6 @@
 #ifndef PIGSLE_CMD_IRQ_H
 #define PIGSLE_CMD_IRQ_H
-
-#pragma section( pigsleCommandRAMCode, 0 )
-#pragma section( pigsleCommandRAMData, 0 )
-#pragma region( regionPigsleCommandRam, 0xb000, 0xbfff, , MENU_BANK_PIGSLE_COMMAND_1, { pigsleCommandRAMCode, pigsleCommandRAMData }, 0x7000 )
+#include <miniGame/pigsleCmdMain.h>
 
 #pragma code ( pigsleCommandRAMCode )
 #pragma data ( pigsleCommandRAMData )

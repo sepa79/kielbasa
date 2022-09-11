@@ -7,10 +7,6 @@
 #include <assets/assetsSettings.h>
 #include <miniGame/pigsleCmdMain.h>
 
-#pragma section( pigsleCommandGfx1, 0 )
-#pragma section( pigsleCommandGfx1Loaders, 0 )
-#pragma region( regionPigsleCommandG1, 0x8000, 0xbfff, , MENU_BANK_PIGSLE_COMMAND_GFX_1, { pigsleCommandGfx1, pigsleCommandGfx1Loaders } )
-
 // ---------------------------------------------------------------------------------------------
 // Main screen and sprite bank + loaders code
 // ---------------------------------------------------------------------------------------------
@@ -33,9 +29,6 @@ const char PIGSLE_CMD_SPR_FILE_2[] = {
 
 #pragma code ( pigsleCommandGfx1Loaders )
 #pragma data ( pigsleCommandRAMData )
-
-// Display bitmap
-// Bitmap sbm;
 
 static void _screenInit(){
     // load colors
@@ -104,51 +97,55 @@ Explosion explosions[EXPLOSION_COUNT];
 // ---------------------------------------------------------------------------------------------
 #pragma data ( pigsleCommandConsts )
 
-// // Charset assets
-// const char MissileChars[] = {
-//     #embed "assets/missilechars.64c"
-// };
+// Charset assets
+const char MissileChars[] = {
+    #embed "assets/missilechars.64c"
+};
 
-// #pragma code ( pigsleCommandRAMCode )
-// #pragma data ( pigsleCommandRAMData )
+#pragma code ( pigsleCommandRAMCode )
+#pragma data ( pigsleCommandRAMData )
+#include <gfx/mcbitmap.h>
 
-// // Expand an 8x8 charactor to 16x16 on screen
-// void char_put(char cx, char cy, char c, char color){
-//     // Get pointer to glyph data
-//     const char * sp = MissileChars + 8 * c;
+// Display bitmap
+Bitmap sbm;
 
-//     // Loop over all pixel
-//     for(char y=0; y<8; y++)
-//     {
-//         char cl = sp[y];
-//         for(char x=0; x<8; x++)
-//         {
-//             // Draw two pixel if bit is set
-//             if (cl & 128)
-//             {
-//                 bmmc_put(&sbm, cx + 2 * x, cy + 2 * y + 0, color);
-//                 bmmc_put(&sbm, cx + 2 * x, cy + 2 * y + 1, color);
-//             }
+// Expand an 8x8 charactor to 16x16 on screen
+void char_put(char cx, char cy, char c, char color){
+    // // Get pointer to glyph data
+    // const char * sp = MissileChars + 8 * c;
 
-//             // Next bit
-//             cl <<= 1;
-//         }
-//     }
-// }
+    // // Loop over all pixel
+    // for(char y=0; y<8; y++)
+    // {
+    //     char cl = sp[y];
+    //     for(char x=0; x<8; x++)
+    //     {
+    //         // Draw two pixel if bit is set
+    //         if (cl & 128)
+    //         {
+    //             bmmc_put(&sbm, cx + 2 * x, cy + 2 * y + 0, color);
+    //             bmmc_put(&sbm, cx + 2 * x, cy + 2 * y + 1, color);
+    //         }
 
-// // Write a zero terminated string on screen
-// void char_write(char cx, char cy, const char * s, char color)
-// {
-//     changeBank(MENU_BANK_PIGSLE_COMMAND_1);
-//     // Loop over all characters
-//     while (*s)
-//     {
-//         char_put(cx, cy, *s, color);
-//         s++;
-//         cx += 16;
-//     }
-//     restoreBank();
-// }
+    //         // Next bit
+    //         cl <<= 1;
+    //     }
+    // }
+}
+
+// Write a zero terminated string on screen
+void char_write(char cx, char cy, const char * s, char color)
+{
+    changeBank(MENU_BANK_PIGSLE_COMMAND_1);
+    // Loop over all characters
+    // while (*s)
+    // {
+    //     char_put(cx, cy, *s, color);
+    //     s++;
+    //     cx += 16;
+    // }
+    restoreBank();
+}
 
 // ---------------------------------------------------------------------------------------------
 // Game code
@@ -266,10 +263,10 @@ void game_state(GameState state){
         // Start of new game
         // score_reset();
         pigsleScreenInit();
-        // bmmcu_rect_fill(&sbm, 0, 56, 320, 24, 2);
-        // memset(GFX_1_SCR+7*40, 0x67, 3*40);
-        // memset(COLOR_RAM+7*40, 0x02, 3*40);
-        // char_write(31, 60, s"Ratuj kartofle!", 0);
+        bmmcu_rect_fill(&sbm, 0, 56, 320, 24, 2);
+        memset(GFX_1_SCR+7*40, 0, 3*40);
+        memset(COLOR_RAM+7*40, 0, 3*40);
+        char_write(31, 60, s"Ratuj kartofle!", 0);
         TheGame.count = 255;
         break;
 

@@ -3,7 +3,6 @@
 #include <c64/keyboard.h>
 #include <c64/easyflash.h>
 #include <c64/memmap.h>
-#include <gfx/mcbitmap.h>
 #include <c64/sprites.h>
 
 #include <menu/menuSystem.h>
@@ -12,15 +11,11 @@
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
 #include <engine/uiHandler.h>
-#include <miniGame/pigsleCmdMain.h>
 #include <miniGame/pigsleCmdIrq.h>
+#include <miniGame/pigsleCmdMain.h>
 #include <miniGame/pigsleCmdAnims.h>
 
-// Sections and regions
-#pragma section( pigsleCommandLoaderData, 0 )
-#pragma section( pigsleCommandCode, 0 )
-#pragma section( pigsleCommandConsts, 0 )
-#pragma region( regionPigsleCommandCrt, 0x8000, 0xafff, , MENU_BANK_PIGSLE_COMMAND_1, { pigsleCommandLoaderData, pigsleCommandCode, pigsleCommandConsts } )
+// Sections and regions in pigsleCmdMain.h
 
 // ---------------------------------------------------------------------------------------------
 // Menu code
@@ -100,7 +95,6 @@ static void _pigsleCmdInit(void){
 
     // Init bitmap
     vic_setmode(VICM_HIRES_MC, GFX_1_SCR, GFX_1_BMP);
-    // bm_init(&sbm, GFX_1_BMP, 40, 25);
 
     // splash and turn screen on
     splashScreen(true, 3);
