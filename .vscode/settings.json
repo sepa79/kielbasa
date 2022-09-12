@@ -41,7 +41,8 @@
         "titlescreenirq.h": "c",
         "sprites.h": "c",
         "pigslecmdanims.h": "c",
-        "pigslecmdmain.h": "c"
+        "pigslecmdmain.h": "c",
+        "music.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }

@@ -263,7 +263,9 @@ void game_state(GameState state){
         // Start of new game
         // score_reset();
         pigsleScreenInit();
-        // bmmcu_rect_fill(&sbm, 0, 56, 320, 24, 2);
+        bm_init(&sbm, GFX_1_BMP, 40, 25);
+
+        bmmcu_rect_fill(&sbm, 0, 56, 320, 24, 2);
         memset(GFX_1_SCR+7*40, 1, 3*40);
         memset(COLOR_RAM+7*40, 1, 3*40);
         memset(GFX_1_BMP+7*40*8, 1, 3*40*8);

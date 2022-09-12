@@ -4,6 +4,7 @@
 
 #include <translation/common.h>
 #include <assets/mainGfx.h>
+#include <tick/calendar.h>
 
 // struct CharacterStruct {
 //     /* Pointer to text to display, max 5 x 28, should have newlines */
@@ -69,10 +70,25 @@ extern byte allChars_slot[CHARACTER_COUNT];
 #define NO_CHARACTER 255
 extern byte characterSlots[CHARACTER_SLOTS];
 
+//-----------------------------------------------------------------------------------------
+#pragma code ( gameInitRAMCode )
+#pragma data ( gameInitData )
+//-----------------------------------------------------------------------------------------
 void initCharacterList();
+
+//-----------------------------------------------------------------------------------------
+#pragma code ( ticksCode )
+#pragma data ( data )
+//-----------------------------------------------------------------------------------------
+
+void sleepTick();
+//-----------------------------------------------------------------------------------------
+#pragma code ( code )
+#pragma data ( data )
+//-----------------------------------------------------------------------------------------
+
 void incEnergyLevel(byte charSlot, byte amount);
 void decEnergyLevel(byte charSlot, byte amount);
-void sleepTick();
 
 #pragma compile("character.c")
 #endif

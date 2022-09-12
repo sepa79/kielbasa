@@ -2,6 +2,7 @@
 #define TASK_MANAGER_H
 #include <c64/types.h>
 #include <stdbool.h>
+#include <tick/calendar.h>
 
 // Task arrays
 
@@ -50,8 +51,25 @@ struct Task {
     byte status;
 };
 
+//-----------------------------------------------------------------------------------------
+#pragma code ( gameInitRAMCode )
+#pragma data ( gameInitData )
+//-----------------------------------------------------------------------------------------
+
 void initTaskList();
+
+//-----------------------------------------------------------------------------------------
+#pragma code ( ticksCode )
+#pragma data ( data )
+//-----------------------------------------------------------------------------------------
+
 void tasksTick();
+
+//-----------------------------------------------------------------------------------------
+#pragma code ( code )
+#pragma data ( data )
+//-----------------------------------------------------------------------------------------
+
 bool addTask(struct Task * task);
 void removeTaskByRef(byte taskRefId);
 void removeTask(byte taskRefId);
