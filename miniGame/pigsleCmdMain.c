@@ -111,26 +111,26 @@ Bitmap sbm;
 
 // Expand an 8x8 charactor to 16x16 on screen
 void char_put(char cx, char cy, char c, char color){
-    // // Get pointer to glyph data
-    // const char * sp = MissileChars + 8 * c;
+    // Get pointer to glyph data
+    const char * sp = MissileChars + 8 * c;
 
-    // // Loop over all pixel
-    // for(char y=0; y<8; y++)
-    // {
-    //     char cl = sp[y];
-    //     for(char x=0; x<8; x++)
-    //     {
-    //         // Draw two pixel if bit is set
-    //         if (cl & 128)
-    //         {
-    //             bmmc_put(&sbm, cx + 2 * x, cy + 2 * y + 0, color);
-    //             bmmc_put(&sbm, cx + 2 * x, cy + 2 * y + 1, color);
-    //         }
+    // Loop over all pixel
+    for(char y=0; y<8; y++)
+    {
+        char cl = sp[y];
+        for(char x=0; x<8; x++)
+        {
+            // Draw two pixel if bit is set
+            if (cl & 128)
+            {
+                bmmc_put(&sbm, cx + 2 * x, cy + 2 * y + 0, color);
+                bmmc_put(&sbm, cx + 2 * x, cy + 2 * y + 1, color);
+            }
 
-    //         // Next bit
-    //         cl <<= 1;
-    //     }
-    // }
+            // Next bit
+            cl <<= 1;
+        }
+    }
 }
 
 // Write a zero terminated string on screen
@@ -138,12 +138,12 @@ void char_write(char cx, char cy, const char * s, char color)
 {
     changeBank(MENU_BANK_PIGSLE_COMMAND_1);
     // Loop over all characters
-    // while (*s)
-    // {
-    //     char_put(cx, cy, *s, color);
-    //     s++;
-    //     cx += 16;
-    // }
+    while (*s)
+    {
+        char_put(cx, cy, *s, color);
+        s++;
+        cx += 16;
+    }
     restoreBank();
 }
 
@@ -263,10 +263,11 @@ void game_state(GameState state){
         // Start of new game
         // score_reset();
         pigsleScreenInit();
-        bmmcu_rect_fill(&sbm, 0, 56, 320, 24, 2);
-        memset(GFX_1_SCR+7*40, 0, 3*40);
-        memset(COLOR_RAM+7*40, 0, 3*40);
-        char_write(31, 60, s"Ratuj kartofle!", 0);
+        // bmmcu_rect_fill(&sbm, 0, 56, 320, 24, 2);
+        memset(GFX_1_SCR+7*40, 1, 3*40);
+        memset(COLOR_RAM+7*40, 1, 3*40);
+        memset(GFX_1_BMP+7*40*8, 1, 3*40*8);
+        char_write(31, 60, s"Ratuj kartofle!", 3);
         TheGame.count = 255;
         break;
 
