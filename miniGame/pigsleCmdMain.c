@@ -265,11 +265,11 @@ void game_state(GameState state){
         pigsleScreenInit();
         bm_init(&sbm, GFX_1_BMP, 40, 25);
 
-        bmmcu_rect_fill(&sbm, 0, 56, 320, 24, 2);
+        // bmmcu_rect_fill(&sbm, 0, 56, 320, 24, 2);
         memset(GFX_1_SCR+7*40, 1, 3*40);
         memset(COLOR_RAM+7*40, 1, 3*40);
         memset(GFX_1_BMP+7*40*8, 1, 3*40*8);
-        char_write(31, 60, s"Ratuj kartofle!", 3);
+        char_write(31, 60, s"Ratuj kartofle!", 2);
         TheGame.count = 255;
         break;
 
