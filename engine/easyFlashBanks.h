@@ -7,9 +7,10 @@
 #define TRANSLATION_EN_BANK 4
 
 #define TICKS_BANK 5
+#define TASKS_BANK 6
 
-#define MUSIC_BANK 6
-#define MUSIC_BANK_RADIO_1 7
+#define MUSIC_BANK 7
+#define MUSIC_BANK_RADIO_1 8
 
 #define MENU_BANK_MAIN_MENU 10
 #define MENU_BANK_FARMLAND 11

@@ -13,7 +13,7 @@
 
 #pragma data ( pigsleCommandGfx1 )
 __export const char pigsleCommandGfxBg[] = {
-    #embed 0x2713 0x0002 "assets/multicolorGfx/dzialo110922.kla"
+    #embed 0x2713 0x0002 "assets/multicolorGfx/dzialoKoval.kla"
     // #embed 0x2713 0x0002 "assets/multicolorGfx/flak_88_dark.kla"
 };
 

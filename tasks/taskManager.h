@@ -69,6 +69,7 @@ void tasksTick();
 #pragma code ( code )
 #pragma data ( data )
 //-----------------------------------------------------------------------------------------
+// TODO: These will be visible in RAM, but will switch banks and call the 'body' in ROM
 
 bool addTask(struct Task * task);
 void removeTaskByRef(byte taskRefId);

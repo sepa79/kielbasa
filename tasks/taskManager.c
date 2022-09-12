@@ -4,9 +4,15 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <engine/easyFlashBanks.h>
 #include <tasks/taskManager.h>
 #include <translation/common.h>
 #include <character/character.h>
+
+// Sections and regions
+#pragma section( tasksCode, 0 )
+#pragma section( tasksData, 0 )
+#pragma region( tasksCodeRegion, 0x8000, 0xbfff, , TASKS_BANK, { tasksCode, tasksData } )
 
 // index table - holds indexes of 'real' data tables, used to simplify sorting tasks when elements are added or removed
 byte taskRef[TASK_ARRAY_SIZE];
@@ -25,6 +31,9 @@ const char * task_icon[TASK_ARRAY_SIZE];
 // helper variable, stores last free task entry to speed things up
 static byte _nextFreeTaskRef = 0;
 
+//-----------------------------------------------------------------------------------------
+// In Init bank
+//-----------------------------------------------------------------------------------------
 void initTaskList() {
     _nextFreeTaskRef = 0;
     for(byte i=0;i<TASK_ARRAY_SIZE;i++){
@@ -45,7 +54,12 @@ void initTaskList() {
     }
 }
 
-bool addTask(struct Task * task){
+//-----------------------------------------------------------------------------------------
+// In Tasks bank
+//-----------------------------------------------------------------------------------------
+#pragma code ( tasksCode )
+#pragma data ( data )
+static bool _addTask(struct Task * task){
     // find entry in the task arrays
     if(_nextFreeTaskRef == TASK_ARRAY_SIZE){
         // TODO: Add text
@@ -87,7 +101,7 @@ static void _unassignTask(byte taskId){
     }
 }
 
-void removeTaskByRef(byte taskRefId){
+static void _removeTaskByRef(byte taskRefId){
     // remove task from taskRef table
     byte taskId = taskRef[taskRefId];
 
@@ -135,7 +149,7 @@ void removeTaskByRef(byte taskRefId){
 }
 
 // Removes taskRef with given ID, shifts remaining ones up. Wipes the target task_reqType, name and description.
-void removeTask(byte taskId){
+static void _removeTask(byte taskId){
     // find taskRefId
     byte taskRefId = 0;
     for(byte i=0;i<TASK_ARRAY_SIZE;i++){
@@ -144,7 +158,7 @@ void removeTask(byte taskId){
             break;
         }
     }
-    removeTaskByRef(taskRefId);
+    _removeTaskByRef(taskRefId);
 }
 
 // Returns best charSlot for a given requirement (must not be busy).
@@ -169,6 +183,13 @@ void removeTask(byte taskId){
 //     }
 //     return bestCharSlot;
 // }
+
+//-----------------------------------------------------------------------------------------
+// In Ticks bank
+//-----------------------------------------------------------------------------------------
+#pragma code ( ticksCode )
+#pragma data ( data )
+//-----------------------------------------------------------------------------------------
 
 // Returns first matching charSlot for a required skill priority value (must not be busy).
 // Returns NO_CHARACTER if none found.
@@ -218,6 +239,8 @@ static void _assignTaskToWorker(byte taskId, byte charSlot) {
     setCharacterSlotIcon(charSlot, task_icon[taskId]);
     updateStatusBar(s"  Task assigned  ");
 }
+
+
 
 // Called by callendar.c
 void tasksTick(){
@@ -292,4 +315,28 @@ void tasksTick(){
             prioIt++;
         } while (prioIt <= MAX_PRIO && freeWorkersCount > 0);
     }
+}
+
+//-----------------------------------------------------------------------------------------
+#pragma code ( code )
+#pragma data ( data )
+//-----------------------------------------------------------------------------------------
+// Wrappers in RAM
+void removeTask(byte taskId){
+    changeBank(TASKS_BANK);
+    _removeTask(taskId);
+    restoreBank();
+}
+
+void removeTaskByRef(byte taskRefId){
+    changeBank(TASKS_BANK);
+    _removeTaskByRef(taskRefId);
+    restoreBank();
+}
+
+bool addTask(struct Task * task){
+    changeBank(TASKS_BANK);
+    bool result = _addTask(task);
+    restoreBank();
+    return result;
 }
