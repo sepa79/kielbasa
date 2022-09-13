@@ -7,9 +7,10 @@
 #include <engine/gameSettings.h>
 #include <translation/common.h>
 
-/* screen will be split at these lines, sprites will be set to rasterPosX - RASTER_OVERHEAD */
+// screen will be split at these lines
 #define RASTER1_POS 0x2e
 #define RASTER2_POS 0x8f
+// special irqs to control sprites
 #define CONTROL_IRQ1_POS 0xee
 #define CONTROL_IRQ2_POS 0x00
 

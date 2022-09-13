@@ -17,14 +17,17 @@ __export const char pigsleCommandGfxBg[] = {
     // #embed 0x2713 0x0002 "assets/multicolorGfx/flak_88_dark.kla"
 };
 
-const char PIGSLE_CMD_SPR_FILE_AIM[] = {
+const char PIGSLE_CMD_SPR_AIM[] = {
     #embed 0x0080 20 "assets/sprites/crosshair.spd"
 };
-const char PIGSLE_CMD_SPR_FILE_1[] = {
+const char PIGSLE_CMD_SPR_BOOM_1[] = {
     #embed 0xffff 20 "assets/sprites/wybuch.spd"
 };
-const char PIGSLE_CMD_SPR_FILE_2[] = {
+const char PIGSLE_CMD_SPR_BOOM_2[] = {
     #embed 0xffff 20 "assets/sprites/wybuch2.spd"
+};
+const char PIGSLE_CMD_SPR_B29[] = {
+    #embed 0xffff 20 "assets/sprites/b29.spd"
 };
 
 #pragma code ( pigsleCommandGfx1Loaders )
@@ -46,12 +49,16 @@ static void _screenInit(){
 }
 
 static void _spriteLoader(){
-    memcpy((char *)GFX_1_SPR_DST_ADR, PIGSLE_CMD_SPR_FILE_AIM, 0x80);
+    memcpy((char *)GFX_1_SPR_DST_ADR, PIGSLE_CMD_SPR_AIM, 0x80);
     // memcpy((char *)GFX_1_SPR_DST_ADR+0x40, PIGSLE_CMD_SPR_FILE, 0x400);
     #pragma unroll(page)
     for(int i=0; i<64*ANIM_FRAMES; i++){
-       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80 + i] = ((char*)PIGSLE_CMD_SPR_FILE_1)[i];
-       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*ANIM_FRAMES + i] = ((char*)PIGSLE_CMD_SPR_FILE_2)[i];
+       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80 + i] = ((char*)PIGSLE_CMD_SPR_BOOM_1)[i];
+       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*ANIM_FRAMES + i] = ((char*)PIGSLE_CMD_SPR_BOOM_2)[i];
+    }
+    #pragma unroll(page)
+    for(int i=0; i<64*8; i++){
+       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*ANIM_FRAMES*2 + i] = ((char*)PIGSLE_CMD_SPR_B29)[i];
     }
 }
 
@@ -80,10 +87,12 @@ void pigsleSpriteLoader(){
 // menu code is in ROM - data in RAM
 #pragma code ( pigsleCommandCode )
 #pragma data ( pigsleCommandRAMData )
+#define INITIAL_X 160+24-11
+#define INITIAL_Y 100+50
 
 // Joystick and crosshair control
-volatile int  CrossX = 159;
-volatile char CrossY = 100;
+volatile int  CrossX = INITIAL_X;
+volatile char CrossY = INITIAL_Y;
 volatile bool CrossP = false;
 volatile char CrossDelay = 0;
 
@@ -93,13 +102,32 @@ Explosion * eused;
 Explosion explosions[EXPLOSION_COUNT];
 
 // ---------------------------------------------------------------------------------------------
-// DrMortalWombat's great screen writing code
+// Screen writing code
 // ---------------------------------------------------------------------------------------------
 #pragma data ( pigsleCommandConsts )
 
 // Charset assets
-const char MissileChars[] = {
-    #embed "assets/missilechars.64c"
+const char Chars[] = {
+    #embed 768 2 "assets/game_font2.64c"
+};
+
+static char charX2[16] = {
+    0b00000000,
+    0b00000011,
+    0b00001100,
+    0b00001111,
+    0b00110000,
+    0b00110011,
+    0b00111100,
+    0b00111111,
+    0b11000000,
+    0b11000011,
+    0b11001100,
+    0b11001111,
+    0b11110000,
+    0b11110011,
+    0b11111100,
+    0b11111111
 };
 
 #pragma code ( pigsleCommandRAMCode )
@@ -109,40 +137,41 @@ const char MissileChars[] = {
 // Display bitmap
 Bitmap sbm;
 
+static void _drawByte(const Bitmap * bm, int x, int y, char b){
+    char * dp = bm->data + bm->cwidth * (y & ~7) + ((x & ~7) | (y & 7));
+    *dp = b;
+}
+
 // Expand an 8x8 charactor to 16x16 on screen
-void char_put(char cx, char cy, char c, char color){
+static void _charPut(int cx, char cy, char c){
     // Get pointer to glyph data
-    const char * sp = MissileChars + 8 * c;
-
-    // Loop over all pixel
-    for(char y=0; y<8; y++)
-    {
+    const char * sp = Chars + 8 * c;
+    // expand X to be in pixels
+    cx = cx * 8;
+    // Loop over all bytes
+    for(char y=0; y<8; y++){
         char cl = sp[y];
-        for(char x=0; x<8; x++)
-        {
-            // Draw two pixel if bit is set
-            if (cl & 128)
-            {
-                bmmc_put(&sbm, cx + 2 * x, cy + 2 * y + 0, color);
-                bmmc_put(&sbm, cx + 2 * x, cy + 2 * y + 1, color);
-            }
-
-            // Next bit
-            cl <<= 1;
-        }
+        char hb = charX2[cl >> 4];
+        char lb = charX2[cl & 15];
+        _drawByte(&sbm, cx+0, cy + 2 * y + 0, hb);
+        _drawByte(&sbm, cx+8, cy + 2 * y + 0, lb);
+        _drawByte(&sbm, cx+0, cy + 2 * y + 1, hb);
+        _drawByte(&sbm, cx+8, cy + 2 * y + 1, lb);
     }
 }
 
-// Write a zero terminated string on screen
-void char_write(char cx, char cy, const char * s, char color)
-{
+// Write a zero terminated string on screen. X is auto calculated (string should be 20 chars or less), y 0-199
+static void charWrite(char cy, const char * s){
     changeBank(MENU_BANK_PIGSLE_COMMAND_1);
+    
+    // center the text
+    char cx = 20 - strlen(s);
+
     // Loop over all characters
-    while (*s)
-    {
-        char_put(cx, cy, *s, color);
+    while (*s){
+        _charPut(cx, cy, *s);
         s++;
-        cx += 16;
+        cx += 2;
     }
     restoreBank();
 }
@@ -163,7 +192,7 @@ static void _randomizeExplosion(Explosion * e){
 }
 
 // Initialize explosion list
-static void explosion_init(void){
+static void _explosionInit(void){
     // No explosion active
     eused = nullptr;
 
@@ -181,8 +210,18 @@ static void explosion_init(void){
     explosions[EXPLOSION_COUNT-1].next = nullptr;
 }
 
+static void _aimInit(){
+    vic.spr_enable = 0b00000001;
+
+    // init crosshair pos
+    CrossX = INITIAL_X;
+    CrossY = INITIAL_Y;
+    CrossP = false;
+    CrossDelay = 0;
+}
+
 // Start a new explosion
-static void explosion_start(int x, int y){
+static void _explosionStart(int x, int y){
     // Free slot in list of explosions?
     if (efree) {
         // Move entry from free to used list
@@ -200,7 +239,7 @@ static void explosion_start(int x, int y){
 }
 
 // Animate all explosions
-static void explosion_animate(void){
+static void _explosionAnimate(void){
     // Loop over active explosions with "e", use "ep" to point
     // to previous explosion, so we can remove the current explosion
     // from the list
@@ -247,6 +286,10 @@ static void explosion_animate(void){
     }
 }
 
+static void _dropRunInit(){
+
+}
+
 // State of the game
 struct Game {
     GameState state;
@@ -254,7 +297,7 @@ struct Game {
 
 } TheGame;    // Only one game, so global variable
 
-void game_state(GameState state){
+void gameState(GameState state){
 
     TheGame.state = state;
 
@@ -265,12 +308,12 @@ void game_state(GameState state){
         pigsleScreenInit();
         bm_init(&sbm, GFX_1_BMP, 40, 25);
 
-        // bmmcu_rect_fill(&sbm, 0, 56, 320, 24, 2);
-        memset(GFX_1_SCR+7*40, 1, 3*40);
-        memset(COLOR_RAM+7*40, 1, 3*40);
-        memset(GFX_1_BMP+7*40*8, 1, 3*40*8);
-        char_write(31, 60, s"Ratuj kartofle!", 2);
-        TheGame.count = 255;
+        memset(GFX_1_SCR+7*40, 0x67, 3*40);
+        memset(COLOR_RAM+7*40, 2, 3*40);
+        memset(GFX_1_BMP+7*40*8, 0, 3*40*8);
+        // TODO: add txt to translations
+        charWrite(60, s"Ratuj kartofle!");
+        TheGame.count = 150;
         break;
 
     case GS_PLAYING:
@@ -279,10 +322,10 @@ void game_state(GameState state){
 
         // Setup display
         pigsleScreenInit();
-        // missile_init();
-        explosion_init();
+        _dropRunInit();
+        _explosionInit();
         // icbm_init();
-
+        _aimInit();
         TheGame.count = 15;
         break;
 
@@ -294,15 +337,14 @@ void game_state(GameState state){
 }
 
 // Main game play code
-static void game_play(void)
-{
+static void _gamePlay(void){
     // vic.color_border++;
     // Check if fire request
     if (CrossP) {
         // change crosshair
         GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = PIGSLE_CMD_ANIM_CROSSHAIR_EMPTY_BANK;
         // boom!
-        explosion_start(CrossX, CrossY);
+        _explosionStart(CrossX, CrossY);
         // Reset request
         CrossP = false;
     }
@@ -322,27 +364,27 @@ static void game_play(void)
     // icbm_animate();
 
     // Show explosions
-    explosion_animate();
+    _explosionAnimate();
 }
 
 // Main game loop, entered every VSYNC
-static void game_loop(){
+void gameLoop(){
 
     switch(TheGame.state){
     case GS_READY:
         if (!--TheGame.count)
-            game_state(GS_PLAYING);
+            gameState(GS_PLAYING);
         break;
 
     case GS_PLAYING:
-        game_play();
+        _gamePlay();
 
         // Check for level and game end coditions
         break;
 
     case GS_END:
         if (!--TheGame.count)
-            game_state(GS_READY);
+            gameState(GS_READY);
         break;
     }
 

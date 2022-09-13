@@ -10,9 +10,10 @@
 #include <miniGame/pigsleCmdAnims.h>
 #include <miniGame/pigsleCmdMain.h>
 
-#define IRQ1RAS 50
-#define IRQ2RAS IRQ1RAS + 152
-#define CROSSHAIR_MAX_Y 0x8a
+#define CROSSHAIR_MIN_X 24-6
+#define CROSSHAIR_MAX_X 320 + 6
+#define CROSSHAIR_MIN_Y 50
+#define CROSSHAIR_MAX_Y 172
 
 #pragma code ( pigsleCommandRAMCode )
 #pragma data ( pigsleCommandRAMData )
@@ -23,9 +24,17 @@ volatile byte _flashDelay = 2;
 // ================================================================================
 // Top raster
 // ================================================================================
-__interrupt static void pigsleCmdIrq1_C() {
-    _prevRomCfgPC = ((byte *)0x01)[0];
+__interrupt void pigsleCmdIrq() {
+    vic.color_border++;
+    for(char i=0;i<20;i++){
+        vic.color_border = 0;
+    }
+    vic.color_border--;
+}
+
+__interrupt void pigsleCmdIrq1_C() {
     if(gms_enableMusic){
+        _prevRomCfgPC = ((byte *)0x01)[0];
         __asm {
             lda #MSX_ROM
             sta $01
@@ -41,17 +50,17 @@ __interrupt static void pigsleCmdIrq1_C() {
     CrossX += 1 * joyx[0]; CrossY += 1 * joyy[0];
 
     // Stop at edges of screen
-    if (CrossX < 8)
-        CrossX = 8;
-    else if (CrossX > 312)
-        CrossX = 312;
-    if (CrossY < 20)
-        CrossY = 20;
+    if (CrossX < CROSSHAIR_MIN_X)
+        CrossX = CROSSHAIR_MIN_X;
+    else if (CrossX > CROSSHAIR_MAX_X)
+        CrossX = CROSSHAIR_MAX_X;
+    if (CrossY < CROSSHAIR_MIN_Y)
+        CrossY = CROSSHAIR_MIN_Y;
     else if (CrossY > CROSSHAIR_MAX_Y)
         CrossY = CROSSHAIR_MAX_Y;
 
     // Move crosshair sprite
-    spr_move(0, CrossX + 14, CrossY + 40);
+    spr_move(0, CrossX, CrossY);
 
     // Check button
     if (joyb[0]){
@@ -86,30 +95,32 @@ __interrupt static void pigsleCmdIrq1_C() {
     restoreBank();
     ((byte *)0x01)[0] = _prevRomCfgPC;
 
-    // set the irq to 2nd routine
-    *(void **)0x0314 = pigsleCmdIrq2;
-    vic.ctrl1 &= 0x7f;
-    vic.raster = IRQ2RAS;
 }
 
-// a bit awkward looking, but necessary so Oscar64 can handle IRQs in assembly and C correctly.
-void pigsleCmdIrq1(){
-    __asm {
-        // inc $d020
+// // a bit awkward looking, but necessary so Oscar64 can handle IRQs in assembly and C correctly.
+// void pigsleCmdIrq1(){
+//     __asm {
+//         // inc $d020
 
-        // call C routine
-        jsr pigsleCmdIrq1_C
+//         // call C routine
+//         jsr pigsleCmdIrq1_C
+//     }
+//     // set the irq to 2nd routine
+//     *(void **)0x0314 = pigsleCmdIrq2;
+//     vic.ctrl1 &= 0x7f;
+//     vic.raster = IRQ2RAS;
 
-        // dec $d020
-        asl $d019   // Ack interrupt
-        jmp $ea81   // System IRQ routine
-    }
-}
+//     __asm {
+//         // dec $d020
+//         asl $d019   // Ack interrupt
+//         jmp $ea81   // System IRQ routine
+//     }
+// }
 
 // ================================================================================
 // Bottom raster
 // ================================================================================
-__interrupt static void pigsleCmdIrq2_C() {
+__interrupt void pigsleCmdIrq2_C() {
     if(gms_enableMusic){
         _prevRomCfgPC = ((byte *)0x01)[0];
         __asm {
@@ -129,23 +140,24 @@ __interrupt static void pigsleCmdIrq2_C() {
         vic.spr_color[0] = SPR_JOY_CURSOR_COLORS[joyCursor.colorIdx];
         _flashDelay = 2;
     }
-
-    // set the irq to 1st routine
-    *(void **)0x0314 = pigsleCmdIrq1;
-    vic.ctrl1 &= 0x7f;
-    vic.raster = IRQ1RAS;
 }
 
-// a bit awkward looking, but necessary so Oscar64 can handle IRQs in assembly and C correctly.
-void pigsleCmdIrq2(){
-    __asm {
-        // inc $d020
+// // a bit awkward looking, but necessary so Oscar64 can handle IRQs in assembly and C correctly.
+// void pigsleCmdIrq2(){
+//     __asm {
+//         // inc $d020
 
-        // call C routine
-        jsr pigsleCmdIrq2_C
+//         // call C routine
+//         jsr pigsleCmdIrq2_C
+//     }
+//     // set the irq to 1st routine
+//     *(void **)0x0314 = pigsleCmdIrq1;
+//     vic.ctrl1 &= 0x7f;
+//     vic.raster = IRQ1RAS;
 
-        // dec $d020
-        asl $d019   // Ack interrupt
-        jmp $ea81   // System IRQ routine
-    }
-}
+//     __asm {
+//         // dec $d020
+//         asl $d019   // Ack interrupt
+//         jmp $ea81   // System IRQ routine
+//     }
+// }

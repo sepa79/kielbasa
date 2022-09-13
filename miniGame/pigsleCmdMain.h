@@ -24,6 +24,7 @@
 #define PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK 16
 #define PIGSLE_CMD_ANIM_CROSSHAIR_EMPTY_BANK 17
 #define PIGSLE_CMD_ANIM_EXPLOSION_BANK 18
+#define PIGSLE_CMD_ANIM_B29_BANK 38
 
 
 // Structure for a explosion
@@ -59,8 +60,8 @@ void pigsleScreenInit();
 void pigsleSpriteLoader();
 
 #pragma code ( pigsleCommandCode )
-void game_state(GameState state);
-void game_loop();
+void gameState(GameState state);
+void gameLoop();
 
 #pragma compile("pigsleCmdMain.c")
 
