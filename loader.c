@@ -23,6 +23,7 @@ int main(void){
     mmap_set(MMAP_ROM);
     // screen off
     vic.ctrl1 = VIC_CTRL1_BMM | VIC_CTRL1_RSEL | 3;
+    vic.spr_enable   = 0b00000000;
 
     // Init CIAs (no kernal rom was executed so far)
     cia_init();
@@ -41,6 +42,7 @@ int main(void){
     
     // this goes directly from ROM - need to switch bank
     setBank(TITLE_SCREEN_BANK);
+
     loadAndRunInit();
 }
 

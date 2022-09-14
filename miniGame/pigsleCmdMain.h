@@ -18,8 +18,8 @@
 #define ANIM_DELAY 2
 #define ANIM_FRAMES 10
 #define EXPLOSION_COUNT 3
-#define EXPLOSION_X_OFFSET 14
-#define EXPLOSION_Y_OFFSET 40
+#define EXPLOSION_X_OFFSET 0
+#define EXPLOSION_Y_OFFSET 0
 
 #define PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK 16
 #define PIGSLE_CMD_ANIM_CROSSHAIR_EMPTY_BANK 17
@@ -58,6 +58,7 @@ extern Explosion * efree;
 #pragma code ( pigsleCommandRAMCode )
 void pigsleScreenInit();
 void pigsleSpriteLoader();
+void pigsleCmdInit();
 
 #pragma code ( pigsleCommandCode )
 void gameState(GameState state);

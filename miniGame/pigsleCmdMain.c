@@ -2,10 +2,13 @@
 #include <c64/easyflash.h>
 #include <c64/sprites.h>
 #include <string.h>
+#include <c64/memmap.h>
 
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
 #include <miniGame/pigsleCmdMain.h>
+#include <miniGame/pigsleCmdIrq.h>
+#include <miniGame/pigsleCmdAnims.h>
 
 // ---------------------------------------------------------------------------------------------
 // Main screen and sprite bank + loaders code
@@ -133,6 +136,8 @@ static char charX2[16] = {
 #pragma code ( pigsleCommandRAMCode )
 #pragma data ( pigsleCommandRAMData )
 #include <gfx/mcbitmap.h>
+#include <c64/rasterirq.h>
+RIRQCode topPlane, topPests, middlePests, cannonAnims, open;
 
 // Display bitmap
 Bitmap sbm;
@@ -211,8 +216,6 @@ static void _explosionInit(void){
 }
 
 static void _aimInit(){
-    vic.spr_enable = 0b00000001;
-
     // init crosshair pos
     CrossX = INITIAL_X;
     CrossY = INITIAL_Y;
@@ -285,15 +288,23 @@ static void _explosionAnimate(void){
         e = en;
     }
 }
+// State of the game
+volatile struct DropRun {
+    bool inProgress;
+    int x;
+
+} TheDropDown;
 
 static void _dropRunInit(){
-
+    TheDropDown.x = 320+72;
+    TheDropDown.inProgress = true;
 }
 
 // State of the game
 struct Game {
     GameState state;
-    byte      score, count;
+    byte      score;
+    int       count;
 
 } TheGame;    // Only one game, so global variable
 
@@ -325,8 +336,9 @@ void gameState(GameState state){
         _dropRunInit();
         _explosionInit();
         // icbm_init();
+        _spriteInit();
         _aimInit();
-        TheGame.count = 15;
+        TheGame.count = 500;
         break;
 
     case GS_END:
@@ -353,7 +365,8 @@ static void _gamePlay(void){
     if (!--TheGame.count){
 
         // Next lauch time
-        TheGame.count = 8 + (rand() & 63);
+        TheGame.count = 500 + (rand() & 63);
+        _dropRunInit();
     }
 
     // Advance defending missiles by four pixels
@@ -388,4 +401,99 @@ void gameLoop(){
         break;
     }
 
+}
+
+void pigsleCmdInit(){
+    splashScreen(false, 1);
+    // stop IRQs and change to ours
+    __asm {
+        sei
+    }
+    // msx off
+    ((byte *)0xd418)[0] &= ~0xf;
+    // screen off, sprites off
+    // vic.ctrl1 = VIC_CTRL1_BMM | VIC_CTRL1_RSEL | 3;
+    vic.spr_enable   = 0b00000000;
+
+    __asm {
+        // init music
+        lda #MSX_ROM
+        sta $01
+        lda #$02
+        jsr MSX_INIT
+    }
+    // if you use the mmap_trampoline() you have to call the mmap_set() at least once to init the shadow variable
+    mmap_set(MMAP_ROM);
+    // Activate trampoline
+    mmap_trampoline();
+    // Disable CIA interrupts, we do not want interference
+    // with our joystick interrupt
+    cia_init();
+    // clean 0xffff - so we don't have artefacts when we open borders
+    ((char *)0xffff)[0] = 0;
+
+    // initialize raster IRQ
+    rirq_init(true);
+    // topPlane, topPests, middlePests, cannonAnims, open
+    // Top - Plane
+    rirq_build(&topPlane, 2);
+    rirq_write(&topPlane, 0, &vic.ctrl1, VIC_CTRL1_BMM | VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3 );
+    rirq_call(&topPlane, 1, pigsleCmdIrq_topPlane);
+    rirq_set(0, IRQ_TOP_PLANE, &topPlane);
+
+    // Top - Pests
+    rirq_build(&topPests, 1);
+    rirq_call(&topPests, 0, pigsleCmdIrq_topPests);
+    rirq_set(1, IRQ_TOP_PESTS, &topPests);
+
+    // Middle - Pests
+    rirq_build(&middlePests, 1);
+    rirq_call(&middlePests, 0, pigsleCmdIrq_middlePests);
+    rirq_set(2, IRQ_MIDDLE_PESTS, &middlePests);
+
+    // Bottom - Cannon anims
+    rirq_build(&cannonAnims, 1);
+    rirq_call(&cannonAnims, 0, pigsleCmdIrq_cannonAnims);
+    rirq_set(3, IRQ_CANNON, &cannonAnims);
+
+    // Open border raster IRQ
+    rirq_build(&open, 2);
+    // Reduce vertical screen size to fool VIC counter
+    rirq_write(&open, 0, &vic.ctrl1, VIC_CTRL1_BMM |VIC_CTRL1_DEN | 3);
+    rirq_call(&open, 1, pigsleCmdIrq_openBorder);
+    // Place it into the last line of the screen
+    rirq_set(4, IRQ_FRAME_OPEN, &open);
+
+    // sort the raster IRQs
+    rirq_sort();
+
+    // Load GFX
+    pigsleScreenInit();
+    pigsleSpriteLoader();
+    vic.spr_expand_x = 0b00000000;
+    vic.spr_expand_y = 0b00000000;
+    vic.spr_priority = 0b00000000;
+    
+    // Init sprite system
+    spr_init(GFX_1_SCR);
+    
+    splashScreen(false, 2);
+    // Init bitmap
+    vic_setmode(VICM_HIRES_MC, GFX_1_SCR, GFX_1_BMP);
+    // start raster IRQ processing
+    rirq_start();
+
+    // start game state machine
+    gameState(GS_READY);
+
+    // main loop
+    for(;;){
+        // vic.color_border++;
+
+        gameLoop();
+        vic_waitFrame();
+        rirq_wait();
+        // vic.color_border--;
+
+    }
 }

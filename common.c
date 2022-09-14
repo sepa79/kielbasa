@@ -8,7 +8,17 @@
 //  3 - full
 void splashScreen(bool turnOn, char stage) {
     // splash screen
-    static const char color[8] = {0x0, 0xe,0xe,0x3, 0xf,0xc,0xb, 0x0};
+    static const char color[8] = {
+        VCOL_BLACK,
+        VCOL_BLUE,
+        VCOL_LT_BLUE,
+        VCOL_CYAN, 
+    
+        VCOL_LT_GREY,
+        VCOL_MED_GREY,
+        VCOL_DARK_GREY,
+        VCOL_BLACK
+    };
     char i = 0;
 
     if(stage & 1){

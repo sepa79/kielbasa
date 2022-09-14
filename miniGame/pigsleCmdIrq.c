@@ -24,15 +24,7 @@ volatile byte _flashDelay = 2;
 // ================================================================================
 // Top raster
 // ================================================================================
-__interrupt void pigsleCmdIrq() {
-    vic.color_border++;
-    for(char i=0;i<20;i++){
-        vic.color_border = 0;
-    }
-    vic.color_border--;
-}
-
-__interrupt void pigsleCmdIrq1_C() {
+static void _playMsx(){
     if(gms_enableMusic){
         _prevRomCfgPC = ((byte *)0x01)[0];
         __asm {
@@ -42,6 +34,107 @@ __interrupt void pigsleCmdIrq1_C() {
         };
         ((byte *)0x01)[0] = _prevRomCfgPC;
     }
+}
+
+__interrupt void _spriteInit(){
+    vic.spr_multi    = 0b11111110;
+    
+    // explosion
+    vic.spr_mcolor0 = VCOL_WHITE;
+    vic.spr_mcolor1 = VCOL_RED;
+
+    vic.spr_color[0] = VCOL_WHITE;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK;
+    vic.spr_enable = 0b00000001;
+}
+
+static void _animDropDown(){
+    vic.color_border++;
+    vic.spr_multi    = 0b11110000;
+    
+    // explosion
+    vic.spr_mcolor0 = VCOL_LT_GREY;
+    vic.spr_mcolor1 = VCOL_MED_GREY;
+
+    // vic.spr_color[0] = GFX_1_SCR[(PIGSLE_CMD_ANIM_B29_BANK + 1 + 0) * 64];
+    vic.spr_color[0] = VCOL_DARK_GREY;
+    vic.spr_color[1] = VCOL_DARK_GREY;
+    vic.spr_color[2] = VCOL_DARK_GREY;
+    vic.spr_color[3] = VCOL_DARK_GREY;
+    vic.spr_color[4] = VCOL_BLACK;
+    vic.spr_color[5] = VCOL_ORANGE;
+    vic.spr_color[6] = VCOL_PURPLE;
+    vic.spr_color[7] = VCOL_ORANGE;
+    
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = PIGSLE_CMD_ANIM_B29_BANK+4;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+1] = PIGSLE_CMD_ANIM_B29_BANK+5;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+2] = PIGSLE_CMD_ANIM_B29_BANK+6;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+3] = PIGSLE_CMD_ANIM_B29_BANK+7;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+4] = PIGSLE_CMD_ANIM_B29_BANK+0;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+5] = PIGSLE_CMD_ANIM_B29_BANK+1;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+6] = PIGSLE_CMD_ANIM_B29_BANK+2;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+7] = PIGSLE_CMD_ANIM_B29_BANK+3;
+
+    char visibleSprites = 0b11111111;
+    if(TheDropDown.x > 72){
+        spr_move(0, TheDropDown.x-72, 20);
+        spr_move(4, TheDropDown.x-72, 20);
+    } else {
+        visibleSprites = 0b11101110;
+    }
+
+    if(TheDropDown.x > 48){
+        spr_move(1, TheDropDown.x-48, 20);
+        spr_move(5, TheDropDown.x-48, 20);
+    } else {
+        visibleSprites = 0b11001100;
+    }
+
+    if(TheDropDown.x > 24){
+        spr_move(2, TheDropDown.x-24, 20);
+        spr_move(6, TheDropDown.x-24, 20);
+    } else {
+        visibleSprites = 0b10001000;
+    }
+
+    if(TheDropDown.x > 0){
+        spr_move(3, TheDropDown.x, 20);
+        spr_move(7, TheDropDown.x, 20);
+    } else {
+        visibleSprites = 0b00000000;
+        TheDropDown.inProgress = false;
+    }
+
+    TheDropDown.x--;
+    vic.spr_enable = visibleSprites;
+    vic.color_border--;
+}
+
+__interrupt void pigsleCmdIrq_topPlane() {
+    vic.color_border++;
+
+    vic.color_back = VCOL_BLUE;
+    if(TheDropDown.inProgress){
+        _animDropDown();
+    }
+
+    vic.color_border--;
+}
+
+__interrupt void pigsleCmdIrq_topPests() {
+    vic.color_border++;
+
+    _flashDelay--;
+    if(!_flashDelay){
+        joyCursor.colorIdx++;
+        if(SPR_JOY_CURSOR_COLORS[joyCursor.colorIdx] == 0){
+            joyCursor.colorIdx = 0;
+        }
+        vic.spr_color[0] = SPR_JOY_CURSOR_COLORS[joyCursor.colorIdx];
+        _flashDelay = 2;
+    }
+
+    _spriteInit();
 
     // Poll joystick
     joy_poll(0);
@@ -61,6 +154,9 @@ __interrupt void pigsleCmdIrq1_C() {
 
     // Move crosshair sprite
     spr_move(0, CrossX, CrossY);
+
+    _playMsx();
+    vic.color_back = VCOL_BLACK;
 
     // Check button
     if (joyb[0]){
@@ -94,70 +190,24 @@ __interrupt void pigsleCmdIrq1_C() {
 
     restoreBank();
     ((byte *)0x01)[0] = _prevRomCfgPC;
-
+    vic.color_border--;
 }
 
-// // a bit awkward looking, but necessary so Oscar64 can handle IRQs in assembly and C correctly.
-// void pigsleCmdIrq1(){
-//     __asm {
-//         // inc $d020
+__interrupt void pigsleCmdIrq_middlePests() {
+    vic.color_border++;
 
-//         // call C routine
-//         jsr pigsleCmdIrq1_C
-//     }
-//     // set the irq to 2nd routine
-//     *(void **)0x0314 = pigsleCmdIrq2;
-//     vic.ctrl1 &= 0x7f;
-//     vic.raster = IRQ2RAS;
-
-//     __asm {
-//         // dec $d020
-//         asl $d019   // Ack interrupt
-//         jmp $ea81   // System IRQ routine
-//     }
-// }
-
-// ================================================================================
-// Bottom raster
-// ================================================================================
-__interrupt void pigsleCmdIrq2_C() {
-    if(gms_enableMusic){
-        _prevRomCfgPC = ((byte *)0x01)[0];
-        __asm {
-            lda #MSX_ROM
-            sta $01
-            jsr MSX_PLAY
-        };
-        ((byte *)0x01)[0] = _prevRomCfgPC;
-    }
-
-    _flashDelay--;
-    if(!_flashDelay){
-        joyCursor.colorIdx++;
-        if(SPR_JOY_CURSOR_COLORS[joyCursor.colorIdx] == 0){
-            joyCursor.colorIdx = 0;
-        }
-        vic.spr_color[0] = SPR_JOY_CURSOR_COLORS[joyCursor.colorIdx];
-        _flashDelay = 2;
-    }
+    vic.color_border--;
 }
 
-// // a bit awkward looking, but necessary so Oscar64 can handle IRQs in assembly and C correctly.
-// void pigsleCmdIrq2(){
-//     __asm {
-//         // inc $d020
+__interrupt void pigsleCmdIrq_cannonAnims() {
+    vic.color_border++;
+    _playMsx();
+    vic.color_border--;
+}
 
-//         // call C routine
-//         jsr pigsleCmdIrq2_C
-//     }
-//     // set the irq to 1st routine
-//     *(void **)0x0314 = pigsleCmdIrq1;
-//     vic.ctrl1 &= 0x7f;
-//     vic.raster = IRQ1RAS;
-
-//     __asm {
-//         // dec $d020
-//         asl $d019   // Ack interrupt
-//         jmp $ea81   // System IRQ routine
-//     }
-// }
+__interrupt void pigsleCmdIrq_openBorder() {
+    vic.color_back = VCOL_BROWN;
+    vic.color_border++;
+    vic.spr_enable = 0b00000000;
+    vic.color_border--;
+}
