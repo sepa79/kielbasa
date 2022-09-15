@@ -20,7 +20,7 @@
 
 static byte _prevRomCfgPC;
 volatile byte _flashDelay = 2;
-
+volatile byte crosshairBank = PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK;
 // ================================================================================
 // Top raster
 // ================================================================================
@@ -36,19 +36,7 @@ static void _playMsx(){
     }
 }
 
-__interrupt void _spriteInit(){
-    vic.spr_multi    = 0b11111110;
-    
-    // explosion
-    vic.spr_mcolor0 = VCOL_WHITE;
-    vic.spr_mcolor1 = VCOL_RED;
-
-    vic.spr_color[0] = VCOL_WHITE;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK;
-    vic.spr_enable = 0b00000001;
-}
-
-static void _animDropDown(){
+static void _animB29Plane(){
     vic.color_border++;
     vic.spr_multi    = 0b11110000;
     
@@ -76,46 +64,77 @@ static void _animDropDown(){
     GFX_1_SCR[OFFSET_SPRITE_PTRS+7] = PIGSLE_CMD_ANIM_B29_BANK+3;
 
     char visibleSprites = 0b11111111;
-    if(TheDropDown.x > 72){
-        spr_move(0, TheDropDown.x-72, 20);
-        spr_move(4, TheDropDown.x-72, 20);
+    if(TheB29Plane.x >= 72){
+        spr_move(0, TheB29Plane.x-72, 20);
+        spr_move(4, TheB29Plane.x-72, 20);
     } else {
         visibleSprites = 0b11101110;
     }
 
-    if(TheDropDown.x > 48){
-        spr_move(1, TheDropDown.x-48, 20);
-        spr_move(5, TheDropDown.x-48, 20);
+    if(TheB29Plane.x >= 48){
+        spr_move(1, TheB29Plane.x-48, 20);
+        spr_move(5, TheB29Plane.x-48, 20);
     } else {
         visibleSprites = 0b11001100;
     }
 
-    if(TheDropDown.x > 24){
-        spr_move(2, TheDropDown.x-24, 20);
-        spr_move(6, TheDropDown.x-24, 20);
+    if(TheB29Plane.x >= 24){
+        spr_move(2, TheB29Plane.x-24, 20);
+        spr_move(6, TheB29Plane.x-24, 20);
     } else {
         visibleSprites = 0b10001000;
     }
 
-    if(TheDropDown.x > 0){
-        spr_move(3, TheDropDown.x, 20);
-        spr_move(7, TheDropDown.x, 20);
+    if(TheB29Plane.x >= 0){
+        spr_move(3, TheB29Plane.x, 20);
+        spr_move(7, TheB29Plane.x, 20);
     } else {
         visibleSprites = 0b00000000;
-        TheDropDown.inProgress = false;
+        TheB29Plane.inProgress = false;
     }
 
-    TheDropDown.x--;
+    TheB29Plane.x--;
     vic.spr_enable = visibleSprites;
     vic.color_border--;
+}
+
+__interrupt void _spriteInit(){
+    vic.spr_multi   = 0b11111110;
+    
+    // explosion
+    vic.spr_mcolor0 = VCOL_WHITE;
+    vic.spr_mcolor1 = VCOL_RED;
+
+    vic.spr_color[0] = VCOL_WHITE;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = crosshairBank;
+    // vic.spr_enable = 0b00000001;
+}
+
+static void _explosionSprites(){
+    vic.spr_color[1] = VCOL_YELLOW;
+    vic.spr_color[2] = VCOL_YELLOW;
+    vic.spr_color[3] = VCOL_YELLOW;
+    vic.spr_pos[1].x = explosionAnimX[0];
+    vic.spr_pos[2].x = explosionAnimX[1];
+    vic.spr_pos[3].x = explosionAnimX[2];
+    vic.spr_pos[1].y = explosionAnimY[0];
+    vic.spr_pos[2].y = explosionAnimY[1];
+    vic.spr_pos[3].y = explosionAnimY[2];
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+1] = explosionAnimBank[0];
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+2] = explosionAnimBank[1];
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+3] = explosionAnimBank[2];
+
+    vic.spr_msbx = explosionsOver255;
+    vic.spr_enable = visibleExplosions | 1;
+
 }
 
 __interrupt void pigsleCmdIrq_topPlane() {
     vic.color_border++;
 
     vic.color_back = VCOL_BLUE;
-    if(TheDropDown.inProgress){
-        _animDropDown();
+    if(TheB29Plane.inProgress){
+        _animB29Plane();
     }
 
     vic.color_border--;
@@ -133,8 +152,11 @@ __interrupt void pigsleCmdIrq_topPests() {
         vic.spr_color[0] = SPR_JOY_CURSOR_COLORS[joyCursor.colorIdx];
         _flashDelay = 2;
     }
+    vic.color_border++;
 
     _spriteInit();
+    _explosionSprites();
+    vic.color_border--;
 
     // Poll joystick
     joy_poll(0);
@@ -155,15 +177,12 @@ __interrupt void pigsleCmdIrq_topPests() {
     // Move crosshair sprite
     spr_move(0, CrossX, CrossY);
 
-    _playMsx();
-    vic.color_back = VCOL_BLACK;
-
     // Check button
     if (joyb[0]){
         // Avoid quickfire and bouncing
         if (CrossDelay == 0){
-            // Request fire from non interrupt code
             CrossP = true;
+            // Request fire from non interrupt code
             CrossDelay = 5;
         }
     }
@@ -171,7 +190,10 @@ __interrupt void pigsleCmdIrq_topPests() {
         CrossDelay--;
 
     if(!CrossDelay && efree)
-        GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK;
+        crosshairBank = PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK;
+
+    _playMsx();
+    vic.color_back = VCOL_BLACK;
 
     _prevRomCfgPC = ((byte *)0x01)[0];
     mmap_set(MMAP_ROM);

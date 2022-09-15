@@ -103,6 +103,13 @@ volatile char CrossDelay = 0;
 Explosion * efree;
 Explosion * eused;
 Explosion explosions[EXPLOSION_COUNT];
+volatile char explosionAnimX[EXPLOSION_COUNT];
+volatile char explosionAnimY[EXPLOSION_COUNT];
+volatile char explosionAnimBank[EXPLOSION_COUNT];
+volatile char visibleExplosions = 0;
+volatile char explosionsOver255 = 0;
+const char sprEnable[8]  = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+const char sprDisable[8] = {0xfe, 0xfd, 0xfb, 0xf7, 0xef, 0xdf, 0xbf, 0x7f};
 
 // ---------------------------------------------------------------------------------------------
 // Screen writing code
@@ -114,7 +121,7 @@ const char Chars[] = {
     #embed 768 2 "assets/game_font2.64c"
 };
 
-static char charX2[16] = {
+const char charX2[16] = {
     0b00000000,
     0b00000011,
     0b00001100,
@@ -189,11 +196,11 @@ static void charWrite(char cy, const char * s){
 
 static void _randomizeExplosion(Explosion * e){
     char rnd = rand();
-    char sprIdxOffset = 0;
+    char sprBank = PIGSLE_CMD_ANIM_EXPLOSION_BANK;
     if(rnd > 0x80){
-        sprIdxOffset = ANIM_FRAMES;
+        sprBank = PIGSLE_CMD_ANIM_EXPLOSION_BANK + ANIM_FRAMES;
     }
-    e->sprIdxOffset = sprIdxOffset; // sprite 0 is aim, so +1 here
+    e->sprBank = sprBank; // sprite 0 is aim, so +1 here
 }
 
 // Initialize explosion list
@@ -205,22 +212,19 @@ static void _explosionInit(void){
     efree = explosions;
     // Build list
     for(char i=0; i<EXPLOSION_COUNT; i++){
-        _randomizeExplosion((Explosion *)explosions[i]);
+        // _randomizeExplosion((Explosion *)explosions[i]);
         explosions[i].sprIdx = i + 1; // sprite 0 is aim, so +1 here
-        explosions[i].frame = 0;
-        explosions[i].delay = ANIM_DELAY;
-        explosions[i].next = explosions + i + 1;
+        explosions[i].frame  = 0;
+        explosions[i].delay  = ANIM_EXPLOSION_DELAY;
+        explosions[i].next   = explosions + i + 1;
+
+        explosionAnimX[i]    = 0;
+        explosionAnimY[i]    = 0;
+        explosionAnimBank[i] = 0;
+
     }
     // Terminate last element
     explosions[EXPLOSION_COUNT-1].next = nullptr;
-}
-
-static void _aimInit(){
-    // init crosshair pos
-    CrossX = INITIAL_X;
-    CrossY = INITIAL_Y;
-    CrossP = false;
-    CrossDelay = 0;
 }
 
 // Start a new explosion
@@ -234,10 +238,25 @@ static void _explosionStart(int x, int y){
         eused = e;
 
         // Initialize position and size
-        e->x = x + EXPLOSION_X_OFFSET;
+        e->x = x + EXPLOSION_X_OFFSET; // MIGHT BE OBSOLETE
         e->y = y + EXPLOSION_Y_OFFSET;
-        // x -1 to offset initial 'dot', later anim frames will not use it
-        spr_set(e->sprIdx, true, e->x - 1, e->y, e->sprIdxOffset + e->frame + PIGSLE_CMD_ANIM_EXPLOSION_BANK, VCOL_YELLOW, true, false, false);
+        e->frame = 0;
+        e->delay = ANIM_EXPLOSION_DELAY;
+        _randomizeExplosion(e);
+        // cache the details, so IRQ can just copy it
+        char i = e->sprIdx;
+        visibleExplosions |= sprEnable[i];
+        if(x > 255){
+            explosionsOver255 |= sprEnable[i];
+        } else {
+            explosionsOver255 &= sprDisable[i];
+        }
+        i--;
+        explosionAnimX[i] = x;
+        explosionAnimY[i] = y;
+        explosionAnimBank[i] = e->sprBank;
+
+        // spr_set(e->sprIdx, true, e->x - 1, e->y, e->sprIdxOffset + e->frame + PIGSLE_CMD_ANIM_EXPLOSION_BANK, VCOL_YELLOW, true, false, false);
     }
 }
 
@@ -256,25 +275,17 @@ static void _explosionAnimate(void){
             e->delay = ANIM_DELAY;
             // Increment phase
             e->frame++;
-        }
-        // first ANIM_EXPLOSION_DELAY frames are delay
-        if (e->frame > ANIM_EXPLOSION_DELAY) {
-            spr_set(e->sprIdx, true, e->x, e->y, e->sprIdxOffset + e->frame + PIGSLE_CMD_ANIM_EXPLOSION_BANK - ANIM_EXPLOSION_DELAY, VCOL_YELLOW, true, false, false);
+            explosionAnimBank[e->sprIdx - 1]++;
         }
         // End of explosion live
-        if (e->frame == 9 + ANIM_EXPLOSION_DELAY) {
+        if (e->frame == ANIM_FRAMES ) {
+            visibleExplosions &= sprDisable[e->sprIdx];
             // Remove explosion from used list
             if (ep)
                 ep->next = e->next;
             else
                 eused = e->next;
 
-            // disable sprite, reset anim
-            spr_set(e->sprIdx, false, e->x, e->y, PIGSLE_CMD_ANIM_EXPLOSION_BANK, VCOL_YELLOW, true, false, false);
-            e->frame = 0;
-            e->delay = ANIM_DELAY;
-            _randomizeExplosion(e);
-            
             // Prepend it to free list
             e->next = efree;
             efree = e;
@@ -288,16 +299,26 @@ static void _explosionAnimate(void){
         e = en;
     }
 }
+
+static void _aimInit(){
+    // init crosshair pos
+    CrossX = INITIAL_X;
+    CrossY = INITIAL_Y;
+    CrossP = false;
+    CrossDelay = 0;
+    crosshairBank = PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK;
+}
+
 // State of the game
 volatile struct DropRun {
     bool inProgress;
     int x;
 
-} TheDropDown;
+} TheB29Plane;
 
 static void _dropRunInit(){
-    TheDropDown.x = 320+72;
-    TheDropDown.inProgress = true;
+    TheB29Plane.x = 320+72;
+    TheB29Plane.inProgress = true;
 }
 
 // State of the game
@@ -317,14 +338,13 @@ void gameState(GameState state){
         // Start of new game
         // score_reset();
         pigsleScreenInit();
-        bm_init(&sbm, GFX_1_BMP, 40, 25);
 
         memset(GFX_1_SCR+7*40, 0x67, 3*40);
         memset(COLOR_RAM+7*40, 2, 3*40);
         memset(GFX_1_BMP+7*40*8, 0, 3*40*8);
         // TODO: add txt to translations
         charWrite(60, s"Ratuj kartofle!");
-        TheGame.count = 150;
+        TheGame.count = 50;
         break;
 
     case GS_PLAYING:
@@ -336,7 +356,6 @@ void gameState(GameState state){
         _dropRunInit();
         _explosionInit();
         // icbm_init();
-        _spriteInit();
         _aimInit();
         TheGame.count = 500;
         break;
@@ -354,7 +373,7 @@ static void _gamePlay(void){
     // Check if fire request
     if (CrossP) {
         // change crosshair
-        GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = PIGSLE_CMD_ANIM_CROSSHAIR_EMPTY_BANK;
+        crosshairBank = PIGSLE_CMD_ANIM_CROSSHAIR_EMPTY_BANK;
         // boom!
         _explosionStart(CrossX, CrossY);
         // Reset request
@@ -473,10 +492,11 @@ void pigsleCmdInit(){
     vic.spr_expand_x = 0b00000000;
     vic.spr_expand_y = 0b00000000;
     vic.spr_priority = 0b00000000;
-    
+
     // Init sprite system
     spr_init(GFX_1_SCR);
-    
+    bm_init(&sbm, GFX_1_BMP, 40, 25);
+
     splashScreen(false, 2);
     // Init bitmap
     vic_setmode(VICM_HIRES_MC, GFX_1_SCR, GFX_1_BMP);

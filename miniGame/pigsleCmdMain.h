@@ -14,7 +14,7 @@
 #pragma region( regionPigsleCommandG1, 0x8000, 0xbfff, , MENU_BANK_PIGSLE_COMMAND_GFX_1, { pigsleCommandGfx1, pigsleCommandGfx1Loaders } )
 
 
-#define ANIM_EXPLOSION_DELAY 20
+#define ANIM_EXPLOSION_DELAY 40
 #define ANIM_DELAY 2
 #define ANIM_FRAMES 10
 #define EXPLOSION_COUNT 3
@@ -26,14 +26,23 @@
 #define PIGSLE_CMD_ANIM_EXPLOSION_BANK 18
 #define PIGSLE_CMD_ANIM_B29_BANK 38
 
-
-// Structure for a explosion
+// Structure for an explosion
 struct Explosion {
     int         x, y;         // Center of circle
     char        frame;        // frame
     char        delay;        // delay
     char        sprIdx;       // sprite index
-    char        sprIdxOffset; // which explosion ot use - or 'bank offset'
+    char        sprBank;      // which explosion to use - or 'bank offset'
+    Explosion * next;         // Next explosion in list
+};
+
+// Structure for a pests drop
+struct PestDrop {
+    int         x, y;         // Center of circle
+    char        frame;        // frame
+    char        delay;        // delay
+    char        sprIdx;       // sprite index
+    char        sprBank;      // which explosion to use - or 'bank offset'
     Explosion * next;         // Next explosion in list
 };
 
@@ -54,6 +63,13 @@ extern volatile char CrossDelay;
 extern Explosion * efree;
 // Display bitmap
 // extern Bitmap sbm;
+
+// used to quickly set sprites in IRQs
+extern volatile char  explosionAnimX[EXPLOSION_COUNT];
+extern volatile char explosionAnimY[EXPLOSION_COUNT];
+extern volatile char explosionAnimBank[EXPLOSION_COUNT];
+extern volatile char visibleExplosions;
+extern volatile char explosionsOver255;
 
 #pragma code ( pigsleCommandRAMCode )
 void pigsleScreenInit();

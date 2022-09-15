@@ -19,6 +19,7 @@ __interrupt void pigsleCmdIrq_openBorder();
 
 __interrupt void _spriteInit();
 
+extern volatile byte crosshairBank;
 // Switching code generation back to shared section
 #pragma code ( code )
 #pragma data ( data )
