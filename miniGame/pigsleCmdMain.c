@@ -546,11 +546,14 @@ static void _gamePlay(void){
     if(TheB29Plane.inProgress){
         if(TheB29Plane.dropsRemaining > 0){
             if(!--TheB29Plane.nextDropDelay){
-                // pests awaaaaay!
-                _pestDropStart(TheB29Plane.x, 50);
+                // check if we are not off screen
+                if(TheB29Plane.x > 26 && TheB29Plane.x < 300){
+                    // pests awaaaaay!
+                    _pestDropStart(TheB29Plane.x, 50);
+                }
                 // reset drop timers
                 if(--TheB29Plane.dropsRemaining){
-                    TheB29Plane.nextDropDelay = 50 + (rand() & 63);
+                    TheB29Plane.nextDropDelay = 30 + (rand() & 63) + (rand() & 15);
                 }
             }
         }
