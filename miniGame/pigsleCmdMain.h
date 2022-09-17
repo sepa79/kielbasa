@@ -13,12 +13,6 @@
 #pragma section( pigsleCommandGfx1Loaders, 0 )
 #pragma region( regionPigsleCommandG1, 0x8000, 0xbfff, , MENU_BANK_PIGSLE_COMMAND_GFX_1, { pigsleCommandGfx1, pigsleCommandGfx1Loaders } )
 
-#define PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK 16
-#define PIGSLE_CMD_ANIM_CROSSHAIR_EMPTY_BANK 17
-#define PIGSLE_CMD_ANIM_EXPLOSION_BANK 18
-#define PIGSLE_CMD_ANIM_PEST_DROP_BANK 38
-#define PIGSLE_CMD_ANIM_B29_BANK 48
-
 enum GameState {
     GS_READY,     // Getting ready
     GS_PLAYING,   // Playing the game
@@ -72,17 +66,26 @@ struct PestDrop {
     PestDrop  * next;         // Next drop in list
 };
 
-#define DROP_INITIAL_DELAY 3
+#define DROP_INITIAL_DELAY 5
 #define DROP_ANIM_DELAY 3
-#define DROP_ANIM_FRAMES 10
+#define DROP_ANIM_FRAMES 20
+#define DROP_ANIM_REPEAT 5
 #define DROP_COUNT 4
 #define DROP_MAX_Y 200
+#define HIT_RANGE 6
 
 extern volatile char pestDropAnimX[DROP_COUNT];
 extern volatile char pestDropAnimY[DROP_COUNT];
 extern volatile char pestDropAnimBank[DROP_COUNT];
 extern volatile char pestDropsVisible;
 extern volatile char pestDropsOver255;
+
+
+#define PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK 16
+#define PIGSLE_CMD_ANIM_CROSSHAIR_EMPTY_BANK 17
+#define PIGSLE_CMD_ANIM_EXPLOSION_BANK 18
+#define PIGSLE_CMD_ANIM_PEST_DROP_BANK 38
+#define PIGSLE_CMD_ANIM_B29_BANK PIGSLE_CMD_ANIM_PEST_DROP_BANK + DROP_ANIM_FRAMES*2
 
 #pragma code ( pigsleCommandRAMCode )
 void pigsleScreenInit();

@@ -33,7 +33,7 @@ const char PIGSLE_CMD_SPR_B29[] = {
     #embed 0xffff 20 "assets/sprites/b29.spd"
 };
 const char PIGSLE_CMD_SPR_PESTS[] = {
-    #embed 0xffff 20 "assets/sprites/pests.spd"
+    #embed 0xffff 20 "assets/sprites/pests2.spd"
 };
 
 #pragma code ( pigsleCommandGfx1Loaders )
@@ -54,24 +54,33 @@ static void _screenInit(){
     }
 }
 
+// this code needs to be in main block, as it switches banks
+#pragma code ( pigsleCommandRAMCode )
+#pragma data ( pigsleCommandRAMData )
+
 static void _spriteLoader(){
+    // ROM on, I/O off - as we will copy to RAM under I/O ports
+    mmap_set(0b00110011);
+
     memcpy((char *)GFX_1_SPR_DST_ADR, PIGSLE_CMD_SPR_AIM, 0x80);
     // memcpy((char *)GFX_1_SPR_DST_ADR+0x40, PIGSLE_CMD_SPR_FILE, 0x400);
     #pragma unroll(page)
     for(int i=0; i<64*EXPLOSION_ANIM_FRAMES; i++){
        ((volatile char*) GFX_1_SPR_DST_ADR)[0x80 + i] = ((char*)PIGSLE_CMD_SPR_BOOM_1)[i];
        ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*EXPLOSION_ANIM_FRAMES + i] = ((char*)PIGSLE_CMD_SPR_BOOM_2)[i];
+    }
+    #pragma unroll(page)
+    for(int i=0; i<64*DROP_ANIM_FRAMES*2; i++){
        ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*EXPLOSION_ANIM_FRAMES*2 + i] = ((char*)PIGSLE_CMD_SPR_PESTS)[i];
     }
     #pragma unroll(page)
     for(int i=0; i<64*8; i++){
-       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*EXPLOSION_ANIM_FRAMES*3 + i] = ((char*)PIGSLE_CMD_SPR_B29)[i];
+       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*(EXPLOSION_ANIM_FRAMES*2 + DROP_ANIM_FRAMES*2) + i] = ((char*)PIGSLE_CMD_SPR_B29)[i];
     }
-}
 
-// this code needs to be in main block, as it switches banks
-#pragma code ( pigsleCommandRAMCode )
-#pragma data ( pigsleCommandRAMData )
+    // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
+    mmap_set(MMAP_ROM);
+}
 
 void pigsleScreenInit(void){
     // vic.color_border = VCOL_RED;
@@ -216,6 +225,14 @@ static void _randomizeExplosion(Explosion * e){
     }
     e->sprBank = sprBank; // sprite 0 is aim, so +1 here
 }
+static void _randomizePestDrop(PestDrop * e){
+    char rnd = rand();
+    char sprBank = PIGSLE_CMD_ANIM_PEST_DROP_BANK;
+    if(rnd > 0x80){
+        sprBank = PIGSLE_CMD_ANIM_PEST_DROP_BANK + DROP_ANIM_FRAMES;
+    }
+    e->sprBank = sprBank; // sprite 0 is aim, so +1 here
+}
 
 // Initialize pest drop list
 static void _pestDropsInit(void){
@@ -256,7 +273,7 @@ static void _pestDropStart(int x, int y){
         pd->y = y;
         pd->frame = 0;
         pd->delay = DROP_INITIAL_DELAY;
-        // _randomizeExplosion(e);
+        _randomizePestDrop(pd);
         // cache the details, so IRQ can just copy it
         char i = pd->sprIdx;
         pestDropsVisible |= sprEnable[i];
@@ -284,8 +301,8 @@ static void _pestDropAnimate(void){
             // Increment phase
             pd->frame++;
             if(pd->frame == DROP_ANIM_FRAMES)
-                pd->frame = 0;
-            char i = pd->sprIdx - 4;
+                pd->frame = DROP_ANIM_REPEAT;
+            char i = pd->sprIdx - 4;// 4 is min index here
             pestDropAnimBank[i] = pd->sprBank + pd->frame;
 
             pd->y++;
@@ -399,7 +416,6 @@ static void _explosionAnimate(void){
                 
                 int xp = pd->x;
                 // if X is within +/- HIT_RANGE, compare Y, ignore the rest
-                #define HIT_RANGE 10
                 if(xp >= x-HIT_RANGE && xp <= x+HIT_RANGE){
                     // we might have a hit
                     char yp = pd->y;
