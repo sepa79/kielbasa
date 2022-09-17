@@ -2,6 +2,7 @@
 #include <c64/keyboard.h>
 #include <c64/vic.h>
 #include <c64/types.h>
+//#include <gfx/mcbitmap.h>
 #include <stdio.h>
 
 #include <character/character.h>
@@ -21,15 +22,15 @@
 
 #pragma data ( crewGfxDay )
 __export const char crewGfx1[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/ramka1.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/ramka1.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/ramka1.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/ramka1_koval.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/ramka1_koval.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/ramka1_koval.kla"
 };
 #pragma data ( crewGfxNight )
 __export const char crewGfx2[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/ramka1.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/ramka1.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/ramka1.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/ramka1_koval.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/ramka1_koval.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/ramka1_koval.kla"
 };
 
 // menu code is in ROM - data in RAM
@@ -38,6 +39,21 @@ __export const char crewGfx2[] = {
 
 // column offset for printing character data
 #define COL_OFFSET_CHARACTERDATA 12
+
+// drawing bars
+#define PARAMS_COUNT        9
+
+#define BARS_X_POSITION     120     // align to 8
+#define BARS_Y_POSITION_MAX 82
+
+#define BARS_X_COORDS_GAP   16      // draw new bar every 16 bits ( 2 bytes )
+#define BAR_PART_HEIGHT     6
+#define BAR_MAX_HEIGHT      ( 9 * BAR_PART_HEIGHT )
+#define BAR_PATTERN         0x2a    // 0x2a = 0b00101010
+#define BAR_CLEAR_PATTERN   0x00    // delete bar pattern
+
+// drawing bars - we need that array because data is in two structs
+static int params[PARAMS_COUNT]      = { 0, 0, 0, 0, 0, 0, 0 };
 
 static byte _faceSprBank = 0;
 
@@ -56,6 +72,64 @@ static void _showStatsSprites() {
     vic.spr_color[0] =  SpriteResources.CHARACTER_PORTRAITS[64*0 + 63];
 
     GFX_1_SCR[OFFSET_SPRITE_PTRS] = SPR_BANK_CHARACTER_PORTRAIT1;
+}
+
+// small and fast way to write byte on gfx screen
+static void _drawByteK(int x, int y, char b) {
+    // unsigned addr = 40 * (y & ~7) + ((x & ~7) | (y & 7));
+    unsigned y_masked = ( y & ~7 );
+    unsigned addr = ( y_masked << 5 ) + ( y_masked << 3 ) + ((x & ~7) | (y & 7));     // optimization ???
+    GFX_1_BMP[addr] = b;
+}
+
+static void _drawBarsFor(char character) {
+    // PREPARE FOR DRAWING BARS
+
+    // const byte allChars_stats[CHARACTER_COUNT][3]              = { {3,3,3}, {2,3,2}, {4,2,4}, {3,3,4}};
+    // const byte allChars_skills[CHARACTER_COUNT][SKILL_COUNT]   = { {3,3,4,3}, {2,6,1,1}, {1,1,1,7}, {6,2,1,1}};
+
+    int params_diff[PARAMS_COUNT] = { 0, 0, 0, 0, 0, 0, 0 };
+    
+    params_diff[0] = allChars_stats[character][0] - params[0];
+    params_diff[1] = allChars_stats[character][1] - params[1];
+    params_diff[2] = allChars_stats[character][2] - params[2];
+
+    params_diff[3] = allChars_skills[character][0] - params[3];
+    params_diff[4] = allChars_skills[character][1] - params[4];
+    params_diff[5] = allChars_skills[character][2] - params[5];
+    params_diff[6] = allChars_skills[character][3] - params[6];
+
+    // DRAW BARS
+    for ( int i=0; i<PARAMS_COUNT; i++ ) {
+
+        if ( params_diff[i] != 0 ) {
+            // calculate x position for bar
+            int x_draw        = BARS_X_POSITION + i * BARS_X_COORDS_GAP;
+            int bar_level     = BARS_Y_POSITION_MAX - ( params[i] * BAR_PART_HEIGHT );
+            int bar_new_level = bar_level - (params_diff[i] * BAR_PART_HEIGHT );
+
+            if ( params_diff[i] < 0 ) {
+                // clear unused bar part ( from top to down )
+                for (int y=bar_level; y<=bar_new_level; y++ ) {
+                    _drawByteK( x_draw, y, BAR_CLEAR_PATTERN );
+                }
+            } else if ( params_diff[i] > 0 ) {
+                // draw visible bar part ( from down to top )
+                for (int y=bar_level; y>=bar_new_level; y-- ) {
+                    _drawByteK( x_draw, y, BAR_PATTERN );
+                }
+            }
+        }
+    }
+
+    params[0] = allChars_stats[character][0];
+    params[1] = allChars_stats[character][1];
+    params[2] = allChars_stats[character][2];
+
+    params[3] = allChars_skills[character][0];
+    params[4] = allChars_skills[character][1];
+    params[5] = allChars_skills[character][2];
+    params[6] = allChars_skills[character][3];
 }
 
 // Shows character data on the left side of the screen.
@@ -96,6 +170,8 @@ static void _showCharacterDetails(byte character){
     cwin_putat_string_raw(&cd, 22,  9, str, VCOL_GREEN);
     sprintf(str, "%u", allChars_skills[character][SKILL_TRADE]);
     cwin_putat_string_raw(&cd, 22, 10, str, VCOL_GREEN);
+
+    _drawBarsFor(character);
 }
 
 static void _emMenu1(){
@@ -111,6 +187,20 @@ static void _emMenu4(){
     _showCharacterDetails(3);
 }
 
+static void _prepareBars(){
+    // refresh params table
+    for ( char i=0; i<PARAMS_COUNT; i++ )
+        params[i] = 0;
+
+    // set screen colors under bars
+    for ( unsigned y=3; y<11; y++ ) {
+        for ( unsigned x=15; x<30; x+=2 ) { 
+            GFX_1_SCR[y*40+x] = 0x97;
+            //COLOR_RAM[y*40+x] = 0x77;
+        }
+    }
+}
+
 const struct MenuOption CREW_MENU[] = {
     { TXT_IDX_MENU_CREW1, '1', UI_UD, &_emMenu1, 0, 1, 1},
     { TXT_IDX_MENU_CREW2, '2', UI_UD, &_emMenu2, 0, 1, 2},
@@ -122,6 +212,8 @@ const struct MenuOption CREW_MENU[] = {
 
 static void _menuHandler(void){
     loadMenuGfx(cal_isDay);
+
+    _prepareBars();
 
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, 0, 13, 40, 11);
