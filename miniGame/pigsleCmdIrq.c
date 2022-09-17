@@ -105,9 +105,30 @@ __interrupt void _spriteInit(){
     vic.spr_mcolor0 = VCOL_WHITE;
     vic.spr_mcolor1 = VCOL_RED;
 
-    vic.spr_color[0] = VCOL_WHITE;
+    vic.spr_color[0] = SPR_JOY_CURSOR_COLORS[joyCursor.colorIdx];
     GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = crosshairBank;
-    // vic.spr_enable = 0b00000001;
+
+    vic.spr_msbx = explosionsOver255 | pestDropsOver255;
+    vic.spr_enable = explosionsVisible | pestDropsVisible | 1;
+}
+
+static void _pestDropSprites(){
+    vic.spr_color[4] = VCOL_GREEN;
+    vic.spr_color[5] = VCOL_GREEN;
+    vic.spr_color[6] = VCOL_GREEN;
+    vic.spr_color[7] = VCOL_GREEN;
+    vic.spr_pos[4].x = pestDropAnimX[0];
+    vic.spr_pos[5].x = pestDropAnimX[1];
+    vic.spr_pos[6].x = pestDropAnimX[2];
+    vic.spr_pos[7].x = pestDropAnimX[3];
+    vic.spr_pos[4].y = pestDropAnimY[0];
+    vic.spr_pos[5].y = pestDropAnimY[1];
+    vic.spr_pos[6].y = pestDropAnimY[2];
+    vic.spr_pos[7].y = pestDropAnimY[3];
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+4] = pestDropAnimBank[0];
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+5] = pestDropAnimBank[1];
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+6] = pestDropAnimBank[2];
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+7] = pestDropAnimBank[3];
 }
 
 static void _explosionSprites(){
@@ -123,10 +144,6 @@ static void _explosionSprites(){
     GFX_1_SCR[OFFSET_SPRITE_PTRS+1] = explosionAnimBank[0];
     GFX_1_SCR[OFFSET_SPRITE_PTRS+2] = explosionAnimBank[1];
     GFX_1_SCR[OFFSET_SPRITE_PTRS+3] = explosionAnimBank[2];
-
-    vic.spr_msbx = explosionsOver255;
-    vic.spr_enable = visibleExplosions | 1;
-
 }
 
 __interrupt void pigsleCmdIrq_topPlane() {
@@ -149,13 +166,13 @@ __interrupt void pigsleCmdIrq_topPests() {
         if(SPR_JOY_CURSOR_COLORS[joyCursor.colorIdx] == 0){
             joyCursor.colorIdx = 0;
         }
-        vic.spr_color[0] = SPR_JOY_CURSOR_COLORS[joyCursor.colorIdx];
         _flashDelay = 2;
     }
     vic.color_border++;
 
     _spriteInit();
     _explosionSprites();
+    _pestDropSprites();
     vic.color_border--;
 
     // Poll joystick

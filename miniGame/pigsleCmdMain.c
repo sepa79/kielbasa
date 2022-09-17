@@ -32,6 +32,9 @@ const char PIGSLE_CMD_SPR_BOOM_2[] = {
 const char PIGSLE_CMD_SPR_B29[] = {
     #embed 0xffff 20 "assets/sprites/b29.spd"
 };
+const char PIGSLE_CMD_SPR_PESTS[] = {
+    #embed 0xffff 20 "assets/sprites/pests.spd"
+};
 
 #pragma code ( pigsleCommandGfx1Loaders )
 #pragma data ( pigsleCommandRAMData )
@@ -55,13 +58,14 @@ static void _spriteLoader(){
     memcpy((char *)GFX_1_SPR_DST_ADR, PIGSLE_CMD_SPR_AIM, 0x80);
     // memcpy((char *)GFX_1_SPR_DST_ADR+0x40, PIGSLE_CMD_SPR_FILE, 0x400);
     #pragma unroll(page)
-    for(int i=0; i<64*ANIM_FRAMES; i++){
+    for(int i=0; i<64*EXPLOSION_ANIM_FRAMES; i++){
        ((volatile char*) GFX_1_SPR_DST_ADR)[0x80 + i] = ((char*)PIGSLE_CMD_SPR_BOOM_1)[i];
-       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*ANIM_FRAMES + i] = ((char*)PIGSLE_CMD_SPR_BOOM_2)[i];
+       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*EXPLOSION_ANIM_FRAMES + i] = ((char*)PIGSLE_CMD_SPR_BOOM_2)[i];
+       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*EXPLOSION_ANIM_FRAMES*2 + i] = ((char*)PIGSLE_CMD_SPR_PESTS)[i];
     }
     #pragma unroll(page)
     for(int i=0; i<64*8; i++){
-       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*ANIM_FRAMES*2 + i] = ((char*)PIGSLE_CMD_SPR_B29)[i];
+       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*EXPLOSION_ANIM_FRAMES*3 + i] = ((char*)PIGSLE_CMD_SPR_B29)[i];
     }
 }
 
@@ -102,12 +106,22 @@ volatile char CrossDelay = 0;
 // First free and first used explosion
 Explosion * efree;
 Explosion * eused;
-Explosion explosions[EXPLOSION_COUNT];
-volatile char explosionAnimX[EXPLOSION_COUNT];
-volatile char explosionAnimY[EXPLOSION_COUNT];
-volatile char explosionAnimBank[EXPLOSION_COUNT];
-volatile char visibleExplosions = 0;
+Explosion explosions[EXPLOSION_COUNT] = 0;
+volatile char explosionAnimX[EXPLOSION_COUNT] = 0;
+volatile char explosionAnimY[EXPLOSION_COUNT] = 0;
+volatile char explosionAnimBank[EXPLOSION_COUNT] = 0;
+volatile char explosionsVisible = 0;
 volatile char explosionsOver255 = 0;
+
+PestDrop * pdFree;
+PestDrop * pdUsed;
+PestDrop pestDrops[DROP_COUNT] = 0;
+volatile char pestDropAnimX[DROP_COUNT] = 0;
+volatile char pestDropAnimY[DROP_COUNT] = 0;
+volatile char pestDropAnimBank[DROP_COUNT] = 0;
+volatile char pestDropsVisible = 0;
+volatile char pestDropsOver255 = 0;
+
 const char sprEnable[8]  = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
 const char sprDisable[8] = {0xfe, 0xfd, 0xfb, 0xf7, 0xef, 0xdf, 0xbf, 0x7f};
 
@@ -198,13 +212,110 @@ static void _randomizeExplosion(Explosion * e){
     char rnd = rand();
     char sprBank = PIGSLE_CMD_ANIM_EXPLOSION_BANK;
     if(rnd > 0x80){
-        sprBank = PIGSLE_CMD_ANIM_EXPLOSION_BANK + ANIM_FRAMES;
+        sprBank = PIGSLE_CMD_ANIM_EXPLOSION_BANK + EXPLOSION_ANIM_FRAMES;
     }
     e->sprBank = sprBank; // sprite 0 is aim, so +1 here
 }
 
+// Initialize pest drop list
+static void _pestDropsInit(void){
+    // No explosion active
+    pdUsed = nullptr;
+
+    // First free element
+    pdFree = pestDrops;
+    // Build list
+    for(char i=0; i<DROP_COUNT; i++){
+        pestDrops[i].sprBank = PIGSLE_CMD_ANIM_PEST_DROP_BANK;
+        pestDrops[i].sprIdx = i + 4; // Pests are 4 upper sprites
+        pestDrops[i].frame  = 0;
+        pestDrops[i].delay  = DROP_INITIAL_DELAY;
+        pestDrops[i].next   = pestDrops + i + 1;
+
+        pestDropAnimX[i]    = 0;
+        pestDropAnimY[i]    = 0;
+        pestDropAnimBank[i] = 0;
+
+    }
+    // Terminate last element
+    pestDrops[DROP_COUNT-1].next = nullptr;
+}
+
+// Start a new drop
+static void _pestDropStart(int x, int y){
+    // Free slot in list?
+    if (pdFree) {
+        // Move entry from free to used list
+        PestDrop * pd = pdFree;
+        pdFree = pd->next;
+        pd->next = pdUsed;
+        pdUsed = pd;
+
+        // Initialize position and size
+        pd->x = x; // MIGHT BE OBSOLETE
+        pd->y = y;
+        pd->frame = 0;
+        pd->delay = DROP_INITIAL_DELAY;
+        // _randomizeExplosion(e);
+        // cache the details, so IRQ can just copy it
+        char i = pd->sprIdx;
+        pestDropsVisible |= sprEnable[i];
+        if(x > 255){
+            pestDropsOver255 |= sprEnable[i];
+        } else {
+            pestDropsOver255 &= sprDisable[i];
+        }
+        i-=4; // now use i  as index for arrays
+        pestDropAnimX[i] = x;
+        pestDropAnimY[i] = y;
+        pestDropAnimBank[i] = pd->sprBank;
+    }
+}
+
+static void _pestDropAnimate(void){
+    PestDrop * pd = pdUsed, * pdp = nullptr;
+    while (pd){
+        // Remember next entry in list
+        PestDrop * pdn = pd->next;
+
+        pd->delay--;
+        if(!pd->delay){
+            pd->delay = DROP_ANIM_DELAY;
+            // Increment phase
+            pd->frame++;
+            if(pd->frame == DROP_ANIM_FRAMES)
+                pd->frame = 0;
+            char i = pd->sprIdx - 4;
+            pestDropAnimBank[i] = pd->sprBank + pd->frame;
+
+            pd->y++;
+            pestDropAnimY[i]++;
+        }
+
+        // End of drop live
+        if (pd->y >= DROP_MAX_Y ) {
+            pestDropsVisible &= sprDisable[pd->sprIdx];
+            // Remove from used list
+            if (pdp)
+                pdp->next = pd->next;
+            else
+                pdUsed = pd->next;
+
+            // Prepend it to free list
+            pd->next = pdFree;
+            pdFree = pd;
+        }
+        else
+            pdp = pd;
+
+        // Next one in list
+        pd = pdn;
+
+    }
+}
+
 // Initialize explosion list
-static void _explosionInit(void){
+static void _explosionsInit(void){
     // No explosion active
     eused = nullptr;
 
@@ -215,7 +326,7 @@ static void _explosionInit(void){
         // _randomizeExplosion((Explosion *)explosions[i]);
         explosions[i].sprIdx = i + 1; // sprite 0 is aim, so +1 here
         explosions[i].frame  = 0;
-        explosions[i].delay  = ANIM_EXPLOSION_DELAY;
+        explosions[i].delay  = EXPLOSION_INITIAL_DELAY;
         explosions[i].next   = explosions + i + 1;
 
         explosionAnimX[i]    = 0;
@@ -238,14 +349,14 @@ static void _explosionStart(int x, int y){
         eused = e;
 
         // Initialize position and size
-        e->x = x + EXPLOSION_X_OFFSET; // MIGHT BE OBSOLETE
-        e->y = y + EXPLOSION_Y_OFFSET;
+        e->x = x; // MIGHT BE OBSOLETE
+        e->y = y;
         e->frame = 0;
-        e->delay = ANIM_EXPLOSION_DELAY;
+        e->delay = EXPLOSION_INITIAL_DELAY;
         _randomizeExplosion(e);
         // cache the details, so IRQ can just copy it
         char i = e->sprIdx;
-        visibleExplosions |= sprEnable[i];
+        explosionsVisible |= sprEnable[i];
         if(x > 255){
             explosionsOver255 |= sprEnable[i];
         } else {
@@ -272,14 +383,56 @@ static void _explosionAnimate(void){
 
         e->delay--;
         if(!e->delay){
-            e->delay = ANIM_DELAY;
+            e->delay = EXPLOSION_ANIM_DELAY;
             // Increment phase
             e->frame++;
             explosionAnimBank[e->sprIdx - 1]++;
         }
+        // check if we have hit something
+        if (e->frame == EXPLOSION_ANIM_FRAMES /2 ) {
+            int x = e->x;
+            // iterate through all active drops, compare X
+            PestDrop * pd = pdUsed, * pdp = nullptr;
+            while (pd){
+                // Remember next entry in list
+                PestDrop * pdn = pd->next;
+                
+                int xp = pd->x;
+                // if X is within +/- HIT_RANGE, compare Y, ignore the rest
+                #define HIT_RANGE 10
+                if(xp >= x-HIT_RANGE && xp <= x+HIT_RANGE){
+                    // we might have a hit
+                    char yp = pd->y;
+                    char y = e->y;
+                    if(yp >= y-HIT_RANGE && yp <= y+HIT_RANGE){
+                        // we got a hit!
+                        // End of drop live
+                        pestDropsVisible &= sprDisable[pd->sprIdx];
+                        // Remove from used list
+                        if (pdp)
+                            pdp->next = pd->next;
+                        else
+                            pdUsed = pd->next;
+
+                        // Prepend it to free list
+                        pd->next = pdFree;
+                        pdFree = pd;
+                    }
+                    // no more hits possible - exit loop
+                    break;
+                }
+                else
+                    pdp = pd;
+
+                // Next one in list
+                pd = pdn;
+            }
+
+
+        }
         // End of explosion live
-        if (e->frame == ANIM_FRAMES ) {
-            visibleExplosions &= sprDisable[e->sprIdx];
+        if (e->frame == EXPLOSION_ANIM_FRAMES ) {
+            explosionsVisible &= sprDisable[e->sprIdx];
             // Remove explosion from used list
             if (ep)
                 ep->next = e->next;
@@ -292,8 +445,6 @@ static void _explosionAnimate(void){
         }
         else
             ep = e;
-
-        // set sprite
 
         // Next explosion in list
         e = en;
@@ -309,16 +460,19 @@ static void _aimInit(){
     crosshairBank = PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK;
 }
 
-// State of the game
+// State of the bomb plane
 volatile struct DropRun {
     bool inProgress;
     int x;
-
+    char dropsRemaining;
+    char nextDropDelay;
 } TheB29Plane;
 
 static void _dropRunInit(){
     TheB29Plane.x = 320+72;
     TheB29Plane.inProgress = true;
+    TheB29Plane.dropsRemaining = DROP_COUNT;
+    TheB29Plane.nextDropDelay = 50 + (rand() & 63);
 }
 
 // State of the game
@@ -354,7 +508,8 @@ void gameState(GameState state){
         // Setup display
         pigsleScreenInit();
         _dropRunInit();
-        _explosionInit();
+        _explosionsInit();
+        _pestDropsInit();
         // icbm_init();
         _aimInit();
         TheGame.count = 500;
@@ -387,16 +542,23 @@ static void _gamePlay(void){
         TheGame.count = 500 + (rand() & 63);
         _dropRunInit();
     }
-
-    // Advance defending missiles by four pixels
-    // for(char i=0; i<4; i++)
-    //     missile_animate();
-
-    // Advance ICBMs
-    // icbm_animate();
-
+    // if the plane is out there, lets drop some pests
+    if(TheB29Plane.inProgress){
+        if(TheB29Plane.dropsRemaining > 0){
+            if(!--TheB29Plane.nextDropDelay){
+                // pests awaaaaay!
+                _pestDropStart(TheB29Plane.x, 50);
+                // reset drop timers
+                if(--TheB29Plane.dropsRemaining){
+                    TheB29Plane.nextDropDelay = 50 + (rand() & 63);
+                }
+            }
+        }
+    }
     // Show explosions
     _explosionAnimate();
+    // animate drops
+    _pestDropAnimate();
 }
 
 // Main game loop, entered every VSYNC
