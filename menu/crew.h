@@ -1,6 +1,35 @@
 #ifndef EMPLOYMENT_H
 #define EMPLOYMENT_H
 
+#pragma section( crewLoaderData, 0 )
+#pragma section( crewCode, 0 )
+#pragma section( crewCodeRam, 0 )
+#pragma section( crewGfxDay, 0 )
+#pragma region( regionCrewC, 0x8000, 0x9000, , MENU_BANK_CREW, { crewLoaderData, crewCode } )
+#pragma region( regionCrewG1, DAY_GFX_BMP, DAY_GFX_BMP+0x1400, , MENU_BANK_CREW, { crewGfxDay } )
+
+// will be on cartridge under 0xa400 (NIGHT_GFX_BMP) but compiled under 0x7000
+#pragma region( regionCrewRam, NIGHT_GFX_BMP, 0xb3ff, , MENU_BANK_CREW, { crewCodeRam }, 0x7000 )
+
+// column offset for printing character data
+#define COL_OFFSET_CHARACTERDATA 12
+
+#define SPR_BANK_CREW_SCREEN_CHARACTER_PORTRAIT 0xbc
+
+// drawing bars
+#define PARAMS_COUNT        7
+#define BARS_X_POSITION     120     // align to 8
+#define BARS_Y_POSITION_MAX 82
+#define BARS_X_COORDS_GAP   16      // draw new bar every 16 bits ( 2 bytes )
+#define BAR_PART_HEIGHT     6
+#define BAR_MAX_HEIGHT      ( 9 * BAR_PART_HEIGHT )
+#define BAR_PATTERN         0x2a    // 0x2a = 0b00101010
+#define BAR_CLEAR_PATTERN   0x00    // delete bar pattern
+
+// remember previous character; mandatory for optimized bars drawing
+extern volatile char prev_character;
+
+extern const char bar_height[];
 extern const struct MenuOption CREW_MENU[];
 
 #pragma compile("crew.c")
