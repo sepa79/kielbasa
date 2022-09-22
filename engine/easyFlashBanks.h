@@ -27,11 +27,11 @@
 void setBank(char bank);
 // Change bank, advance history.
 void changeBank(char bank);
-// Restore provious bank from history.
+// Restore previous bank from history.
 void restoreBank();
 // Reset to previously set main, remove history.
 void resetBank();
-// Change to main, advance hostory.
+// Change to main, advance history.
 void changeBankToMain();
 
 #pragma compile("easyFlashBanks.c")

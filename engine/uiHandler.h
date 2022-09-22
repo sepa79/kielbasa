@@ -6,7 +6,7 @@
 struct JOY_CURSOR {
     // should it be shown, and also should the game run - freeze during menu changes
     bool enabled;
-    // notmal or error cursor
+    // normal or error cursor
     bool error;
     // iterator for colors
     byte colorIdx;
