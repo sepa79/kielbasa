@@ -37,7 +37,7 @@ static void _playMsx(){
 }
 
 static void _animB29Plane(){
-    vic.color_border++;
+    // vic.color_border++;
     vic.spr_multi    = 0b11110000;
     
     // explosion
@@ -95,7 +95,7 @@ static void _animB29Plane(){
 
     TheB29Plane.x--;
     vic.spr_enable = visibleSprites;
-    vic.color_border--;
+    // vic.color_border--;
 }
 
 __interrupt void _spriteInit(){
@@ -113,18 +113,18 @@ __interrupt void _spriteInit(){
 }
 
 static void _pestDropSprites(){
-    vic.spr_color[4] = VCOL_GREEN;
-    vic.spr_color[5] = VCOL_GREEN;
-    vic.spr_color[6] = VCOL_GREEN;
-    vic.spr_color[7] = VCOL_GREEN;
-    vic.spr_pos[4].x = pestDropAnimX[0];
-    vic.spr_pos[5].x = pestDropAnimX[1];
-    vic.spr_pos[6].x = pestDropAnimX[2];
-    vic.spr_pos[7].x = pestDropAnimX[3];
     vic.spr_pos[4].y = pestDropAnimY[0];
     vic.spr_pos[5].y = pestDropAnimY[1];
     vic.spr_pos[6].y = pestDropAnimY[2];
     vic.spr_pos[7].y = pestDropAnimY[3];
+    vic.spr_pos[4].x = pestDropAnimX[0];
+    vic.spr_pos[5].x = pestDropAnimX[1];
+    vic.spr_pos[6].x = pestDropAnimX[2];
+    vic.spr_pos[7].x = pestDropAnimX[3];
+    vic.spr_color[4] = VCOL_GREEN;
+    vic.spr_color[5] = VCOL_GREEN;
+    vic.spr_color[6] = VCOL_GREEN;
+    vic.spr_color[7] = VCOL_GREEN;
     GFX_1_SCR[OFFSET_SPRITE_PTRS+4] = pestDropAnimBank[0];
     GFX_1_SCR[OFFSET_SPRITE_PTRS+5] = pestDropAnimBank[1];
     GFX_1_SCR[OFFSET_SPRITE_PTRS+6] = pestDropAnimBank[2];
@@ -132,33 +132,38 @@ static void _pestDropSprites(){
 }
 
 static void _explosionSprites(){
-    vic.spr_color[1] = VCOL_YELLOW;
-    vic.spr_color[2] = VCOL_YELLOW;
-    vic.spr_color[3] = VCOL_YELLOW;
-    vic.spr_pos[1].x = explosionAnimX[0];
-    vic.spr_pos[2].x = explosionAnimX[1];
-    vic.spr_pos[3].x = explosionAnimX[2];
     vic.spr_pos[1].y = explosionAnimY[0];
     vic.spr_pos[2].y = explosionAnimY[1];
     vic.spr_pos[3].y = explosionAnimY[2];
+    vic.spr_pos[1].x = explosionAnimX[0];
+    vic.spr_pos[2].x = explosionAnimX[1];
+    vic.spr_pos[3].x = explosionAnimX[2];
+    vic.spr_color[1] = VCOL_YELLOW;
+    vic.spr_color[2] = VCOL_YELLOW;
+    vic.spr_color[3] = VCOL_YELLOW;
     GFX_1_SCR[OFFSET_SPRITE_PTRS+1] = explosionAnimBank[0];
     GFX_1_SCR[OFFSET_SPRITE_PTRS+2] = explosionAnimBank[1];
     GFX_1_SCR[OFFSET_SPRITE_PTRS+3] = explosionAnimBank[2];
 }
 
 __interrupt void pigsleCmdIrq_topPlane() {
-    vic.color_border++;
+    // vic.color_border++;
 
     vic.color_back = VCOL_BLUE;
     if(TheB29Plane.inProgress){
         _animB29Plane();
     }
 
-    vic.color_border--;
+    // vic.color_border--;
 }
 
 __interrupt void pigsleCmdIrq_topPests() {
-    vic.color_border++;
+    // vic.color_border++;
+
+    _pestDropSprites();
+    _spriteInit();
+    // vic.color_border--;
+    _explosionSprites();
 
     _flashDelay--;
     if(!_flashDelay){
@@ -168,13 +173,7 @@ __interrupt void pigsleCmdIrq_topPests() {
         }
         _flashDelay = 2;
     }
-    vic.color_border++;
-
-    _spriteInit();
-    _explosionSprites();
-    _pestDropSprites();
-    vic.color_border--;
-
+    // vic.color_border++;
     // Poll joystick
     joy_poll(0);
 
@@ -209,8 +208,9 @@ __interrupt void pigsleCmdIrq_topPests() {
     if(!CrossDelay && efree)
         crosshairBank = PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK;
 
-    _playMsx();
+    vic_waitLine(55);
     vic.color_back = VCOL_BLACK;
+    _playMsx();
 
     _prevRomCfgPC = ((byte *)0x01)[0];
     mmap_set(MMAP_ROM);
@@ -229,7 +229,7 @@ __interrupt void pigsleCmdIrq_topPests() {
 
     restoreBank();
     ((byte *)0x01)[0] = _prevRomCfgPC;
-    vic.color_border--;
+    // vic.color_border--;
 }
 
 __interrupt void pigsleCmdIrq_middlePests() {
@@ -239,14 +239,15 @@ __interrupt void pigsleCmdIrq_middlePests() {
 }
 
 __interrupt void pigsleCmdIrq_cannonAnims() {
-    vic.color_border++;
+    // vic.color_border++;
     _playMsx();
-    vic.color_border--;
+    // vic.color_border--;
 }
 
 __interrupt void pigsleCmdIrq_openBorder() {
+    vic_waitLine(250);
     vic.color_back = VCOL_BROWN;
-    vic.color_border++;
+    // vic.color_border++;
     vic.spr_enable = 0b00000000;
-    vic.color_border--;
+    // vic.color_border--;
 }

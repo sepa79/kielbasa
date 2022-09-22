@@ -30,7 +30,8 @@ extern volatile char CrossDelay;
 
 // Structure for an explosion
 struct Explosion {
-    int         x, y;         // Sprite position
+    int         x;            // Sprite position
+    char        y;            // Sprite position
     char        frame;        // animation frame
     char        delay;        // delay before advancing to next frame
     char        sprIdx;       // sprite index (0-7)
@@ -55,24 +56,48 @@ extern volatile char explosionAnimBank[EXPLOSION_COUNT];
 extern volatile char explosionsVisible;
 extern volatile char explosionsOver255;
 
+enum PestDropType {
+    PD_SIMPLE,
+    PD_STRONG,
+    PD_SINUS
+};
 
 // Structure for a pests drop
 struct PestDrop {
-    int         x, y;         // Sprite position
+    int         x;            // Sprite position
+    char        y;            // Sprite position
     char        frame;        // animation frame
     char        delay;        // delay before advancing to next frame
+    char        delayR;       // delay before advancing to next frame
     char        sprIdx;       // sprite index (0-7)
     char        sprBank;      // which animation to use, as starting bank
+    char        type;         // one of a few drop types, determines animation style
+    signed char animA;        // used with the above
+    char        animB;        // used with the above
+    signed char animAR;       // used with the above
+    char        animBR;       // used with the above
     PestDrop  * next;         // Next drop in list
 };
 
-#define DROP_INITIAL_DELAY 5
-#define DROP_ANIM_DELAY 3
+#define DROP_INITIAL_DELAY 8
+
+#define DROP_ANIM_1_DELAY 5
+#define DROP_ANIM_1_ANIMA 1
+#define DROP_ANIM_1_ANIMB 7
+
+#define DROP_ANIM_2_DELAY 3
+#define DROP_ANIM_2_ANIMA 1
+#define DROP_ANIM_2_ANIMB 8
+
+#define DROP_ANIM_3_DELAY 4
+#define DROP_ANIM_3_ANIMA 2
+#define DROP_ANIM_3_ANIMB 8
+
 #define DROP_ANIM_FRAMES 20
 #define DROP_ANIM_REPEAT 5
 #define DROP_COUNT 4
 #define DROP_MAX_Y 200
-#define HIT_RANGE 6
+#define HIT_RANGE 7
 
 extern volatile char pestDropAnimX[DROP_COUNT];
 extern volatile char pestDropAnimY[DROP_COUNT];

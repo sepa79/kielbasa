@@ -225,13 +225,50 @@ static void _randomizeExplosion(Explosion * e){
     }
     e->sprBank = sprBank; // sprite 0 is aim, so +1 here
 }
-static void _randomizePestDrop(PestDrop * e){
+
+static void _initPestDropTypeSimple(PestDrop * pd){
+    pd->type   = PD_SIMPLE;
+    pd->delayR = DROP_ANIM_1_DELAY;
+
+    pd->animA  = DROP_ANIM_1_ANIMA;
+    pd->animB  = DROP_ANIM_1_ANIMB;
+    pd->animAR = DROP_ANIM_1_ANIMA;
+    pd->animBR = DROP_ANIM_1_ANIMB;
+
+    pd->sprBank = PIGSLE_CMD_ANIM_PEST_DROP_BANK;
+}
+static void _initPestDropTypeStrong(PestDrop * pd){
+    pd->type   = PD_STRONG;
+    pd->delayR = DROP_ANIM_2_DELAY;
+
+    pd->animA  = DROP_ANIM_2_ANIMA;
+    pd->animB  = DROP_ANIM_2_ANIMB;
+    pd->animAR = DROP_ANIM_2_ANIMA;
+    pd->animBR = DROP_ANIM_2_ANIMB;
+
+    pd->sprBank = PIGSLE_CMD_ANIM_PEST_DROP_BANK + DROP_ANIM_FRAMES;
+}
+static void _initPestDropTypeSinus(PestDrop * pd){
+    pd->type   = PD_SINUS;
+    pd->delayR = DROP_ANIM_3_DELAY;
+
+    pd->animA  = DROP_ANIM_3_ANIMA;
+    pd->animB  = DROP_ANIM_3_ANIMB;
+    pd->animAR = DROP_ANIM_3_ANIMA;
+    pd->animBR = DROP_ANIM_3_ANIMB;
+    pd->sprBank = PIGSLE_CMD_ANIM_PEST_DROP_BANK;
+}
+
+static void _randomizePestDrop(PestDrop * pd){
     char rnd = rand();
     char sprBank = PIGSLE_CMD_ANIM_PEST_DROP_BANK;
-    if(rnd > 0x80){
-        sprBank = PIGSLE_CMD_ANIM_PEST_DROP_BANK + DROP_ANIM_FRAMES;
+    if(rnd > 0xe0){
+        _initPestDropTypeStrong(pd);
+    } else if(rnd > 0x80){
+        _initPestDropTypeSinus(pd);
+    } else {
+        _initPestDropTypeSimple(pd);
     }
-    e->sprBank = sprBank; // sprite 0 is aim, so +1 here
 }
 
 // Initialize pest drop list
@@ -243,16 +280,8 @@ static void _pestDropsInit(void){
     pdFree = pestDrops;
     // Build list
     for(char i=0; i<DROP_COUNT; i++){
-        pestDrops[i].sprBank = PIGSLE_CMD_ANIM_PEST_DROP_BANK;
-        pestDrops[i].sprIdx = i + 4; // Pests are 4 upper sprites
-        pestDrops[i].frame  = 0;
-        pestDrops[i].delay  = DROP_INITIAL_DELAY;
-        pestDrops[i].next   = pestDrops + i + 1;
-
-        pestDropAnimX[i]    = 0;
-        pestDropAnimY[i]    = 0;
-        pestDropAnimBank[i] = 0;
-
+        pestDrops[i].sprIdx  = i + 4; // Pests are 4 upper sprites
+        pestDrops[i].next    = pestDrops + i + 1;
     }
     // Terminate last element
     pestDrops[DROP_COUNT-1].next = nullptr;
@@ -269,7 +298,7 @@ static void _pestDropStart(int x, int y){
         pdUsed = pd;
 
         // Initialize position and size
-        pd->x = x; // MIGHT BE OBSOLETE
+        pd->x = x;
         pd->y = y;
         pd->frame = 0;
         pd->delay = DROP_INITIAL_DELAY;
@@ -297,16 +326,71 @@ static void _pestDropAnimate(void){
 
         pd->delay--;
         if(!pd->delay){
-            pd->delay = DROP_ANIM_DELAY;
-            // Increment phase
-            pd->frame++;
-            if(pd->frame == DROP_ANIM_FRAMES)
-                pd->frame = DROP_ANIM_REPEAT;
-            char i = pd->sprIdx - 4;// 4 is min index here
-            pestDropAnimBank[i] = pd->sprBank + pd->frame;
-
+            pd->delay = pd->delayR;
+            
             pd->y++;
+            int x = pd->x;
+
+            // special animation handling
+            switch(pd->type){
+                case PD_SIMPLE:
+                    // Increment phase
+                    // initial drop anim - keep as is
+                    if(pd->frame < DROP_ANIM_REPEAT + 4){
+                        pd->frame++;
+                    } else {
+                    // regular animation
+                        pd->frame += pd->animA;
+                        // anim X
+                        x += pd->animA;
+                        if(!--pd->animB){
+                            pd->animB = pd->animBR;
+                            pd->animA = -pd->animA;
+                        }
+                    }
+
+                    break;
+                case PD_STRONG:
+                    // Increment phase
+                    pd->frame++;
+                    if(pd->frame == DROP_ANIM_FRAMES)
+                        pd->frame = DROP_ANIM_REPEAT;
+                    // anim X
+                    if(!--pd->animB){
+                        pd->animB = pd->animBR;
+                        pd->animA = -pd->animA;
+                    }
+                    if(pd->animB && 0b00001010){
+                        x += pd->animA;
+                    }
+                    break;
+                case PD_SINUS:
+                    // Increment phase
+                    pd->frame++;
+                    if(pd->frame == DROP_ANIM_FRAMES)
+                        pd->frame = DROP_ANIM_REPEAT;
+                    // anim X
+                    x += pd->animA;
+                    if(!--pd->animB){
+                        pd->animB = pd->animBR;
+                        pd->animA = -pd->animA;
+                    }
+                    break;
+            }
+
+            char i = pd->sprIdx; // 4++ in this case, used for all 'real' sprite operations
+            if(x > 255){
+                pestDropsOver255 |= sprEnable[i];
+            } else {
+                pestDropsOver255 &= sprDisable[i];
+            }
+
+            i = pd->sprIdx - 4;// 4 is min index here, -4 as we address arrays with temp data
+            pestDropAnimBank[i] = pd->sprBank + pd->frame;
             pestDropAnimY[i]++;
+            pestDropAnimX[i] = x;
+
+            pd->x = x;
         }
 
         // End of drop live
@@ -404,46 +488,50 @@ static void _explosionAnimate(void){
             // Increment phase
             e->frame++;
             explosionAnimBank[e->sprIdx - 1]++;
-        }
-        // check if we have hit something
-        if (e->frame == EXPLOSION_ANIM_FRAMES /2 ) {
-            int x = e->x;
-            // iterate through all active drops, compare X
-            PestDrop * pd = pdUsed, * pdp = nullptr;
-            while (pd){
-                // Remember next entry in list
-                PestDrop * pdn = pd->next;
-                
-                int xp = pd->x;
-                // if X is within +/- HIT_RANGE, compare Y, ignore the rest
-                if(xp >= x-HIT_RANGE && xp <= x+HIT_RANGE){
-                    // we might have a hit
-                    char yp = pd->y;
-                    char y = e->y;
-                    if(yp >= y-HIT_RANGE && yp <= y+HIT_RANGE){
-                        // we got a hit!
-                        // End of drop live
-                        pestDropsVisible &= sprDisable[pd->sprIdx];
-                        // Remove from used list
-                        if (pdp)
-                            pdp->next = pd->next;
-                        else
-                            pdUsed = pd->next;
+            // check if we have hit something
+            if (e->frame == EXPLOSION_ANIM_FRAMES /2 ) {
+                int x = e->x;
+                // iterate through all active drops, compare X
+                PestDrop * pd = pdUsed, * pdp = nullptr;
+                while (pd){
+                    // Remember next entry in list
+                    PestDrop * pdn = pd->next;
+                    
+                    int xp = pd->x;
+                    // if X is within +/- HIT_RANGE, compare Y, ignore the rest
+                    if(xp >= x-HIT_RANGE && xp <= x+HIT_RANGE){
+                        // we might have a hit
+                        char yp = pd->y;
+                        char y = e->y;
+                        if(yp >= y-HIT_RANGE && yp <= y+HIT_RANGE){
+                            // we got a hit!
+                            // check if we should destroy it or reduce it
+                            if(pd->type == PD_STRONG){
+                                _initPestDropTypeSinus(pd);
+                            } else {
+                                // End of drop live
+                                pestDropsVisible &= sprDisable[pd->sprIdx];
+                                // Remove from used list
+                                if (pdp)
+                                    pdp->next = pd->next;
+                                else
+                                    pdUsed = pd->next;
 
-                        // Prepend it to free list
-                        pd->next = pdFree;
-                        pdFree = pd;
+                                // Prepend it to free list
+                                pd->next = pdFree;
+                                pdFree = pd;
+                            }
+                        }
+                        // no more hits possible - exit loop
+                        break;
                     }
-                    // no more hits possible - exit loop
-                    break;
+                    else
+                        pdp = pd;
+
+                    // Next one in list
+                    pd = pdn;
                 }
-                else
-                    pdp = pd;
-
-                // Next one in list
-                pd = pdn;
-            }
-
+        }
 
         }
         // End of explosion live
@@ -488,7 +576,7 @@ static void _dropRunInit(){
     TheB29Plane.x = 320+72;
     TheB29Plane.inProgress = true;
     TheB29Plane.dropsRemaining = DROP_COUNT;
-    TheB29Plane.nextDropDelay = 50 + (rand() & 63);
+    TheB29Plane.nextDropDelay = 30 + (rand() & 63);
 }
 
 // State of the game
@@ -563,9 +651,9 @@ static void _gamePlay(void){
         if(TheB29Plane.dropsRemaining > 0){
             if(!--TheB29Plane.nextDropDelay){
                 // check if we are not off screen
-                if(TheB29Plane.x > 26 && TheB29Plane.x < 300){
+                if(TheB29Plane.x > 26+48 && TheB29Plane.x < 380){
                     // pests awaaaaay!
-                    _pestDropStart(TheB29Plane.x, 50);
+                    _pestDropStart(TheB29Plane.x-48, 42);
                 }
                 // reset drop timers
                 if(--TheB29Plane.dropsRemaining){
