@@ -121,7 +121,7 @@ static void _drawBarsFor(char character) {
 
             if ( params_diff[i] < 0 ) {
                 // clear unused bar part ( downwards )
-                for (int y=bar_level; y<=bar_new_level; y++ ) {
+                for (int y=bar_level; y<bar_new_level; y++ ) {
                     _drawByteK( x_draw, y, BAR_CLEAR_PATTERN );
                 }
             } else if ( params_diff[i] > 0 ) {
