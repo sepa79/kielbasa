@@ -30,20 +30,19 @@ __export const char crewGfx1[] = {
 // copy character hidden sprite data to visible screen sprite
 static void _setCharacterPic(char character_nr){
 
-    // if we are in the TOP part of the frame - wait for the MIDDLE part
-    if(gms_framePos == FRAME_TOP){
-        while(gms_framePos != FRAME_MIDDLE){};
-    }
-
     // if any character is choosen
     if(character_nr != NO_CHARACTER){
 
-        char i = 0;
+        // if we are in the TOP part of the frame - wait for the MIDDLE part
+        if(gms_framePos == FRAME_TOP){
+            while(gms_framePos != FRAME_MIDDLE){};
+        }
+
+        // copy
         changeBank(MAIN_GFX_BANK);
 
-        // fast copy
         #pragma unroll (page)
-        for(i=0; i<63; i++) {
+        for(char i=0; i<63; i++) {
             ((char*) MENU_SPRITE_DST)[i] = allChars_picture[character_nr][i];
         }
 
@@ -53,12 +52,6 @@ static void _setCharacterPic(char character_nr){
 
 // small and fast way to write byte on gfx screen
 static void _drawByteK(int x, int y, char b) {
-
-    // optimization ??? (to veryfy)
-    //
-    // unsigned y_masked = ( y & ~7 );
-    // unsigned addr = ( y_masked << 5 ) + ( y_masked << 3 ) + ((x & ~7) | (y & 7));
-
     unsigned addr = 40 * (y & ~7) + ((x & ~7) | (y & 7));
     GFX_1_BMP[addr] = b;
 }
@@ -70,7 +63,7 @@ const char bar_height[] =   {
     4*BAR_PART_HEIGHT, 5*BAR_PART_HEIGHT, 6*BAR_PART_HEIGHT,
     7*BAR_PART_HEIGHT, 8*BAR_PART_HEIGHT, 9*BAR_PART_HEIGHT
 };
-                                   
+
 static void _drawBarsFor(char character) {
 
     //
@@ -114,10 +107,10 @@ static void _drawBarsFor(char character) {
     params_diff[5] = allChars_skills[character][2] - params[5];
     params_diff[6] = allChars_skills[character][3] - params[6];
 
+    // DRAW BARS
+
     // bar x position
     char x_draw = BARS_X_POSITION;
-
-    // DRAW BARS
 
     for ( char i=0; i<PARAMS_COUNT; i++ ) {
 
