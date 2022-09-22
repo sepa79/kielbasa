@@ -15,7 +15,7 @@
 #pragma data ( data )
 
 // remember previous character; mandatory for optimized bars drawing
-volatile char prev_character = 255;
+volatile char prev_character = 0;
 
 #pragma data ( crewGfxDay )
 
@@ -246,9 +246,11 @@ const struct MenuOption CREW_MENU[] = {
 static void _menuHandler(void){
     loadMenuGfx(cal_isDay);
 
-    prev_character = 255;       // fix bars drawing bug
+    // Bars and portrait
     _prepareBars();
-    _showCharacterDetails(0);
+    char select_character = prev_character;
+    prev_character = NO_CHARACTER;       // fix bars drawing bug
+    _showCharacterDetails(select_character);
 
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, 0, 13, 40, 11);
