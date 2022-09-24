@@ -15,7 +15,7 @@
 #pragma data ( data )
 
 // remember previous character; mandatory for optimized bars drawing
-volatile char prev_character = 0;
+volatile char character_old = 0;
 
 #pragma data ( crewGfxDay )
 
@@ -58,13 +58,14 @@ static void _drawByteK(int x, int y, char b) {
 
 // bars height table
 const char bar_height[] =   {
-    0*BAR_PART_HEIGHT,
-    1*BAR_PART_HEIGHT, 2*BAR_PART_HEIGHT, 3*BAR_PART_HEIGHT,
-    4*BAR_PART_HEIGHT, 5*BAR_PART_HEIGHT, 6*BAR_PART_HEIGHT,
-    7*BAR_PART_HEIGHT, 8*BAR_PART_HEIGHT, 9*BAR_PART_HEIGHT
+    BARS_Y_POSITION_MAX-0*BAR_PART_HEIGHT, BARS_Y_POSITION_MAX-1*BAR_PART_HEIGHT,
+    BARS_Y_POSITION_MAX-2*BAR_PART_HEIGHT, BARS_Y_POSITION_MAX-3*BAR_PART_HEIGHT,
+    BARS_Y_POSITION_MAX-4*BAR_PART_HEIGHT, BARS_Y_POSITION_MAX-5*BAR_PART_HEIGHT,
+    BARS_Y_POSITION_MAX-6*BAR_PART_HEIGHT, BARS_Y_POSITION_MAX-7*BAR_PART_HEIGHT,
+    BARS_Y_POSITION_MAX-8*BAR_PART_HEIGHT, BARS_Y_POSITION_MAX-9*BAR_PART_HEIGHT
 };
 
-static void _drawBarsFor(char character) {
+static void _drawBarsFor(char character_new) {
 
     //
     // we drawing from this data (two structures):
@@ -75,37 +76,31 @@ static void _drawBarsFor(char character) {
 
     // PREPARE FOR DRAWING BARS
 
-    char params[PARAMS_COUNT] = { 1, 2, 3, 4, 5, 6, 7 };
+    char params_old[] = { 0, 0, 0, 0, 0, 0, 0 };
+    char params_new[] = { 0, 0, 0, 0, 0, 0, 0 };
 
-    // (int) mandatory - signed values used (plus/minus)
-    int params_diff[PARAMS_COUNT] = { 0, 0, 0, 0, 0, 0, 0 };
+    // if there was character choosen previously
+    if ( character_old < CHARACTER_SLOTS ) {
+        // get old character bars data
+        params_old[0] = allChars_stats[character_old][0];
+        params_old[1] = allChars_stats[character_old][1];
+        params_old[2] = allChars_stats[character_old][2];
 
-    if ( prev_character == NO_CHARACTER ) {
-        // if there are no character selected - initialize bars array ( FIX )
-        for(char i=0; i<PARAMS_COUNT; i++) {
-            params[i] = 0;
-        }
-    } else if ( prev_character < CHARACTER_SLOTS ) {
-        // get previous character bars data
-        params[0] = allChars_stats[prev_character][0];
-        params[1] = allChars_stats[prev_character][1];
-        params[2] = allChars_stats[prev_character][2];
-
-        params[3] = allChars_skills[prev_character][0];
-        params[4] = allChars_skills[prev_character][1];
-        params[5] = allChars_skills[prev_character][2];
-        params[6] = allChars_skills[prev_character][3];
+        params_old[3] = allChars_skills[character_old][0];
+        params_old[4] = allChars_skills[character_old][1];
+        params_old[5] = allChars_skills[character_old][2];
+        params_old[6] = allChars_skills[character_old][3];
     }
 
-    // calculate bars differences between previous character stats and actually choosen
-    params_diff[0] = allChars_stats[character][0] - params[0];
-    params_diff[1] = allChars_stats[character][1] - params[1];
-    params_diff[2] = allChars_stats[character][2] - params[2];
+    // get new character bars data
+    params_new[0] = allChars_stats[character_new][0];
+    params_new[1] = allChars_stats[character_new][1];
+    params_new[2] = allChars_stats[character_new][2];
 
-    params_diff[3] = allChars_skills[character][0] - params[3];
-    params_diff[4] = allChars_skills[character][1] - params[4];
-    params_diff[5] = allChars_skills[character][2] - params[5];
-    params_diff[6] = allChars_skills[character][3] - params[6];
+    params_new[3] = allChars_skills[character_new][0];
+    params_new[4] = allChars_skills[character_new][1];
+    params_new[5] = allChars_skills[character_new][2];
+    params_new[6] = allChars_skills[character_new][3];
 
     // DRAW BARS
 
@@ -114,27 +109,28 @@ static void _drawBarsFor(char character) {
 
     for ( char i=0; i<PARAMS_COUNT; i++ ) {
 
-        if ( params_diff[i] != 0 ) {
-            
-            char bar_level     = BARS_Y_POSITION_MAX - bar_height[ params[i] ];
-            char bar_new_level = bar_level - ( params_diff[i] * BAR_PART_HEIGHT );      // kick out multiplication out of the loop
+        // invert coords
+        char bar_level_old = bar_height[ params_old[i] ];
+        char bar_level_new = bar_height[ params_new[i] ];
 
-            if ( params_diff[i] < 0 ) {
-                // clear unused bar part ( downwards )
-                for (int y=bar_level; y<bar_new_level; y++ ) {
-                    _drawByteK( x_draw, y, BAR_CLEAR_PATTERN );
-                }
-            } else if ( params_diff[i] > 0 ) {
-                // draw visible bar part ( upwards )
-                for (int y=bar_level; y>=bar_new_level; y-- ) {
-                    _drawByteK( x_draw, y, BAR_PATTERN );
-                }
+        // draw or erase bar or bar part
+        int diff = bar_level_new - bar_level_old;
+        if ( diff < 0 ) {
+            for ( char y=bar_level_old; y>=bar_level_new; y-- ) {
+                _drawByteK( x_draw, y, BAR_PATTERN );
+            }
+        } else if ( diff > 0 ) {
+            for ( char y=bar_level_old; y<bar_level_new; y++ ) {
+                _drawByteK( x_draw, y, BAR_PATTERN_CLEAR );
             }
         }
+
         // next bar x position
         x_draw += BARS_X_COORDS_GAP;
     }
-    prev_character = character;
+
+    // remember character, so we can later draw/clear only difference on the bar
+    character_old = character_new;
 }
 
 static void _prepareBars(){
@@ -241,8 +237,8 @@ static void _menuHandler(void){
 
     // Bars and portrait
     _prepareBars();
-    char select_character = prev_character;
-    prev_character = NO_CHARACTER;       // fix bars drawing bug
+    char select_character = character_old;
+    character_old = NO_CHARACTER;       // fix bars drawing bug
     _showCharacterDetails(select_character);
 
     // Prepare output window
