@@ -69,9 +69,9 @@ __export const byte mainMenuGfx1[] = {
 };
 #pragma data ( mainMenuGfxNight )
 __export const byte mainMenuGfx2[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/main_night.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/main_night.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/main_night.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/main_16.10.22_Night.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/main_16.10.22_Night.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/main_16.10.22_Night.kla"
 };
 
 #pragma data ( mainMenuSprites )
