@@ -100,7 +100,7 @@
         "common": "        "
       },
       {
-        "comment": "fixed width - 18",
+        "comment": "// fixed width - 18",
         "id": "TASK_EMPTY_DESCRIPTION",
         "common": "                  "
       },
@@ -173,44 +173,46 @@
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_1",
         "pl":   "                     |Zdolność| Zadanie",
         "pl_m": "                     ------------------",
-        "en": "Task manager"
+        "en":   "                     |Skill   | Task   ",
+        "en_m": "                     ------------------"
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_2",
         "pl":   "                     | |R|M|  |  |R|M| ",
-        "en": "Task manager"
+        "en":   "                     | | | |  |  | | | "
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_3",
-        "pl": "                     | |o|a|  |  |o|a| ",
-        "en": "Task manager"
+        "pl":   "                     | |o|a|  |  |o|a| ",
+        "en":   "                     |B| |B|  | B| |B| "
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_4",
-        "pl": "                     |H|l|s|  | H|l|s| ",
-        "en": "Task manager"
+        "pl":   "                     |H|l|s|  | H|l|s| ",
+        "en":   "                     |r|F|u|  | r|F|u| "
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_5",
-        "pl": "                     |o|n|a|H | o|n|a|H",
-        "en": "Task manager"
+        "pl":   "                     |o|n|a|H | o|n|a|H",
+        "en":   "                     |e|a|t|  | e|a|t| "
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_6",
-        "pl": "                     |d|i|r|a | d|i|r|a",
-        "en": "Task manager"
+        "pl":   "                     |d|i|r|a | d|i|r|a",
+        "en":   "                     |e|r|c|T | e|r|c|T"
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_7",
-        "pl": "                     |o|c|s|n | o|c|s|n",
-        "en": "Task manager"
+        "pl":   "                     |o|c|s|n | o|c|s|n",
+        "en":   "                     |d|m|h|r | d|m|h|r"
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_8",
-        "pl": "                     |w|t|t|d | w|t|t|d",
-        "en": "Task manager"
+        "pl":   "                     |w|t|t|d | w|t|t|d",
+        "en":   "                     |i|i|e|a | i|i|e|a"
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_9",
-        "pl": "                     |l|w|w|e | l|w|w|e",
-        "en": "Task manager"
+        "pl":   "                     |l|w|w|e | l|w|w|e",
+        "en":   "                     |n|n|r|d | n|n|r|d"
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_10",
         "pl":   "Postać               |a|o|o|l | a|o|o|l",
         "pl_m": "---------------------------------------",
-        "en": "Task manager"
+        "en":   "Character            |g|g|y|e | g|g|y|e",
+        "en_m": "---------------------------------------"
       },
       {
         "id": "MENU_TASK_MANAGER_W",
@@ -337,7 +339,7 @@
       },
       {
         "id": "TASK_DSC_FARMLAND_WHEAT",
-        "pl": "przenica",
+        "pl": "pszenica",
         "en": "wheat"
       },
       {
@@ -367,7 +369,7 @@
         "id": "MENU_SMOKEHOUSE1",
         "menu_opt": "1",
         "pl": "Przepisy",
-        "en": "Recipies"
+        "en": "Recipes"
       },
       {
         "id": "MENU_SMOKEHOUSE2",
@@ -395,7 +397,7 @@
       },
       {
         "id": "SHOP_DESCRIPTION",
-        "pl": "Sklep wielobranżoy 'GS', otwarty 7-11 i 15-19, codziennie.",
+        "pl": "Sklep wielobranżowy 'GS', otwarty 7-11 i 15-19, codziennie.",
         "en": "A general store, open 7-11, then 15-19, everyday"
       },
       {
@@ -475,7 +477,7 @@
       },
       {
         "id": "CHAR_1_STORY",
-        "pl": "Janusz całe życie pracował w PGR. Na niczym się tak naprawdę nie zna, ale za to ma nałogi i jest leniwy. Janusz to postać startowa.",
+        "pl": "Janusz całe życie pracował w PGR. Na niczym się tak naprawdę nie zna, ale za to ma  nałogi i jest leniwy. Janusz to postać startowa.",
         "en": "Janusz spent his whole life working in PGR. He does not really excel in anything, but thankfully he is lazy and an addict. He is your main character."
       },
       {
@@ -493,7 +495,7 @@
       },
       {
         "id": "CHAR_3_STORY",
-        "pl": "Historia Wieśka M test M test",
+        "pl": "Tutaj będzie Historia Wieśka",
         "en": "Wiesiek's story will be here."
       },
       {
@@ -525,20 +527,20 @@
           "    Credits: ",
           "    Wsparcie programistyczne i kompilator: Oscar64 - DrMortalWombat ",
           "    Gra: Kod - Sepa, Koval, Gfx - Juras, Model3 & Saturnz, Msx - Crisps, Support - Angry Andy, Fonts - Sepa ",
-          "    Specialne podziekowania dla Rex/Camelot za pomoc przy KickC "
+          "    Specialne podziękowania dla Rex/Camelot za pomoc przy KickC "
         ],
         "en": [
           "    Hello! +/-/Space - time control    Kielbasa Empire - very early alpha. ",
           "    Credits: ",
           "    Code support and compiler: Oscar64 - DrMortalWombat ",
           "    Game: Code - Sepa, Koval, Gfx - Juras, Model3 & Saturnz, Msx - Taurus, Support - Angry Andy, Fonts - Sepa ",
-          "    Special thanks for KicK support: KickC - Rex/Camelot,"
+          "    Special thanks for KickC support: KickC - Rex/Camelot,"
         ]
       },
       {
         "id": "SHOP_CLOSED",
         "prefix": "SB",
-        "pl": "   Sklep jest zamkniety   ",
+        "pl": "   Sklep jest zamknięty   ",
         "en": "   Shop is closed   "
       }
     ]

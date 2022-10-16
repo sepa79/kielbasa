@@ -24,10 +24,10 @@
 #define BAR_PART_HEIGHT     6
 #define BAR_MAX_HEIGHT      ( 9 * BAR_PART_HEIGHT )
 #define BAR_PATTERN         0x2a    // 0x2a = 0b00101010
-#define BAR_CLEAR_PATTERN   0x00    // delete bar pattern
+#define BAR_PATTERN_CLEAR   0x00    // delete bar pattern
 
 // remember previous character; mandatory for optimized bars drawing
-extern volatile char prev_character;
+extern volatile char character_old;
 
 extern const char bar_height[];
 extern const struct MenuOption CREW_MENU[];
