@@ -24,7 +24,7 @@
 //     byte statStrength;
 //     byte statCunning;
     
-//     // 1 - 10
+//     // 1 - 9
 //     byte skillAnimal;
 //     byte skillFarm;
 //     byte skillButcher;

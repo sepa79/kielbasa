@@ -3,12 +3,13 @@
 #include <tick/farmlandTick.h>
 #include <tasks/taskManager.h>
 #include <assets/assetsSettings.h>
+#include <character/character.h>
 
 // 9 as per skill range, + 3 on each 'side' of the scale for possible bonuses/penalties
-const byte fieldPlantedTable[9+6] = {
+const byte fieldPlantedTable[9+5] = {
     2, 5, 8,
     10, 12, 13, 15, 17, 20, 25, 34, 50,
-    66, 85, 110
+    66, 85
 };
 
 // for now anybody can do it.
@@ -37,13 +38,22 @@ void sowFieldTask(byte taskId){
         field_plantId[fieldId] = plantId;
         field_stage[fieldId]   = PLANT_STAGE_SPROUT;
         field_timer[fieldId]   = plant_stage1timer[plantId];
-        field_stage_planted[fieldId] = 100; // in percent*field size
+
+        // get worker, get his skills and the value he can 'do' in a turn from the table
+        byte worker   = task_worker[taskId];
+        byte skill    = allChars_skills[ worker ][ task_reqType[taskId] ];
+        byte modifier = allChars_stats[ worker ][ STAT_STR ];
+        byte partDone = fieldPlantedTable[skill + modifier - 0];
+
+        field_stage_planted[fieldId] += partDone;
         field_stage_grown[fieldId]   = 0;
         field_stage_ready[fieldId]   = 0; // reap takes this / SOME_DIVIDER
 
-        // task done, set status & remove
-        task_status[taskId] = TASK_STATUS_DONE;
-        removeTask(taskId);
+        if(field_stage_planted[fieldId] >= 100*field_area[fieldId]) {
+            // task done, set status & remove
+            task_status[taskId] = TASK_STATUS_DONE;
+            removeTask(taskId);
+        }
     } else if(task_status[taskId] == TASK_STATUS_REMOVE){
         // clean up, don't leave field in dangling 'sowing' state
         field_stage[fieldId]   = PLANT_STAGE_NONE;

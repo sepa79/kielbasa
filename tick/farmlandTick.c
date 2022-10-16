@@ -14,14 +14,14 @@ volatile word flt_storageWheat = 0;
 volatile word flt_storageCorn = 0;
 
 // used instead of struct
-__export byte field_area[4]      = {0,0,0,0};
-__export byte field_fertility[4] = {127,127,127,127};
-__export byte field_plantId[4]   = {0,0,0,0};
-__export byte field_stage[4]     = {0,0,0,0};
-__export int field_stage_planted[4]   = {0,0,0,0};
-__export int field_stage_grown[4]     = {0,0,0,0};
-__export int field_stage_ready[4]     = {0,0,0,0};
-__export byte field_timer[4]     = {0,0,0,0};
+__export byte field_area[4]         = {0,0,0,0};
+__export byte field_fertility[4]    = {127,127,127,127};
+__export byte field_plantId[4]      = {0,0,0,0};
+__export byte field_stage[4]        = {0,0,0,0};
+__export int field_stage_planted[4] = {0,0,0,0};
+__export int field_stage_grown[4]   = {0,0,0,0};
+__export int field_stage_ready[4]   = {0,0,0,0};
+__export byte field_timer[4]        = {0,0,0,0};
 
 void initFarmland(){
     flt_waterLevel = 50;
@@ -64,7 +64,7 @@ byte _waterCheck(byte min, byte max){
 
 // =============================================================================
 // Sprout stage
-
+// In this stage we are only removing some sprouts (they can die if conditions are not optimal)
 void _fieldStateSprout(byte fieldId){
     // get our plant data
     byte plantId = field_plantId[fieldId];
@@ -80,7 +80,7 @@ void _fieldStateSprout(byte fieldId){
     // printf("+ rain diff %-5u ", diff);
 
     if(diff != 0){
-        byte planted = field_stage_planted[fieldId];
+        int planted = field_stage_planted[fieldId];
         if(diff < planted) {
             field_stage_planted[fieldId] = planted - diff;
         } else {
