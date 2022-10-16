@@ -5,12 +5,11 @@
 #include <assets/assetsSettings.h>
 #include <character/character.h>
 
-// 9 as per skill range, + 3 on each 'side' of the scale for possible bonuses/penalties
-const byte fieldPlantedTable[9+5] = {
-    2, 5, 8,
-    10, 12, 13, 15, 17, 20, 25, 34, 50,
-    66, 85
-};
+// modifier values, make sure stat is -1'ed so that '3' means middle value is chosen
+// substract 10 from it.
+const byte priModifierTable[5] = {0, 5, 10, 15, 20};
+const byte secModifierTable[5] = {2, 6, 10, 14, 18};
+const byte terModifierTable[5] = {4, 8, 10, 12, 16};
 
 // for now anybody can do it.
 // later: energy used should depend on skills and stats, and one can't finish it if he runs out of energy
@@ -42,9 +41,14 @@ void sowFieldTask(byte taskId){
         // get worker, get his skills and the value he can 'do' in a turn from the table
         byte worker   = task_worker[taskId];
         byte skill    = allChars_skills[ worker ][ task_reqType[taskId] ];
-        byte modifier = allChars_stats[ worker ][ STAT_STR ];
-        byte partDone = fieldPlantedTable[skill + modifier - 2];
-
+        byte priModifier = allChars_stats[ worker ][ STAT_STR ] -1;
+        byte secModifier = allChars_stats[ worker ][ STAT_INT ] -1;
+        byte terModifier = allChars_stats[ worker ][ STAT_CUN ] -1;
+        signed int partDone = skill * 10 + priModifierTable[priModifier]-10 + secModifierTable[secModifier]-10 + terModifierTable[terModifier]-10;
+        if(partDone <= 0){
+            partDone = 1;
+        }
+        
         field_stage_planted[fieldId] += partDone;
         field_stage_grown[fieldId]   = 0;
         field_stage_ready[fieldId]   = 0; // reap takes this / SOME_DIVIDER
