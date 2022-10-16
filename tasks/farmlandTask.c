@@ -43,7 +43,7 @@ void sowFieldTask(byte taskId){
         byte worker   = task_worker[taskId];
         byte skill    = allChars_skills[ worker ][ task_reqType[taskId] ];
         byte modifier = allChars_stats[ worker ][ STAT_STR ];
-        byte partDone = fieldPlantedTable[skill + modifier - 0];
+        byte partDone = fieldPlantedTable[skill + modifier - 2];
 
         field_stage_planted[fieldId] += partDone;
         field_stage_grown[fieldId]   = 0;
