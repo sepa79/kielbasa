@@ -234,7 +234,7 @@ __interrupt static void controlIRQ1_C() {
         ((byte *)0x01)[0] = _prevRomCfg;
     }
 
-    if(--_scrollIt==0xff) {
+    if((char)--_scrollIt==0xff) {
         _scrollIt = 7;
         // Hard scroll
         for(byte i=0;i<39;i++) {
