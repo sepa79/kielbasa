@@ -233,6 +233,7 @@ const struct MenuOption CREW_MENU[] = {
 };
 
 static void _menuHandler(void){
+    mnu_isGfxLoaded = false;
     loadMenuGfx(cal_isDay);
 
     // Bars and portrait
@@ -252,7 +253,7 @@ static void _menuHandler(void){
 
 __export static const Loaders menuLoaders = {
     .loadMenuCode    = &_crewCodeLoader,
-    .loadMenuGfx     = &menuGfxLoader,
+    .loadMenuGfx     = &menuGfxLoaderSingleBitmap,
     .loadMenuSprites = &menuSpriteLoader,
     .showMenu        = &_menuHandler,
     .showSprites     = &_showStatsSprites,

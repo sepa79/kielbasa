@@ -9,6 +9,9 @@
 #pragma code ( code )
 #pragma data ( data )
 
+// Global var used with menuGfxLoaderSingleBitmap(isDay)
+bool mnu_isGfxLoaded = false;
+
 // Switch bank, load any code into RAM if needed.
 // Default noop loader is _menuNoop().
 void loadMenu(char bank){
@@ -170,11 +173,22 @@ static void _loadNightGfx(){
     } while (i != 0xf0);
 }
 
+// Switches graphic according to day/night cycle
 void menuGfxLoader(bool isDay){
     if(isDay){
         _loadDayGfx();
     } else {
         _loadNightGfx();
+    }
+}
+
+// Loads single file and never changes it.
+// Parameter is ignored, kept for compatibility.
+// Menu should set the variable 'isGfxLoaded = false' in the menuHandler code, before calling 'loadMenuGfx(cal_isDay)'
+void menuGfxLoaderSingleBitmap(bool isDay){
+    if(!mnu_isGfxLoaded){
+        _loadDayGfx();
+        mnu_isGfxLoaded = true;
     }
 }
 

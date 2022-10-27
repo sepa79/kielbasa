@@ -43,21 +43,13 @@ enum SHOPIN_SPRITE_VIC_BANKS {
 #pragma section( shopInLoaderData, 0 )
 #pragma section( shopInCode, 0 )
 #pragma section( shopInGfxDay, 0 )
-#pragma section( shopInGfxNight, 0 )
 #pragma section( shopInSprites, 0 )
 #pragma region( bankShopInC, 0x8000, 0x9000, , MENU_BANK_SHOP_IN, { shopInLoaderData, shopInCode } )
 #pragma region( bankShopInG1, DAY_GFX_BMP, DAY_GFX_BMP+0x1400, , MENU_BANK_SHOP_IN, { shopInGfxDay } )
-#pragma region( bankShopInG2, NIGHT_GFX_BMP, NIGHT_GFX_BMP+0x1400, , MENU_BANK_SHOP_IN, { shopInGfxNight } )
 #pragma region( bankShopInG3, MENU_SPRITE_SRC, MENU_SPRITE_SRC+0x0400, , MENU_BANK_SHOP_IN, { shopInSprites } )
 
 #pragma data ( shopInGfxDay )
 __export const char shopInGfx1[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/shopInside.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/shopInside.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/shopInside.kla"
-};
-#pragma data ( shopInGfxNight )
-__export const char shopInGfx2[] = {
     #embed 0x0f00 0x0002 "assets/multicolorGfx/shopInside.kla"
     #embed 0x01e0 0x1f42 "assets/multicolorGfx/shopInside.kla"
     #embed 0x01e0 0x232a "assets/multicolorGfx/shopInside.kla"
@@ -209,6 +201,7 @@ static void _menuHandler(void){
     animGherkinFrame = 0;
     animGherkinDelay = SHOP_INSIDE_ANIM_1_DELAY;
     
+    mnu_isGfxLoaded = false;
     loadMenuGfx(cal_isDay);
     loadMenuSprites();
 
@@ -226,7 +219,7 @@ static void _menuHandler(void){
 
 __export static const Loaders menuLoaders = {
     .loadMenuCode    = &menuNoop,
-    .loadMenuGfx     = &menuGfxLoader,
+    .loadMenuGfx     = &menuGfxLoaderSingleBitmap,
     .loadMenuSprites = &menuSpriteLoader,
     .showMenu        = &_menuHandler,
     .showSprites     = &_shopInsideShowSprites,
