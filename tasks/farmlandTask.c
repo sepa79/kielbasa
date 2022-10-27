@@ -55,7 +55,7 @@ void sowFieldTask(byte taskId){
 
         if(checkEnergyLevel(worker, energyNeeded)){
             // decrease energy
-            decEnergyLevel(worker, energyNeeded);
+            decEnergyLevel(allChars_slot[worker], energyNeeded);
             // process task
             field_stage_planted[fieldId] += partDone;
             field_stage_grown[fieldId]   = 0;
@@ -67,8 +67,8 @@ void sowFieldTask(byte taskId){
                 removeTask(taskId);
             }
         } else {
-            // not enough energy? set character to MIA
-
+            // not enough energy? set character to MIA by unassigning this task
+            unassignTask(taskId);
         }
     } else if(task_status[taskId] == TASK_STATUS_REMOVE){
         // clean up, don't leave field in dangling 'sowing' state

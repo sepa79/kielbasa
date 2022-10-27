@@ -238,21 +238,6 @@ void tasksTick(){
         return;
     }
 
-    // process tasks in progress
-    byte i = 0;
-    byte taskId = 0;
-    do {
-        taskId = taskRef[i];
-        if(task_worker[taskId] != NO_CHARACTER){
-            updateStatusBar(s"  Exec  ");
-            // got a worker? tick that task
-            (*task_codeRef[taskId])(taskId);
-        }
-        // neeeeext
-        i++;
-    // NO_TASK found - no more tasks to process
-    } while (i < TASK_ARRAY_SIZE && task_reqType[taskId] != NO_TASK);
-
     // assign tasks again, in case new tasks came or new workers are available
     // any free workers?
     byte freeWorkersCount = 0;
@@ -304,6 +289,22 @@ void tasksTick(){
             prioIt++;
         } while (prioIt <= MAX_PRIO && freeWorkersCount > 0);
     }
+
+    // process tasks in progress
+    byte i = 0;
+    byte taskId = 0;
+    do {
+        taskId = taskRef[i];
+        if(task_worker[taskId] != NO_CHARACTER){
+            updateStatusBar(s"  Exec  ");
+            // got a worker? tick that task
+            (*task_codeRef[taskId])(taskId);
+        }
+        // neeeeext
+        i++;
+    // NO_TASK found - no more tasks to process
+    } while (i < TASK_ARRAY_SIZE && task_reqType[taskId] != NO_TASK);
+
 }
 
 //-----------------------------------------------------------------------------------------
