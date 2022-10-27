@@ -74,6 +74,7 @@ void tasksTick();
 bool addTask(struct Task * task);
 void removeTaskByRef(byte taskRefId);
 void removeTask(byte taskRefId);
+void unassignTask(byte taskId);
 
 #pragma compile("taskManager.c")
 

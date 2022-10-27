@@ -6,6 +6,7 @@
 #include <character/character.h>
 #include <assets/mainGfx.h>
 #include <tick/farmlandTick.h>
+#include <tick/characterTick.h>
 #include <engine/easyFlashBanks.h>
 
 // dynamic data - in RAM
@@ -238,6 +239,8 @@ void timeTick(){
         }
         // tasks are done during daytime only
         tasksTick();
+        // now process guys that are MIA - their energy is also spent
+        miaTick();
     }
 
 }

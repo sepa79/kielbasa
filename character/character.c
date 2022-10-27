@@ -36,6 +36,15 @@ void initCharacterList(){
     _setCharacterToSlot(NO_CHARACTER, 3);
 }
 
+// checks if given charIdx (from allCharSlots) has at least 'amount' energy
+bool checkEnergyLevel(byte charIdx, byte amount){
+    byte energy = allChars_energy[charIdx];
+    if(energy >= amount){
+        return true;
+    }
+    return false;
+}
+
 // call only on populated slots
 void incEnergyLevel(byte charSlot, byte amount){
     byte charIdx = characterSlots[charSlot];
@@ -61,14 +70,4 @@ void decEnergyLevel(byte charSlot, byte amount){
 
     allChars_energy[charIdx] = energy;
     drawBattery(charSlot, energy);
-}
-
-void sleepTick(){
-    for(byte charSlot = 0; charSlot < CHARACTER_SLOTS; charSlot++){
-        if(characterSlots[charSlot] != NO_CHARACTER){
-            word rnd = rand();
-            byte rnd0 = rnd & 15;
-            incEnergyLevel(charSlot, rnd0);
-        }
-    }
 }

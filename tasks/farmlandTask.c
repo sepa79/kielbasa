@@ -39,8 +39,8 @@ void sowFieldTask(byte taskId){
         field_timer[fieldId]   = plant_stage1timer[plantId];
 
         // get worker, get his skills and the value he can 'do' in a turn from the table
-        byte worker   = task_worker[taskId];
-        byte skill    = allChars_skills[ worker ][ task_reqType[taskId] ];
+        byte worker      = task_worker[taskId];
+        byte skill       = allChars_skills[ worker ][ task_reqType[taskId] ];
         byte priModifier = allChars_stats[ worker ][ STAT_STR ] -1;
         byte secModifier = allChars_stats[ worker ][ STAT_INT ] -1;
         byte terModifier = allChars_stats[ worker ][ STAT_CUN ] -1;
@@ -49,18 +49,30 @@ void sowFieldTask(byte taskId){
             partDone = 1;
         }
         
-        field_stage_planted[fieldId] += partDone;
-        field_stage_grown[fieldId]   = 0;
-        field_stage_ready[fieldId]   = 0; // reap takes this / SOME_DIVIDER
+        // check if we got enough energy
+        byte energyMod = partDone < 80 ? partDone : 80;
+        byte energyNeeded = (100 - energyMod)/2;
 
-        if(field_stage_planted[fieldId] >= 100*field_area[fieldId]) {
-            // task done, set status & remove
-            task_status[taskId] = TASK_STATUS_DONE;
-            removeTask(taskId);
+        if(checkEnergyLevel(worker, energyNeeded)){
+            // decrease energy
+            decEnergyLevel(worker, energyNeeded);
+            // process task
+            field_stage_planted[fieldId] += partDone;
+            field_stage_grown[fieldId]   = 0;
+            field_stage_ready[fieldId]   = 0; // reap takes this / SOME_DIVIDER
+
+            if(field_stage_planted[fieldId] >= 100*field_area[fieldId]) {
+                // task done, set status & remove
+                task_status[taskId] = TASK_STATUS_DONE;
+                removeTask(taskId);
+            }
+        } else {
+            // not enough energy? set character to MIA
+
         }
     } else if(task_status[taskId] == TASK_STATUS_REMOVE){
         // clean up, don't leave field in dangling 'sowing' state
-        field_stage[fieldId]   = PLANT_STAGE_NONE;
+        field_stage[fieldId] = PLANT_STAGE_NONE;
     } else {
         byte str[50];
         sprintf(str, s"  ""[%3u]"s"sowFieldTask - unknown status code   ", task_status[taskId]);

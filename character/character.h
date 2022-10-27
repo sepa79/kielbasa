@@ -77,16 +77,11 @@ extern byte characterSlots[CHARACTER_SLOTS];
 void initCharacterList();
 
 //-----------------------------------------------------------------------------------------
-#pragma code ( ticksCode )
-#pragma data ( data )
-//-----------------------------------------------------------------------------------------
-
-void sleepTick();
-//-----------------------------------------------------------------------------------------
 #pragma code ( code )
 #pragma data ( data )
 //-----------------------------------------------------------------------------------------
 
+bool checkEnergyLevel(byte charIdx, byte amount);
 void incEnergyLevel(byte charSlot, byte amount);
 void decEnergyLevel(byte charSlot, byte amount);
 

@@ -90,17 +90,6 @@ static bool _addTask(struct Task * task){
     return true;
 }
 
-// finds who was working on it, resets his icon, resets task_worker
-static void _unassignTask(byte taskId){
-    byte charId = task_worker[taskId];
-    if(charId != NO_CHARACTER){
-        byte charSlot = allChars_slot[charId];
-        setCharacterSlotIcon(charSlot, SPR_TASK_MIA);
-        allChars_busy[charId] = false;
-        task_worker[taskId] = NO_CHARACTER;
-    }
-}
-
 static void _removeTaskByRef(byte taskRefId){
     // remove task from taskRef table
     byte taskId = taskRef[taskRefId];
@@ -112,7 +101,7 @@ static void _removeTaskByRef(byte taskRefId){
     }
 
     // remove worker
-    _unassignTask(taskId);
+    unassignTask(taskId);
 
     // wipe the task in task_ array (just the task_reqType + text fields is enough)
     task_reqType[taskId] = NO_TASK;
@@ -339,4 +328,15 @@ bool addTask(struct Task * task){
     bool result = _addTask(task);
     restoreBank();
     return result;
+}
+
+// finds who was working on it, resets his icon, resets task_worker
+void unassignTask(byte taskId){
+    byte charId = task_worker[taskId];
+    if(charId != NO_CHARACTER){
+        byte charSlot = allChars_slot[charId];
+        setCharacterSlotIcon(charSlot, SPR_TASK_MIA);
+        allChars_busy[charId] = false;
+        task_worker[taskId] = NO_CHARACTER;
+    }
 }
