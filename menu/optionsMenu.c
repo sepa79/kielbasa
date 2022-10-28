@@ -12,7 +12,7 @@
 
 #define MAX_LANG 1
 const byte LANGUAGE_BANKS[MAX_LANG+1] = {TRANSLATION_PL_BANK, TRANSLATION_EN_BANK};
-static byte _currentLang = 0;
+static byte _currentLang = 1;
 
 void showOptionsMenu(){
     gms_textMode = true;

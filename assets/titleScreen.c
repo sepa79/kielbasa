@@ -113,7 +113,7 @@ void initGame(){
         cli
     }
 
-    setBank(TRANSLATION_PL_BANK);
+    setBank(TRANSLATION_EN_BANK);
     loadTranslation();
 
     // ready steady GO
