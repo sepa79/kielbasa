@@ -62,7 +62,7 @@ __export static const Loaders menuLoaders = {
     .loadMenuGfx     = &menuGfxLoaderSingleBitmap,
     .loadMenuSprites = &menuSpriteLoader,
     .showMenu        = &_menuHandler,
-    .showSprites     = &menuNoop,
+    .showSprites     = &spriteNoop,
     .updateMenu      = &menuNoop,
 };
 

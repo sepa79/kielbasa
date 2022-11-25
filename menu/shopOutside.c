@@ -106,7 +106,7 @@ __export static const Loaders menuLoaders = {
     .loadMenuGfx     = &menuGfxLoader,
     .loadMenuSprites = &menuSpriteLoader,
     .showMenu        = &_menuHandler,
-    .showSprites     = &menuNoop,
+    .showSprites     = &spriteNoop,
     .updateMenu      = &menuNoop,
 };
 

@@ -100,14 +100,38 @@ __export char SPR_DATA_PLANTS_[64*4] = {0};
 #pragma data ( data )
 
 static void _updateSprite(unsigned int num) {
-    byte num2str[4];
-    if(num > 999) {
-        num = 999;
-    }
+    byte num2str[6];
     utoa(num, num2str, 10);
-    copyCharToSprite(num2str[0], 0, 0);
-    copyCharToSprite(num2str[1], 1, 0);
-    copyCharToSprite(num2str[2], 2, 0);
+    if(num > 9999) {
+        copyCharToSprite(num2str[0], 0, 0);
+        copyCharToSprite(num2str[1]-10, 1, 0);
+        copyCharToSprite(num2str[2], 2, 0);
+        copyCharToSprite(s't', 0, 1);
+        copyCharToSprite(s'o', 1, 1);
+        copyCharToSprite(s'n', 2, 1);
+
+    } else if(num > 999) {
+        copyCharToSprite(num2str[0]-10, 0, 0);
+        copyCharToSprite(num2str[1], 1, 0);
+        copyCharToSprite(num2str[2], 2, 0);
+        copyCharToSprite(s't', 0, 1);
+        copyCharToSprite(s'o', 1, 1);
+        copyCharToSprite(s'n', 2, 1);
+    } else if(num > 99) {
+        copyCharToSprite(num2str[0], 0, 0);
+        copyCharToSprite(num2str[1], 1, 0);
+        copyCharToSprite(num2str[2], 2, 0);
+        copyCharToSprite(s' ', 0, 1);
+        copyCharToSprite(s'k', 1, 1);
+        copyCharToSprite(s'g', 2, 1);
+    } else {
+        copyCharToSprite(s' ', 0, 0);
+        copyCharToSprite(num2str[0], 1, 0);
+        copyCharToSprite(num2str[1], 2, 0);
+        copyCharToSprite(s' ', 0, 1);
+        copyCharToSprite(s'k', 1, 1);
+        copyCharToSprite(s'g', 2, 1);
+    }
 }
 
 // min 'normal' temp is -23, so temp shall start at '0' which is -23
@@ -233,7 +257,7 @@ static void _displayFieldList(){
 
     byte str[4];
     byte col;
-    for(byte i=0;i<=FIELDS_COUNT;i++){
+    for(byte i=0;i<FIELDS_COUNT;i++){
         sprintf(str, "%u", field_area[i]);
         if(i==_currentField){
             col = VCOL_LT_GREEN;
@@ -273,13 +297,13 @@ static void _updateFieldView(){
     byte temp = (char) (cal_currentTemp + 23);
     _drawThermometer(temp);
     sprBankPointer = SPR_POTATO_UI;
-    _updateSprite(flt_storagePotato);
+    _updateSprite(flt_storage[PLANT_POTATO]);
     sprBankPointer = SPR_LUPINE_UI;
-    _updateSprite(flt_storageLupine);
+    _updateSprite(flt_storage[PLANT_LUPINE]);
     sprBankPointer = SPR_WHEAT_UI;
-    _updateSprite(flt_storageWheat);
+    _updateSprite(flt_storage[PLANT_WHEAT]);
     sprBankPointer = SPR_CORN_UI;
-    _updateSprite(flt_storageCorn);
+    _updateSprite(flt_storage[PLANT_CORN]);
 
     _displayFieldList();
 }
@@ -294,7 +318,7 @@ static void _showMenuDetails(){
 }
 
 static void _nextField(){
-    if(_currentField < FIELDS_COUNT){
+    if(_currentField < FIELDS_COUNT-1){
         _currentField++;
     } else {
         _currentField = 0;
@@ -306,7 +330,7 @@ static void _previousField(){
     if(_currentField > 0){
         _currentField--;
     } else {
-        _currentField = FIELDS_COUNT;
+        _currentField = FIELDS_COUNT-1;
     }
     _showMenuDetails();
     _displayFieldList();
@@ -343,7 +367,7 @@ static void _sowPlant(){
     sprintf(task.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
     task.codeRef = &sowFieldTask;
     task.nameIdx = TXT_IDX_TASK_FARMLAND_FARM;
-    task.params[0] = _currentPlant;
+    task.params[0] = _currentPlant-1; // Tasks don't play with empty description that is index 0 here
     task.params[1] = _currentField;
     task.params[2] = 0;
     task.params[3] = 0;

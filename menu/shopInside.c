@@ -166,7 +166,7 @@ const struct MenuOption SHOP_INSIDE_MENU[] = {
     END_MENU_CHOICES
 };
 
-static void _shopInsideShowSprites(){
+__interrupt static void _shopInsideShowSprites(){
     vic.spr_enable   = 0b00000001;
     vic.spr_expand_x = 0b00000000;
     vic.spr_expand_y = 0b00000000;

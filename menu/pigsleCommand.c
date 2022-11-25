@@ -27,6 +27,9 @@ static void _pigsleCmdCodeLoader(){
 static void _pigsleCmdNoop(){
     return;
 }
+__interrupt static void _pigsleSpriteCmdNoop(){
+    return;
+}
 
 #pragma code ( pigsleCommandRAMCode )
 #pragma data ( pigsleCommandRAMData )
@@ -47,7 +50,7 @@ __export static const Loaders menuLoaders = {
     .loadMenuGfx     = nullptr,
     .loadMenuSprites = &_pigsleCmdNoop,
     .showMenu        = &_pigsleCmdInit,
-    .showSprites     = &_pigsleCmdNoop,
+    .showSprites     = &_pigsleSpriteCmdNoop,
     .updateMenu      = &_pigsleCmdNoop,
 };
 

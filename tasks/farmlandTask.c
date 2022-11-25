@@ -54,6 +54,9 @@ void sowFieldTask(byte taskId){
         byte energyNeeded = (100 - energyMod)/2;
 
         if(checkEnergyLevel(worker, energyNeeded)){
+            // check if we got enough seeds
+            flt_storage[plantId] -= partDone;
+
             // decrease energy
             decEnergyLevel(allChars_slot[worker], energyNeeded);
             // process task
@@ -74,6 +77,7 @@ void sowFieldTask(byte taskId){
         // clean up, don't leave field in dangling 'sowing' state
         field_stage[fieldId] = PLANT_STAGE_NONE;
     } else {
+        // Sum Ting Wong, We Tu Lo
         byte str[50];
         sprintf(str, s"  ""[%3u]"s"sowFieldTask - unknown status code   ", task_status[taskId]);
         updateStatusBar(str);

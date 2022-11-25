@@ -85,6 +85,10 @@ void updateMenu(){
 void menuNoop(){
     return;
 }
+// Noop - just return.
+__interrupt void spriteNoop(){
+    return;
+}
 
 // wait until raster hits middle of the screen
 static void _waitForScreenMiddle(){

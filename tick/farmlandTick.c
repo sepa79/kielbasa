@@ -8,27 +8,25 @@
 
 // how much water is in the ground, aka irrigation (max 100)
 volatile byte flt_waterLevel = 50;
-volatile word flt_storagePotato = 0;
-volatile word flt_storageLupine = 0;
-volatile word flt_storageWheat = 0;
-volatile word flt_storageCorn = 0;
+//
+volatile unsigned int flt_storage[PLANTS_COUNT] = 0;
 
 // used instead of struct
-__export byte field_area[4]         = {0,0,0,0};
-__export byte field_fertility[4]    = {127,127,127,127};
-__export byte field_plantId[4]      = {0,0,0,0};
-__export byte field_stage[4]        = {0,0,0,0};
-__export int field_stage_planted[4] = {0,0,0,0};
-__export int field_stage_grown[4]   = {0,0,0,0};
-__export int field_stage_ready[4]   = {0,0,0,0};
-__export byte field_timer[4]        = {0,0,0,0};
+__export byte field_area[FIELDS_COUNT]         = {0,0,0,0};
+__export byte field_fertility[FIELDS_COUNT]    = {127,127,127,127};
+__export byte field_plantId[FIELDS_COUNT]      = {0,0,0,0};
+__export byte field_stage[FIELDS_COUNT]        = {0,0,0,0};
+__export int field_stage_planted[FIELDS_COUNT] = {0,0,0,0};
+__export int field_stage_grown[FIELDS_COUNT]   = {0,0,0,0};
+__export int field_stage_ready[FIELDS_COUNT]   = {0,0,0,0};
+__export byte field_timer[FIELDS_COUNT]        = {0,0,0,0};
 
 void initFarmland(){
     flt_waterLevel = 50;
-    flt_storagePotato = 219;
-    flt_storageLupine = 250;
-    flt_storageWheat = 100;
-    flt_storageCorn = 125;
+    flt_storage[PLANT_POTATO] = 12300;
+    flt_storage[PLANT_LUPINE] = 1500;
+    flt_storage[PLANT_WHEAT]  = 500;
+    flt_storage[PLANT_CORN]   = 10;
 
     field_area[0] = 1;
     field_area[1] = 1;
@@ -216,7 +214,7 @@ void farmlandTick(){
             _tickField(fieldId);
         }
         fieldId++;
-    } while (fieldId <= FIELDS_COUNT);
+    } while (fieldId < FIELDS_COUNT);
 }
 
 // Switching code generation back to shared section

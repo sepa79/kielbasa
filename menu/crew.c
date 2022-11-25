@@ -150,7 +150,7 @@ static void _crewCodeLoader() {
     memcpy(MENU_CODE_DST, (char *)NIGHT_GFX_BMP, 0x1000);
 }
 
-static void _showStatsSprites() {
+__interrupt static void _showStatsSprites() {
     vic.spr_enable   = 0b00000001;
     vic.spr_expand_x = 0b00000001;
     vic.spr_expand_y = 0b00000001;
