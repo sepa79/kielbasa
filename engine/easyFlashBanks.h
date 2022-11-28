@@ -24,15 +24,7 @@
 #define MENU_BANK_PIGSLE_COMMAND_GFX_1 19
 
 // Set main bank, reset history.
-void setBank(char bank);
-// Change bank, advance history.
-void changeBank(char bank);
-// Restore previous bank from history.
-void restoreBank();
-// Reset to previously set main, remove history.
-void resetBank();
-// Change to main, advance history.
-void changeBankToMain();
+char setBank(char bank);
 
 #pragma compile("easyFlashBanks.c")
 

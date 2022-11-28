@@ -74,9 +74,9 @@ void mainLoop(){
             // reset wait time
             updateGameSpeed();
 
-            changeBank(TICKS_BANK);
+            char pbank = setBank(TICKS_BANK);
             timeTick();
-            restoreBank();
+            setBank(pbank);
 
         }
         // do this once per frame only - carefull with FRAME_MIDDLE as its not fired in gms_textMode

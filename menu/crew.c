@@ -39,14 +39,14 @@ static void _setCharacterPic(char character_nr){
         }
 
         // copy
-        changeBank(MAIN_GFX_BANK);
+        char pbank = setBank(MAIN_GFX_BANK);
 
         #pragma unroll (page)
         for(char i=0; i<63; i++) {
             ((char*) MENU_SPRITE_DST)[i] = allChars_picture[character_nr][i];
         }
 
-        restoreBank();
+        setBank(pbank);
     }
 }
 

@@ -313,21 +313,21 @@ void tasksTick(){
 //-----------------------------------------------------------------------------------------
 // Wrappers in RAM
 void removeTask(byte taskId){
-    changeBank(TASKS_BANK);
+    char pbank = setBank(TASKS_BANK);
     _removeTask(taskId);
-    restoreBank();
+    setBank(pbank);
 }
 
 void removeTaskByRef(byte taskRefId){
-    changeBank(TASKS_BANK);
+    char pbank = setBank(TASKS_BANK);
     _removeTaskByRef(taskRefId);
-    restoreBank();
+    setBank(pbank);
 }
 
 bool addTask(struct Task * task){
-    changeBank(TASKS_BANK);
+    char pbank = setBank(TASKS_BANK);
     bool result = _addTask(task);
-    restoreBank();
+    setBank(pbank);
     return result;
 }
 

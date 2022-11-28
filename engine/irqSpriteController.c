@@ -55,7 +55,7 @@ void setCharacterSlotPic(char charSlot, const char * picturePtr){
     if(characterSlots[charSlot] != NO_CHARACTER){
         char * charPicPtr = characterSlotSpritePicPtr[charSlot];
         char i = 0;
-        changeBank(MAIN_GFX_BANK);
+        char pbank = setBank(MAIN_GFX_BANK);
         // mmap_set(MMAP_NO_BASIC);
         do{
             charPicPtr[i]   = picturePtr[i];
@@ -67,7 +67,7 @@ void setCharacterSlotPic(char charSlot, const char * picturePtr){
         } while (i<63);
         charPicPtr[63] = picturePtr[63];
         // mmap_set(MMAP_ROM);
-        restoreBank();
+        setBank(pbank);
     }
 }
 
@@ -76,7 +76,7 @@ void setCharacterSlotIcon(char charSlot, const char * taskIconPtr){
     if(characterSlots[charSlot] != NO_CHARACTER){
         char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
         char i = 1;
-        changeBank(MAIN_GFX_BANK);
+        char pbank = setBank(MAIN_GFX_BANK);
         // mmap_set(MMAP_NO_BASIC);
         do{
             charBarPtr[i]   = taskIconPtr[i];
@@ -86,7 +86,7 @@ void setCharacterSlotIcon(char charSlot, const char * taskIconPtr){
             i++;
         } while (i<63);
         // mmap_set(MMAP_ROM);
-        restoreBank();
+        setBank(pbank);
     }
 }
 

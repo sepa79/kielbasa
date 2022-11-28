@@ -309,7 +309,7 @@ void copyCharToSprite(byte c, byte col, byte row){
     unsigned int pos = c;
     pos = pos * 7;
     // mmap_set(MMAP_NO_BASIC);
-    changeBank(MAIN_GFX_BANK);
+    char pbank = setBank(MAIN_GFX_BANK);
     do{
         sprBankPointer[si] = AuxResources.CALENDAR_FONTS[pos+i];
         i++;
@@ -318,7 +318,7 @@ void copyCharToSprite(byte c, byte col, byte row){
         si++;
     } while (i<7);
     // mmap_set(MMAP_ROM);
-    restoreBank();
+    setBank(pbank);
 }
 
 // Does not need to be called more than once - at new game

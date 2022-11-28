@@ -86,15 +86,15 @@ void pigsleScreenInit(void){
     // vic.color_border = VCOL_RED;
     // vic.color_back  = VCOL_RED;
     // mmap_set(MMAP_ROM);
-    changeBank(MENU_BANK_PIGSLE_COMMAND_GFX_1);
+    char pbank = setBank(MENU_BANK_PIGSLE_COMMAND_GFX_1);
     _screenInit();
-    restoreBank();
+    setBank(pbank);
 }
 
 void pigsleSpriteLoader(){
-    changeBank(MENU_BANK_PIGSLE_COMMAND_GFX_1);
+    char pbank = setBank(MENU_BANK_PIGSLE_COMMAND_GFX_1);
     _spriteLoader();
-    restoreBank();
+    setBank(pbank);
 }
 // ---------------------------------------------------------------------------------------------
 // Variables for main Pigsle code
@@ -197,7 +197,7 @@ static void _charPut(int cx, char cy, char c){
 
 // Write a zero terminated string on screen. X is auto calculated (string should be 20 chars or less), y 0-199
 static void charWrite(char cy, const char * s){
-    changeBank(MENU_BANK_PIGSLE_COMMAND_1);
+    char pbank = setBank(MENU_BANK_PIGSLE_COMMAND_1);
     
     // center the text
     char cx = 20 - strlen(s);
@@ -208,7 +208,7 @@ static void charWrite(char cy, const char * s){
         s++;
         cx += 2;
     }
-    restoreBank();
+    setBank(pbank);
 }
 
 // ---------------------------------------------------------------------------------------------

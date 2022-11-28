@@ -214,7 +214,7 @@ __interrupt void pigsleCmdIrq_topPests() {
 
     _prevRomCfgPC = ((byte *)0x01)[0];
     mmap_set(MMAP_ROM);
-    changeBank(MENU_BANK_PIGSLE_COMMAND_2);
+    char pbank = setBank(MENU_BANK_PIGSLE_COMMAND_2);
 
     if(CrossX < 60)
         copyCannonL60();
@@ -227,7 +227,7 @@ __interrupt void pigsleCmdIrq_topPests() {
     else
         copyCannonR60();
 
-    restoreBank();
+    setBank(pbank);
     ((byte *)0x01)[0] = _prevRomCfgPC;
     // vic.color_border--;
 }

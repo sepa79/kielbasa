@@ -72,7 +72,7 @@ void _loadRadioMsx(){
     joyCursor.enabled = false;
     if(gms_enableMusic) {
         // set Radio bank
-        changeBank(MUSIC_BANK_RADIO_1);
+        char pbank = setBank(MUSIC_BANK_RADIO_1);
 
         // stop music
         gms_enableMusic = false;
@@ -102,7 +102,7 @@ void _loadRadioMsx(){
         gms_enableMusic = true;
 
         // revert menu bank
-        restoreBank();
+        setBank(pbank);
     }
     joyCursor.enabled = true;
     // vic.color_back--;
@@ -114,7 +114,7 @@ void _goBackToPrvMenu(){
 
     if(gms_enableMusic) {
         // set Main Music bank
-        changeBank(MUSIC_BANK);
+        char pbank = setBank(MUSIC_BANK);
 
         // stop music
         gms_enableMusic = false;
@@ -139,7 +139,7 @@ void _goBackToPrvMenu(){
         gms_enableMusic = true;
 
         // revert menu bank
-        restoreBank();
+        setBank(pbank);
     }
 
     loadMenu(MENU_BANK_SHOP);

@@ -42,9 +42,9 @@ static void _changeLanguage(){
         _currentLang = 0;
     }
     
-    changeBank(LANGUAGE_BANKS[_currentLang]);
+    char pbank = setBank(LANGUAGE_BANKS[_currentLang]);
     loadTranslation();
-    restoreBank();
+    setBank(pbank);
     showOptionsMenu();
 }
 
