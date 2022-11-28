@@ -106,17 +106,17 @@ static void _updateSprite(unsigned int num) {
         copyCharToSprite(num2str[0], 0, 0);
         copyCharToSprite(num2str[1]-10, 1, 0);
         copyCharToSprite(num2str[2], 2, 0);
-        copyCharToSprite(s't', 0, 1);
-        copyCharToSprite(s'o', 1, 1);
-        copyCharToSprite(s'n', 2, 1);
+        copyCharToSprite(s' ', 0, 1);
+        copyCharToSprite(s' ', 1, 1);
+        copyCharToSprite(s't', 2, 1);
 
     } else if(num > 999) {
         copyCharToSprite(num2str[0]-10, 0, 0);
         copyCharToSprite(num2str[1], 1, 0);
         copyCharToSprite(num2str[2], 2, 0);
-        copyCharToSprite(s't', 0, 1);
-        copyCharToSprite(s'o', 1, 1);
-        copyCharToSprite(s'n', 2, 1);
+        copyCharToSprite(s' ', 0, 1);
+        copyCharToSprite(s' ', 1, 1);
+        copyCharToSprite(s't', 2, 1);
     } else if(num > 99) {
         copyCharToSprite(num2str[0], 0, 0);
         copyCharToSprite(num2str[1], 1, 0);
@@ -360,14 +360,13 @@ static void _sowPlant(){
     _displayFieldList();
 
     // create Task
-    // TODO: Make it global
     struct Task task;
     byte idx = plant_taskDscIdx[_currentPlant];
     // "Field 2, Potatoes"
     sprintf(task.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
     task.codeRef = &sowFieldTask;
     task.nameIdx = TXT_IDX_TASK_FARMLAND_FARM;
-    task.params[0] = _currentPlant-1; // Tasks don't play with empty description that is index 0 here
+    task.params[0] = _currentPlant;
     task.params[1] = _currentField;
     task.params[2] = 0;
     task.params[3] = 0;

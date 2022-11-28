@@ -11,6 +11,8 @@ const byte priModifierTable[5] = {0, 5, 10, 15, 20};
 const byte secModifierTable[5] = {2, 6, 10, 14, 18};
 const byte terModifierTable[5] = {4, 8, 10, 12, 16};
 
+#define FIELD_CAPACITY 100
+
 // for now anybody can do it.
 // later: energy used should depend on skills and stats, and one can't finish it if he runs out of energy
 void sowFieldTask(byte taskId){
@@ -48,34 +50,51 @@ void sowFieldTask(byte taskId){
         if(partDone <= 0){
             partDone = 1;
         }
+        // make sure we don't plan more than field 'capacity'
+        if(field_stage_planted[fieldId]+partDone > FIELD_CAPACITY*field_area[fieldId]){
+            partDone = FIELD_CAPACITY*field_area[fieldId] - field_stage_planted[fieldId];
+        }
         
-        // check if we got enough energy
-        byte energyMod = partDone < 80 ? partDone : 80;
-        byte energyNeeded = (100 - energyMod)/2;
+        // check if we got enough seeds
+        if(flt_storage[plantId] > 0 && partDone > flt_storage[plantId]){
+            // reduce 'partDone' to match available seeds
+            partDone = flt_storage[plantId];
+        }
+        if(flt_storage[plantId] >= partDone) {
 
-        if(checkEnergyLevel(worker, energyNeeded)){
-            // check if we got enough seeds
-            flt_storage[plantId] -= partDone;
+            // check if we got enough energy
+            byte energyMod = partDone < 80 ? partDone : 80;
+            byte energyNeeded = (100 - energyMod)/2;
+            if(checkEnergyLevel(worker, energyNeeded)){
+                flt_storage[plantId] -= partDone;
 
-            // decrease energy
-            decEnergyLevel(allChars_slot[worker], energyNeeded);
-            // process task
-            field_stage_planted[fieldId] += partDone;
-            field_stage_grown[fieldId]   = 0;
-            field_stage_ready[fieldId]   = 0; // reap takes this / SOME_DIVIDER
+                // decrease energy
+                decEnergyLevel(allChars_slot[worker], energyNeeded);
+                // process task
+                field_stage_planted[fieldId] += partDone;
+                field_stage_grown[fieldId]   = 0;
+                field_stage_ready[fieldId]   = 0; // reap takes this / SOME_DIVIDER
 
-            if(field_stage_planted[fieldId] >= 100*field_area[fieldId]) {
-                // task done, set status & remove
-                task_status[taskId] = TASK_STATUS_DONE;
-                removeTask(taskId);
+                // is the whole field done now?
+                if(field_stage_planted[fieldId] >= FIELD_CAPACITY*field_area[fieldId]) {
+                    // task done, set status & remove
+                    task_status[taskId] = TASK_STATUS_DONE;
+                    removeTask(taskId);
+                }
+            } else {
+                // not enough energy? set character to MIA by unassigning this task
+                unassignTask(taskId);
             }
         } else {
-            // not enough energy? set character to MIA by unassigning this task
-            unassignTask(taskId);
+            // task done - not enough seeds, set status & remove
+            task_status[taskId] = TASK_STATUS_DONE;
+            removeTask(taskId);
         }
+    // handle task removal
     } else if(task_status[taskId] == TASK_STATUS_REMOVE){
         // clean up, don't leave field in dangling 'sowing' state
         field_stage[fieldId] = PLANT_STAGE_NONE;
+    // hanlde errors - should never happen!
     } else {
         // Sum Ting Wong, We Tu Lo
         byte str[50];

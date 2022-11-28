@@ -8,8 +8,8 @@
 
 // how much water is in the ground, aka irrigation (max 100)
 volatile byte flt_waterLevel = 50;
-//
-volatile unsigned int flt_storage[PLANTS_COUNT] = 0;
+// add 1 as plant '0' is ----- (nothing planted) in farm management
+volatile unsigned int flt_storage[PLANTS_COUNT+1] = 0;
 
 // used instead of struct
 __export byte field_area[FIELDS_COUNT]         = {0,0,0,0};

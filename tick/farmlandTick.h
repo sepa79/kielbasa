@@ -5,15 +5,17 @@
 
 #define FIELDS_COUNT 4
 #define PLANTS_COUNT 4
-#define PLANT_POTATO 0
-#define PLANT_LUPINE 1
-#define PLANT_WHEAT 2
-#define PLANT_CORN 3
+#define PLANT_POTATO 1
+#define PLANT_LUPINE 2
+#define PLANT_WHEAT 3
+#define PLANT_CORN 4
 
 extern volatile byte flt_waterLevel = 50;
 
 // storage for farming
-extern volatile unsigned int flt_storage[PLANTS_COUNT];
+// add 1 as plant '0' is ----- (nothing planted) in farm management
+// makes it easier in tasks etc to manage IDs
+extern volatile unsigned int flt_storage[PLANTS_COUNT+1];
 
 //******************************
 // Field
