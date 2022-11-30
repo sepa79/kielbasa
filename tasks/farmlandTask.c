@@ -13,8 +13,6 @@ const byte terModifierTable[5] = {4, 8, 10, 12, 16};
 
 #define FIELD_CAPACITY 100
 
-// for now anybody can do it.
-// later: energy used should depend on skills and stats, and one can't finish it if he runs out of energy
 void sowFieldTask(byte taskId){
     // get the fieldId - this is the definition from menu/farmland.c
     // task.params[0] = _currentPlant;
@@ -50,7 +48,7 @@ void sowFieldTask(byte taskId){
         if(partDone <= 0){
             partDone = 1;
         }
-        // make sure we don't plan more than field 'capacity'
+        // make sure we don't plant more than field 'capacity'
         if(field_stage_planted[fieldId]+partDone > FIELD_CAPACITY*field_area[fieldId]){
             partDone = FIELD_CAPACITY*field_area[fieldId] - field_stage_planted[fieldId];
         }
@@ -99,6 +97,71 @@ void sowFieldTask(byte taskId){
         // Sum Ting Wong, We Tu Lo
         byte str[50];
         sprintf(str, s"  ""[%3u]"s"sowFieldTask - unknown status code   ", task_status[taskId]);
+        updateStatusBar(str);
+        setErrorCursor();
+    }
+}
+
+void reapFieldTask(byte taskId){
+    // get the fieldId - this is the definition from menu/farmland.c
+    // task.params[0] = _currentField;
+    // task.params[1] = 0;
+    // task.params[2] = 0;
+    // task.params[3] = 0;
+    // task.params[4] = 0;
+    byte fieldId = task_params[taskId][0];
+    byte plantId = field_plantId[fieldId];
+
+    if(task_status[taskId] == TASK_STATUS_NEW){
+        // reap is simple, same logic as with planting really
+
+        // get worker, get his skills and the value he can 'do' in a turn from the table
+        byte worker      = task_worker[taskId];
+        byte skill       = allChars_skills[ worker ][ task_reqType[taskId] ];
+        byte priModifier = allChars_stats[ worker ][ STAT_STR ] -1;
+        byte secModifier = allChars_stats[ worker ][ STAT_INT ] -1;
+        byte terModifier = allChars_stats[ worker ][ STAT_CUN ] -1;
+        signed int partDone = skill * 10 + priModifierTable[priModifier]-10 + secModifierTable[secModifier]-10 + terModifierTable[terModifier]-10;
+        if(partDone <= 0){
+            partDone = 1;
+        }
+        // make sure we don't reap more than field 'capacity'
+        if(field_stage_ready[fieldId] < partDone){
+            partDone = field_stage_ready[fieldId];
+        }
+        
+
+        // check if we got enough energy
+        byte energyMod = partDone < 80 ? partDone : 80;
+        byte energyNeeded = (100 - energyMod)/2;
+        if(checkEnergyLevel(worker, energyNeeded)){
+            flt_storage[plantId] += partDone;
+
+            // decrease energy
+            decEnergyLevel(allChars_slot[worker], energyNeeded);
+            // process task
+            field_stage_ready[fieldId] -= partDone;
+
+            // is the whole field done now?
+            if(field_stage_ready[fieldId] == 0) {
+                // task done, set status & remove
+                task_status[taskId] = TASK_STATUS_DONE;
+                removeTask(taskId);
+            }
+        } else {
+            // not enough energy? set character to MIA by unassigning this task
+            unassignTask(taskId);
+        }
+
+    // handle task removal
+    } else if(task_status[taskId] == TASK_STATUS_REMOVE){
+        // clean up, don't leave field in dangling 'reaping' state
+        field_stage[fieldId] = PLANT_STAGE_NONE;
+    // hanlde errors - should never happen!
+    } else {
+        // Sum Ting Wong, We Tu Lo
+        byte str[50];
+        sprintf(str, s"  ""[%3u]"s"reapFieldTask - unknown status code   ", task_status[taskId]);
         updateStatusBar(str);
         setErrorCursor();
     }

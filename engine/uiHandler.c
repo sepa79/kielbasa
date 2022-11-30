@@ -308,16 +308,14 @@ void copyCharToSprite(byte c, byte col, byte row){
     byte si = colOffset[col] + rowOffset[row];
     unsigned int pos = c;
     pos = pos * 7;
-    // mmap_set(MMAP_NO_BASIC);
     char pbank = setBank(MAIN_GFX_BANK);
     do{
-        sprBankPointer[si] = AuxResources.CALENDAR_FONTS[pos+i];
+        sprBankPointer[si] = AuxResources.SPRITE_FONTS[pos+i];
         i++;
         si++;
         si++;
         si++;
     } while (i<7);
-    // mmap_set(MMAP_ROM);
     setBank(pbank);
 }
 
@@ -325,8 +323,8 @@ void copyCharToSprite(byte c, byte col, byte row){
 void drawFullDate(){
     // vic.color_border--;
 
-    cal_dateHour = 13;
-    cal_dateDay = 1;
+    cal_dateHour  = 13;
+    cal_dateDay   = 1;
     cal_dateMonth = 1;
     cal_dateYearH = 8;
     cal_dateYearL = 9;
@@ -334,18 +332,17 @@ void drawFullDate(){
     sprBankPointer = SpriteResources.DATE_TXT;
     // draw hour
     copyCharToSprite('1', 0, 0);
-    copyCharToSprite('3', 1, 0);
+    updateHour(cal_dateHour);
     // 58 is :
     copyCharToSprite(':', 2, 0);
     copyCharToSprite('0', 3, 0);
     copyCharToSprite('0', 4, 0);
 
-    // copy date to sprite
+    // day, month
     copyCharToSprite('0', 0, 1);
-    copyCharToSprite(39, 1, 1);
+    updateDay(cal_dateDay);
     copyCharToSprite('0', 2, 1);
-    copyCharToSprite(39, 3, 1);
-
+    updateMonth(cal_dateMonth);
     // year
     drawYearL();
     drawYearH();

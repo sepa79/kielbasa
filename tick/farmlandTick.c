@@ -7,7 +7,7 @@
 #pragma data ( data )
 
 // how much water is in the ground, aka irrigation (max 100)
-volatile byte flt_waterLevel = 50;
+volatile byte flt_waterLevel = 30;
 // add 1 as plant '0' is ----- (nothing planted) in farm management
 volatile unsigned int flt_storage[PLANTS_COUNT+1] = 0;
 
@@ -22,11 +22,11 @@ __export int field_stage_ready[FIELDS_COUNT]   = {0,0,0,0};
 __export byte field_timer[FIELDS_COUNT]        = {0,0,0,0};
 
 void initFarmland(){
-    flt_waterLevel = 50;
-    flt_storage[PLANT_POTATO] = 12300;
-    flt_storage[PLANT_LUPINE] = 1500;
-    flt_storage[PLANT_WHEAT]  = 500;
-    flt_storage[PLANT_CORN]   = 10;
+    flt_waterLevel = 30;
+    flt_storage[PLANT_POTATO] = 300;
+    flt_storage[PLANT_LUPINE] = 50;
+    flt_storage[PLANT_WHEAT]  = 50;
+    flt_storage[PLANT_CORN]   = 50;
 
     field_area[0] = 1;
     field_area[1] = 1;
@@ -72,7 +72,7 @@ void _fieldStateSprout(byte fieldId){
     // gotoxy(0, 16);
     // printf("S 1 plantId [%u]temp diff %-5u ", plantId, diff);
     // rain check
-    diff += _waterCheck(plant_stage1minRain[plantId], plant_stage1maxRain[plantId]);
+    diff += _waterCheck(plant_stage1minWater[plantId], plant_stage1maxWater[plantId]);
 
     // gotoxy(20, 16);
     // printf("+ rain diff %-5u ", diff);
@@ -111,7 +111,7 @@ void _fieldStateGrowth(byte fieldId){
     // gotoxy(0, 17);
     // printf("S 2 temp diff %-5u ", diff);
     // rain check
-    diff += _waterCheck(plant_stage2minRain[plantId], plant_stage2maxRain[plantId]);
+    diff += _waterCheck(plant_stage2minWater[plantId], plant_stage2maxWater[plantId]);
     // gotoxy(20, 17);
     // printf("+ rain diff %-5u ", diff);
 
@@ -138,14 +138,14 @@ void _fieldStateRipen(byte fieldId){
     // gotoxy(0, 18);
     // printf("s 3 temp %-5d diff %-5u ", cal_currentTemp, diff);
     // rain check
-    diff += _waterCheck(plant_stage2minRain[plantId], plant_stage2maxRain[plantId]);
+    diff += _waterCheck(plant_stage2minWater[plantId], plant_stage2maxWater[plantId]);
     // gotoxy(0, 18);
     // printf("temp + rain diff %-5u ", diff);
 
     if(diff == 0){
-        field_stage_ready[fieldId] += 10;
-        if(field_stage_ready[fieldId] > 100)
-            field_stage_ready[fieldId] = 100;
+        field_stage_ready[fieldId] += field_stage_grown[fieldId]/8;
+        if(field_stage_ready[fieldId] > field_stage_grown[fieldId])
+            field_stage_ready[fieldId] = field_stage_grown[fieldId];
     }
 
     field_timer[fieldId]--;

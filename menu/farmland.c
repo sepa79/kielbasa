@@ -296,6 +296,14 @@ static void _displayFieldList(){
 static void _updateFieldView(){
     byte temp = (char) (cal_currentTemp + 23);
     _drawThermometer(temp);
+
+    sprBankPointer = SPR_THERMO_BAR_3;
+
+    byte num2str[4];
+    utoa(flt_waterLevel, num2str, 10);
+    copyCharToSprite(num2str[0], 1, 0);
+    copyCharToSprite(num2str[1], 2, 0);
+
     sprBankPointer = SPR_POTATO_UI;
     _updateSprite(flt_storage[PLANT_POTATO]);
     sprBankPointer = SPR_LUPINE_UI;
@@ -364,16 +372,16 @@ static void _sowPlant(){
     byte idx = plant_taskDscIdx[_currentPlant];
     // "Field 2, Potatoes"
     sprintf(task.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
-    task.codeRef = &sowFieldTask;
-    task.nameIdx = TXT_IDX_TASK_FARMLAND_FARM;
+    task.codeRef   = &sowFieldTask;
+    task.nameIdx   = TXT_IDX_TASK_FARMLAND_FARM;
     task.params[0] = _currentPlant;
     task.params[1] = _currentField;
     task.params[2] = 0;
     task.params[3] = 0;
     task.params[4] = 0;
-    task.reqType = SKILL_FARMING;
-    task.icon = SPR_TASK_FARM1;
-    task.status = TASK_STATUS_NEW;
+    task.reqType   = SKILL_FARMING;
+    task.icon      = SPR_TASK_FARM1;
+    task.status    = TASK_STATUS_NEW;
     addTask(&task);
 }
 
@@ -382,9 +390,32 @@ static void _maintainPlant(){
 }
 
 static void _reapPlant(){
-    field_plantId[_currentField] = 0;
-    field_stage[_currentField] = PLANT_STAGE_NONE;
+    // don't allow to ruin growth in progress
+    if(field_stage[_currentField] != PLANT_STAGE_READY){
+        setErrorCursor();
+        return;
+    }
+    // indicate task is assigned
+    field_plantId[_currentField] = _currentPlant;
+    field_stage[_currentField]   = PLANT_STAGE_REAP_TASK_ASSIGNED;
     _displayFieldList();
+
+    // create Task
+    struct Task task;
+    byte idx = plant_taskDscIdx[_currentPlant];
+    // "Field 2, Potatoes"
+    sprintf(task.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
+    task.codeRef   = &reapFieldTask;
+    task.nameIdx   = TXT_IDX_TASK_FARMLAND_REAP;
+    task.params[0] = _currentField;
+    task.params[1] = 0;
+    task.params[2] = 0;
+    task.params[3] = 0;
+    task.params[4] = 0;
+    task.reqType   = SKILL_FARMING;
+    task.icon      = SPR_TASK_FARM1;
+    task.status    = TASK_STATUS_NEW;
+    addTask(&task);
 }
 
 static void _nextPlant(){

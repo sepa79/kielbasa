@@ -125,12 +125,12 @@ const struct AUX_GFX {
     // Portraits
     char PORTRAITS[64*4];
     // sprite fonts
-    char CALENDAR_FONTS[59*7];
+    char SPRITE_FONTS[59*7];
 };
 
 // #define TASK_ICONS  ((char *)GFX_1_AUX_DST_ADR)
 // #define PORTRAITS  ((char *)GFX_1_AUX_DST_ADR+64*14)
-// #define CALENDAR_FONTS  ((char *)GFX_1_AUX_DST_ADR+64*18)
+// #define SPRITE_FONTS  ((char *)GFX_1_AUX_DST_ADR+64*18)
 
 extern __export const struct SPRITES SpriteResources;
 extern __export const struct AUX_GFX AuxResources;
