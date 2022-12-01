@@ -17,10 +17,10 @@ volatile byte cal_currentRain;
 
 volatile byte cal_dateHour  = 13;
 volatile byte cal_dateDay   = 1;
-volatile byte cal_dateMonth = 1;
+volatile byte cal_dateMonth = 5;
 volatile byte cal_dateYearH = 8;
 volatile byte cal_dateYearL = 9;
-volatile byte cal_dateWeek  = 0;
+volatile byte cal_dateWeek  = 17;
 volatile byte cal_moonPhase = 0;
 volatile bool cal_isDay = true;
 
@@ -28,8 +28,10 @@ volatile byte cal_dateWeekDay = 1; // starts monday
 
 signed char rndTempWeekly;
 signed char rndRainWeekly;
-byte sunRaiseHour = 7;
-byte sunSetHour = 15;
+byte sunRaiseHour = 4;
+byte sunSetHour = 20;
+// byte sunRaiseHour = 7;
+// byte sunSetHour = 15;
 
 volatile byte weatherSprite = 0; // cache for night, hourly tick updates isc_weatherSprite
 

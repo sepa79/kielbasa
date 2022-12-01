@@ -28,7 +28,7 @@ void miaTick(){
             byte charIdx = characterSlots[charSlot];
             if(allChars_busy[charIdx] == false){
                 word rnd = rand();
-                byte rnd0 = (rnd & 7) + 3;
+                byte rnd0 = (rnd & 7) + 1;
                 decEnergyLevel(charSlot, rnd0);
             }
         }

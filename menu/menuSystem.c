@@ -65,6 +65,12 @@ void updateMenu(){
     }
 }
 
+// check what menu is actually open and update it if it matches chosen bank
+void updateMenuIfIn(char bank){
+    if(bank == _menuBank)
+        updateMenu();
+}
+
 #pragma section( sharedMenuCode, 0 )
 #pragma region( sharedMenuCodeBank, 0xbc00, 0xc000, , {
     MENU_BANK_MAIN_MENU,

@@ -3,6 +3,7 @@
 #include <c64/vic.h>
 #include <c64/cia.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
@@ -117,7 +118,7 @@ void initGame(){
     loadTranslation();
 
     // ready steady GO
-    do { keyb_poll(); } while (!keyb_key);
+    do { keyb_poll(); rand();} while (!keyb_key);
     keyb_key = 0;
 
     // splash and turn screen off

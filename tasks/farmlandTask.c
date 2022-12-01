@@ -61,8 +61,7 @@ void sowFieldTask(byte taskId){
         if(flt_storage[plantId] >= partDone) {
 
             // check if we got enough energy
-            byte energyMod = partDone < 80 ? partDone : 80;
-            byte energyNeeded = (100 - energyMod)/2;
+            byte energyNeeded = partDone > 10 ? 10 : partDone;
             if(checkEnergyLevel(worker, energyNeeded)){
                 flt_storage[plantId] -= partDone;
 
@@ -100,6 +99,7 @@ void sowFieldTask(byte taskId){
         updateStatusBar(str);
         setErrorCursor();
     }
+    updateMenuIfIn(MENU_BANK_FARMLAND);
 }
 
 void reapFieldTask(byte taskId){
@@ -126,26 +126,25 @@ void reapFieldTask(byte taskId){
             partDone = 1;
         }
         // make sure we don't reap more than field 'capacity'
-        if(field_stage_ready[fieldId] < partDone){
-            partDone = field_stage_ready[fieldId];
+        if(field_stage_grown[fieldId] < partDone){
+            partDone = field_stage_grown[fieldId];
         }
         
-
         // check if we got enough energy
-        byte energyMod = partDone < 80 ? partDone : 80;
-        byte energyNeeded = (100 - energyMod)/2;
+        byte energyNeeded = partDone > 10 ? 10 : partDone;
         if(checkEnergyLevel(worker, energyNeeded)){
             flt_storage[plantId] += partDone;
 
             // decrease energy
             decEnergyLevel(allChars_slot[worker], energyNeeded);
             // process task
-            field_stage_ready[fieldId] -= partDone;
+            field_stage_grown[fieldId] -= partDone;
 
             // is the whole field done now?
-            if(field_stage_ready[fieldId] == 0) {
+            if(field_stage_grown[fieldId] == 0) {
                 // task done, set status & remove
                 task_status[taskId] = TASK_STATUS_DONE;
+                field_stage[fieldId] = PLANT_STAGE_NONE;
                 removeTask(taskId);
             }
         } else {
@@ -153,7 +152,7 @@ void reapFieldTask(byte taskId){
             unassignTask(taskId);
         }
 
-    // handle task removal
+    // handle task removal - currently unused
     } else if(task_status[taskId] == TASK_STATUS_REMOVE){
         // clean up, don't leave field in dangling 'reaping' state
         field_stage[fieldId] = PLANT_STAGE_NONE;
@@ -165,4 +164,5 @@ void reapFieldTask(byte taskId){
         updateStatusBar(str);
         setErrorCursor();
     }
+    updateMenuIfIn(MENU_BANK_FARMLAND);
 }

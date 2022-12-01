@@ -1,4 +1,5 @@
 #include <c64/types.h>
+#include <fixmath.h>
 
 #include <translation/common.h>
 #include "farmlandTick.h"
@@ -16,13 +17,13 @@ __export byte field_area[FIELDS_COUNT]         = {0,0,0,0};
 __export byte field_fertility[FIELDS_COUNT]    = {127,127,127,127};
 __export byte field_plantId[FIELDS_COUNT]      = {0,0,0,0};
 __export byte field_stage[FIELDS_COUNT]        = {0,0,0,0};
-__export int field_stage_planted[FIELDS_COUNT] = {0,0,0,0};
-__export int field_stage_grown[FIELDS_COUNT]   = {0,0,0,0};
-__export int field_stage_ready[FIELDS_COUNT]   = {0,0,0,0};
+__export unsigned int field_stage_planted[FIELDS_COUNT] = {0,0,0,0};
+__export unsigned int field_stage_grown[FIELDS_COUNT]   = {0,0,0,0};
+__export unsigned int field_stage_ready[FIELDS_COUNT]   = {0,0,0,0};
 __export byte field_timer[FIELDS_COUNT]        = {0,0,0,0};
 
 void initFarmland(){
-    flt_waterLevel = 30;
+    flt_waterLevel = 25;
     flt_storage[PLANT_POTATO] = 300;
     flt_storage[PLANT_LUPINE] = 50;
     flt_storage[PLANT_WHEAT]  = 50;
@@ -123,6 +124,8 @@ void _fieldStateGrowth(byte fieldId){
     if(field_timer[fieldId] == 0){
         field_stage[fieldId] = PLANT_STAGE_RIPEN;
         field_timer[fieldId] = plant_stage3timer[plantId];
+        // apply rippen modifier
+        field_stage_grown[fieldId] *= plant_stage3reapFactor[plantId];
     }
 }
 
@@ -142,15 +145,20 @@ void _fieldStateRipen(byte fieldId){
     // gotoxy(0, 18);
     // printf("temp + rain diff %-5u ", diff);
 
-    if(diff == 0){
-        field_stage_ready[fieldId] += field_stage_grown[fieldId]/8;
-        if(field_stage_ready[fieldId] > field_stage_grown[fieldId])
-            field_stage_ready[fieldId] = field_stage_grown[fieldId];
-    }
+    if(diff > 10)
+        diff = 10;
+
+    field_stage_ready[fieldId] += 10 - diff;
+
+    if(field_stage_ready[fieldId] > 100)
+        field_stage_ready[fieldId] = 100;
 
     field_timer[fieldId]--;
     if(field_timer[fieldId] == 0){
         field_stage[fieldId] = PLANT_STAGE_READY;
+        // apply the percentage to the 'grown' plants
+        if(field_stage_ready[fieldId] < 100)
+            field_stage_grown[fieldId] = lmuldiv16u(field_stage_grown[fieldId], 100, field_stage_ready[fieldId]);
     }
 }
 
@@ -175,6 +183,9 @@ void _waterFields(){
             flt_waterLevel = 50;
         }
     }
+    // at low water levels slow down vaporisation
+    if(flt_waterLevel < 6)
+        vaporised --;
 
     if(vaporised < cal_currentRain){
         flt_waterLevel += cal_currentRain - vaporised;

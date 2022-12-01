@@ -68,6 +68,7 @@ void loadMenuSprites();
 void showMenu();
 __interrupt void showSprites();
 void updateMenu();
+void updateMenuIfIn(char bank);
 
 #pragma compile("menuSystem.c")
 

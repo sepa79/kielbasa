@@ -380,7 +380,7 @@ static void _sowPlant(){
     task.params[3] = 0;
     task.params[4] = 0;
     task.reqType   = SKILL_FARMING;
-    task.icon      = SPR_TASK_FARM1;
+    task.icon      = SPR_TASK_FARM2;
     task.status    = TASK_STATUS_NEW;
     addTask(&task);
 }
@@ -413,7 +413,7 @@ static void _reapPlant(){
     task.params[3] = 0;
     task.params[4] = 0;
     task.reqType   = SKILL_FARMING;
-    task.icon      = SPR_TASK_FARM1;
+    task.icon      = SPR_TASK_FARM2;
     task.status    = TASK_STATUS_NEW;
     addTask(&task);
 }

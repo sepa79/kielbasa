@@ -325,7 +325,7 @@ void drawFullDate(){
 
     cal_dateHour  = 13;
     cal_dateDay   = 1;
-    cal_dateMonth = 1;
+    cal_dateMonth = 5;
     cal_dateYearH = 8;
     cal_dateYearL = 9;
 

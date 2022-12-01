@@ -52,27 +52,27 @@
       {
         "id": "PLANT_STAGE_SPROUT",
         "pl": "Kiełkuje",
-        "en": "Sprouts"
+        "en": "Sprouts "
       },
       {
         "id": "PLANT_STAGE_GROWTH",
-        "pl": "Rośnie",
-        "en": "Grows"
+        "pl": "Rośnie  ",
+        "en": "Grows   "
       },
       {
         "id": "PLANT_STAGE_RIPEN",
         "pl": "Dojrzewa",
-        "en": "Ripens"
+        "en": "Ripens  "
       },
       {
         "id": "PLANT_STAGE_READY",
-        "pl": "Dojrzały",
-        "en": "Ready"
+        "pl": "Dojrzałe",
+        "en": "Ready   "
       },
       {
         "id": "PLANT_STAGE_REAP_TASK_ASSIGNED",
         "pl": "Z: Zbiór",
-        "en": "T: Reap"
+        "en": "T: Reap "
       }
     ]
   },

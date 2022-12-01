@@ -226,7 +226,7 @@ static void _assignTaskToWorker(byte taskId, byte charSlot) {
     // cwin_putat_string_raw(&cw, 25, 0, str, VCOL_WHITE);
 
     setCharacterSlotIcon(charSlot, task_icon[taskId]);
-    updateStatusBar(s"  Task assigned  ");
+    // updateStatusBar(s"  Task assigned  ");
 }
 
 
@@ -296,7 +296,7 @@ void tasksTick(){
     do {
         taskId = taskRef[i];
         if(task_worker[taskId] != NO_CHARACTER){
-            updateStatusBar(s"  Exec  ");
+            // updateStatusBar(s"  Exec  ");
             // got a worker? tick that task
             (*task_codeRef[taskId])(taskId);
         }
