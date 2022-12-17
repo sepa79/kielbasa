@@ -31,9 +31,10 @@ static void _setCharacterToSlot(byte charIdx, byte charSlot){
 
 void initCharacterList(){
     _setCharacterToSlot(0, 0);
-    _setCharacterToSlot(NO_CHARACTER, 1);
-    _setCharacterToSlot(NO_CHARACTER, 2);
-    _setCharacterToSlot(NO_CHARACTER, 3);
+    _setCharacterToSlot(1, 1);
+    _setCharacterToSlot(2, 2);
+    _setCharacterToSlot(3, 3);
+    // _setCharacterToSlot(NO_CHARACTER, 3);
 }
 
 // checks if given charIdx (from allCharSlots) has at least 'amount' energy

@@ -32,6 +32,8 @@ extern byte field_stage[PLANTS_COUNT];
 extern unsigned int field_stage_planted[PLANTS_COUNT];
 // how much was grown in stage 2
 extern unsigned int field_stage_grown[PLANTS_COUNT];
+// growth factor calculated at the end of the 1st stage
+extern unsigned int field_stage_gFactor[FIELDS_COUNT];
 // how much has rippened in stage 3
 extern unsigned int field_stage_ready[PLANTS_COUNT];
 // timer till the end of current stage (days)
@@ -49,12 +51,14 @@ extern byte field_timer[PLANTS_COUNT];
 static const byte plant_taskDscIdx[5]             = { TXT_IDX_TASK_EMPTY_DESCRIPTION, TXT_IDX_TASK_DSC_FARMLAND_POTATO, TXT_IDX_TASK_DSC_FARMLAND_LUPINE, TXT_IDX_TASK_DSC_FARMLAND_WHEAT, TXT_IDX_TASK_DSC_FARMLAND_CORN};
 static const signed char plant_stage1minTemp[5]   = { 0,  8,  1, -5, -5};
 static const signed char plant_stage1maxTemp[5]   = { 0, 20, 15, 15, 30};
-static const byte plant_stage1minWater[5]         = { 0, 15, 15,  5,  5};
+static const byte plant_stage1minWater[5]         = { 0, 20, 20,  5,  5};
 static const byte plant_stage1maxWater[5]         = { 0, 40, 40, 60, 40};
 static const byte plant_stage1timer[5]            = { 0, 15, 20,180, 30};
 static const byte plant_stage1upkeep[5]           = { 0,  0,  0,  0,  0};
-static const signed char plant_stage2minTemp[5]   = { 0, 15, 13,  8,  5};
-static const signed char plant_stage2maxTemp[5]   = { 0, 26, 18, 25, 30};
+static const signed char plant_stage2minTemp[5]   = { 0, 18, 13,  8,  5};
+static const signed char plant_stage2maxTemp[5]   = { 0, 23, 18, 25, 30};
+// static const signed char plant_stage2minTemp[5]   = { 0, 15, 13,  8,  5};
+// static const signed char plant_stage2maxTemp[5]   = { 0, 26, 18, 25, 30};
 static const byte plant_stage2minWater[5]         = { 0, 10, 15, 10, 10};
 static const byte plant_stage2maxWater[5]         = { 0, 30, 40, 40, 40};
 static const byte plant_stage2timer[5]            = { 0, 60, 70, 90, 40};
@@ -65,7 +69,7 @@ static const byte plant_stage3minWater[5]         = { 0,  5, 15,  5, 10};
 static const byte plant_stage3maxWater[5]         = { 0, 20, 40, 20, 50};
 static const byte plant_stage3timer[5]            = { 0, 25, 20, 45, 20};
 static const byte plant_stage3upkeep[5]           = { 0,  0,  0,  0,  0};
-static const byte plant_stage3reapFactor[5]       = { 0,  5,  5,  5,  5};
+static const byte plant_maxYeldFactor[5]          = { 0, 10,  5,  5,  5};
 
 #define PLANT_STAGE_NONE 0x00
 #define PLANT_STAGE_SOW_TASK_ASSIGNED 0x01

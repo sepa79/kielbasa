@@ -284,12 +284,12 @@ static void _displayFieldList(){
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+26, 8+i, str, col);
 
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+29, 8+i, TBL_V, VCOL_YELLOW);
-        sprintf(str, "%3u", field_stage_grown[i]);
+        sprintf(str, "%4u", field_stage_grown[i]);
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+30, 8+i, str, col);
 
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+33, 8+i, TBL_V, VCOL_YELLOW);
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+34, 8+i, TBL_V, VCOL_YELLOW);
         sprintf(str, "%3u", field_stage_ready[i]);
-        cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+34, 8+i, str, col);
+        cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+35, 8+i, str, col);
     }
 }
 
