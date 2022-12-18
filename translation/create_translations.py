@@ -153,14 +153,14 @@ def generate_c_file_text_arrays( config, lang, text_filter ):
 
 # read json config file, no error checking so be careful
 def read_json_config_file( filename ):
-    fh = open("data.json", "r")
+    fh = open("data.json", "r", encoding="utf-8")
     content = json.load(fh)
     fh.close()
     return content
 
 # write common.h file in templates/ directory
 def write_common_h_file( index_array ):
-    fh = open("common.h", "w")
+    fh = open("common.h", "w", encoding="utf-8")
     template = open( "templates/common_h.template", "r" ).read()
     fh.write( template.replace( "{{ content }}", "\n".join( index_array ) ) )
     fh.close()
@@ -173,7 +173,7 @@ def write_texts_c_file( template, text_array, index_array, lang ):
     out.append( "\n".join( index_array ) )
 
     filename = "texts%s.c" % lang.upper()
-    fh = open(filename, "w")
+    fh = open(filename, "w", encoding="utf-8")
     template = open( template, "r" ).read()
     fh.write( template.replace( "{{ content }}", "\n".join( out ) ) )
     fh.close()

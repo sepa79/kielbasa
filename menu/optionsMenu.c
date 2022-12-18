@@ -210,16 +210,16 @@ static void _backToPreviousMenu(){
 }
 
 const struct MenuOption MUSIC_MENU[] = {
-    { TXT_IDX_MENU_OPTIONS_MSX, '1', UI_LR, &_toggleMusic, 0, 2, 1},
-    { TXT_IDX_MENU_EXIT, KEY_RETURN, UI_LR, &_loadMsx, 0, 2, 2},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LR, &showOptionsMenu, 0, 2, 25},
+    { TXT_IDX_MENU_EXIT, KEY_RETURN, UI_LR, &_loadMsx, 0, 1, 1},
+    { TXT_IDX_MENU_OPTIONS_MSX, '1', UI_LR, &_toggleMusic, 0, 16, 1},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LR, &showOptionsMenu, 0, 34, 1},
     { TXT_IDX_MENU_TASK_MANAGER_W, 'w', UI_U+UI_HIDE, &_upRow, 0, 0, 4 },
     { TXT_IDX_MENU_TASK_MANAGER_S, 's', UI_D+UI_HIDE, &_downRow, 0, 0, 22 },
     END_MENU_CHOICES
 };
 const struct MenuOption OPTIONS_MENU[] = {
-    { TXT_IDX_MENU_OPTIONS_LANG, '1', UI_LR, &_changeLanguage, 0, 2, 1},
-    { TXT_IDX_MENU_OPTIONS_MSX, '2', UI_LR, &_showMusicMenu, 0, 2, 2},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LR, &_backToPreviousMenu, 0, 2, 3},
+    { TXT_IDX_MENU_OPTIONS_LANG, '1', UI_UD, &_changeLanguage, 0, 2, 1},
+    { TXT_IDX_MENU_OPTIONS_MSX, '2', UI_UD, &_showMusicMenu, 0, 2, 2},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_UD, &_backToPreviousMenu, 0, 2, 3},
     END_MENU_CHOICES
 };

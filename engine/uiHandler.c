@@ -40,13 +40,15 @@ static byte _joyL = 0;
 static byte _joyR = 0;
 
 static void _setJoyCursorPos(byte menuPos){
-    joyCursor.x = (currentMenu[menuPos].x + cw.sx) * 8 + BORDER_XPOS_LEFT - 1;
-    joyCursor.y = (currentMenu[menuPos].y + cw.sy) * 8 + BORDER_YPOS_TOP - 1;
+    if(!(currentMenu[menuPos].uiMode & UI_HIDE)){
+        joyCursor.x = (currentMenu[menuPos].x + cw.sx) * 8 + BORDER_XPOS_LEFT - 1;
+        joyCursor.y = (currentMenu[menuPos].y + cw.sy) * 8 + BORDER_YPOS_TOP - 1;
 
+
+        setNormalCursor();
+    }
     // set delay, without it it's impossible to control stuff, joy cursor moves too fast
     joyCursor.moveDelayCurrent = JOY_CURSOR_MOVE_DELAY_INIT;
-
-    setNormalCursor();
 }
 
 /* Displays text and colors, sets _lastElementInMenu */
@@ -58,9 +60,11 @@ static void _displayMenuText(){
     _joyD = NOT_ATTACHED;
 
     while (currentMenu[i].key != 0){
-        // display text
-        byte idx = currentMenu[i].textIdx;
-        cwin_putat_string_raw(&cw, currentMenu[i].x, currentMenu[i].y, TXT[idx], VCOL_MED_GREY);
+        if(!(currentMenu[i].uiMode & UI_HIDE)){
+            // display text
+            byte idx = currentMenu[i].textIdx;
+            cwin_putat_string_raw(&cw, currentMenu[i].x, currentMenu[i].y, TXT[idx], VCOL_MED_GREY);
+        }
 
         // detect what kind of menu we have - LR or UD
         if(currentMenu[i].uiMode & (UI_LR + UI_UD)){
