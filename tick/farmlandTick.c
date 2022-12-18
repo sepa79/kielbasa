@@ -25,7 +25,7 @@ __export byte field_timer[FIELDS_COUNT]                 = {0,0,0,0};
 
 void initFarmland(){
     flt_waterLevel = 25;
-    flt_storage[PLANT_POTATO] = 300;
+    flt_storage[PLANT_POTATO] = 900;
     flt_storage[PLANT_LUPINE] = 50;
     flt_storage[PLANT_WHEAT]  = 50;
     flt_storage[PLANT_CORN]   = 50;

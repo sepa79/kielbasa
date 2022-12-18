@@ -15,18 +15,8 @@ static byte _currentCharacter = 0;
 static byte _currentSkill = 0;
 // where to start displaying stats, also used for cursor
 static byte TASK_SHOW_LINE = 14;
-static byte TASK_SHOW_COLUMN = 32;
 
 static void _showTaskPriorities(){
-
-    // TASK_MANAGER_MENU[0].y = TASK_SHOW_LINE + _currentCharacter;
-    // TASK_MANAGER_MENU[0].x = TASK_SHOW_COLUMN + _currentSkill * 2;
-    // TASK_MANAGER_MENU[1].y = TASK_SHOW_LINE + _currentCharacter;
-    // TASK_MANAGER_MENU[1].x = TASK_SHOW_COLUMN + _currentSkill * 2;
-    // TASK_MANAGER_MENU[2].y = TASK_SHOW_LINE + _currentCharacter;
-    // TASK_MANAGER_MENU[2].x = TASK_SHOW_COLUMN + _currentSkill * 2;
-    // TASK_MANAGER_MENU[3].y = TASK_SHOW_LINE + _currentCharacter;
-    // TASK_MANAGER_MENU[3].x = TASK_SHOW_COLUMN + _currentSkill * 2;
 
     cwin_putat_string_raw(&cw, 0, 4, TXT[TXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_1], VCOL_YELLOW);
     cwin_putat_string_raw(&cw, 0, 5, TXT[TXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_2], VCOL_YELLOW);

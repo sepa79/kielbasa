@@ -1,7 +1,7 @@
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
 
-#pragma data ( musicPlayer )
+#pragma data ( mainGameMsx )
 
 __export const char music[] = {
     // #embed 0xffff 2 "assets/music/Piggy_8000.out"
@@ -14,6 +14,11 @@ __export const char radioMsx01[] = {
     #embed 0xffff 136 "assets/music/FarmGameRadio1.sid"
 };
 
+#pragma data ( retroMsx1 )
+__export const char retroMsx01[] = {
+    #embed 0xffff 136 "assets/music/FarmGameRadioRetro.sid"
+};
+
 #pragma code ( musicCode )
 #pragma data ( musicData )
 
@@ -22,7 +27,7 @@ void loadMusic(){
     do {
 #assign y 0
 #repeat
-         ((volatile char*) MSX_DST_ADR)[y + i] = ((char*) MSX_SRC_ADR)[y + i];
+         ((volatile char*) MSX_DST_ADR)[y + i] = ((char*) MSX_SRC_ADR_0)[y + i];
 #assign y y + 256
 #until y == 0x2000
         i++;

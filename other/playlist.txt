@@ -1,0 +1,23 @@
+[Main Game]
+
+00: Take me for a dance
+01: For Sausage and Stonka
+02: Flack Attack
+03: Dare to Lair
+04: Forest Froth
+05: War of the Crops and Worlds
+
+[Retro]
+
+00: Robbing Mr Hubbard
+01: From Bangladesh to Bankok
+02: Gray walls torn down
+
+[Radio]
+
+01: Kraftwerk - The Model
+02: Yazz - Don't Go
+03: Human League - Don't You Want Me?
+04: Depeche Mode - Everything Counts
+05: Donna Summer - I Feel Love
+06: OMD - Enola Gay

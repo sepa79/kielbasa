@@ -344,6 +344,15 @@ __interrupt static void controlIRQ2_C() {
         vic.raster = CONTROL_IRQ1_POS;
         // indicate frame position - NOT, as keyboard would not be read in this pos at all. Lets pretend we are a bit higher up.
         // gms_framePos = FRAME_TOP;
+        if(gms_enableMusic){
+            _prevRomCfg = ((byte *)0x01)[0];
+            __asm {
+                lda #MSX_ROM
+                sta $01
+                jsr MSX_PLAY
+            };
+            ((byte *)0x01)[0] = _prevRomCfg;
+        }
     } else {
         // set the irq to 1st routine
         *(void **)0x0314 = splitScreenIRQ1;

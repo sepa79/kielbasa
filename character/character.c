@@ -7,7 +7,7 @@
 #define NO_SLOT 0xff
 const byte allChars_storyTxtIdx[CHARACTER_COUNT]           = {TXT_IDX_CHAR_1_STORY, TXT_IDX_CHAR_2_STORY, TXT_IDX_CHAR_3_STORY, TXT_IDX_CHAR_4_STORY};
 const byte allChars_nameIdx[CHARACTER_COUNT]               = {TXT_IDX_CHAR_1_NAME, TXT_IDX_CHAR_2_NAME, TXT_IDX_CHAR_3_NAME, TXT_IDX_CHAR_4_NAME};
-byte allChars_energy[CHARACTER_COUNT]                      = {100,  80,  50,  30};
+byte allChars_energy[CHARACTER_COUNT]                      = {100,  100,  100,  100};
 const char* allChars_picture[CHARACTER_COUNT]              = { SPR_PORTRAIT01, SPR_PORTRAIT02, SPR_PORTRAIT03, SPR_PORTRAIT04};
 const byte allChars_stats[CHARACTER_COUNT][3]              = { {3,3,3}, {2,3,2}, {4,2,4}, {3,3,4}};
 const byte allChars_skills[CHARACTER_COUNT][SKILL_COUNT]   = { {3,3,4,3}, {2,6,1,1}, {1,1,1,7}, {6,2,1,1}};

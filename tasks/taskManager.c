@@ -208,7 +208,7 @@ static byte _findUnassignedTaskForSkill(byte skillIt) {
             return NO_TASK;
         }
         // there is something we can do
-        if(task_reqType[taskId] == skillIt){
+        if(task_worker[taskId] == NO_CHARACTER && task_reqType[taskId] == skillIt){
             return taskId;
         }
     }
@@ -250,9 +250,9 @@ void tasksTick(){
         }
     }
     // debug
-    // byte str[4];
-    // sprintf(str, "FWC: %3u", freeWorkersCount);
-    // cwin_putat_string_raw(&cw, 0, 10, str, VCOL_GREEN);
+    byte str[4];
+    sprintf(str, "FWC: %3u", freeWorkersCount);
+    cwin_putat_string_raw(&cw, 0, 10, str, VCOL_GREEN);
 
     // find a task for free workers
     if(freeWorkersCount > 0){
