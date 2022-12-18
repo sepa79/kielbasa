@@ -156,13 +156,29 @@
       {
         "id": "MENU_OPTIONS_MSX",
         "menu_opt": "2",
-        "pl": "Muzyka on/off",
-        "en": "Music on/off"
+        "pl": "Ustawienia muzyki",
+        "en": "Music settings"
       },
       {
         "id": "OPTIONS_HEADER",
         "pl": "Ustawienia gry",
         "en": "Game settings"
+      },
+      {
+        "id": "MUSIC_OPTIONS_HEADER",
+        "pl": "Ustawienia muzyki",
+        "en": "Music settings"
+      },
+      {
+        "id": "MENU_OPTIONS_MSX_PLAY",
+        "pl": "Return - graj",
+        "en": "Return - play"
+      },
+      {
+        "id": "MENU_OPTIONS_MSX_ON_OFF",
+        "menu_opt": "1",
+        "pl": "Muzyka on/off",
+        "en": "Music on/off"
       },
       {
         "id": "TASK_MANAGER_PRIO_HEADER",

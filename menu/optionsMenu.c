@@ -161,7 +161,7 @@ void _showMusicMenu(){
     cwin_clear(&cw);
 
     // static menu texts
-    cwin_putat_string_raw(&cw, 0, 0, TXT[TXT_IDX_OPTIONS_HEADER], VCOL_GREEN);
+    cwin_putat_string_raw(&cw, 0, 0, TXT[TXT_IDX_MUSIC_OPTIONS_HEADER], VCOL_GREEN);
 
     displayMenu(MUSIC_MENU);
     _displayPlaylist();
@@ -210,8 +210,8 @@ static void _backToPreviousMenu(){
 }
 
 const struct MenuOption MUSIC_MENU[] = {
-    { TXT_IDX_MENU_EXIT, KEY_RETURN, UI_LR, &_loadMsx, 0, 1, 1},
-    { TXT_IDX_MENU_OPTIONS_MSX, '1', UI_LR, &_toggleMusic, 0, 16, 1},
+    { TXT_IDX_MENU_OPTIONS_MSX_PLAY, KEY_RETURN, UI_LR, &_loadMsx, 0, 1, 1},
+    { TXT_IDX_MENU_OPTIONS_MSX_ON_OFF, '1', UI_LR, &_toggleMusic, 0, 16, 1},
     { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LR, &showOptionsMenu, 0, 34, 1},
     { TXT_IDX_MENU_TASK_MANAGER_W, 'w', UI_U+UI_HIDE, &_upRow, 0, 0, 4 },
     { TXT_IDX_MENU_TASK_MANAGER_S, 's', UI_D+UI_HIDE, &_downRow, 0, 0, 22 },
