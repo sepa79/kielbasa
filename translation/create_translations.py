@@ -46,6 +46,8 @@ def generate_common_h_index_array( config ):
     out = []
     common = []
     if config.get( 'main_contents' ):
+        common.append( '//     "pragma_label": %s,' % (config[ 'main_contents' ].get( 'pragma_label' ) ) )
+        common.append( '//     "array_label": %s,\n' % (config[ 'main_contents' ].get( 'array_label' ) ) )
         if config[ 'main_contents' ].get( 'contents' ):
             # if there is 'main_contents' and 'contents' in 'data.json' file
             for p in config[ 'main_contents' ][ 'contents' ]:
@@ -56,7 +58,7 @@ def generate_common_h_index_array( config ):
                 if p.get( 'common' ):
                     p1 = 'static const char %s_%s[] =' % ( prefix, p[ 'id' ] )
                     text = p[ 'common' ]
-                    common.append( f'// "{text}"' )
+                    common.append( f'//     "common": "{text}"' )
                     if p.get( 'common_m' ):     # common text mask label
                         text = underline_text_pl( text, p[ mask ] )
                     else:
@@ -132,8 +134,10 @@ def generate_c_file_text_arrays( config, lang, text_filter ):
             else:
                 p1 = 'const char %s_%s_%s[] =' %( prefix, lang.upper(), p['id'] )
                 text = p[ lang ]
-                # out.append( f'// {p}' )
-                out.append( f'//     "{lang}": "{text}"' )
+                if isinstance( text, list ):
+                    out.append( f'//     "{lang}": "' + '"\n//           "'.join(text) + '"' )
+                else:
+                    out.append( f'//     "{lang}": "{text}"' )
                 # support for json multiline values
                 if isinstance(text, list):
                     text = "".join( text )
