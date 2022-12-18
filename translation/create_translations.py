@@ -71,13 +71,18 @@ def generate_common_h_index_array( config ):
     return out
 
 # generate index array for given 'lang'
-def generate_texts_c_generic_lang_file_index_arrays( config, lang ):
+# def generate_texts_c_generic_lang_file_index_arrays( config, lang ):
+def generate_c_file_index_arrays( config, lang ):
     out = []
     for k, v in config.items():
+        append_after_comments = []
         if v.get( "pragma_label" ):
-            out.append( "\n#pragma data ( txt%s%s )" % ( lang.capitalize(), v.get( "pragma_label" ) ) )
+            out.append( '\n//     "pragma_label": %s,' % (v.get( "pragma_label" ) ) )
+            append_after_comments.append( "\n#pragma data ( txt%s%s )" % ( lang.capitalize(), v.get( "pragma_label" ) ) )
         if v.get( "array_label" ):
-            out.append( "__export const char* %s_%s[] = {" % ( v.get( "array_label" ), lang.upper() ) )
+            out.append( '//     "array_label": %s,' % (v.get( "array_label" ) ) )
+            append_after_comments.append( "__export const char* %s_%s[] = {" % ( v.get( "array_label" ), lang.upper() ) )
+        out.extend( append_after_comments )
         for p in v.get( "contents" ):
             prefix = "TXT" if not p.get("prefix") else p["prefix"]
             if p.get( "common" ):
@@ -89,13 +94,18 @@ def generate_texts_c_generic_lang_file_index_arrays( config, lang ):
     return out
 
 # generate index array for 'pl' language
-def generate_texts_c_pl_file_index_arrays( config, lang ):
+# def generate_texts_c_pl_file_index_arrays( config, lang ):
+def generate_c_file_pl_index_arrays( config, lang ):
     out = []
     for k, v in config.items():
+        append_after_comments = []
         if v.get( "pragma_label" ):
-            out.append( "\n#pragma data ( txt%s%s )" % ( lang.capitalize(), v.get( "pragma_label" ) ) )
+            out.append( '\n//     "pragma_label": %s,' % (v.get( "pragma_label" ) ) )
+            append_after_comments.append( "\n#pragma data ( txt%s%s )" % ( lang.capitalize(), v.get( "pragma_label" ) ) )
         if v.get( "array_label" ):
-            out.append( "__export const char* %s[] = {" % v.get( "array_label" ) )
+            out.append( '//     "array_label": %s,' % (v.get( "array_label" ) ) )
+            append_after_comments.append( "__export const char* %s[] = {" % v.get( "array_label" ) )
+        out.extend( append_after_comments )
         for p in v.get( "contents" ):
             prefix = "TXT" if not p.get("prefix") else p["prefix"]
             if p.get( "common" ):
@@ -110,6 +120,8 @@ def generate_texts_c_pl_file_index_arrays( config, lang ):
 def generate_c_file_text_arrays( config, lang, text_filter ):
     out = []
     for k, v in config.items():
+        out.append( '\n//     "pragma_label": "%s"' % ( v.get('pragma_label') ) )
+        out.append( '//     "array_label" : "%s"\n' % ( v.get('array_label') ) )
         for p in v.get( "contents" ):
             prefix = "TXT" if not p.get("prefix") else p["prefix"]
             if p.get( "common" ):
@@ -120,7 +132,8 @@ def generate_c_file_text_arrays( config, lang, text_filter ):
             else:
                 p1 = 'const char %s_%s_%s[] =' %( prefix, lang.upper(), p['id'] )
                 text = p[ lang ]
-                out.append( f'// "{text}"' )
+                # out.append( f'// {p}' )
+                out.append( f'//     "{lang}": "{text}"' )
                 # support for json multiline values
                 if isinstance(text, list):
                     text = "".join( text )
@@ -162,6 +175,10 @@ def write_texts_c_file( template, text_array, index_array, lang ):
     fh.close()
 
 # create texts{{ LANGUAGE }}.h file
+#
+# LANGUAGE_U    -- language symbol UPPERCASE
+# LANGUAGE_C    -- language symbol Capitalized
+#
 def create_h_file_text_arrays( template, lang ):
     content = open( template, "r" ).read()
     content = content.replace( "{{ LANGUAGE_U }}", lang.upper() )
@@ -172,22 +189,22 @@ def create_h_file_text_arrays( template, lang ):
     fh.writelines( content )
     fh.close()
 
-# master function
+# generic master function for 'lang' translation
 # creates texts{{ LANGUAGE }}.c file and texts{{ LANGUAGE }}.h file
 def create_lang_files( config, lang ):
     # texts{{ lang }}.c
     txt_array = generate_c_file_text_arrays( config, lang, encode_charset )
-    index_arrays = generate_texts_c_generic_lang_file_index_arrays( config, lang )
+    index_arrays = generate_c_file_index_arrays( config, lang )
     write_texts_c_file( "templates/texts_c.template", txt_array, index_arrays, lang )
     # texts{{ lang }}.h
     create_h_file_text_arrays( "templates/texts_h.template", lang )
 
-# master function
+# dedicated master function for Polish translation
 # creates textsPL.c file and textsPL.h file
 def create_pl_files( config ):
     # textsPL.c
     txt_array = generate_c_file_text_arrays( config, "pl", encode_charset )
-    index_arrays = generate_texts_c_pl_file_index_arrays( config, "pl" )
+    index_arrays = generate_c_file_pl_index_arrays( config, "pl" )
     write_texts_c_file(  "templates/texts_c_pl.template", txt_array, index_arrays, "pl" )
     # textsPL.h
     create_h_file_text_arrays(  "templates/texts_h_pl.template", "pl" )
