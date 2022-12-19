@@ -229,8 +229,8 @@ static void _assignTaskToWorker(byte taskId, byte charSlot) {
     // updateStatusBar(s"  Task assigned  ");
 }
 
-
-
+// Minimum energy needed by character to undertake any tasks
+#define MIN_ENERGY_TO_CONTINUE 10
 // Called by callendar.c
 void tasksTick(){
     // no point going through the loop if there are no tasks
@@ -245,14 +245,16 @@ void tasksTick(){
         if(characterSlots[it] != NO_CHARACTER){
             byte charIdx = characterSlots[it];
             if(!allChars_busy[charIdx]){
-                freeWorkersCount++;
+                //check if he is not exhausted
+                if(allChars_energy[charIdx] >= MIN_ENERGY_TO_CONTINUE)
+                    freeWorkersCount++;
             }
         }
     }
     // debug
-    byte str[4];
-    sprintf(str, "FWC: %3u", freeWorkersCount);
-    cwin_putat_string_raw(&cw, 0, 10, str, VCOL_GREEN);
+    // byte str[4];
+    // sprintf(str, "FWC: %3u", freeWorkersCount);
+    // cwin_putat_string_raw(&cw, 0, 10, str, VCOL_GREEN);
 
     // find a task for free workers
     if(freeWorkersCount > 0){

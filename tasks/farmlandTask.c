@@ -155,7 +155,7 @@ void reapFieldTask(byte taskId){
     // handle task removal - currently unused
     } else if(task_status[taskId] == TASK_STATUS_REMOVE){
         // clean up, don't leave field in dangling 'reaping' state
-        field_stage[fieldId] = PLANT_STAGE_NONE;
+        field_stage[fieldId] = PLANT_STAGE_READY;
     // hanlde errors - should never happen!
     } else {
         // Sum Ting Wong, We Tu Lo

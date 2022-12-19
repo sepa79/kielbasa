@@ -396,13 +396,13 @@ static void _reapPlant(){
         return;
     }
     // indicate task is assigned
-    field_plantId[_currentField] = _currentPlant;
+    // field_plantId[_currentField] = _currentPlant;
     field_stage[_currentField]   = PLANT_STAGE_REAP_TASK_ASSIGNED;
     _displayFieldList();
 
     // create Task
     struct Task task;
-    byte idx = plant_taskDscIdx[_currentPlant];
+    byte idx = plant_taskDscIdx[field_plantId[_currentField]];
     // "Field 2, Potatoes"
     sprintf(task.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
     task.codeRef   = &reapFieldTask;
