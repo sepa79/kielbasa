@@ -1,5 +1,7 @@
 #include <c64/types.h>
 
+#include <engine/logger.h>
+
 #include <tick/farmlandTick.h>
 #include <tasks/taskManager.h>
 #include <assets/assetsSettings.h>
@@ -94,6 +96,11 @@ void sowFieldTask(byte taskId){
     // hanlde errors - should never happen!
     } else {
         // Sum Ting Wong, We Tu Lo
+
+        LOG_DATA[0] = LOG_TASK_STATUS_UNKNOWN;
+        setTaskLogMsg(taskId);
+        logger(LOG_ERROR | LOG_MSG_TASK);
+
         byte str[50];
         sprintf(str, s"  ""[%3u]"s"sowFieldTask - unknown status code   ", task_status[taskId]);
         updateStatusBar(str);
@@ -159,6 +166,10 @@ void reapFieldTask(byte taskId){
     // hanlde errors - should never happen!
     } else {
         // Sum Ting Wong, We Tu Lo
+        LOG_DATA[0] = LOG_TASK_STATUS_UNKNOWN;
+        setTaskLogMsg(taskId);
+        logger(LOG_ERROR | LOG_MSG_TASK);
+
         byte str[50];
         sprintf(str, s"  ""[%3u]"s"reapFieldTask - unknown status code   ", task_status[taskId]);
         updateStatusBar(str);

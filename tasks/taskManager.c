@@ -4,7 +4,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <engine/logger.h>
+
 #include <engine/easyFlashBanks.h>
+#include <engine/logger.h>
 #include <tasks/taskManager.h>
 #include <translation/common.h>
 #include <character/character.h>
@@ -59,10 +62,25 @@ void initTaskList() {
 //-----------------------------------------------------------------------------------------
 #pragma code ( tasksCode )
 #pragma data ( data )
+
+void setTaskLogMsg(byte taskId){
+    LOG_DATA[1] = task_nameIdx[taskId];
+    LOG_DATA[2] = task_worker[taskId];
+    LOG_DATA[3] = task_status[taskId];
+    LOG_DATA[4] = task_done[taskId];
+    LOG_DATA[5] = task_params[taskId][0];
+    LOG_DATA[6] = task_params[taskId][1];
+    LOG_DATA[7] = task_params[taskId][2];
+    LOG_DATA[8] = task_params[taskId][3];
+    LOG_DATA[9] = task_params[taskId][4];
+}
+
 static bool _addTask(struct Task * task){
     // find entry in the task arrays
     if(_nextFreeTaskRef == TASK_ARRAY_SIZE){
-        // TODO: Add text
+        // LOG_DATA = "TASKS FULL";
+        // logger(LOG_INFO | LOG_MSG_TEXT);
+
         updateStatusBar(s"  No more room in Task Queue  ");
         setErrorCursor();
         return false;
@@ -87,6 +105,11 @@ static bool _addTask(struct Task * task){
     // assigned later during ticks
     task_worker[nextFreeTask] = NO_CHARACTER;
     task_done[nextFreeTask] = 0;
+
+    LOG_DATA[0] = LOG_TASK_NEW_TASK;
+    setTaskLogMsg(nextFreeTask);
+    logger(LOG_INFO | LOG_MSG_TASK);
+
     return true;
 }
 
@@ -99,6 +122,10 @@ static void _removeTaskByRef(byte taskRefId){
         setErrorCursor();
         return;
     }
+
+    LOG_DATA[0] = LOG_TASK_REMOVE_TASK;
+    setTaskLogMsg(taskId);
+    logger(LOG_INFO | LOG_MSG_TASK);
 
     // remove worker
     unassignTask(taskId);
@@ -227,6 +254,10 @@ static void _assignTaskToWorker(byte taskId, byte charSlot) {
 
     setCharacterSlotIcon(charSlot, task_icon[taskId]);
     // updateStatusBar(s"  Task assigned  ");
+
+    LOG_DATA[0] = LOG_TASK_ASSIGNED_TO_WORKER;
+    setTaskLogMsg(taskId);
+    log(LOG_DEBUG | LOG_MSG_TASK);
 }
 
 // Minimum energy needed by character to undertake any tasks

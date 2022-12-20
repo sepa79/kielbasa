@@ -4,6 +4,8 @@
 #include <c64/cia.h>
 #include <stdbool.h>
 #include <c64/easyflash.h>
+#include <string.h>
+#include <engine/logger.h>
 
 #include <menu/menuSystem.h>
 #include <menu/mainMenu.h>
@@ -43,6 +45,8 @@ void prepareScroll(){
 }
 
 void mainLoop(){
+    memcpy(LOG_DATA, p"Game Start", 10);
+    logger(LOG_INFO | LOG_MSG_TEXT);
     // TODO: Switch to CRT here
     initCharacterList();
     initTaskList();
@@ -64,6 +68,9 @@ void mainLoop(){
     splashScreen(false, 2);
 
     initRasterIRQ();
+
+    memcpy(LOG_DATA, p"Main Loop ", 10);
+    logger(LOG_DEBUG | LOG_MSG_TEXT);
 
     bool oncePerFrameFinished = false;
     while(1){
