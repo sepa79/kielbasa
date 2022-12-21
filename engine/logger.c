@@ -6,6 +6,12 @@
 struct LogMsg LOG_MSGS[LOG_MAX_MSGS];
 byte log_index = 0;
 
+// sets the timestamp, msgId and moves log_index up. user needs to set LOG_DATA on its own, like:
+// - Simple log some text, max chars == LOG_DATA_SIZE
+//    memcpy(LOG_DATA, p"Game Start", 10);
+//    logger(LOG_INFO | LOG_MSG_TEXT);
+// - Sublevels - no text, just encoded data decrypted by LogMenu.h
+
 void logger(byte msgId) {
     // build and store LogMsg
     LOG_MSGS[log_index].hour  = cal_dateHour;
@@ -14,16 +20,6 @@ void logger(byte msgId) {
     LOG_MSGS[log_index].yearH = cal_dateYearH;
     LOG_MSGS[log_index].yearL = cal_dateYearL;
     LOG_MSGS[log_index].msgId = msgId;
-    // LOG_MSGS[log_index].data[0] = data[0];
-    // LOG_MSGS[log_index].data[1] = data[1];
-    // LOG_MSGS[log_index].data[2] = data[2];
-    // LOG_MSGS[log_index].data[3] = data[3];
-    // LOG_MSGS[log_index].data[4] = data[4];
-    // LOG_MSGS[log_index].data[5] = data[5];
-    // LOG_MSGS[log_index].data[6] = data[6];
-    // LOG_MSGS[log_index].data[7] = data[7];
-    // LOG_MSGS[log_index].data[8] = data[8];
-    // LOG_MSGS[log_index].data[9] = data[9];
 
     log_index++;
     if(log_index >= LOG_MAX_MSGS)

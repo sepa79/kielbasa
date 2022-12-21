@@ -10,22 +10,46 @@
 #include <assets/assetsSettings.h>
 #include <engine/gameSettings.h>
 
+// how much space on screen msg takes, 9 is already reserved for timestamp
+// so 2 screen lines after adding timestamp
+#define LOG_MSGS_LENGTH 71
 // how many pages we need depends on how many messages can be displayed per page
-#define MSG_PER_PAGE 8
-#define PAGES_COUNT LOG_MAX_MSGS / MSG_PER_PAGE
+#define LOG_MSGS_PER_PAGE 8
+#define LOG_PAGES_COUNT LOG_MAX_MSGS / LOG_MSGS_PER_PAGE
 #define COL_OFFSET_LOGS 0
 #define ROW_OFFSET_LOGS 4
 #define LOG_LINE LOG_MSGS[i]
+#define LOG_LINE_DATA_CONTEXT LOG_MSGS[i].data[0]
+#define LOG_LINE_TASK_WORKER LOG_MSGS[i].data[2]
 static byte _currentPage = 0;
+static byte _timestamp[9];
+static byte _str[LOG_MSGS_LENGTH];
+
+static void _prepareTaskLogData(byte i){
+    switch(LOG_LINE_DATA_CONTEXT) {
+        case LOG_DATA_CONTEXT_TASK_ASSIGNED_TO_WORKER:
+            sprintf(_str, p"Task [""%s"p"] assigned to char [""%u""]", TXT[LOG_LINE_TASK_NAMEIDX], LOG_LINE_TASK_WORKER);
+            break;
+        case LOG_DATA_CONTEXT_TASK_NEW_TASK:
+            sprintf(_str, p"New task created [""%s""]", TXT[LOG_LINE_TASK_NAMEIDX]);
+            break;
+        case LOG_DATA_CONTEXT_TASK_REMOVE_TASK:
+            sprintf(_str, p"Task [""%s"p"] removed, status [""%u"p"]", TXT[LOG_LINE_TASK_NAMEIDX], LOG_LINE_TASK_STATUS);
+            break;
+        case LOG_DATA_CONTEXT_TASK_STATUS_UNKNOWN:
+            sprintf(_str, p"UNHANDLED STATUS: Task [""%s"p"] char[""%u"p"] status [""%u"p"]", TXT[LOG_LINE_TASK_NAMEIDX], LOG_LINE_TASK_WORKER, LOG_LINE_TASK_STATUS);
+            break;
+    }
+}
 
 static void _showLogs(){
+    cwin_clear(&cw);
     // header
     cwin_putat_string_raw(&cw, COL_OFFSET_LOGS, ROW_OFFSET_LOGS-1, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER], VCOL_YELLOW);
 
-    byte logIndex = _currentPage * MSG_PER_PAGE;
-    byte timestamp[9];
+    byte logIndex = _currentPage * LOG_MSGS_PER_PAGE;
     byte row = 0;
-    for(byte i=logIndex;i<logIndex+MSG_PER_PAGE;i++){
+    for(byte i=logIndex;i<logIndex+LOG_MSGS_PER_PAGE;i++){
         byte color = VCOL_GREEN;
         // print task marker
         if(LOG_LINE.msgId & LOG_DEBUG){
@@ -34,21 +58,27 @@ static void _showLogs(){
             color = VCOL_RED;
         }
 
-        sprintf(timestamp, "%02u.%02u %02u", LOG_LINE.day, LOG_LINE.month, LOG_LINE.hour);
-        cwin_putat_string_raw(&cw, COL_OFFSET_LOGS, ROW_OFFSET_LOGS+row, timestamp, color);
+        // print timestamp
+        sprintf(_timestamp, "%02u.%02u %02u", LOG_LINE.day, LOG_LINE.month, LOG_LINE.hour);
+        cwin_putat_string_raw(&cw, COL_OFFSET_LOGS, ROW_OFFSET_LOGS+row, _timestamp, color);
 
         // now decode the msg type and act on it
         byte msgId = LOG_LINE.msgId & 0b11111100;
         switch(msgId) {
+            // ist just some text, print it
             case LOG_MSG_TEXT:
-                cwin_putat_chars(&cw, COL_OFFSET_LOGS+9, ROW_OFFSET_LOGS+row, LOG_LINE.data, 10, color);
+                cwin_putat_chars(&cw, COL_OFFSET_LOGS+9, ROW_OFFSET_LOGS+row, LOG_LINE.data, LOG_DATA_SIZE, color);
                 break;
 
+            // special cases - message types - each has to be handled on its own
+            //Each context should have its own handler routine, passing the current Log index 'i' into it
             case LOG_MSG_TASK:
+                _prepareTaskLogData(i);
+                cwin_putat_string(&cw, COL_OFFSET_LOGS+9, ROW_OFFSET_LOGS+row, _str, color);
                 break;
         }
 
-        row++;
+        row+=2;
    }
 }
 
@@ -56,12 +86,12 @@ static void _upPage(){
     if(_currentPage > 0){
         _currentPage--;
     } else {
-        _currentPage = PAGES_COUNT-1;
+        _currentPage = LOG_PAGES_COUNT-1;
     }
     _showLogs();
 }
 static void _downPage(){
-    if(_currentPage < PAGES_COUNT-1){
+    if(_currentPage < LOG_PAGES_COUNT-1){
         _currentPage++;
     } else {
         _currentPage = 0;

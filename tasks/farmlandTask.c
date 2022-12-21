@@ -97,7 +97,7 @@ void sowFieldTask(byte taskId){
     } else {
         // Sum Ting Wong, We Tu Lo
 
-        LOG_DATA[0] = LOG_TASK_STATUS_UNKNOWN;
+        LOG_DATA[0] = LOG_DATA_CONTEXT_TASK_STATUS_UNKNOWN;
         setTaskLogMsg(taskId);
         logger(LOG_ERROR | LOG_MSG_TASK);
 
@@ -166,7 +166,7 @@ void reapFieldTask(byte taskId){
     // hanlde errors - should never happen!
     } else {
         // Sum Ting Wong, We Tu Lo
-        LOG_DATA[0] = LOG_TASK_STATUS_UNKNOWN;
+        LOG_DATA[0] = LOG_DATA_CONTEXT_TASK_STATUS_UNKNOWN;
         setTaskLogMsg(taskId);
         logger(LOG_ERROR | LOG_MSG_TASK);
 
