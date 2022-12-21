@@ -181,6 +181,18 @@
         "en": "Music on/off"
       },
       {
+        "id": "LOG_MENU_HEADER",
+        "pl": "Logi i wydarzenia",
+        "en": "Logs and events"
+      },
+      {
+        "id": "LOG_MENU_LOG_TABLE_HEADER",
+        "pl":   " Data   | Opis                          ",
+        "pl_m": "----------------------------------------",
+        "en":   " Date   | Description                   ",
+        "en_m": "----------------------------------------"
+      },
+      {
         "id": "TASK_MANAGER_PRIO_HEADER",
         "pl": "Manager priorytetów zadań",
         "en": "Task Priority Manager"

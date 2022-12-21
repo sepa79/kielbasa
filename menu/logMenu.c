@@ -44,8 +44,13 @@ static void _prepareTaskLogData(byte i){
 
 static void _showLogs(){
     cwin_clear(&cw);
+
+    // static menu texts
+    cwin_putat_string_raw(&cw, 0, 0, TXT[TXT_IDX_LOG_MENU_HEADER], VCOL_GREEN);
+
+    displayMenu(LOG_MENU);
     // header
-    cwin_putat_string_raw(&cw, COL_OFFSET_LOGS, ROW_OFFSET_LOGS-1, TXT[TXT_IDX_TASK_MANAGER_TABLE_HEADER], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, COL_OFFSET_LOGS, ROW_OFFSET_LOGS-1, TXT[TXT_IDX_LOG_MENU_LOG_TABLE_HEADER], VCOL_YELLOW);
 
     byte logIndex = _currentPage * LOG_MSGS_PER_PAGE;
     byte row = 0;
@@ -109,17 +114,12 @@ static void _backToPreviousMenu(){
 void showLogMenu(){
     gms_textMode = true;
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, BIG_SCREEN_Y_START, SCREEN_WIDTH, BIG_SCREEN_HEIGHT);
-    cwin_clear(&cw);
 
-    // static menu texts
-    cwin_putat_string_raw(&cw, 0, 0, TXT[TXT_IDX_TASK_MANAGER_HEADER], VCOL_GREEN);
-
-    displayMenu(LOG_MENU);
     _showLogs();
 }
 
 const struct MenuOption LOG_MENU[] = {
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LR, &_backToPreviousMenu, 0, 20, 20 },
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LR, &_backToPreviousMenu, 0, 1, 21 },
     { TXT_IDX_MENU_TASK_MANAGER_W, 'w', UI_U+UI_HIDE, &_upPage, 0, 0, ROW_OFFSET_LOGS-1 },
     { TXT_IDX_MENU_TASK_MANAGER_S, 's', UI_D+UI_HIDE, &_downPage, 0, 0, ROW_OFFSET_LOGS+10 },
 
