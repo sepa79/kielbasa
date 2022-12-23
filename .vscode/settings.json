@@ -46,7 +46,8 @@
         "rasterirq.h": "c",
         "logger.h": "c",
         "corecrt_memory.h": "c",
-        "vcruntime_string.h": "c"
+        "vcruntime_string.h": "c",
+        "charactertick.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }

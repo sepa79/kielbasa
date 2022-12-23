@@ -46,7 +46,7 @@ const struct MenuOption SMOKE_HOUSE_MENU[] = {
 
 static void _menuHandler(void){
     mnu_isGfxLoaded = false;
-    loadMenuGfx(cal_isDay);
+    loadMenuGfx(true);
 
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);

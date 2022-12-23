@@ -16,6 +16,10 @@ const byte terModifierTable[5] = {4, 8, 10, 12, 16};
 #define FIELD_CAPACITY 100
 
 void sowFieldTask(byte taskId){
+    LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_ENTRY;
+    setTaskLogMsg(taskId);
+    logger(LOG_DEBUG | LOG_MSG_TASK);
+
     // get the fieldId - this is the definition from menu/farmland.c
     // task.params[0] = _currentPlant;
     // task.params[1] = _currentField;
@@ -24,6 +28,9 @@ void sowFieldTask(byte taskId){
     // task.params[4] = 0;
     byte plantId = task_params[taskId][0];
     byte fieldId = task_params[taskId][1];
+
+    byte energyNeeded = 0;
+    signed int partDone = 0;
 
     if(task_status[taskId] == TASK_STATUS_NEW){
         // how much can be sown depends on:
@@ -46,7 +53,7 @@ void sowFieldTask(byte taskId){
         byte priModifier = allChars_stats[ worker ][ STAT_STR ] -1;
         byte secModifier = allChars_stats[ worker ][ STAT_INT ] -1;
         byte terModifier = allChars_stats[ worker ][ STAT_CUN ] -1;
-        signed int partDone = skill * 10 + priModifierTable[priModifier]-10 + secModifierTable[secModifier]-10 + terModifierTable[terModifier]-10;
+        partDone = skill * 10 + priModifierTable[priModifier]-10 + secModifierTable[secModifier]-10 + terModifierTable[terModifier]-10;
         if(partDone <= 0){
             partDone = 1;
         }
@@ -63,7 +70,7 @@ void sowFieldTask(byte taskId){
         if(flt_storage[plantId] >= partDone) {
 
             // check if we got enough energy
-            byte energyNeeded = partDone > 10 ? 10 : partDone;
+            energyNeeded = partDone > 10 ? 10 : partDone;
             if(checkEnergyLevel(worker, energyNeeded)){
                 flt_storage[plantId] -= partDone;
 
@@ -78,15 +85,29 @@ void sowFieldTask(byte taskId){
                 if(field_stage_planted[fieldId] >= FIELD_CAPACITY*field_area[fieldId]) {
                     // task done, set status & remove
                     task_status[taskId] = TASK_STATUS_DONE;
+
+                    LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_DONE;
+                    setTaskLogMsg(taskId);
+                    logger(LOG_INFO | LOG_MSG_TASK);
+
                     removeTask(taskId);
                 }
             } else {
                 // not enough energy? set character to MIA by unassigning this task
+                LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_NOT_ENOUGH_ENERGY;
+                setTaskLogMsg(taskId);
+                logger(LOG_INFO | LOG_MSG_TASK);
+
                 unassignTask(taskId);
             }
         } else {
             // task done - not enough seeds, set status & remove
             task_status[taskId] = TASK_STATUS_DONE;
+
+            LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_NOT_ENOUGH_SEEDS;
+            setTaskLogMsg(taskId);
+            logger(LOG_INFO | LOG_MSG_TASK);
+            
             removeTask(taskId);
         }
     // handle task removal
@@ -97,7 +118,7 @@ void sowFieldTask(byte taskId){
     } else {
         // Sum Ting Wong, We Tu Lo
 
-        LOG_DATA[0] = LOG_DATA_CONTEXT_TASK_STATUS_UNKNOWN;
+        LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_STATUS_UNKNOWN;
         setTaskLogMsg(taskId);
         logger(LOG_ERROR | LOG_MSG_TASK);
 
@@ -106,6 +127,13 @@ void sowFieldTask(byte taskId){
         updateStatusBar(str);
         setErrorCursor();
     }
+
+    LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_EXIT;
+    setTaskLogMsg(taskId);
+    LOG_MSG.LOG_DATA_TASK_PARAMS3 = energyNeeded;
+    LOG_MSG.LOG_DATA_TASK_PARAMS4 = partDone;
+    logger(LOG_DEBUG | LOG_MSG_TASK);
+
     updateMenuIfIn(MENU_BANK_FARMLAND);
 }
 

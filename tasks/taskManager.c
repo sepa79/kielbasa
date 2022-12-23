@@ -63,15 +63,15 @@ void initTaskList() {
 
 // definitons in logger.h
 void setTaskLogMsg(byte taskId){
-    LOG_DATA_TASK_NAMEIDX = task_nameIdx[taskId];
-    LOG_DATA_TASK_WORKER  = task_worker[taskId];
-    LOG_DATA_TASK_STATUS  = task_status[taskId];
-    LOG_DATA_TASK_DONE    = 0; //undef atm
-    LOG_DATA_TASK_PARAMS1 = task_params[taskId][0];
-    LOG_DATA_TASK_PARAMS2 = task_params[taskId][1];
-    LOG_DATA_TASK_PARAMS3 = task_params[taskId][2];
-    LOG_DATA_TASK_PARAMS4 = task_params[taskId][3];
-    LOG_DATA_TASK_PARAMS5 = task_params[taskId][4];
+    LOG_MSG.LOG_DATA_TASK_NAMEIDX = task_nameIdx[taskId];
+    LOG_MSG.LOG_DATA_TASK_WORKER  = task_worker[taskId];
+    LOG_MSG.LOG_DATA_TASK_STATUS  = task_status[taskId];
+    LOG_MSG.LOG_DATA_TASK_ID      = taskId;
+    LOG_MSG.LOG_DATA_TASK_PARAMS1 = task_params[taskId][0];
+    LOG_MSG.LOG_DATA_TASK_PARAMS2 = task_params[taskId][1];
+    LOG_MSG.LOG_DATA_TASK_PARAMS3 = task_params[taskId][2];
+    LOG_MSG.LOG_DATA_TASK_PARAMS4 = task_params[taskId][3];
+    LOG_MSG.LOG_DATA_TASK_PARAMS5 = task_params[taskId][4];
 }
 
 static bool _addTask(struct Task * task){
@@ -97,14 +97,14 @@ static bool _addTask(struct Task * task){
     task_params[nextFreeTask][2] = task->params[2];
     task_params[nextFreeTask][3] = task->params[3];
     task_params[nextFreeTask][4] = task->params[4];
-    task_reqType[nextFreeTask] = task->reqType;
+    task_reqType[nextFreeTask]   = task->reqType;
     strcpy(task_desc[nextFreeTask], task->desc);
-    task_icon[nextFreeTask] = task->icon;
-    task_status[nextFreeTask] = task->status;
+    task_icon[nextFreeTask]      = task->icon;
+    task_status[nextFreeTask]    = task->status;
     // assigned later during ticks
-    task_worker[nextFreeTask] = NO_CHARACTER;
+    task_worker[nextFreeTask]    = NO_CHARACTER;
 
-    LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_NEW_TASK;
+    LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_NEW_TASK;
     setTaskLogMsg(nextFreeTask);
     logger(LOG_INFO | LOG_MSG_TASK);
 
@@ -121,7 +121,7 @@ static void _removeTaskByRef(byte taskRefId){
         return;
     }
 
-    LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_REMOVE_TASK;
+    LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_REMOVE_TASK;
     setTaskLogMsg(taskId);
     logger(LOG_INFO | LOG_MSG_TASK);
 
@@ -253,7 +253,7 @@ static void _assignTaskToWorker(byte taskId, byte charSlot) {
     setCharacterSlotIcon(charSlot, task_icon[taskId]);
     // updateStatusBar(s"  Task assigned  ");
 
-    LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_ASSIGNED_TO_WORKER;
+    LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_ASSIGNED_TO_WORKER;
     setTaskLogMsg(taskId);
     logger(LOG_DEBUG | LOG_MSG_TASK);
 }

@@ -1,17 +1,29 @@
 #include <c64/types.h>
+#include <c64/memmap.h>
 
 #include <engine/logger.h>
 #include <tick/calendar.h>
 
-struct LogMsg LOG_MSGS[LOG_MAX_MSGS];
+#pragma section( logMsgsSection, 0 )
+#pragma region( logMsgsRegion, 0xa000, 0xb000, , , { logMsgsSection } )
+
+#pragma data ( logMsgsSection )
+struct LogMsg LOG_MSGS[LOG_MAX_MSGS] = {{ 0 }};
+#pragma data ( data )
+
 byte log_index = 0;
 
-// sets the timestamp, msgId and moves log_index up. user needs to set LOG_DATA on its own, like:
-// - Simple log some text, max chars == LOG_DATA_SIZE
-//    memcpy(LOG_DATA, p"Game Start", 10);
-//    logger(LOG_INFO | LOG_MSG_TEXT);
-// - Sublevels - no text, just encoded data decrypted by LogMenu.h
+// clears out log memory, resets index
+void loggerInit(){
+    log_index = 0;
+    memset(((char *)0xa000), 0, 0x1000);
+}
 
+// Sets the timestamp, msgId and moves log_index up. User needs to set LOG_DATA on its own, like:
+// - For simple log with some text, max chars == LOG_DATA_SIZE
+//    memcpy(LOG_DATA, p"Game Start", LOG_DATA_SIZE);
+//    logger(LOG_INFO | LOG_MSG_TEXT);
+// - Contexts - no text, just encoded data decrypted by LogMenu.h. Data[0] is specyfying context.
 void logger(byte msgId) {
     // build and store LogMsg
     LOG_MSGS[log_index].hour  = cal_dateHour;
@@ -21,7 +33,9 @@ void logger(byte msgId) {
     LOG_MSGS[log_index].yearL = cal_dateYearL;
     LOG_MSGS[log_index].msgId = msgId;
 
-    log_index++;
-    if(log_index >= LOG_MAX_MSGS)
+    if(log_index < LOG_MAX_MSGS){
+        log_index++;
+    } else {
         log_index = 0;
+    }
 }

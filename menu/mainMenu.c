@@ -183,7 +183,7 @@ __interrupt static void _menuShowSprites(){
 
         if(animBusStage < ANIM_BUS_DRAWN){
             // wait until raster is below bus
-            vic_waitLine(BUS_ANIM_Y-4);
+            vic_waitLine(BUS_ANIM_Y);
             byte animBusPainterStage = animBusStage - ANIM_BUS_ARRIVING1;
 
             byte maskPos = BUS_ANIM_MIN_X_PAINT[animBusPainterStage] - BUS_ANIM_X_0[animBusX];

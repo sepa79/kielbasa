@@ -21,6 +21,7 @@
 
 static byte _currentField = 0;
 static byte _currentPlant = 0;
+static byte _waterSpriteBank = 0;
 
 enum FARMLAND_SPRITE_VIC_BANKS {
     SPR_BANK_THERMO_BAR_1=0xbc,
@@ -29,7 +30,11 @@ enum FARMLAND_SPRITE_VIC_BANKS {
     SPR_BANK_POTATO_UI,
     SPR_BANK_LUPINE_UI,
     SPR_BANK_WHEAT_UI,
-    SPR_BANK_CORN_UI
+    SPR_BANK_CORN_UI,
+    SPR_BANK_WATER_UI1,
+    SPR_BANK_WATER_UI2,
+    SPR_BANK_WATER_UI3,
+    SPR_BANK_WATER_UI4
 };
 
 #define SPR_THERMO_BAR_1 ((char *)GFX_1_BASE + 64*SPR_BANK_THERMO_BAR_1)
@@ -53,9 +58,9 @@ enum FARMLAND_SPRITE_VIC_BANKS {
 
 #pragma data ( farmlandGfxDay )
 __export const byte farmlandGfx1[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/pole_18.02.22.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/pole_18.02.22.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/pole_18.02.22.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/pole_23.12.22.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/pole_23.12.22.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/pole_23.12.22.kla"
 };
 #pragma data ( farmlandGfxNight )
 __export const byte farmlandGfx2[] = {
@@ -94,6 +99,10 @@ __export char SPR_DATA_THERMO_BAR_3[64*1] = {
 };
 
 __export char SPR_DATA_PLANTS_[64*4] = {0};
+
+__export const char farmlandWaterSprites[] = {
+    #embed 0x0400 20 "assets/sprites/waterLvls.spd"
+};
 
 // menu code is in ROM - data in RAM
 #pragma code ( farmlandCode )
@@ -196,12 +205,24 @@ static void _drawThermometer(byte temp){
     // vic.color_border--;
 }
 
+static void _showWaterLevel(){
+    if(flt_waterLevel > 40){
+        _waterSpriteBank = SPR_BANK_WATER_UI4;
+    } else if(flt_waterLevel > 25){
+        _waterSpriteBank = SPR_BANK_WATER_UI3;
+    } else if(flt_waterLevel > 10){
+        _waterSpriteBank = SPR_BANK_WATER_UI2;
+    } else {
+        _waterSpriteBank = SPR_BANK_WATER_UI1;
+    }
+}
+
 __interrupt static void _menuShowSprites(){
-    vic.spr_enable   = 0b01111111;
-    vic.spr_expand_x = 0b00000000;
+    vic.spr_enable   = 0b11111111;
+    vic.spr_expand_x = 0b10000000;
     vic.spr_expand_y = 0b00000000;
     vic.spr_priority = 0b00000000;
-    vic.spr_multi    = 0b00000000;
+    vic.spr_multi    = 0b10000000;
     vic.spr_msbx     = 0b01100000;
 
     // thermometer sprites
@@ -217,10 +238,10 @@ __interrupt static void _menuShowSprites(){
     vic.spr_pos[4].x = 24+196;
     vic.spr_pos[5].x = 12;
     vic.spr_pos[6].x = 60;
-    vic.spr_pos[3].y = 50+67;
-    vic.spr_pos[4].y = 50+67;
-    vic.spr_pos[5].y = 50+67;
-    vic.spr_pos[6].y = 50+67;
+    vic.spr_pos[3].y = 50+67+6;
+    vic.spr_pos[4].y = 50+67+6;
+    vic.spr_pos[5].y = 50+67+6;
+    vic.spr_pos[6].y = 50+67+6;
 
     vic.spr_color[0] = VCOL_LT_BLUE;
     vic.spr_color[1] = VCOL_LT_BLUE;
@@ -244,6 +265,19 @@ __interrupt static void _menuShowSprites(){
     GFX_1_SCR[OFFSET_SPRITE_PTRS+4] = SPR_BANK_LUPINE_UI;
     GFX_1_SCR[OFFSET_SPRITE_PTRS+5] = SPR_BANK_WHEAT_UI;
     GFX_1_SCR[OFFSET_SPRITE_PTRS+6] = SPR_BANK_CORN_UI;
+    // water sprite
+    vic.spr_pos[7].x = 73;
+    vic.spr_pos[7].y = 122;
+    if(cal_currentTemp < 1){
+        vic.spr_color[7] = VCOL_LT_BLUE;
+        vic.spr_mcolor0  = VCOL_LT_GREY;
+        vic.spr_mcolor1  = VCOL_WHITE;
+    } else {
+        vic.spr_color[7] = VCOL_BLUE;
+        vic.spr_mcolor0  = VCOL_LT_BLUE;
+        vic.spr_mcolor1  = VCOL_LT_GREY;
+    }
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+7] = _waterSpriteBank;
 }
 
 static void _displayFieldList(){
@@ -299,10 +333,12 @@ static void _updateFieldView(){
 
     sprBankPointer = SPR_THERMO_BAR_3;
 
-    byte num2str[4];
-    utoa(flt_waterLevel, num2str, 10);
-    copyCharToSprite(num2str[0], 1, 0);
-    copyCharToSprite(num2str[1], 2, 0);
+    // water debug
+    // byte num2str[4];
+    // utoa(flt_waterLevel, num2str, 10);
+    // copyCharToSprite(num2str[0], 1, 0);
+    // copyCharToSprite(num2str[1], 2, 0);
+    _showWaterLevel();
 
     sprBankPointer = SPR_POTATO_UI;
     _updateSprite(flt_storage[PLANT_POTATO]);
@@ -450,6 +486,7 @@ const struct MenuOption FARMLAND_MENU[] = {
 
 static void _menuHandler(void){
     _currentPlant = field_plantId[_currentField];
+    mnu_isGfxLoaded = false;
     loadMenuGfx(cal_isDay);
     loadMenuSprites();
 
@@ -466,7 +503,8 @@ static void _menuHandler(void){
 
 __export static const Loaders menuLoaders = {
     .loadMenuCode    = &menuNoop,
-    .loadMenuGfx     = &menuGfxLoader,
+    .loadMenuGfx     = &menuGfxLoaderSingleBitmap,
+    // .loadMenuGfx     = &menuGfxLoader,
     .loadMenuSprites = &menuSpriteLoader,
     .showMenu        = &_menuHandler,
     .showSprites     = &_menuShowSprites,

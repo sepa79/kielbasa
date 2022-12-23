@@ -47,8 +47,8 @@ void prepareScroll(){
 void mainLoop(){
     memcpy(LOG_DATA, p"Game Start", 10);
     logger(LOG_INFO | LOG_MSG_TEXT);
-    // TODO: Switch to CRT here
     initCharacterList();
+    initCalendar();
     initTaskList();
     initFarmland();
 

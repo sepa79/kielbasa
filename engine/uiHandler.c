@@ -24,6 +24,7 @@
 // used with sprite drawing methods
 const byte colOffset[6] = {0,1,2, 64,65,66};
 const byte rowOffset[3] = {0,21,42};
+// set it to sprite bank that you wish to use copyCharToSprite() on
 byte * sprBankPointer;
 
 volatile struct JOY_CURSOR joyCursor = {true, false, 0, 0, 0, 0, 0};
@@ -276,6 +277,7 @@ void checkKeys(){
                 // vic.color_border = VCOL_BLUE;
                 gms_gameSpeed = SPEED_PAUSED;
                 updateGameSpeed();
+                // called outside of menu system, so this routine has to take care of bank switching
                 showLogMenu();
             }
             return;

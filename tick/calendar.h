@@ -43,6 +43,7 @@ extern const byte WEEKLY_SUNSET[53];
 #pragma code ( ticksCode )
 void timeTick();
 #pragma code ( code )
+void initCalendar();
 
 #pragma compile("calendar.c")
 

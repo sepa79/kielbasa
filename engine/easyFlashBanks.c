@@ -4,8 +4,8 @@
 volatile char curbank = 0;
 
 char setBank(char bank){
-    char    pbank = curbank;
-    curbank = bank;
+    char pbank  = curbank;
+    curbank     = bank;
     eflash.bank = bank;
     return pbank;
 }

@@ -2,6 +2,8 @@
 #include <stdbool.h>
 #include <c64/types.h>
 
+#include <engine/logger.h>
+
 #include "calendar.h"
 #include <character/character.h>
 #include <assets/mainGfx.h>
@@ -104,9 +106,22 @@ static void _weatherTick(){
 
     weatherSprite = cal_currentRain;
 
+    // snow instead of rain if temp 0 or below
     if(cal_currentTemp < 1)
         if(weatherSprite == 3)
             weatherSprite = 5;
+
+    LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_WEATHER_REPORT;
+    LOG_MSG.data[1] = cal_currentTemp;
+    LOG_MSG.data[2] = cal_currentRain;
+    LOG_MSG.data[3] = rnd0;
+    LOG_MSG.data[4] = rnd1;
+    LOG_MSG.data[5] = rndTempWeekly;
+    LOG_MSG.data[6] = rndRainWeekly;
+    LOG_MSG.data[7] = WEEKLY_AVG_TEMP[cal_dateWeek];
+    LOG_MSG.data[8] = WEEKLY_AVG_RAIN[cal_dateWeek];
+    LOG_MSG.data[9] = 0;
+    logger(LOG_DEBUG | LOG_MSG_REPORT);
 
     // gotoxy(0, 24);
     // printf("Dzien  : %-3u %-3u %-3d %-3u", rnd0, rnd1, rndTemp, weatherSprite);
@@ -247,6 +262,13 @@ void timeTick(){
 
 }
 
+
 // Switching code generation back to shared section
 #pragma code ( code )
 #pragma data ( data )
+
+void initCalendar() {
+    byte pbank = setBank(TICKS_BANK);
+    _weatherTick();
+    setBank(pbank);
+}

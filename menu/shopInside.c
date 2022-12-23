@@ -61,7 +61,6 @@ __export const char shopInGfx3[] = {
 };
 
 // Switching code generation back to shared section
-// TODO: this can go to menu memory section, be loaded on demand and then dumped when not needed
 #pragma code ( code )
 #pragma data ( data )
 

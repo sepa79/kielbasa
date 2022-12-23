@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <engine/logger.h>
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
 #include <engine/titleScreenIrq.h>
@@ -67,6 +68,7 @@ void loadTitleScreen(){
 }
 // load Init and IRQ code into temp space and go
 void loadAndRunInit(){
+    loggerInit();
     memcpy((char *)0x7000, (char *)0xb200, 0x07ff);
     initGame();
 }
