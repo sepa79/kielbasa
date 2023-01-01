@@ -98,7 +98,7 @@ static void _animB29Plane(){
     // vic.color_border--;
 }
 
-__interrupt void _spriteInit(){
+__interrupt void _pigsleCmdSpriteInit(){
     vic.spr_multi   = 0b11111110;
     
     // explosion
@@ -161,7 +161,7 @@ __interrupt void pigsleCmdIrq_topPests() {
     // vic.color_border++;
 
     _pestDropSprites();
-    _spriteInit();
+    _pigsleCmdSpriteInit();
     // vic.color_border--;
     _explosionSprites();
 

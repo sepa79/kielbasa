@@ -16,6 +16,7 @@
 #include "shopInside.h"
 #include "crew.h"
 #include "pigsleCommand.h"
+#include "villiageMap.h"
 
 // column offset for printing data
 #define COL_OFFSET_TASKLIST 12
@@ -336,6 +337,7 @@ const struct MenuOption MAIN_MENU[] = {
     {TXT_IDX_MENU_MAIN4, '4', UI_UD, &showMenu, MENU_BANK_SHOP, 1, 4},
     {TXT_IDX_MENU_MAIN5, '5', UI_UD, &showMenu, MENU_BANK_CREW, 1, 5},
     {TXT_IDX_MENU_MAIN6, '6', UI_UD, &showMenu, MENU_BANK_PIGSLE_COMMAND_1, 1, 6},
+    {TXT_IDX_MENU_MAIN7, '7', UI_UD, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 1, 7},
     END_MENU_CHOICES
 };
 

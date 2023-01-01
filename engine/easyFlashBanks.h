@@ -26,6 +26,7 @@
 #define MENU_BANK_PIGSLE_COMMAND_1 18
 #define MENU_BANK_PIGSLE_COMMAND_2 19
 #define MENU_BANK_PIGSLE_COMMAND_GFX_1 20
+#define MENU_BANK_MAP_VILLIAGE_1 21
 
 // Set main bank, reset history.
 char setBank(char bank);

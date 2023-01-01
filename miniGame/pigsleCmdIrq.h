@@ -17,7 +17,7 @@ __interrupt void pigsleCmdIrq_middlePests();
 __interrupt void pigsleCmdIrq_cannonAnims();
 __interrupt void pigsleCmdIrq_openBorder();
 
-__interrupt void _spriteInit();
+__interrupt void _pigsleCmdSpriteInit();
 
 extern volatile byte crosshairBank;
 // Switching code generation back to shared section

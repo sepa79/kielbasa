@@ -148,6 +148,12 @@
         "en": "Pigsile Command"
       },
       {
+        "id": "MENU_MAIN7",
+        "menu_opt": "7",
+        "pl": "Mapa",
+        "en": "Map"
+      },
+      {
         "id": "MENU_OPTIONS_LANG",
         "menu_opt": "1",
         "pl": "Język / Language",
