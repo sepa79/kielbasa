@@ -7,10 +7,9 @@ void playMsx();
 void joyUpdate();
 
 void initRasterIRQ();
-void splitScreenIRQ1();
-void splitScreenIRQ2();
-void controlIRQ1();
-void controlIRQ2();
+void switchScreenToFullTxt();
+void switchScreenToSplitMcTxt();
+void switchScreenToFullMCTxt();
 
 #pragma compile("irqHandler.c")
 

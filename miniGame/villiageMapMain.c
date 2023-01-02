@@ -88,7 +88,6 @@ void villiageMapSpriteLoader(){
 
 #pragma code ( villiageMapRAMCode )
 #pragma data ( villiageMapRAMData )
-#include <gfx/mcbitmap.h>
 #include <c64/rasterirq.h>
 RIRQCode topMap, msxMap, openMap;
 
@@ -321,9 +320,8 @@ void mapGameLoop(){
 void villiageMapInit(){
     splashScreen(false, 1);
     // stop IRQs and change to ours
-    __asm {
-        sei
-    }
+    rirq_stop();
+
     // msx off
     ((byte *)0xd418)[0] &= ~0xf;
     // screen off, sprites off

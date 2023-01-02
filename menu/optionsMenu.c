@@ -204,8 +204,8 @@ static void _changeLanguage(){
 static void _backToPreviousMenu(){
     gms_textMode = false;
     gms_disableTimeControls = false;
-    // prepareScroll();
     // This will simply call currently mounted menu again
+    switchScreenToSplitMcTxt();
     showMenu();
 }
 

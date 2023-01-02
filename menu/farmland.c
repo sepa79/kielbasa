@@ -238,10 +238,10 @@ __interrupt static void _menuShowSprites(){
     vic.spr_pos[4].x = 24+196;
     vic.spr_pos[5].x = 12;
     vic.spr_pos[6].x = 60;
-    vic.spr_pos[3].y = 50+67+6;
-    vic.spr_pos[4].y = 50+67+6;
-    vic.spr_pos[5].y = 50+67+6;
-    vic.spr_pos[6].y = 50+67+6;
+    vic.spr_pos[3].y = 50+67+2;
+    vic.spr_pos[4].y = 50+67+2;
+    vic.spr_pos[5].y = 50+67+2;
+    vic.spr_pos[6].y = 50+67+2;
 
     vic.spr_color[0] = VCOL_LT_BLUE;
     vic.spr_color[1] = VCOL_LT_BLUE;
@@ -267,7 +267,7 @@ __interrupt static void _menuShowSprites(){
     GFX_1_SCR[OFFSET_SPRITE_PTRS+6] = SPR_BANK_CORN_UI;
     // water sprite
     vic.spr_pos[7].x = 73;
-    vic.spr_pos[7].y = 122;
+    vic.spr_pos[7].y = 120;
     if(cal_currentTemp < 1){
         vic.spr_color[7] = VCOL_LT_BLUE;
         vic.spr_mcolor0  = VCOL_LT_GREY;

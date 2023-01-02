@@ -67,6 +67,7 @@ static void _backToPreviousMenu(){
     gms_textMode = false;
     gms_disableTimeControls = false;
     // This will simply call currently mounted menu again
+    switchScreenToSplitMcTxt();
     showMenu();
 }
 

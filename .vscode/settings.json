@@ -47,7 +47,8 @@
         "logger.h": "c",
         "corecrt_memory.h": "c",
         "vcruntime_string.h": "c",
-        "charactertick.h": "c"
+        "charactertick.h": "c",
+        "asm6502.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }

@@ -130,8 +130,11 @@ void drawBattery(char charSlot, char energy){
 
 __interrupt void setSpritesTopScr(){
     if(gms_enableMenuSprites){
+        // store/restore memory config, as we need to ensure BASIC ROM is on
+        byte _prevRomCfg = ((byte *)0x01)[0];
         mmap_set(MMAP_ROM);
         showSprites();
+        ((byte *)0x01)[0] = _prevRomCfg;
     }
 }
 
@@ -202,6 +205,7 @@ void showUiSpritesTop(){
     vic.spr_color[5] = VCOL_MED_GREY;
 
     vic.spr_enable = 0b00111111;
+    gms_framePos = FRAME_TOP_BORDER;
 }
 
 void showUiSpritesBottom(){
@@ -264,5 +268,7 @@ void showUiSpritesBottom(){
     vic.spr_color[7] = SpriteResources.CHARACTER_BARS[64*3 + 63];
 
     vic.spr_enable = 0b11111111;
+    // indicate frame position
+    gms_framePos = FRAME_BOTTOM;
     // vic.color_border++;
 }

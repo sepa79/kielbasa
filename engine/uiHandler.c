@@ -237,6 +237,7 @@ void checkKeys(){
             // don't go to menu while in menu
             if(!_fullScreenMenuOpen){
                 _fullScreenMenuOpen = true;
+                switchScreenToFullTxt();
                 gms_disableTimeControls = true;
                 // vic.color_border = VCOL_BLUE;
                 gms_gameSpeed = SPEED_PAUSED;
@@ -249,6 +250,7 @@ void checkKeys(){
             // don't go to menu while in menu
             if(!_fullScreenMenuOpen){
                 _fullScreenMenuOpen = true;
+                switchScreenToFullTxt();
                 gms_disableTimeControls = true;
                 // vic.color_border = VCOL_BLUE;
                 gms_gameSpeed = SPEED_PAUSED;
@@ -261,6 +263,7 @@ void checkKeys(){
             // don't go to menu while in menu
             if(!_fullScreenMenuOpen){
                 _fullScreenMenuOpen = true;
+                switchScreenToFullTxt();
                 gms_disableTimeControls = true;
                 // vic.color_border = VCOL_BLUE;
                 gms_gameSpeed = SPEED_PAUSED;
@@ -273,6 +276,7 @@ void checkKeys(){
             // don't go to menu while in menu
             if(!_fullScreenMenuOpen){
                 _fullScreenMenuOpen = true;
+                switchScreenToFullTxt();
                 gms_disableTimeControls = true;
                 // vic.color_border = VCOL_BLUE;
                 gms_gameSpeed = SPEED_PAUSED;
