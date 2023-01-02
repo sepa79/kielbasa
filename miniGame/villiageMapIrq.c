@@ -8,47 +8,48 @@
 
 #include <engine/easyFlashBanks.h>
 #include <miniGame/villiageMapMain.h>
+#include <engine/gameSettings.h>
 
 #pragma code ( villiageMapRAMCode )
 #pragma data ( villiageMapRAMData )
 
-static byte _prevRomCfgPC;
 // ================================================================================
 // Top raster
 // ================================================================================
-static void _playMsx(){
-    if(gms_enableMusic){
-        _prevRomCfgPC = ((byte *)0x01)[0];
-        __asm {
-            lda #MSX_ROM
-            sta $01
-            jsr MSX_PLAY
-        };
-        ((byte *)0x01)[0] = _prevRomCfgPC;
-    }
-}
-
 __interrupt void _villiageMapSpriteInit(){
 
 }
 
 __interrupt void villiageMapIrq_topMap() {
+    // vic.color_back = VCOL_BLACK;
     vic.color_border++;
-    _playMsx();
+
+    showUiSpritesTop();
+    playMsx();
+
+    vic.color_back = VCOL_BROWN;
+    // indicate frame position
+    gms_framePos = FRAME_TOP_BORDER;
     vic.color_border--;
 }
 
 
 __interrupt void villiageMapIrq_msx2() {
     vic.color_border++;
-    _playMsx();
+    playMsx();
+    // indicate frame position
+    gms_framePos = FRAME_MIDDLE;
+
     vic.color_border--;
 }
 
 __interrupt void villiageMapIrq_openBorder() {
-    vic_waitLine(250);
-    vic.color_back = VCOL_BROWN;
-    // vic.color_border++;
-    vic.spr_enable = 0b00000000;
-    // vic.color_border--;
+    // vic_waitLine(250);
+    vic.color_back = VCOL_BLACK;
+    vic.color_border++;
+    showUiSpritesBottom();
+    vic.color_border--;
+
+    // indicate frame position
+    gms_framePos = FRAME_BOTTOM;
 }

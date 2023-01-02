@@ -157,11 +157,13 @@ extern const char SPR_JOY_CURSOR_COLORS_ERROR[16];
 #pragma code ( mainGfxCode )
 #pragma data ( mainGfxData )
 
-void loadMainGfx();
 
 // Switching code generation back to shared section
 #pragma code ( code )
 #pragma data ( data )
+
+void loadMainGfx();
+void loadMainFont();
 
 #pragma compile("mainGfx.c")
 

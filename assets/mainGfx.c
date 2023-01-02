@@ -132,7 +132,7 @@ __export const char GAME_FONT[0x800] = {
 #pragma data ( mainGfxData )
 
 // Loading fonts and sprites
-void loadMainGfx(){
+static void _loadMainGfx(){
     // ROM on, I/O off - as we will copy to RAM under I/O ports
     mmap_set(0b00110011);
 
@@ -146,9 +146,15 @@ void loadMainGfx(){
 #until y == 0x100*0x10
         i++;
     } while (i != 0);
+    // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
+    mmap_set(MMAP_ROM);
+}
 
+static void _loadMainFont(){
+    // ROM on, I/O off - as we will copy to RAM under I/O ports
+    mmap_set(0b00110011);
     // fonts & aux (but only half of the cart region atm - copy as needed later)
-    i = 0;
+    char i = 0;
     do {
 #assign y 0
 #repeat
@@ -175,3 +181,18 @@ __export const char SPR_WEATHER_COLORS[10] = {0x7, 0x7, 0x7, 0xe, 0x7, 0x1, 0xb,
 // 0 is end of colors, use 0x10 for black
 __export const char SPR_JOY_CURSOR_COLORS[16] = {0x10, 0x10, 0xb, 0xb, 0xf, 0xf, 0x3, 0x3, 0x1, 0x3, 0x3, 0xf, 0xf, 0xb, 0xb, 0x0};
 __export const char SPR_JOY_CURSOR_COLORS_ERROR[16] = {0x10, 0x10, 0x9, 0x9, 0x2, 0x2, 0x8, 0x8, 0xa, 0x8, 0x8, 0x2, 0x2, 0x9, 0x9, 0x0};
+
+// RAM wrapper
+#pragma code ( code )
+#pragma data ( data )
+
+void loadMainGfx(){
+    byte pBank = setBank(MAIN_GFX_BANK);
+    _loadMainGfx();
+    setBank(pBank);
+}
+void loadMainFont(){
+    byte pBank = setBank(MAIN_GFX_BANK);
+    _loadMainFont();
+    setBank(pBank);
+}

@@ -100,7 +100,7 @@ __interrupt void spriteNoop(){
 
 // wait until raster hits middle of the screen
 static void _waitForScreenMiddle(){
-    // don't start in the unknown place, might not have enough time to do the job
+    // unknown place? skip the checks
     if(gms_framePos != FRAME_UNKNOWN){
         if(gms_framePos == FRAME_MIDDLE){
             while(gms_framePos == FRAME_MIDDLE){};

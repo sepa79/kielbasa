@@ -25,6 +25,42 @@ static byte _joy1Status = 255;
 static byte _joy2Status = 127;
 
 /* ================================================================================
+Play msx, if enabled
+================================================================================ */
+void playMsx(){
+    if(gms_enableMusic){
+        byte _prevRomCfgPC = ((byte *)0x01)[0];
+        __asm {
+            lda #MSX_ROM
+            sta $01
+            jsr MSX_PLAY
+        };
+        ((byte *)0x01)[0] = _prevRomCfgPC;
+    }
+}
+
+/* ================================================================================
+Deal with joystick anims etc
+================================================================================ */
+void joyUpdate(){
+    // update joy cursor/read keyboard only if cursor is enabled
+    if(joyCursor.enabled){
+        _joy1Status = ((byte *)0xdc00)[1];
+        _joy2Status = ((byte *)0xdc00)[0];
+        // vic.color_border--;
+        // cursor is sprite 0, always
+        // make it flash
+        joyCursor.colorIdx++;
+        if(SPR_JOY_CURSOR_COLORS[joyCursor.colorIdx] == 0){
+            joyCursor.colorIdx = 0;
+        }
+        // handle joy delay
+        if(joyCursor.moveDelayCurrent > 0){
+            joyCursor.moveDelayCurrent--;
+        }
+    }
+}
+/* ================================================================================
 Deal with time control, pause, character selection etc.
 ================================================================================ */
 static void _timeControl() {
@@ -127,15 +163,7 @@ __interrupt static void splitScreenIRQ2_C() {
 
     setSpritesBottomScr();
 
-    if(gms_enableMusic){
-        _prevRomCfg = ((byte *)0x01)[0];
-        __asm {
-            lda #MSX_ROM
-            sta $01
-            jsr MSX_PLAY
-        };
-        ((byte *)0x01)[0] = _prevRomCfg;
-    }
+    playMsx();
 
     // tick the game
     _timeControl();
@@ -222,17 +250,8 @@ __interrupt static void controlIRQ1_C() {
     // Set screen height back to 25 lines (preparing for the next screen)
     vic.ctrl1 |= VIC_CTRL1_RSEL;
 
-    // check if we are in full TXT mode
     // vic.color_border++;
-    if(gms_enableMusic){
-        _prevRomCfg = ((byte *)0x01)[0];
-        __asm {
-            lda #MSX_ROM
-            sta $01
-            jsr MSX_PLAY
-        };
-        ((byte *)0x01)[0] = _prevRomCfg;
-    }
+    playMsx();
 
     if((char)--_scrollIt==0xff) {
         _scrollIt = 7;
@@ -250,28 +269,14 @@ __interrupt static void controlIRQ1_C() {
         SB_TEXT++;
     }
 
+    // check if we are in full TXT mode
     // time tick
     if(!gms_textMode){
         _timeControl();
     }
     // vic.color_border--;
 
-    // update joy cursor/read keyboard only if cursor is enabled
-    if(joyCursor.enabled){
-        _joy1Status = ((byte *)0xdc00)[1];
-        _joy2Status = ((byte *)0xdc00)[0];
-        // vic.color_border--;
-        // cursor is sprite 0, always
-        // make it flash
-        joyCursor.colorIdx++;
-        if(SPR_JOY_CURSOR_COLORS[joyCursor.colorIdx] == 0){
-            joyCursor.colorIdx = 0;
-        }
-        // handle joy delay
-        if(joyCursor.moveDelayCurrent > 0){
-            joyCursor.moveDelayCurrent--;
-        }
-    }
+    joyUpdate();
 
     // set the irq to 4th routine
     *(void **)0x0314 = controlIRQ2;
@@ -344,15 +349,7 @@ __interrupt static void controlIRQ2_C() {
         vic.raster = CONTROL_IRQ1_POS;
         // indicate frame position - NOT, as keyboard would not be read in this pos at all. Lets pretend we are a bit higher up.
         // gms_framePos = FRAME_TOP;
-        if(gms_enableMusic){
-            _prevRomCfg = ((byte *)0x01)[0];
-            __asm {
-                lda #MSX_ROM
-                sta $01
-                jsr MSX_PLAY
-            };
-            ((byte *)0x01)[0] = _prevRomCfg;
-        }
+        playMsx();
     } else {
         // set the irq to 1st routine
         *(void **)0x0314 = splitScreenIRQ1;

@@ -44,23 +44,32 @@ void prepareScroll(){
     COLOR_RAM[40*24+39] = VCOL_DARK_GREY;
 }
 
-void mainLoop(){
-    memcpy(LOG_DATA, p"Game Start", 10);
-    logger(LOG_INFO | LOG_MSG_TEXT);
-    initCharacterList();
-    initCalendar();
-    initTaskList();
-    initFarmland();
+void gotoMainMenu(){
+    // splash and turn screen off
+    splashScreen(false, 1);
+    // stop IRQs and change to ours
+    __asm {
+        sei
+    }
+    // msx off
+    ((byte *)0xd418)[0] &= ~0xf;
+    // screen off, sprites off
+    // vic.ctrl1 = VIC_CTRL1_BMM | VIC_CTRL1_RSEL | 3;
+    vic.spr_enable   = 0b00000000;
 
-    // start on Main Menu
+    // get the main sprites, fonts etc
+    loadMainFont();
+    drawFullDate();
+
     loadMenu(MENU_BANK_MAIN_MENU);
     gms_textMode = false;
+    // indicate frame position, as IRQs are stopped
+    gms_framePos = FRAME_UNKNOWN;
     showMenu();
     joyCursor.enabled = true;
     gms_gameSpeed = SPEED_PAUSED;
     gms_gameSpeedWait = WAIT_TIME_PAUSED;
 
-    drawFullDate();
     prepareScroll();
     updateStatusBar(TXT[SB_IDX_WELCOME]);
 
@@ -68,6 +77,19 @@ void mainLoop(){
     splashScreen(false, 2);
 
     initRasterIRQ();
+}
+
+void mainLoop(){
+    memcpy(LOG_DATA, p"Game Start", 10);
+    logger(LOG_INFO | LOG_MSG_TEXT);
+
+    initCharacterList();
+    initCalendar();
+    initTaskList();
+    initFarmland();
+
+    // start on Main Menu
+    gotoMainMenu();
 
     memcpy(LOG_DATA, p"Main Loop ", 10);
     logger(LOG_DEBUG | LOG_MSG_TEXT);

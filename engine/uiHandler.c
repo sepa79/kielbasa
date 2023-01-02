@@ -343,26 +343,32 @@ void copyCharToSprite(byte c, byte col, byte row){
 void drawFullDate(){
     // vic.color_border--;
 
-    cal_dateHour  = 13;
-    cal_dateDay   = 1;
-    cal_dateMonth = 5;
-    cal_dateYearH = 8;
-    cal_dateYearL = 9;
+    // cal_dateHour  = 13;
+    // cal_dateDay   = 1;
+    // cal_dateMonth = 5;
+    // cal_dateYearH = 8;
+    // cal_dateYearL = 9;
 
+    byte str[3];
     sprBankPointer = SpriteResources.DATE_TXT;
     // draw hour
-    copyCharToSprite('1', 0, 0);
-    updateHour(cal_dateHour);
+    sprintf(str, "%02u", cal_dateHour);
+    copyCharToSprite(str[0], 0, 0);
+    copyCharToSprite(str[1], 1, 0);
     // 58 is :
     copyCharToSprite(':', 2, 0);
     copyCharToSprite('0', 3, 0);
     copyCharToSprite('0', 4, 0);
 
     // day, month
-    copyCharToSprite('0', 0, 1);
-    updateDay(cal_dateDay);
-    copyCharToSprite('0', 2, 1);
-    updateMonth(cal_dateMonth);
+    sprintf(str, "%02u", cal_dateDay);
+    copyCharToSprite(str[0], 0, 1);
+    copyCharToSprite(str[1]-10, 1, 1);
+
+    sprintf(str, "%02u", cal_dateMonth);
+    copyCharToSprite(str[0], 2, 1);
+    copyCharToSprite(str[1]-10, 3, 1);
+
     // year
     drawYearL();
     drawYearH();

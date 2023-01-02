@@ -58,9 +58,9 @@ enum FARMLAND_SPRITE_VIC_BANKS {
 
 #pragma data ( farmlandGfxDay )
 __export const byte farmlandGfx1[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/pole_23.12.22.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/pole_23.12.22.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/pole_23.12.22.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/pole_28.12.221.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/pole_28.12.221.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/pole_28.12.221.kla"
 };
 #pragma data ( farmlandGfxNight )
 __export const byte farmlandGfx2[] = {

@@ -83,8 +83,7 @@ void initGame(){
     // splash and turn screen on
     splashScreen(true, 3);
 
-    // get the main sprites, fonts etc
-    setBank(MAIN_GFX_BANK);
+    // get the main sprites
     loadMainGfx();
 
     setBank(MUSIC_BANK);
@@ -124,7 +123,7 @@ void initGame(){
     keyb_key = 0;
 
     // splash and turn screen off
-    splashScreen(false, 1);
+    // splashScreen(false, 1);
 
     mainLoop();
 }

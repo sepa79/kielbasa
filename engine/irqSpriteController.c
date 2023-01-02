@@ -158,7 +158,7 @@ void setSpritesBottomScr(){
 }
 
 void showUiSpritesTop(){
-    vic.spr_enable = 0b00111111;
+    vic.spr_enable = 0;
     
     // already set in the bottom IRQ
     // vic.spr_expand_x = 0b00000000;
@@ -200,6 +200,8 @@ void showUiSpritesTop(){
     vic.spr_color[3] = SPR_WEATHER_COLORS[isc_weatherSprite];
     vic.spr_color[4] = SPR_CURRENCY_COLORS[0];
     vic.spr_color[5] = VCOL_MED_GREY;
+
+    vic.spr_enable = 0b00111111;
 }
 
 void showUiSpritesBottom(){

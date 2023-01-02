@@ -18,23 +18,11 @@
 #pragma code ( pigsleCommandRAMCode )
 #pragma data ( pigsleCommandRAMData )
 
-static byte _prevRomCfgPC;
 volatile byte _flashDelay = 2;
 volatile byte crosshairBank = PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK;
 // ================================================================================
 // Top raster
 // ================================================================================
-static void _playMsx(){
-    if(gms_enableMusic){
-        _prevRomCfgPC = ((byte *)0x01)[0];
-        __asm {
-            lda #MSX_ROM
-            sta $01
-            jsr MSX_PLAY
-        };
-        ((byte *)0x01)[0] = _prevRomCfgPC;
-    }
-}
 
 static void _animB29Plane(){
     // vic.color_border++;
@@ -210,9 +198,9 @@ __interrupt void pigsleCmdIrq_topPests() {
 
     vic_waitLine(55);
     vic.color_back = VCOL_BLACK;
-    _playMsx();
+    playMsx();
 
-    _prevRomCfgPC = ((byte *)0x01)[0];
+    byte _prevRomCfgPC = ((byte *)0x01)[0];
     mmap_set(MMAP_ROM);
     char pbank = setBank(MENU_BANK_PIGSLE_COMMAND_2);
 
@@ -240,7 +228,7 @@ __interrupt void pigsleCmdIrq_middlePests() {
 
 __interrupt void pigsleCmdIrq_cannonAnims() {
     // vic.color_border++;
-    _playMsx();
+    playMsx();
     // vic.color_border--;
 }
 

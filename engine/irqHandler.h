@@ -3,6 +3,9 @@
 
 const char * SB_TEXT;
 
+void playMsx();
+void joyUpdate();
+
 void initRasterIRQ();
 void splitScreenIRQ1();
 void splitScreenIRQ2();
