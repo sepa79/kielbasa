@@ -9,7 +9,7 @@ dist/
 
 # compiled artefacts and intermediates
 *.crt
-*.bin
+\*.bin
 *.prg
 *.map
 *.asm

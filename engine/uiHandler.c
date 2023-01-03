@@ -202,13 +202,13 @@ void checkKeys(){
     keyb_poll();
     _key = keyb_codes[keyb_key & 0x7f];
     // now get the joystick - some keys might be same as joy, so these will simulate keypresses if needed
-    // if(_menuUiMode == UI_UD) {
-    //     _moveJoyThroughMenuUD();
-    // } else if(_menuUiMode == UI_LR) {
-    //     _moveJoyThroughMenuLR();
-    // } else {
+    if(_menuUiMode == UI_UD) {
+        _moveJoyThroughMenuUD(); // why is this selecting itself even when no UD defined???
+    } else if(_menuUiMode == UI_LR) {
+        _moveJoyThroughMenuLR();
+    } else {
         _assignJoyKeys();
-    // }
+    }
 
     byte i = 0;
     bool selected = false;

@@ -71,19 +71,6 @@ void villiageMapSpriteLoader(){
     _spriteLoader();
     setBank(pbank);
 }
-// ---------------------------------------------------------------------------------------------
-// Variables for main Pigsle code
-// ---------------------------------------------------------------------------------------------
-
-// menu code is in ROM - data in RAM
-#pragma code ( villiageMapCode )
-#pragma data ( villiageMapRAMData )
-
-// ---------------------------------------------------------------------------------------------
-// Screen writing code
-// ---------------------------------------------------------------------------------------------
-#pragma data ( villiageMapConsts )
-
 
 #pragma code ( villiageMapRAMCode )
 #pragma data ( villiageMapRAMData )
@@ -326,7 +313,7 @@ void villiageMapInit(){
     ((byte *)0xd418)[0] &= ~0xf;
     // screen off, sprites off
     // vic.ctrl1 = VIC_CTRL1_BMM | VIC_CTRL1_RSEL | 3;
-    vic.spr_enable   = 0b00000000;
+    vic.spr_enable = 0b00000000;
 
     __asm {
         // init music
