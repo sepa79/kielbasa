@@ -8,7 +8,6 @@
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
 #include <miniGame/villiageMapMain.h>
-#include <miniGame/villiageMapIrq.h>
 
 // ---------------------------------------------------------------------------------------------
 // Main screen and sprite bank + loaders code
@@ -17,24 +16,24 @@
 #pragma data ( villiageMapGfx1 )
 
 static const char ro_attribs[] = {
-    #embed "assets/charGfx/kielbasaMapS2 - CharAttribs_L1.bin"	
+    #embed "assets/charGfx/VilliageMapHiresMain - CharAttribs_L1.bin"	
 };
 
 static const char ro_chars[] = {
-    #embed "assets/charGfx/kielbasaMapS2 - Chars.bin"	
+    #embed "assets/charGfx/VilliageMapHiresMain - Chars.bin"	
 };
 
 static const char ro_map[] = {
-    #embed "assets/charGfx/kielbasaMapS2 - (8bpc, 32x24) Map.bin"	
+    #embed "assets/charGfx/VilliageMapHiresMain - (8bpc, 32x24) Map.bin"	
 };
 
 static const char ro_tiles[] = {
-    #embed "assets/charGfx/kielbasaMapS2 - Tiles.bin"	
+    #embed "assets/charGfx/VilliageMapHiresMain - Tiles.bin"	
 };
 
-static const char ro_tileAttribs[] = {
-    #embed "assets/charGfx/kielbasaMapS2 - TileAttribs_L1.bin"	
-};
+// static const char ro_tileAttribs[] = {
+//     #embed "assets/charGfx/kielbasaMapS2 - TileAttribs_L1.bin"	
+// };
 
 #pragma code ( villiageMapGfx1Loaders )
 #pragma data ( villiageMapRAMData )
@@ -98,6 +97,7 @@ RIRQCode topMap, msxMap, openMap;
 #pragma data ( villiageMapRAMData )
 static char ro_xmap[V_MAP_SIZE_X * V_MAP_SIZE_Y];
 
+// copy base map from ROM, add any specials to it
 void tiles_remap(void)
 {
     for(char y=0; y<V_MAP_SIZE_Y; y++)
@@ -111,165 +111,165 @@ void tiles_remap(void)
 
 void tiles_put4x4row0(char * dp, char * cp, const char * mp, const char * tp)
 {
-    for(char tx=0; tx<10; tx++)
-    {
-        const char  * ti = tp + mp[tx] * 16;
+	for(char tx=0; tx<10; tx++)
+	{
+		const char  * ti = tp + mp[tx] * 16;
 
 #assign cx 0
 #repeat
-        {
-            char ci = ti[cx];
-            dp[cx] = ci;
-            cp[cx] = ro_tileAttribs[mp[tx]];
-        }
+		{
+			char ci = ti[cx];
+			dp[cx] = ci;
+			cp[cx] = ro_attribs[ci];
+		}
 #assign cx cx + 1
 #until cx == 4
 
-        dp += 4;
-        cp += 4;
-    }
+		dp += 4;
+		cp += 4;
+	}
 }
 
 void tiles_put4x4row1(char * dp, char * cp, const char * mp, const char * tp)
 {
-    const char  * ti = tp + mp[0] * 16 + 1;
+	const char  * ti = tp + mp[0] * 16 + 1;
 
 #assign cx 0
 #repeat
-    {
-        char ci = ti[cx];
-        dp[cx] = ci;
-        cp[cx] = ro_tileAttribs[mp[0]];
-    }
+	{
+		char ci = ti[cx];
+		dp[cx] = ci;
+		cp[cx] = ro_attribs[ci];
+	}
 #assign cx cx + 1
 #until cx == 3
 
-    dp += 3;
-    cp += 3;
+	dp += 3;
+	cp += 3;
 
-    for(char tx=1; tx<10; tx++)
-    {
-        ti = tp + mp[tx] * 16;
+	for(char tx=1; tx<10; tx++)
+	{
+		ti = tp + mp[tx] * 16;
 
 #assign cx 0
 #repeat
-        {
-            char ci = ti[cx];
-            dp[cx] = ci;
-            cp[cx] = ro_tileAttribs[mp[tx]];
-        }
+		{
+			char ci = ti[cx];
+			dp[cx] = ci;
+			cp[cx] = ro_attribs[ci];
+		}
 #assign cx cx + 1
 #until cx == 4
 
-        dp += 4;
-        cp += 4;
-    }
+		dp += 4;
+		cp += 4;
+	}
 
-    ti = tp + mp[10] * 16;
+	ti = tp + mp[10] * 16;
 
 #assign cx 0
 #repeat
-    {
-        char ci = ti[cx];
-        dp[cx] = ci;
-        cp[cx] = ro_tileAttribs[mp[10]];
-    }
+	{
+		char ci = ti[cx];
+		dp[cx] = ci;
+		cp[cx] = ro_attribs[ci];
+	}
 #assign cx cx + 1
 #until cx == 1
 }
 
 void tiles_put4x4row2(char * dp, char * cp, const char * mp, const char * tp)
 {
-    const char  * ti = tp + mp[0] * 16 + 2;
+	const char  * ti = tp + mp[0] * 16 + 2;
 
 #assign cx 0
 #repeat
-    {
-        char ci = ti[cx];
-        dp[cx] = ci;
-        cp[cx] = ro_tileAttribs[mp[0]];
-    }
+	{
+		char ci = ti[cx];
+		dp[cx] = ci;
+		cp[cx] = ro_attribs[ci];
+	}
 #assign cx cx + 1
 #until cx == 2
 
-    dp += 2;
-    cp += 2;
+	dp += 2;
+	cp += 2;
 
-    for(char tx=1; tx<10; tx++)
-    {
-        ti = tp + mp[tx] * 16;
+	for(char tx=1; tx<10; tx++)
+	{
+		ti = tp + mp[tx] * 16;
 
 #assign cx 0
 #repeat
-        {
-            char ci = ti[cx];
-            dp[cx] = ci;
-            cp[cx] = ro_tileAttribs[mp[tx]];
-        }
+		{
+			char ci = ti[cx];
+			dp[cx] = ci;
+			cp[cx] = ro_attribs[ci];
+		}
 #assign cx cx + 1
 #until cx == 4
 
-        dp += 4;
-        cp += 4;
-    }
+		dp += 4;
+		cp += 4;
+	}
 
-    ti = tp + mp[10] * 16;
+	ti = tp + mp[10] * 16;
 
 #assign cx 0
 #repeat
-    {
-        char ci = ti[cx];
-        dp[cx] = ci;
-        cp[cx] = ro_tileAttribs[mp[10]];
-    }
+	{
+		char ci = ti[cx];
+		dp[cx] = ci;
+		cp[cx] = ro_attribs[ci];
+	}
 #assign cx cx + 1
 #until cx == 2
 }
 
 void tiles_put4x4row3(char * dp, char * cp, const char * mp, const char * tp)
 {
-    const char  * ti = tp + mp[0] * 16 + 3;
+	const char  * ti = tp + mp[0] * 16 + 3;
 
 #assign cx 0
 #repeat
-    {
-        char ci = ti[cx];
-        dp[cx] = ci;
-        cp[cx] = ro_tileAttribs[mp[0]];
-    }
+	{
+		char ci = ti[cx];
+		dp[cx] = ci;
+		cp[cx] = ro_attribs[ci];
+	}
 #assign cx cx + 1
 #until cx == 1
 
-    dp += 1;
-    cp += 1;
+	dp += 1;
+	cp += 1;
 
-    for(char tx=1; tx<10; tx++)
-    {
-        ti = tp + mp[tx] * 16;
+	for(char tx=1; tx<10; tx++)
+	{
+		ti = tp + mp[tx] * 16;
 
 #assign cx 0
 #repeat
-        {
-            char ci = ti[cx];
-            dp[cx] = ci;
-            cp[cx] = ro_tileAttribs[mp[tx]];
-        }
+		{
+			char ci = ti[cx];
+			dp[cx] = ci;
+			cp[cx] = ro_attribs[ci];
+		}
 #assign cx cx + 1
 #until cx == 4
 
-        dp += 4;
-        cp += 4;
-    }
+		dp += 4;
+		cp += 4;
+	}
 
-    ti = tp + mp[10] * 16;
+	ti = tp + mp[10] * 16;
 
 #assign cx 0
 #repeat
-    {
-        char ci = ti[cx];
-        dp[cx] = ci;
-        cp[cx] = ro_tileAttribs[mp[10]];
-    }
+	{
+		char ci = ti[cx];
+		dp[cx] = ci;
+		cp[cx] = ro_attribs[ci];
+	}
 #assign cx cx + 1
 #until cx == 3
 }
@@ -282,7 +282,7 @@ void tiles_put4x4(const char * mp, char ox, char oy)
     oy &= 3;
     ox &= 3;
 
-    for(char ty=0; ty<25; ty++)
+    for(char ty=0; ty<24; ty++)
     {
         switch (ox)
         {
@@ -346,29 +346,8 @@ void villiageMapInit(){
     ((char *)0xffff)[0] = 0;
 
     // initialize raster IRQ
-    rirq_init(true);
-    // Top
-    rirq_build(&topMap, 3);
-    rirq_write(&topMap, 0, &vic.ctrl1, VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3 );
-    rirq_write(&topMap, 1, &vic.ctrl2, VIC_CTRL2_CSEL | VIC_CTRL2_MCM );
-    rirq_call(&topMap, 2, villiageMapIrq_topMap);
-    rirq_set(0, IRQ_MAP_TOP, &topMap);
-
-    // Bottom - MSX
-    rirq_build(&msxMap, 1);
-    rirq_call(&msxMap, 0, villiageMapIrq_msx2);
-    rirq_set(1, IRQ_MAP_MSX2, &msxMap);
-
-    // Open border raster IRQ
-    rirq_build(&openMap, 2);
-    // Reduce vertical screen size to fool VIC counter
-    rirq_write(&openMap, 0, &vic.ctrl1, VIC_CTRL1_BMM |VIC_CTRL1_DEN | 3);
-    rirq_call(&openMap, 1, villiageMapIrq_openBorder);
-    // Place it into the last line of the screen
-    rirq_set(2, IRQ_MAP_FRAME_OPEN, &openMap);
-
-    // sort the raster IRQs
-    rirq_sort();
+    // switchScreenToFullMCTxt();
+    switchScreenToFullHiresTxt();
 
     // Load GFX
     villiageMapScreenInit();
@@ -376,19 +355,7 @@ void villiageMapInit(){
     tiles_remap();
 
     splashScreen(false, 2);
-    // Init screen mode done by irq
-    // vic_setmode(VICM_TEXT_MC, GFX_1_SCR, GFX_1_BMP);
     // start raster IRQ processing
     rirq_start();
-
-    // // main loop
-    // for(;;){
-    //     // vic.color_border++;
-
-        mapGameLoop();
-    //     vic_waitFrame();
-    //     rirq_wait();
-    //     // vic.color_border--;
-
-    // }
+    mapGameLoop();
 }

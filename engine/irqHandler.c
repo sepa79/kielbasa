@@ -308,8 +308,9 @@ RIRQCode rirqc_topUISprites, rirqc_botomUISprites, rirqc_topScreen, rirqc_middle
 // main init raster must be called first, this one just remaps some IRQs
 void initRasterIRQ_TxtMode(){
     // Top - switch to txt, play music
-    rirq_build(&rirqc_topScreen, 1);
+    rirq_build(&rirqc_topScreen, 2);
     rirq_call(&rirqc_topScreen, 0, IRQ_topTxtScreen);
+    rirq_call(&rirqc_topScreen, 1, setSpritesBottomScr);
     rirq_set(1, IRQ_RASTER_TOP_MC_SCREEN, &rirqc_topScreen);
 
     // Middle - play msx
@@ -326,6 +327,22 @@ void initRasterIRQ_MCTxtMode(){
     // Top - switch to txt, play music
     rirq_build(&rirqc_topScreen, 1);
     rirq_call(&rirqc_topScreen, 0, IRQ_topMCTxtScreen);
+    rirq_set(1, IRQ_RASTER_TOP_MC_SCREEN, &rirqc_topScreen);
+
+    // Middle - play msx
+    rirq_build(&rirqc_middleScreen, 1);
+    rirq_call(&rirqc_middleScreen, 0, IRQ_middleScreenMsx);
+    rirq_set(2, IRQ_RASTER_MIDDLE_TXT_SCREEN, &rirqc_middleScreen);
+
+    // sort the raster IRQs
+    rirq_sort();
+}
+
+// main init raster must be called first, this one just remaps some IRQs
+void initRasterIRQ_HiresTxtMode(){
+    // Top - switch to txt, play music
+    rirq_build(&rirqc_topScreen, 1);
+    rirq_call(&rirqc_topScreen, 0, IRQ_topTxtScreen);
     rirq_set(1, IRQ_RASTER_TOP_MC_SCREEN, &rirqc_topScreen);
 
     // Middle - play msx
@@ -431,4 +448,9 @@ void switchScreenToSplitMcTxt(){
 void switchScreenToFullMCTxt(){
     rirq_wait();
     initRasterIRQ_MCTxtMode();
+}
+
+void switchScreenToFullHiresTxt(){
+    rirq_wait();
+    initRasterIRQ_HiresTxtMode();
 }

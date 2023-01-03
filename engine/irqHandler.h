@@ -10,6 +10,7 @@ void initRasterIRQ();
 void switchScreenToFullTxt();
 void switchScreenToSplitMcTxt();
 void switchScreenToFullMCTxt();
+void switchScreenToFullHiresTxt();
 
 #pragma compile("irqHandler.c")
 

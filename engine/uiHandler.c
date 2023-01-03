@@ -30,7 +30,7 @@ byte * sprBankPointer;
 volatile struct JOY_CURSOR joyCursor = {true, false, 0, 0, 0, 0, 0};
 CharWin cw;
 
-static bool _fullScreenMenuOpen = false;
+// static bool _fullScreenMenuOpen = false;
 static byte _lastElementInMenu = 0;
 struct MenuOption *currentMenu;
 static byte _menuUiMode = 0;
@@ -45,8 +45,6 @@ static void _setJoyCursorPos(byte menuPos){
     if(!(currentMenu[menuPos].uiMode & UI_HIDE)){
         joyCursor.x = (currentMenu[menuPos].x + cw.sx) * 8 + BORDER_XPOS_LEFT - 1;
         joyCursor.y = (currentMenu[menuPos].y + cw.sy) * 8 + BORDER_YPOS_TOP - 1;
-
-
         setNormalCursor();
     }
     // set delay, without it it's impossible to control stuff, joy cursor moves too fast
@@ -136,6 +134,23 @@ static void _decMenuPos(){
     _setJoyCursorPos(joyCursor.menuPos);
 }
 
+static void _assignJoyKeys(){
+    if(!joyCursor.moveDelayCurrent){
+        if(!(_joy2Status & JOY_UP) && _joyU != NOT_ATTACHED){
+           _key = currentMenu[_joyU].key;
+        }
+        if(!(_joy2Status & JOY_DOWN) && _joyD != NOT_ATTACHED){
+           _key = currentMenu[_joyD].key;
+        }
+        if(!(_joy2Status & JOY_LEFT) && _joyL != NOT_ATTACHED){
+           _key = currentMenu[_joyL].key;
+        }
+        if(!(_joy2Status & JOY_RIGHT) && _joyR != NOT_ATTACHED){
+           _key = currentMenu[_joyR].key;
+        }
+    }
+}
+
 static void _moveJoyThroughMenuUD(){
     if(!joyCursor.moveDelayCurrent){
         if(!(_joy2Status & JOY_UP)){
@@ -152,6 +167,7 @@ static void _moveJoyThroughMenuUD(){
         }
     }
 }
+
 static void _moveJoyThroughMenuLR(){
     if(!joyCursor.moveDelayCurrent){
         if(!(_joy2Status & JOY_UP) && _joyU != NOT_ATTACHED){
@@ -186,11 +202,13 @@ void checkKeys(){
     keyb_poll();
     _key = keyb_codes[keyb_key & 0x7f];
     // now get the joystick - some keys might be same as joy, so these will simulate keypresses if needed
-    if(_menuUiMode == UI_UD) {
-        _moveJoyThroughMenuUD();
-    } else {
-        _moveJoyThroughMenuLR();
-    }
+    // if(_menuUiMode == UI_UD) {
+    //     _moveJoyThroughMenuUD();
+    // } else if(_menuUiMode == UI_LR) {
+    //     _moveJoyThroughMenuLR();
+    // } else {
+        _assignJoyKeys();
+    // }
 
     byte i = 0;
     bool selected = false;
@@ -235,47 +253,47 @@ void checkKeys(){
         // help & options
         if (_key == KEY_F1) {
             // don't go to menu while in menu
-            if(!_fullScreenMenuOpen){
-                _fullScreenMenuOpen = true;
+            // if(!_fullScreenMenuOpen){
+            //     _fullScreenMenuOpen = true;
                 switchScreenToFullTxt();
                 gms_disableTimeControls = true;
                 // vic.color_border = VCOL_BLUE;
                 gms_gameSpeed = SPEED_PAUSED;
                 updateGameSpeed();
                 showOptionsMenu();
-            }
+            // }
             return;
         // task manager
         } else if (_key == KEY_F3) {
             // don't go to menu while in menu
-            if(!_fullScreenMenuOpen){
-                _fullScreenMenuOpen = true;
+            // if(!_fullScreenMenuOpen){
+            //     _fullScreenMenuOpen = true;
                 switchScreenToFullTxt();
                 gms_disableTimeControls = true;
                 // vic.color_border = VCOL_BLUE;
                 gms_gameSpeed = SPEED_PAUSED;
                 updateGameSpeed();
                 showTaskManagerMenu();
-            }
+            // }
             return;
         // task manager priorities
         } else if (_key == KEY_F4) {
             // don't go to menu while in menu
-            if(!_fullScreenMenuOpen){
-                _fullScreenMenuOpen = true;
+            // if(!_fullScreenMenuOpen){
+            //     _fullScreenMenuOpen = true;
                 switchScreenToFullTxt();
                 gms_disableTimeControls = true;
                 // vic.color_border = VCOL_BLUE;
                 gms_gameSpeed = SPEED_PAUSED;
                 updateGameSpeed();
                 showTaskManagerPrioMenu();
-            }
+            // }
             return;
         // logs
         } else if (_key == KEY_F7) {
             // don't go to menu while in menu
-            if(!_fullScreenMenuOpen){
-                _fullScreenMenuOpen = true;
+            // if(!_fullScreenMenuOpen){
+            //     _fullScreenMenuOpen = true;
                 switchScreenToFullTxt();
                 gms_disableTimeControls = true;
                 // vic.color_border = VCOL_BLUE;
@@ -283,7 +301,7 @@ void checkKeys(){
                 updateGameSpeed();
                 // called outside of menu system, so this routine has to take care of bank switching
                 showLogMenu();
-            }
+            // }
             return;
         }
 
@@ -300,7 +318,7 @@ void checkKeys(){
         // vic.color_border = VCOL_BLUE;
 
         // whatever it is, its not an options menu, as its handled above
-        _fullScreenMenuOpen = false;
+        // _fullScreenMenuOpen = false;
         // block any accidental key presses during transition
         joyCursor.enabled = false;
         // open new menu

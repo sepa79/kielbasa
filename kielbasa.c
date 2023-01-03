@@ -69,6 +69,7 @@ void gotoMainMenu(){
     joyCursor.enabled = true;
     gms_gameSpeed = SPEED_PAUSED;
     gms_gameSpeedWait = WAIT_TIME_PAUSED;
+    gms_disableTimeControls = false;
 
     prepareScroll();
     updateStatusBar(TXT[SB_IDX_WELCOME]);
