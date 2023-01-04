@@ -40,6 +40,9 @@ static byte _joyU = 0;
 static byte _joyD = 0;
 static byte _joyL = 0;
 static byte _joyR = 0;
+static byte _joyF = 0;
+static byte _joyLF = 0;
+static bool _joyFirePressed = false;
 
 static void _setJoyCursorPos(byte menuPos){
     if(!(currentMenu[menuPos].uiMode & UI_HIDE)){
@@ -47,17 +50,17 @@ static void _setJoyCursorPos(byte menuPos){
         joyCursor.y = (currentMenu[menuPos].y + cw.sy) * 8 + BORDER_YPOS_TOP - 1;
         setNormalCursor();
     }
-    // set delay, without it it's impossible to control stuff, joy cursor moves too fast
-    joyCursor.moveDelayCurrent = JOY_CURSOR_MOVE_DELAY_INIT;
 }
 
 /* Displays text and colors, sets _lastElementInMenu */
 static void _displayMenuText(){
     byte i = 0;
-    _joyL = NOT_ATTACHED;
-    _joyR = NOT_ATTACHED;
-    _joyU = NOT_ATTACHED;
-    _joyD = NOT_ATTACHED;
+    _joyL  = NOT_ATTACHED;
+    _joyR  = NOT_ATTACHED;
+    _joyU  = NOT_ATTACHED;
+    _joyD  = NOT_ATTACHED;
+    _joyF  = NOT_ATTACHED;
+    _joyLF = NOT_ATTACHED;
 
     while (currentMenu[i].key != 0){
         if(!(currentMenu[i].uiMode & UI_HIDE)){
@@ -66,10 +69,8 @@ static void _displayMenuText(){
             cwin_putat_string_raw(&cw, currentMenu[i].x, currentMenu[i].y, TXT[idx], VCOL_MED_GREY);
         }
 
-        // detect what kind of menu we have - LR or UD
-        if(currentMenu[i].uiMode & (UI_LR + UI_UD)){
-            _menuUiMode = currentMenu[i].uiMode;
-        } else if(currentMenu[i].uiMode & UI_L){
+        // Map joystick to keys
+        if(currentMenu[i].uiMode & UI_L){
             _joyL = i;
         } else if(currentMenu[i].uiMode & UI_R){
             _joyR = i;
@@ -77,6 +78,10 @@ static void _displayMenuText(){
             _joyU = i;
         } else if(currentMenu[i].uiMode & UI_D){
             _joyD = i;
+        } else if(currentMenu[i].uiMode & UI_F){
+            _joyF = i;
+        } else if(currentMenu[i].uiMode & UI_LF){
+            _joyLF = i;
         }
         
         i++;
@@ -107,9 +112,12 @@ static void _incMenuPos(){
             joyCursor.menuPos = 0;
         }
         //check if next element is ok to move to
-        if(currentMenu[joyCursor.menuPos].uiMode & (UI_LR + UI_UD)){
+        if(currentMenu[joyCursor.menuPos].uiMode & UI_SELECT){
             // yep, exit loop
             done = true;
+        // } else {
+        //     // there is nothing to iterate through, debug
+        //     vic.color_border--;
         }
     }
     // only call update pos if movement occured
@@ -125,76 +133,89 @@ static void _decMenuPos(){
             joyCursor.menuPos--;
         }
         //check if next element is ok to move to
-        if(currentMenu[joyCursor.menuPos].uiMode & (UI_LR + UI_UD)){
+        if(currentMenu[joyCursor.menuPos].uiMode & UI_SELECT){
             // yep, exit loop
             done = true;
+        // } else {
+        //     // there is nothing to iterate through, debug
+        //     vic.color_border--;
         }
     }
     // only call update pos if movement occured
     _setJoyCursorPos(joyCursor.menuPos);
 }
 
-static void _assignJoyKeys(){
+static void _moveJoyThroughMenuAndAssignKeys(){
     if(!joyCursor.moveDelayCurrent){
-        if(!(_joy2Status & JOY_UP) && _joyU != NOT_ATTACHED){
-           _key = currentMenu[_joyU].key;
-        }
-        if(!(_joy2Status & JOY_DOWN) && _joyD != NOT_ATTACHED){
-           _key = currentMenu[_joyD].key;
-        }
-        if(!(_joy2Status & JOY_LEFT) && _joyL != NOT_ATTACHED){
-           _key = currentMenu[_joyL].key;
-        }
-        if(!(_joy2Status & JOY_RIGHT) && _joyR != NOT_ATTACHED){
-           _key = currentMenu[_joyR].key;
-        }
-    }
-}
-
-static void _moveJoyThroughMenuUD(){
-    if(!joyCursor.moveDelayCurrent){
-        if(!(_joy2Status & JOY_UP)){
-            _decMenuPos();
-        }
-        if(!(_joy2Status & JOY_DOWN)){
-            _incMenuPos();
-        }
-        if(!(_joy2Status & JOY_LEFT) && _joyL != NOT_ATTACHED){
-           _key = currentMenu[_joyL].key;
-        }
-        if(!(_joy2Status & JOY_RIGHT) && _joyR != NOT_ATTACHED){
-           _key = currentMenu[_joyR].key;
-        }
-    }
-}
-
-static void _moveJoyThroughMenuLR(){
-    if(!joyCursor.moveDelayCurrent){
-        if(!(_joy2Status & JOY_UP) && _joyU != NOT_ATTACHED){
-           _key = currentMenu[_joyU].key;
-        }
-        if(!(_joy2Status & JOY_DOWN) && _joyD != NOT_ATTACHED){
-           _key = currentMenu[_joyD].key;
-        }
+        if(!(_joy2Status & JOY_UP )){
+            if(_joyU != NOT_ATTACHED){
+                _key = currentMenu[_joyU].key;
+            } else {
+                _decMenuPos();
+            }
+        } else 
+        if(!(_joy2Status & JOY_DOWN )){
+            if(_joyD != NOT_ATTACHED){
+               _key = currentMenu[_joyD].key;
+            } else {
+                _incMenuPos();
+            }
+        } else 
         if(!(_joy2Status & JOY_LEFT)){
-            _decMenuPos();
-        }
+            if(_joyL != NOT_ATTACHED){
+                _key = currentMenu[_joyL].key;
+            } else {
+                _decMenuPos();
+            }
+        } else 
         if(!(_joy2Status & JOY_RIGHT)){
-            _incMenuPos();
+            if(_joyR != NOT_ATTACHED){
+               _key = currentMenu[_joyR].key;
+            } else {
+                _incMenuPos();
+            }
         }
+
+        _joyFirePressed = false;
+        if(!(_joy2Status & JOY_FIRE)){
+            // Fire pressed! lets wait and see if it is a Long Fire or not
+            byte timer = 50;
+            bool isPressed = true;
+            while (timer){
+                timer--;
+                vic_waitFrame();
+                if(_joy2Status & JOY_FIRE){
+                    isPressed = false;
+                    timer = 0;
+                }
+            }
+            if(isPressed){
+                // Long fire - blindly attach key, wherever it was set or not is irrelevant
+                _key = currentMenu[_joyLF].key;
+            } else {
+                // normal fire - if there is no key attached, select current menu pos unless hidden
+                if(_joyF != NOT_ATTACHED){
+                    _key = currentMenu[_joyF].key;
+                } else {
+                    _joyFirePressed = true;
+                }
+            }
+        }
+        // set delay, without it it's impossible to control stuff, joy cursor moves too fast
+        joyCursor.moveDelayCurrent = JOY_CURSOR_MOVE_DELAY_INIT;
     }
 }
 
-static bool _checkJoyFire(){
-    if(!joyCursor.moveDelayCurrent){
-        if(!(_joy2Status & JOY_FIRE)){
-            // set delay, without it it's impossible to control stuff, joy cursor moves too fast
-            joyCursor.moveDelayCurrent = JOY_CURSOR_MOVE_DELAY_INIT;
-            return true;
-        }
-    }
-    return false;
-}
+// static bool _checkJoyFire(){
+//     if(!joyCursor.moveDelayCurrent){
+//         if(!(_joy2Status & JOY_FIRE)){
+//             // set delay, without it it's impossible to control stuff, joy cursor moves too fast
+//             joyCursor.moveDelayCurrent = JOY_CURSOR_MOVE_DELAY_INIT;
+//             return true;
+//         }
+//     }
+//     return false;
+// }
 
 // check keys that were pressed, including joystick, and load appropriate menu option
 void checkKeys(){
@@ -202,22 +223,19 @@ void checkKeys(){
     keyb_poll();
     _key = keyb_codes[keyb_key & 0x7f];
     // now get the joystick - some keys might be same as joy, so these will simulate keypresses if needed
-    if(_menuUiMode == UI_UD) {
-        _moveJoyThroughMenuUD(); // why is this selecting itself even when no UD defined???
-    } else if(_menuUiMode == UI_LR) {
-        _moveJoyThroughMenuLR();
-    } else {
-        _assignJoyKeys();
-    }
+    _moveJoyThroughMenuAndAssignKeys();
 
+    // TODO: Rename to something useful, like selectedElement
     byte i = 0;
     bool selected = false;
 
     while (i <= _lastElementInMenu){
         if (_key == currentMenu[i].key){
             // vic.color_border = VCOL_RED;
-            joyCursor.menuPos = i;
-            _setJoyCursorPos(joyCursor.menuPos);
+            if(!(currentMenu[i].uiMode & UI_HIDE)){
+                joyCursor.menuPos = i;
+                _setJoyCursorPos(joyCursor.menuPos);
+            }
             selected = true;
             break;
         }
@@ -306,9 +324,8 @@ void checkKeys(){
         }
 
         // joystick
-        // _moveJoyThroughMenu();
         // check if fire pressed & if so read which element Joy was pointing at
-        if(_checkJoyFire()){
+        if(_joyFirePressed){
             i = joyCursor.menuPos;
             selected = true;
         }

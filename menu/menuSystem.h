@@ -20,13 +20,16 @@
 #define SCREEN_HEIGHT 12
 #define BIG_SCREEN_HEIGHT 24
 
-#define UI_U 1
-#define UI_R 2
-#define UI_D 4
-#define UI_L 8
-#define UI_LR 16
-#define UI_UD 32
-#define UI_HIDE 64
+enum UI_MAP {
+    UI_U=1,
+    UI_D=2,
+    UI_L=4,
+    UI_R=8,
+    UI_F=16,
+    UI_LF=32,
+    UI_SELECT=64,
+    UI_HIDE=128
+};
 
 /* Represents a single menu option */
 struct MenuOption {

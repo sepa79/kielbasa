@@ -224,11 +224,11 @@ static void _emMenu4(){
 }
 
 const struct MenuOption CREW_MENU[] = {
-    { TXT_IDX_MENU_CREW1, '1', UI_UD, &_emMenu1, 0, 1, 1},
-    { TXT_IDX_MENU_CREW2, '2', UI_UD, &_emMenu2, 0, 1, 2},
-    { TXT_IDX_MENU_CREW3, '3', UI_UD, &_emMenu3, 0, 1, 3},
-    { TXT_IDX_MENU_CREW4, '4', UI_UD, &_emMenu4, 0, 1, 4},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_UD, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
+    { TXT_IDX_MENU_CREW1, '1', UI_SELECT, &_emMenu1, 0, 1, 1},
+    { TXT_IDX_MENU_CREW2, '2', UI_SELECT, &_emMenu2, 0, 1, 2},
+    { TXT_IDX_MENU_CREW3, '3', UI_SELECT, &_emMenu3, 0, 1, 3},
+    { TXT_IDX_MENU_CREW4, '4', UI_SELECT, &_emMenu4, 0, 1, 4},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_SELECT, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
     END_MENU_CHOICES
 };
 
