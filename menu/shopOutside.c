@@ -83,7 +83,7 @@ static void _soMenu2(){
 const struct MenuOption SHOP_OUTSIDE_MENU[] = {
     { TXT_IDX_MENU_SHOPOUT1, '1', UI_SELECT, &_getInside, 0, 1, 4},
     { TXT_IDX_MENU_SHOPOUT2, '2', UI_SELECT, &_soMenu2, 0, 1, 5},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_SELECT, &showMenu, MENU_BANK_MAIN_MENU, 2, 7},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 7},
     END_MENU_CHOICES
 };
 

@@ -122,7 +122,7 @@ __export const struct AUX_GFX AuxResources = {{
 #pragma data(mainGfxFont)
 __export const char GAME_FONT[0x800] = {
     // #embed 0xffff 2 "assets/fonts.64c"
-    #embed 0xffff 2 "assets/game_font2.64c"
+    #embed 0xffff 0 "assets/gameFont - Chars.bin"
 };
 
 // ===========================================================================================

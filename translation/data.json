@@ -85,14 +85,14 @@
       {
         "id": "MENU_CANCEL",
         "menu_opt": "<",
-        "pl": "Anuluj",
-        "en": "Cancel"
+        "pl": "ü Anuluj",
+        "en": "ü Cancel"
       },
       {
         "id": "MENU_EXIT",
         "menu_opt": "<",
-        "pl": "Powrót",
-        "en": "Back"
+        "pl": "ü Powrót",
+        "en": "ü Back"
       },
       {
         "comment": "// fixed width - 8",
@@ -126,8 +126,8 @@
       {
         "id": "MENU_MAIN3",
         "menu_opt": "3",
-        "pl": "Wędzarnia",
-        "en": "Smokehouse"
+        "pl": "Spiżarnia",
+        "en": "Pantry"
       },
       {
         "id": "MENU_MAIN4",
@@ -144,14 +144,14 @@
       {
         "id": "MENU_MAIN6",
         "menu_opt": "6",
-        "pl": "Pigsile Command",
-        "en": "Pigsile Command"
+        "pl": "Stonka",
+        "en": "Air Defence"
       },
       {
         "id": "MENU_MAIN7",
         "menu_opt": "7",
-        "pl": "Mapa",
-        "en": "Map"
+        "pl": "ü Mapa",
+        "en": "ü Map"
       },
       {
         "id": "MENU_OPTIONS_LANG",
@@ -177,8 +177,8 @@
       },
       {
         "id": "MENU_OPTIONS_MSX_PLAY",
-        "pl": "Return - graj",
-        "en": "Return - play"
+        "pl": "ý Return - graj",
+        "en": "ý Return - play"
       },
       {
         "id": "MENU_OPTIONS_MSX_ON_OFF",

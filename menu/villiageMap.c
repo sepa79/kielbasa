@@ -63,7 +63,7 @@ const struct MenuOption VILLIAGE_MAP_MENU[] = {
     { TXT_IDX_MENU_TASK_MANAGER_S, 's', UI_D+UI_HIDE, &_mapDown, 0, 1, 1},
     { TXT_IDX_MENU_TASK_MANAGER_A, 'a', UI_L+UI_HIDE, &_mapLeft, 0, 1, 1},
     { TXT_IDX_MENU_TASK_MANAGER_D, 'd', UI_R+UI_HIDE, &_mapRight, 0, 1, 1},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_HIDE, &gotoMainMenu, 0, 2, 5},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LF+UI_HIDE, &gotoMainMenu, 0, 2, 5},
     END_MENU_CHOICES
 };
 

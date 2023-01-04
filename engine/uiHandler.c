@@ -146,6 +146,7 @@ static void _decMenuPos(){
 }
 
 static void _moveJoyThroughMenuAndAssignKeys(){
+    _joyFirePressed = false;
     if(!joyCursor.moveDelayCurrent){
         if(!(_joy2Status & JOY_UP )){
             if(_joyU != NOT_ATTACHED){
@@ -176,22 +177,21 @@ static void _moveJoyThroughMenuAndAssignKeys(){
             }
         }
 
-        _joyFirePressed = false;
         if(!(_joy2Status & JOY_FIRE)){
             // Fire pressed! lets wait and see if it is a Long Fire or not
-            byte timer = 50;
-            bool isPressed = true;
-            while (timer){
-                timer--;
+            byte timer = 0;
+            while (!(_joy2Status & JOY_FIRE)){
+                vic.color_border++;
+                timer++;
                 vic_waitFrame();
-                if(_joy2Status & JOY_FIRE){
-                    isPressed = false;
-                    timer = 0;
-                }
             }
-            if(isPressed){
+            if(timer > 50){
                 // Long fire - blindly attach key, wherever it was set or not is irrelevant
                 _key = currentMenu[_joyLF].key;
+                // now wait for fire to be released
+                while(!(_joy2Status & JOY_FIRE)){
+                    vic.color_border++;
+                }
             } else {
                 // normal fire - if there is no key attached, select current menu pos unless hidden
                 if(_joyF != NOT_ATTACHED){

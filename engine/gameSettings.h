@@ -51,7 +51,7 @@ extern volatile bool gms_enableMusic;
 // Bank for Weather Sprite, handled by irqSpriteController
 extern volatile byte isc_weatherSprite;
 
-#define JOY_CURSOR_MOVE_DELAY_INIT 10
+#define JOY_CURSOR_MOVE_DELAY_INIT 8
 
 #pragma compile("gameSettings.c")
 #endif

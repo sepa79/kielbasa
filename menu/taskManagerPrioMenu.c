@@ -173,7 +173,7 @@ const struct MenuOption TASK_MANAGER_PRIO_MENU[] = {
     { TXT_IDX_MENU_TASK_MANAGER_MINUS, '-', UI_SELECT, &_prioUp, 0, 10, 3},
     { TXT_IDX_MENU_TASK_MANAGER_A, 'a', UI_L+UI_HIDE, &_skillLeft, 0, 1, 2},
     { TXT_IDX_MENU_TASK_MANAGER_D, 'd', UI_R+UI_HIDE, &_skillRight, 0, 3, 2},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_SELECT, &_backToPreviousMenu, 0, 1, 20},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LF, &_backToPreviousMenu, 0, 1, 20},
 
     END_MENU_CHOICES
 };
