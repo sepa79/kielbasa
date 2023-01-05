@@ -193,9 +193,9 @@ static void _backToPreviousMenu(){
 #pragma data ( LogMenuData )
 
 const struct MenuOption LOG_MENU[] = {
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LF, &_backToPreviousMenu, 0, 1, 21 },
-    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', UI_U+UI_HIDE, &_upPage, 0, 0, ROW_OFFSET_LOGS-1 },
-    { TXT_IDX_MENU_TASK_MANAGER_S, 's', UI_D+UI_HIDE, &_downPage, 0, 0, ROW_OFFSET_LOGS+10 },
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_FULL_TXT, UI_LF, &_backToPreviousMenu, 0, 1, 21 },
+    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', SCREEN_FULL_TXT, UI_U+UI_HIDE, &_upPage, 0, 0, ROW_OFFSET_LOGS-1 },
+    { TXT_IDX_MENU_TASK_MANAGER_S, 's', SCREEN_FULL_TXT, UI_D+UI_HIDE, &_downPage, 0, 0, ROW_OFFSET_LOGS+10 },
 
     END_MENU_CHOICES
 };

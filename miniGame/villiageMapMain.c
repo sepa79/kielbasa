@@ -41,7 +41,7 @@ static const char ro_tiles[] = {
 static void _screenInit(){
     // ROM on, I/O off - as we will copy to RAM under I/O ports
     mmap_set(0b00110011);
-    memcpy(GFX_1_FNT, ro_chars, sizeof(ro_chars));
+    memcpy(GFX_1_FNT2, ro_chars, sizeof(ro_chars));
     // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
     mmap_set(MMAP_ROM);
     vic.color_back = VCOL_BROWN;
@@ -334,7 +334,7 @@ void villiageMapInit(){
 
     // initialize raster IRQ
     // switchScreenToFullMCTxt();
-    switchScreenToFullHiresTxt();
+    // switchScreenToFullHiresTxt();
 
     // Load GFX
     villiageMapScreenInit();

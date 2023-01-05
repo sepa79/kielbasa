@@ -228,7 +228,6 @@ static void _backToPreviousMenu(){
     gms_textMode = false;
     gms_disableTimeControls = false;
     // This will simply call currently mounted menu again
-    switchScreenToSplitMcTxt();
     showMenu();
 }
 
@@ -239,16 +238,16 @@ void playNextRadioSong(){
 }
 
 const struct MenuOption MUSIC_MENU[] = {
-    { TXT_IDX_MENU_OPTIONS_MSX_PLAY, KEY_RETURN, UI_SELECT, &_loadMsx, 0, 1, 1},
-    { TXT_IDX_MENU_OPTIONS_MSX_ON_OFF, '1', UI_SELECT, &_toggleMusic, 0, 10, 1},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LF, &showOptionsMenu, 0, 30, 0},
-    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', UI_U+UI_HIDE, &_upRow, 0, 0, 4 },
-    { TXT_IDX_MENU_TASK_MANAGER_S, 's', UI_D+UI_HIDE, &_downRow, 0, 0, 22 },
+    { TXT_IDX_MENU_OPTIONS_MSX_PLAY, KEY_RETURN, SCREEN_FULL_TXT, UI_SELECT, &_loadMsx, 0, 1, 1},
+    { TXT_IDX_MENU_OPTIONS_MSX_ON_OFF, '1', SCREEN_FULL_TXT, UI_SELECT, &_toggleMusic, 0, 10, 1},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_FULL_TXT, UI_LF, &showOptionsMenu, 0, 30, 0},
+    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', SCREEN_FULL_TXT, UI_U+UI_HIDE, &_upRow, 0, 0, 4 },
+    { TXT_IDX_MENU_TASK_MANAGER_S, 's', SCREEN_FULL_TXT, UI_D+UI_HIDE, &_downRow, 0, 0, 22 },
     END_MENU_CHOICES
 };
 const struct MenuOption OPTIONS_MENU[] = {
-    { TXT_IDX_MENU_OPTIONS_LANG, '1', UI_SELECT, &_changeLanguage, 0, 2, 1},
-    { TXT_IDX_MENU_OPTIONS_MSX, '2', UI_SELECT, &_showMusicMenu, 0, 2, 2},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LF, &_backToPreviousMenu, 0, 2, 3},
+    { TXT_IDX_MENU_OPTIONS_LANG, '1', SCREEN_FULL_TXT, UI_SELECT, &_changeLanguage, 0, 2, 1},
+    { TXT_IDX_MENU_OPTIONS_MSX, '2', SCREEN_FULL_TXT, UI_SELECT, &_showMusicMenu, 0, 2, 2},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_FULL_TXT, UI_LF, &_backToPreviousMenu, 0, 2, 3},
     END_MENU_CHOICES
 };

@@ -31,6 +31,7 @@
 // main font
 #define GFX_1_FNT_SRC_ADR 0xb000
 #define GFX_1_FNT_DST_ADR 0xd800
+#define GFX_1_FNT2_DST_ADR 0xd000
 
 // screen and bitmap addresses
 #define GFX_1_SCR_ADR 0xc000
@@ -60,6 +61,7 @@
 #define GFX_1_AUX ((volatile char *)GFX_1_AUX_DST_ADR)
 #define GFX_1_FNT_SRC ((char *)GFX_1_FNT_SRC_ADR)
 #define GFX_1_FNT ((volatile char *)GFX_1_FNT_DST_ADR)
+#define GFX_1_FNT2 ((volatile char *)GFX_1_FNT2_DST_ADR)
 #define GFX_1_SPR_SRC ((char *)GFX_1_SPR_SRC_ADR)
 #define GFX_1_SPR ((volatile char *)GFX_1_SPR_DST_ADR)
 
@@ -75,6 +77,7 @@
 #define dd00_gfx1 ((GFX_1_SCR_ADR ^ 0xffff) >> 14)
 #define d018_gfx1 (((unsigned)GFX_1_SCR_ADR >> 6) & 0xf0) | (((unsigned)GFX_1_BMP_ADR >> 10) & 0x0e)
 #define d018_txt1 (((unsigned)GFX_1_SCR_ADR >> 6) & 0xf0) | (((unsigned)GFX_1_FNT_DST_ADR >> 10) & 0x0e)
+#define d018_txt2 (((unsigned)GFX_1_SCR_ADR >> 6) & 0xf0) | (((unsigned)GFX_1_FNT2_DST_ADR >> 10) & 0x0e)
 
 // *******************
 // additional defines

@@ -76,10 +76,10 @@ static void _ppMenu3(){
 }
 
 const struct MenuOption PIG_PEN_MENU[] = {
-    { TXT_IDX_MENU_PIGPEN1, '1', UI_SELECT, &_ppMenu1, 0, 1, 1},
-    { TXT_IDX_MENU_PIGPEN2, '2', UI_SELECT, &_ppMenu2, 0, 1, 2},
-    { TXT_IDX_MENU_PIGPEN3, '3', UI_SELECT, &_ppMenu3, 0, 1, 3},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
+    { TXT_IDX_MENU_PIGPEN1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_ppMenu1, 0, 1, 1},
+    { TXT_IDX_MENU_PIGPEN2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_ppMenu2, 0, 1, 2},
+    { TXT_IDX_MENU_PIGPEN3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_ppMenu3, 0, 1, 3},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
     END_MENU_CHOICES
 };
 

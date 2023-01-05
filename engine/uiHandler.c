@@ -273,7 +273,7 @@ void checkKeys(){
             // don't go to menu while in menu
             // if(!_fullScreenMenuOpen){
             //     _fullScreenMenuOpen = true;
-                switchScreenToFullTxt();
+                switchScreenTo(SCREEN_FULL_TXT);
                 gms_disableTimeControls = true;
                 // vic.color_border = VCOL_BLUE;
                 gms_gameSpeed = SPEED_PAUSED;
@@ -286,7 +286,7 @@ void checkKeys(){
             // don't go to menu while in menu
             // if(!_fullScreenMenuOpen){
             //     _fullScreenMenuOpen = true;
-                switchScreenToFullTxt();
+                switchScreenTo(SCREEN_FULL_TXT);
                 gms_disableTimeControls = true;
                 // vic.color_border = VCOL_BLUE;
                 gms_gameSpeed = SPEED_PAUSED;
@@ -299,7 +299,7 @@ void checkKeys(){
             // don't go to menu while in menu
             // if(!_fullScreenMenuOpen){
             //     _fullScreenMenuOpen = true;
-                switchScreenToFullTxt();
+                switchScreenTo(SCREEN_FULL_TXT);
                 gms_disableTimeControls = true;
                 // vic.color_border = VCOL_BLUE;
                 gms_gameSpeed = SPEED_PAUSED;
@@ -312,7 +312,7 @@ void checkKeys(){
             // don't go to menu while in menu
             // if(!_fullScreenMenuOpen){
             //     _fullScreenMenuOpen = true;
-                switchScreenToFullTxt();
+                switchScreenTo(SCREEN_FULL_TXT);
                 gms_disableTimeControls = true;
                 // vic.color_border = VCOL_BLUE;
                 gms_gameSpeed = SPEED_PAUSED;
@@ -339,6 +339,10 @@ void checkKeys(){
         // block any accidental key presses during transition
         joyCursor.enabled = false;
         // open new menu
+        // TODO: hidden loader, so that artefacts are gone
+        // switch IRQs if needed
+        switchScreenTo(currentMenu[i].screenMode);
+
         byte bank = currentMenu[i].bank;
         void (*jmpPtr)(void) = currentMenu[i].jmpPtr;
         // if menu is in any special bank - open it

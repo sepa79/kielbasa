@@ -35,7 +35,7 @@ __interrupt static void _pigsleSpriteCmdNoop(){
 #pragma data ( pigsleCommandRAMData )
 
 const struct MenuOption PIGSLE_COMMAND_MENU[] = {
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LF+UI_HIDE, &gotoMainMenu, 0, 2, 5},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF+UI_HIDE, &gotoMainMenu, 0, 2, 5},
     END_MENU_CHOICES
 };
 

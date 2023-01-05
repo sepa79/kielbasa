@@ -2,6 +2,7 @@
 #define MENU_STRUCTS_H
 
 #include <c64/types.h>
+#include <engine/irqHandler.h>
 
 // Menu regions use these - keep in sync with GFX banks.
 #define DAY_GFX_BMP 0x9000
@@ -37,6 +38,8 @@ struct MenuOption {
     byte textIdx;
     /* Key that will call the option if pressed */
     byte key;
+    // what screen type IRQs to use
+    byte screenMode;
     // ui mode - should it be bound to joy direction (U/D/L/R), or part of a group to navigate through (UD/LR)
     byte uiMode;
     /* Jump Pointer to code that handles the option */
@@ -51,7 +54,7 @@ struct MenuOption {
 };
 
 /* #define END_MENU_CHOICES {0x00, 0x00, 0x00, nullptr, 0x00, 0x00, 0x00} */
-#define END_MENU_CHOICES {0x00, 0x00, 0x00, nullptr, 0x00, 0x00, 0x00}
+#define END_MENU_CHOICES {0x00, 0x00, 0x00, 0x00, nullptr, 0x00, 0x00, 0x00}
 #define NO_ALTERNATE_MENU_BANK 0x00
 
 // Loaders vector table used in each menu

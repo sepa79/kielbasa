@@ -474,15 +474,15 @@ static void _previousPlant(){
 
 const struct MenuOption FARMLAND_MENU[] = {
     // options to select
-    { TXT_IDX_MENU_FARMLAND3, ':', UI_SELECT, &_previousPlant, 0, 12+10, 2},
-    { TXT_IDX_MENU_FARMLAND4, ';', UI_SELECT, &_nextPlant, 0, 12+10+11, 2},
-    { TXT_IDX_MENU_FARMLAND5, '1', UI_SELECT, &_sowPlant, 0, 1, 3},
-    { TXT_IDX_MENU_FARMLAND6, '2', UI_SELECT, &_maintainPlant, 0, 11, 3},
-    { TXT_IDX_MENU_FARMLAND7, '3', UI_SELECT, &_reapPlant, 0, 21, 3},
+    { TXT_IDX_MENU_FARMLAND3, ':', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_previousPlant, 0, 12+10, 2},
+    { TXT_IDX_MENU_FARMLAND4, ';', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_nextPlant, 0, 12+10+11, 2},
+    { TXT_IDX_MENU_FARMLAND5, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_sowPlant, 0, 1, 3},
+    { TXT_IDX_MENU_FARMLAND6, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_maintainPlant, 0, 11, 3},
+    { TXT_IDX_MENU_FARMLAND7, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_reapPlant, 0, 21, 3},
     // standard navigation
-    { TXT_IDX_MENU_FARMLAND1, 'w', UI_U+UI_HIDE, &_previousField, 0, 7, 2},
-    { TXT_IDX_MENU_FARMLAND2, 's', UI_D+UI_HIDE, &_nextField, 0, 9, 2},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 31, 3},
+    { TXT_IDX_MENU_FARMLAND1, 'w', SCREEN_SPLIT_MC_TXT, UI_U+UI_HIDE, &_previousField, 0, 7, 2},
+    { TXT_IDX_MENU_FARMLAND2, 's', SCREEN_SPLIT_MC_TXT, UI_D+UI_HIDE, &_nextField, 0, 9, 2},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 31, 3},
     END_MENU_CHOICES
 };
 

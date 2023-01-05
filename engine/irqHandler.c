@@ -5,13 +5,14 @@
 #include <c64/rasterirq.h>
 
 #include <engine/joystick.h>
+#include <engine/irqHandler.h>
 #include <assets/assetsSettings.h>
 #include <engine/gameSettings.h>
 #include <translation/common.h>
 
 // screen will be split at these lines
 #define IRQ_RASTER_TOP_MC_SCREEN 0x2e
-#define IRQ_RASTER_MIDDLE_TXT_SCREEN 0x8f
+#define IRQ_RASTER_MIDDLE_TXT_SCREEN 0x91
 // special irqs to control sprites
 #define IRQ_RASTER_BOTTOM_SCROLL_ETC 0xee
 #define IRQ_RASTER_TOP_UI_SPRITES 0x01
@@ -114,6 +115,23 @@ __interrupt static void IRQ_topTxtScreen() {
     // vic.color_back--;
     // vic.color_border--;
 }
+__interrupt static void IRQ_topHiresTxtScreen() {
+    // vic.color_back++;
+    // vic.color_border++;
+    // Select TEXT screen
+    vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
+    vic.ctrl2 = VIC_CTRL2_CSEL | 0;
+    vic.memptr = d018_txt2;
+
+    // tick the game
+    _timeControl();
+
+    // indicate frame position
+    gms_framePos = FRAME_TOP;
+
+    // vic.color_back--;
+    // vic.color_border--;
+}
 
 __interrupt static void IRQ_topMCTxtScreen() {
     // vic.color_back++;
@@ -148,55 +166,23 @@ __interrupt static void IRQ_middleScreenMsx() {
 
 __interrupt static void IRQ_middleTxtScreen_C() {
     // Select TEXT screen
-    vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
-    vic.ctrl2 = VIC_CTRL2_CSEL | 0;
-    vic.memptr = d018_txt1;
-
     setSpritesBottomScr();
     IRQ_middleScreenMsx();
 }
 
 void IRQ_middleTxtScreen(){
+
     __asm {
-        // inc $d020
-        // wait for raster
-        ldy #IRQ_RASTER_MIDDLE_TXT_SCREEN+1
-    l1: cpy $d012
-        bne l1
-        ldx #$09
-    l2: dex
-        bne l2
-        nop
-        nop
-        nop
-        iny
-        cpy $d012
-        beq l5
-        nop
-        nop
-    l5: ldx #$08
-    l6: dex
-        bne l6
-        nop
-        nop
-        nop
-        iny
-        cpy $d012
-        beq l7
-        cpy $ea
-    l7: ldx #$01
-    l8: dex
-        bne l8
-        nop
-        iny
-        cpy $d012
-        bne l9
-    l9: ldx #$02
+        ldx #$08
     la: dex
         bne la
-        // call C routine
-        jsr IRQ_middleTxtScreen_C
     }
+    vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
+    vic.ctrl2 = VIC_CTRL2_CSEL | 0;
+    vic.memptr = d018_txt1;
+
+    IRQ_middleTxtScreen_C();
+    
 }
 /* ================================================================================
 Control IRQ
@@ -207,6 +193,8 @@ __interrupt static void IRQ_bottomScrollAndUISprites_C() {
     
     // Soft scroll
     vic.ctrl2 = _scrollIt;
+    vic.memptr = d018_txt1;
+
     showUiSpritesBottom();
     
     // wait for right line
@@ -224,7 +212,10 @@ __interrupt static void IRQ_bottomScrollAndUISprites_C() {
 
     // vic.color_border++;
     playMsx();
-
+    if(!gms_enableMusic){
+        // wait a few lines as msx is off, we don't want to desync the screen.
+        while (vic.raster != 0x1){}
+    }
     if((char)--_scrollIt==0xff) {
         _scrollIt = 7;
         // Hard scroll
@@ -284,7 +275,7 @@ void IRQ_bottomScrollAndUISprites(){
         iny
         cpy $d012
         bne l9
-    l9: ldx #$06
+    l9: ldx #$04
     la: dex
         bne la
 
@@ -342,7 +333,7 @@ void initRasterIRQ_MCTxtMode(){
 void initRasterIRQ_HiresTxtMode(){
     // Top - switch to txt, play music
     rirq_build(&rirqc_topScreen, 1);
-    rirq_call(&rirqc_topScreen, 0, IRQ_topTxtScreen);
+    rirq_call(&rirqc_topScreen, 0, IRQ_topHiresTxtScreen);
     rirq_set(1, IRQ_RASTER_TOP_MC_SCREEN, &rirqc_topScreen);
 
     // Middle - play msx
@@ -435,22 +426,46 @@ void initRasterIRQ(){
     rirq_start();
 }
 
-void switchScreenToFullTxt(){
-    rirq_wait();
-    initRasterIRQ_TxtMode();
-}
+// void switchScreenToFullTxt(){
+//     rirq_wait();
+//     initRasterIRQ_TxtMode();
+// }
 
-void switchScreenToSplitMcTxt(){
-    rirq_wait();
-    initRasterIRQ_SplitMCTxt();
-}
+// void switchScreenToSplitMcTxt(){
+//     rirq_wait();
+//     initRasterIRQ_SplitMCTxt();
+// }
 
-void switchScreenToFullMCTxt(){
-    rirq_wait();
-    initRasterIRQ_MCTxtMode();
-}
+// void switchScreenToFullMCTxt(){
+//     rirq_wait();
+//     initRasterIRQ_MCTxtMode();
+// }
 
-void switchScreenToFullHiresTxt(){
-    rirq_wait();
-    initRasterIRQ_HiresTxtMode();
+// void switchScreenToFullHiresTxt(){
+//     rirq_wait();
+//     initRasterIRQ_HiresTxtMode();
+// }
+
+static byte _previousScreenMode = 0;
+byte switchScreenTo(byte screenMode){
+    byte prevScreenMode = _previousScreenMode;
+    if(_previousScreenMode != screenMode){
+        _previousScreenMode = screenMode;
+        rirq_wait();
+        switch (screenMode) {
+            case SCREEN_SPLIT_MC_TXT:
+                initRasterIRQ_SplitMCTxt();
+                break;
+            case SCREEN_FULL_TXT:
+                initRasterIRQ_TxtMode();
+                break;
+            case SCREEN_MC_TXT:
+                initRasterIRQ_MCTxtMode();
+                break;
+            case SCREEN_HIRES_TXT:
+                initRasterIRQ_HiresTxtMode();
+                break;
+        }
+    }
+    return prevScreenMode;
 }
