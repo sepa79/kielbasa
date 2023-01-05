@@ -48,9 +48,10 @@ const char TXT_PLAYLIST_RADIO_S5[] = s"5 Donna Summer - I Feel Love";
 const char TXT_PLAYLIST_RADIO_S6[] = s"6 OMD - Enola Gay";
 const char TXT_PLAYLIST_RADIO_S7[] = s"7 Pink Floyd - A.B.I.T.W. Part 2";
 const char TXT_PLAYLIST_RADIO_S8[] = s"8 Tom Robinson - Listen to the radio";
+const char TXT_PLAYLIST_RADIO_S9[] = s"9 Eurythmics - Sweet Dreams";
 
 #define TITLE_ONLY 0xff
-#define RADIO_PLAYLIST_SIZE 8
+#define RADIO_PLAYLIST_SIZE 9
 static byte _currentRadioSong = RADIO_PLAYLIST_SIZE;
 
 #define PLAYLIST_SIZE 12 + RADIO_PLAYLIST_SIZE
@@ -62,7 +63,8 @@ const struct Song RADIO_PLAYLIST[RADIO_PLAYLIST_SIZE] = {
     { TXT_PLAYLIST_RADIO_S5, MUSIC_BANK_RADIO_1, 4, 0 },
     { TXT_PLAYLIST_RADIO_S6, MUSIC_BANK_RADIO_1, 5, 0 },
     { TXT_PLAYLIST_RADIO_S7, MUSIC_BANK_RADIO_1, 0, 1 },
-    { TXT_PLAYLIST_RADIO_S8, MUSIC_BANK_RADIO_1, 1, 1 }
+    { TXT_PLAYLIST_RADIO_S8, MUSIC_BANK_RADIO_1, 1, 1 },
+    { TXT_PLAYLIST_RADIO_S9, MUSIC_BANK_RADIO_1, 2, 1 }
 };
 
 const struct Song PLAYLIST[PLAYLIST_SIZE] = {
@@ -86,7 +88,8 @@ const struct Song PLAYLIST[PLAYLIST_SIZE] = {
     { TXT_PLAYLIST_RADIO_S5, MUSIC_BANK_RADIO_1, 4, 0 },
     { TXT_PLAYLIST_RADIO_S6, MUSIC_BANK_RADIO_1, 5, 0 },
     { TXT_PLAYLIST_RADIO_S7, MUSIC_BANK_RADIO_1, 0, 1 },
-    { TXT_PLAYLIST_RADIO_S8, MUSIC_BANK_RADIO_1, 1, 1 }
+    { TXT_PLAYLIST_RADIO_S8, MUSIC_BANK_RADIO_1, 1, 1 },
+    { TXT_PLAYLIST_RADIO_S9, MUSIC_BANK_RADIO_1, 2, 1 }
 };
 
 #define PLAYLIST_X 2
