@@ -43,6 +43,7 @@ static byte _joyR = 0;
 static byte _joyF = 0;
 static byte _joyLF = 0;
 static bool _joyFirePressed = false;
+static byte _selectionsCount = 0;
 
 static void _setJoyCursorPos(byte menuPos){
     if(!(currentMenu[menuPos].uiMode & UI_HIDE)){
@@ -55,6 +56,7 @@ static void _setJoyCursorPos(byte menuPos){
 /* Displays text and colors, sets _lastElementInMenu */
 static void _displayMenuText(){
     byte i = 0;
+    _selectionsCount = 0;
     _joyL  = NOT_ATTACHED;
     _joyR  = NOT_ATTACHED;
     _joyU  = NOT_ATTACHED;
@@ -84,6 +86,10 @@ static void _displayMenuText(){
             _joyLF = i;
         }
         
+        // count number of options, if none - disable the unassigned keys to prevent endless loops on dec/incmenupos
+        if(currentMenu[i].uiMode & UI_SELECT){
+            _selectionsCount++;
+        }
         i++;
     }
     _lastElementInMenu = i - 1;
@@ -151,28 +157,28 @@ static void _moveJoyThroughMenuAndAssignKeys(){
         if(!(_joy2Status & JOY_UP )){
             if(_joyU != NOT_ATTACHED){
                 _key = currentMenu[_joyU].key;
-            } else {
+            } else if (_selectionsCount) {
                 _decMenuPos();
             }
         } else 
         if(!(_joy2Status & JOY_DOWN )){
             if(_joyD != NOT_ATTACHED){
                _key = currentMenu[_joyD].key;
-            } else {
+            } else if (_selectionsCount) {
                 _incMenuPos();
             }
         } else 
         if(!(_joy2Status & JOY_LEFT)){
             if(_joyL != NOT_ATTACHED){
                 _key = currentMenu[_joyL].key;
-            } else {
+            } else if (_selectionsCount) {
                 _decMenuPos();
             }
         } else 
         if(!(_joy2Status & JOY_RIGHT)){
             if(_joyR != NOT_ATTACHED){
                _key = currentMenu[_joyR].key;
-            } else {
+            } else if (_selectionsCount) {
                 _incMenuPos();
             }
         }
@@ -205,17 +211,6 @@ static void _moveJoyThroughMenuAndAssignKeys(){
         joyCursor.moveDelayCurrent = JOY_CURSOR_MOVE_DELAY_INIT;
     }
 }
-
-// static bool _checkJoyFire(){
-//     if(!joyCursor.moveDelayCurrent){
-//         if(!(_joy2Status & JOY_FIRE)){
-//             // set delay, without it it's impossible to control stuff, joy cursor moves too fast
-//             joyCursor.moveDelayCurrent = JOY_CURSOR_MOVE_DELAY_INIT;
-//             return true;
-//         }
-//     }
-//     return false;
-// }
 
 static bool _inFXMenu = false;
 static byte previousScreenMode = 0;
