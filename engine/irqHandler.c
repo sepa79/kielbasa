@@ -27,6 +27,8 @@ static byte _prevRomCfg;
 static byte _joy1Status = 255;
 static byte _joy2Status = 127;
 
+byte currentScreenMode = 0;
+
 /* ================================================================================
 Play msx, if enabled
 ================================================================================ */
@@ -412,7 +414,8 @@ void initRasterIRQ(){
 
     // load standard IRQ routine
     initRasterIRQ_SplitMCTxt();
-
+    currentScreenMode = SCREEN_SPLIT_MC_TXT;
+    
     __asm {
         // set ALL_ROM as default
         lda #$27
@@ -426,31 +429,9 @@ void initRasterIRQ(){
     rirq_start();
 }
 
-// void switchScreenToFullTxt(){
-//     rirq_wait();
-//     initRasterIRQ_TxtMode();
-// }
-
-// void switchScreenToSplitMcTxt(){
-//     rirq_wait();
-//     initRasterIRQ_SplitMCTxt();
-// }
-
-// void switchScreenToFullMCTxt(){
-//     rirq_wait();
-//     initRasterIRQ_MCTxtMode();
-// }
-
-// void switchScreenToFullHiresTxt(){
-//     rirq_wait();
-//     initRasterIRQ_HiresTxtMode();
-// }
-
-static byte _previousScreenMode = 0;
-byte switchScreenTo(byte screenMode){
-    byte prevScreenMode = _previousScreenMode;
-    if(_previousScreenMode != screenMode){
-        _previousScreenMode = screenMode;
+void switchScreenTo(byte screenMode){
+    if(currentScreenMode != screenMode){
+        currentScreenMode = screenMode;
         rirq_wait();
         switch (screenMode) {
             case SCREEN_SPLIT_MC_TXT:
@@ -467,5 +448,4 @@ byte switchScreenTo(byte screenMode){
                 break;
         }
     }
-    return prevScreenMode;
 }

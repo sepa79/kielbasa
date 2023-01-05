@@ -217,6 +217,29 @@ static void _moveJoyThroughMenuAndAssignKeys(){
 //     return false;
 // }
 
+static bool _inFXMenu = false;
+static byte previousScreenMode = 0;
+static void _prepareFullScreenMenu() {
+    // if we are in menu already, don't store previous screen
+    if(!_inFXMenu){
+        previousScreenMode = currentScreenMode;
+        _inFXMenu = true;
+    }
+    switchScreenTo(SCREEN_FULL_TXT);
+    gms_disableTimeControls = true;
+    gms_gameSpeed = SPEED_PAUSED;
+    updateGameSpeed();
+}
+
+// used by F1-F7 menus, goes back to menu the Fx was called from
+void backToPreviousMenu(){
+    gms_disableTimeControls = false;
+    // This will simply call currently mounted menu again
+    switchScreenTo(previousScreenMode);
+    showMenu();
+    _inFXMenu = false;
+}
+
 // check keys that were pressed, including joystick, and load appropriate menu option
 void checkKeys(){
     // get the key
@@ -270,56 +293,23 @@ void checkKeys(){
         }
         // help & options
         if (_key == KEY_F1) {
-            // don't go to menu while in menu
-            // if(!_fullScreenMenuOpen){
-            //     _fullScreenMenuOpen = true;
-                switchScreenTo(SCREEN_FULL_TXT);
-                gms_disableTimeControls = true;
-                // vic.color_border = VCOL_BLUE;
-                gms_gameSpeed = SPEED_PAUSED;
-                updateGameSpeed();
-                showOptionsMenu();
-            // }
+            _prepareFullScreenMenu();
+            showOptionsMenu();
             return;
         // task manager
         } else if (_key == KEY_F3) {
-            // don't go to menu while in menu
-            // if(!_fullScreenMenuOpen){
-            //     _fullScreenMenuOpen = true;
-                switchScreenTo(SCREEN_FULL_TXT);
-                gms_disableTimeControls = true;
-                // vic.color_border = VCOL_BLUE;
-                gms_gameSpeed = SPEED_PAUSED;
-                updateGameSpeed();
-                showTaskManagerMenu();
-            // }
+            _prepareFullScreenMenu();
+            showTaskManagerMenu();
             return;
         // task manager priorities
         } else if (_key == KEY_F4) {
-            // don't go to menu while in menu
-            // if(!_fullScreenMenuOpen){
-            //     _fullScreenMenuOpen = true;
-                switchScreenTo(SCREEN_FULL_TXT);
-                gms_disableTimeControls = true;
-                // vic.color_border = VCOL_BLUE;
-                gms_gameSpeed = SPEED_PAUSED;
-                updateGameSpeed();
-                showTaskManagerPrioMenu();
-            // }
+            _prepareFullScreenMenu();
+            showTaskManagerPrioMenu();
             return;
         // logs
         } else if (_key == KEY_F7) {
-            // don't go to menu while in menu
-            // if(!_fullScreenMenuOpen){
-            //     _fullScreenMenuOpen = true;
-                switchScreenTo(SCREEN_FULL_TXT);
-                gms_disableTimeControls = true;
-                // vic.color_border = VCOL_BLUE;
-                gms_gameSpeed = SPEED_PAUSED;
-                updateGameSpeed();
-                // called outside of menu system, so this routine has to take care of bank switching
-                showLogMenu();
-            // }
+            _prepareFullScreenMenu();
+            showLogMenu();
             return;
         }
 
@@ -333,7 +323,7 @@ void checkKeys(){
 
     if(selected){
         // vic.color_border = VCOL_BLUE;
-
+        // remember where we came from, in case we need to go back to previous screenMode
         // whatever it is, its not an options menu, as its handled above
         // _fullScreenMenuOpen = false;
         // block any accidental key presses during transition

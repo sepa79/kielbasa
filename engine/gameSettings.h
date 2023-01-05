@@ -32,8 +32,8 @@ enum GMS_FRAME_POS {
 
 extern volatile byte gms_framePos;
 
-// enable full screen text mode
-extern volatile bool gms_textMode;
+// // enable full screen text mode
+// extern volatile bool gms_textMode;
 
 // certain menus block time passing - options, inside shop
 extern volatile bool gms_disableTimeControls;

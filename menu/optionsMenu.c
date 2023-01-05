@@ -93,7 +93,7 @@ const struct Song PLAYLIST[PLAYLIST_SIZE] = {
 };
 
 #define PLAYLIST_X 2
-#define PLAYLIST_Y 4
+#define PLAYLIST_Y 3
 static void _displayPlaylist(){
     // songs list
     for(byte i=0;i<PLAYLIST_SIZE;i++){
@@ -182,7 +182,6 @@ static void _loadMsx() {
 }
 
 void _showMusicMenu(){
-    gms_textMode = true;
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, BIG_SCREEN_Y_START, SCREEN_WIDTH, BIG_SCREEN_HEIGHT);
     cwin_clear(&cw);
 
@@ -194,7 +193,6 @@ void _showMusicMenu(){
 }
 
 void showOptionsMenu(){
-    gms_textMode = true;
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, BIG_SCREEN_Y_START, SCREEN_WIDTH, BIG_SCREEN_HEIGHT);
     cwin_clear(&cw);
 
@@ -227,13 +225,6 @@ static void _changeLanguage(){
     showOptionsMenu();
 }
 
-static void _backToPreviousMenu(){
-    gms_textMode = false;
-    gms_disableTimeControls = false;
-    // This will simply call currently mounted menu again
-    showMenu();
-}
-
 void playNextRadioSong(){
     if(_currentRadioSong > RADIO_PLAYLIST_SIZE)
         _currentRadioSong = 0;
@@ -251,6 +242,6 @@ const struct MenuOption MUSIC_MENU[] = {
 const struct MenuOption OPTIONS_MENU[] = {
     { TXT_IDX_MENU_OPTIONS_LANG, '1', SCREEN_FULL_TXT, UI_SELECT, &_changeLanguage, 0, 2, 1},
     { TXT_IDX_MENU_OPTIONS_MSX, '2', SCREEN_FULL_TXT, UI_SELECT, &_showMusicMenu, 0, 2, 2},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_FULL_TXT, UI_LF, &_backToPreviousMenu, 0, 2, 3},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_RESTORE, UI_LF, &backToPreviousMenu, 0, 2, 3},
     END_MENU_CHOICES
 };

@@ -24,6 +24,7 @@ extern volatile struct JOY_CURSOR joyCursor;
 extern byte * sprBankPointer;
 
 void displayMenu(struct MenuOption * menu);
+void backToPreviousMenu();
 void checkKeys();
 void updateStatusBar(const byte * text);
 void updateGameSpeed();
@@ -33,7 +34,6 @@ void updateDay(byte newDay);
 void updateMonth(byte newMonth);
 void drawYearH();
 void drawYearL();
-
 void copyCharToSprite(byte c, byte col, byte row);
 
 // global CharWin

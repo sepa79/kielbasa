@@ -62,7 +62,6 @@ void gotoMainMenu(){
     drawFullDate();
 
     loadMenu(MENU_BANK_MAIN_MENU);
-    gms_textMode = false;
     // indicate frame position, as IRQs are stopped
     gms_framePos = FRAME_UNKNOWN;
     showMenu();

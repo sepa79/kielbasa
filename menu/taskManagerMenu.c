@@ -63,15 +63,7 @@ static void _deleteTask(){
     _showTasks();
 }
 
-static void _backToPreviousMenu(){
-    gms_textMode = false;
-    gms_disableTimeControls = false;
-    // This will simply call currently mounted menu again
-    showMenu();
-}
-
 void showTaskManagerMenu(){
-    gms_textMode = true;
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, BIG_SCREEN_Y_START, SCREEN_WIDTH, BIG_SCREEN_HEIGHT);
     cwin_clear(&cw);
 
@@ -84,7 +76,7 @@ void showTaskManagerMenu(){
 
 const struct MenuOption TASK_MANAGER_MENU[] = {
     { TXT_IDX_MENU_TASK_MANAGER_MINUS, '-', SCREEN_FULL_TXT, UI_SELECT,&_deleteTask, 0, 0, 20 },
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_FULL_TXT, UI_LF, &_backToPreviousMenu, 0, 20, 20 },
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_FULL_TXT, UI_LF, &backToPreviousMenu, 0, 20, 20 },
     { TXT_IDX_MENU_TASK_MANAGER_W, 'w', SCREEN_FULL_TXT, UI_U+UI_HIDE, &_upRow, 0, 0, ROW_OFFSET_TASKLIST_TM-1 },
     { TXT_IDX_MENU_TASK_MANAGER_S, 's', SCREEN_FULL_TXT, UI_D+UI_HIDE, &_downRow, 0, 0, ROW_OFFSET_TASKLIST_TM+10 },
 

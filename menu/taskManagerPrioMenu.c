@@ -146,15 +146,7 @@ static void _prioUp(){
     _showTaskPriorities();
 }
 
-static void _backToPreviousMenu(){
-    gms_textMode = false;
-    gms_disableTimeControls = false;
-    // This will simply call currently mounted menu again
-    showMenu();
-}
-
 void showTaskManagerPrioMenu(){
-    gms_textMode = true;
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, BIG_SCREEN_Y_START, SCREEN_WIDTH, BIG_SCREEN_HEIGHT);
     cwin_clear(&cw);
 
@@ -172,7 +164,7 @@ const struct MenuOption TASK_MANAGER_PRIO_MENU[] = {
     { TXT_IDX_MENU_TASK_MANAGER_MINUS, '-', SCREEN_FULL_TXT, UI_SELECT, &_prioUp, 0, 10, 3},
     { TXT_IDX_MENU_TASK_MANAGER_A, 'a', SCREEN_FULL_TXT, UI_L+UI_HIDE, &_skillLeft, 0, 1, 2},
     { TXT_IDX_MENU_TASK_MANAGER_D, 'd', SCREEN_FULL_TXT, UI_R+UI_HIDE, &_skillRight, 0, 3, 2},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_FULL_TXT, UI_LF, &_backToPreviousMenu, 0, 1, 20},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_FULL_TXT, UI_LF, &backToPreviousMenu, 0, 1, 20},
 
     END_MENU_CHOICES
 };

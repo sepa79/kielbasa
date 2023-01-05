@@ -2,8 +2,14 @@
 #define IRQ_HANDLER_H
 
 extern const char * SB_TEXT;
+// stores screen mode on change
+extern char currentScreenMode;
+// used by F1-F7 menus to store previous screen mode, to be able to change back
+extern char previousScreenMode;
 
 enum SCREEN_MODE {
+// Restore the screen using 'previousScreenMode'
+    SCREEN_RESTORE,
 // Partial IRQ init - full TXT mode, with regular UI on top & bottom, MSX, normal txt screen sprite handlers used.
     SCREEN_SPLIT_MC_TXT,
 // Partial IRQ init - split screen mode, with regular UI on top & bottom, MSX, MC on top half with sprites, text on bottom half with sprites.
@@ -17,9 +23,7 @@ enum SCREEN_MODE {
 
 void playMsx();
 void joyUpdate();
-
-
-byte switchScreenTo(byte screenMode);
+void switchScreenTo(byte screenMode);
 
 // Main IRQ init - must be called first, sets up all the bits.
 void initRasterIRQ();
