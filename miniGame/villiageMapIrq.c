@@ -1,4 +1,6 @@
 
+UNUSED 
+
 #include <c64/vic.h>
 #include <assets/assetsSettings.h>
 #include <c64/joystick.h>
@@ -32,7 +34,6 @@ __interrupt void villiageMapIrq_topMap() {
     gms_framePos = FRAME_TOP_BORDER;
     vic.color_border--;
 }
-
 
 __interrupt void villiageMapIrq_msx2() {
     vic.color_border++;

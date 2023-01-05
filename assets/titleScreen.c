@@ -87,7 +87,7 @@ void initGame(){
     loadMainGfx();
 
     setBank(MUSIC_BANK);
-    loadMusic();
+    loadMusic(MSX_MAIN_THEME_SID_IDX);
 
     __asm {
         sei

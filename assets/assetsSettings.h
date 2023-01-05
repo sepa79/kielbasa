@@ -40,8 +40,11 @@
 #define SEC_BMP_ADR 0xe000
 
 // music
+#define MSX_MAIN_THEME_BANK MUSIC_BANK
+#define MSX_MAIN_THEME_SID_IDX 0
+#define MSX_MAIN_THEME_SNG_IDX 1
 #define MSX_SRC_ADR_0 0x8000
-#define MSX_SRC_ADR_1 0xb000
+#define MSX_SRC_ADR_1 0xa000
 #define MSX_DST_ADR 0x8000
 #define MSX_INIT $8000
 #define MSX_PLAY $8003

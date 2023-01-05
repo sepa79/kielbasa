@@ -64,49 +64,6 @@ __export const char shopInGfx3[] = {
 #pragma code ( code )
 #pragma data ( data )
 
-static char radioPlaylist = 0;
-
-void _loadRadioMsx(){
-    // vic.color_back++;
-    joyCursor.enabled = false;
-    if(gms_enableMusic) {
-        // set Radio bank
-        char pbank = setBank(MUSIC_BANK_RADIO_1);
-
-        // stop music
-        gms_enableMusic = false;
-        ((byte *)0xd418)[0] &= ~0xf;
-
-        // load different MSX file
-        loadMusic();
-
-        // init it
-        __asm {
-            lda #MSX_ROM
-            sta $01
-            lda radioPlaylist
-            jsr MSX_INIT
-        };
-
-        // advance playlist
-        radioPlaylist++;
-        if(radioPlaylist > RADIO_1_SONGS)
-            radioPlaylist = 0;
-
-        // set ROM back
-        mmap_set(MMAP_ROM);
-
-        // reenable music
-        // gms_musicSpeed2x = true;
-        gms_enableMusic = true;
-
-        // revert menu bank
-        setBank(pbank);
-    }
-    joyCursor.enabled = true;
-    // vic.color_back--;
-}
-
 void _goBackToPrvMenu(){
     // vic.color_back++;
     joyCursor.enabled = false;
@@ -120,13 +77,13 @@ void _goBackToPrvMenu(){
         ((byte *)0xd418)[0] &= ~0xf;
 
         // load different MSX file
-        loadMusic();
+        loadMusic(MSX_MAIN_THEME_SID_IDX);
 
         // init it
         __asm {
             lda #MSX_ROM
             sta $01
-            lda #$01
+            lda #MSX_MAIN_THEME_SNG_IDX
             jsr MSX_INIT
         };
 
@@ -134,7 +91,6 @@ void _goBackToPrvMenu(){
         mmap_set(MMAP_ROM);
 
         // reenable music
-        // gms_musicSpeed2x = false;
         gms_enableMusic = true;
 
         // revert menu bank
@@ -204,8 +160,8 @@ static void _menuHandler(void){
     loadMenuGfx(cal_isDay);
     loadMenuSprites();
 
-    // load music
-    _loadRadioMsx();
+    // play radio music
+    playNextRadioSong();
 
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);

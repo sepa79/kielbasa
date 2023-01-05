@@ -181,7 +181,7 @@ static void _moveJoyThroughMenuAndAssignKeys(){
             // Fire pressed! lets wait and see if it is a Long Fire or not
             byte timer = 0;
             while (!(_joy2Status & JOY_FIRE)){
-                vic.color_border++;
+                // vic.color_border++;
                 timer++;
                 vic_waitFrame();
             }

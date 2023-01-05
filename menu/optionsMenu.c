@@ -14,7 +14,6 @@
 #define MAX_LANG 1
 const byte LANGUAGE_BANKS[MAX_LANG+1] = {TRANSLATION_PL_BANK, TRANSLATION_EN_BANK};
 static byte _currentLang = 1;
-
 static byte _currentSong = 2;
 
 struct Song {
@@ -24,6 +23,8 @@ struct Song {
     byte bank;
     /* Song index in SID */
     byte songIdx;
+    /* SID index in the bank */
+    byte sidIdx;
 };
 
 // TODO: toss somewhere into ROM - the main menu is in RAM so music menu might one day need its own bank
@@ -45,32 +46,51 @@ const char TXT_PLAYLIST_RADIO_S3[] = s"3 Human League - Don't You Want Me?";
 const char TXT_PLAYLIST_RADIO_S4[] = s"4 Depeche Mode - Everything Counts";
 const char TXT_PLAYLIST_RADIO_S5[] = s"5 Donna Summer - I Feel Love";
 const char TXT_PLAYLIST_RADIO_S6[] = s"6 OMD - Enola Gay";
+const char TXT_PLAYLIST_RADIO_S7[] = s"7 Pink Floyd - A.B.I.T.W. Part 2";
+const char TXT_PLAYLIST_RADIO_S8[] = s"8 Tom Robinson - Listen to the radio";
 
 #define TITLE_ONLY 0xff
-#define PLAYLIST_SIZE 18
+#define RADIO_PLAYLIST_SIZE 8
+static byte _currentRadioSong = RADIO_PLAYLIST_SIZE;
+
+#define PLAYLIST_SIZE 12 + RADIO_PLAYLIST_SIZE
+const struct Song RADIO_PLAYLIST[RADIO_PLAYLIST_SIZE] = {
+    { TXT_PLAYLIST_RADIO_S1, MUSIC_BANK_RADIO_1, 0, 0 },
+    { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 1, 0 },
+    { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 2, 0 },
+    { TXT_PLAYLIST_RADIO_S4, MUSIC_BANK_RADIO_1, 3, 0 },
+    { TXT_PLAYLIST_RADIO_S5, MUSIC_BANK_RADIO_1, 4, 0 },
+    { TXT_PLAYLIST_RADIO_S6, MUSIC_BANK_RADIO_1, 5, 0 },
+    { TXT_PLAYLIST_RADIO_S7, MUSIC_BANK_RADIO_1, 0, 1 },
+    { TXT_PLAYLIST_RADIO_S8, MUSIC_BANK_RADIO_1, 1, 1 }
+};
+
 const struct Song PLAYLIST[PLAYLIST_SIZE] = {
-    { TXT_PLAYLIST_GM_NAME, TITLE_ONLY, TITLE_ONLY },
-    { TXT_PLAYLIST_GM_S1, MUSIC_BANK, 0 },
-    { TXT_PLAYLIST_GM_S2, MUSIC_BANK, 1 },
-    { TXT_PLAYLIST_GM_S3, MUSIC_BANK, 2 },
-    { TXT_PLAYLIST_GM_S4, MUSIC_BANK, 3 },
-    { TXT_PLAYLIST_GM_S5, MUSIC_BANK, 4 },
-    { TXT_PLAYLIST_GM_S6, MUSIC_BANK, 5 },
-    { TXT_PLAYLIST_RETRO_NAME, TITLE_ONLY, TITLE_ONLY },
-    { TXT_PLAYLIST_RETRO_S1, MUSIC_BANK_RETRO_1, 0 },
-    { TXT_PLAYLIST_RETRO_S2, MUSIC_BANK_RETRO_1, 1 },
-    { TXT_PLAYLIST_RETRO_S3, MUSIC_BANK_RETRO_1, 2 },
-    { TXT_PLAYLIST_RADIO_NAME, TITLE_ONLY, TITLE_ONLY },
-    { TXT_PLAYLIST_RADIO_S1, MUSIC_BANK_RADIO_1, 0 },
-    { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 1 },
-    { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 2 },
-    { TXT_PLAYLIST_RADIO_S4, MUSIC_BANK_RADIO_1, 3 },
-    { TXT_PLAYLIST_RADIO_S5, MUSIC_BANK_RADIO_1, 4 },
-    { TXT_PLAYLIST_RADIO_S6, MUSIC_BANK_RADIO_1, 5 }
+    { TXT_PLAYLIST_GM_NAME, TITLE_ONLY, TITLE_ONLY, TITLE_ONLY },
+    { TXT_PLAYLIST_GM_S1, MUSIC_BANK, 0, 0 },
+    { TXT_PLAYLIST_GM_S2, MUSIC_BANK, 1, 0 },
+    { TXT_PLAYLIST_GM_S3, MUSIC_BANK, 2, 0 },
+    { TXT_PLAYLIST_GM_S4, MUSIC_BANK, 3, 0 },
+    { TXT_PLAYLIST_GM_S5, MUSIC_BANK, 4, 0 },
+    { TXT_PLAYLIST_GM_S6, MUSIC_BANK, 5, 0 },
+    { TXT_PLAYLIST_RETRO_NAME, TITLE_ONLY, TITLE_ONLY, TITLE_ONLY },
+    { TXT_PLAYLIST_RETRO_S1, MUSIC_BANK_RETRO_1, 0, 0 },
+    { TXT_PLAYLIST_RETRO_S2, MUSIC_BANK_RETRO_1, 1, 0 },
+    { TXT_PLAYLIST_RETRO_S3, MUSIC_BANK_RETRO_1, 2, 0 },
+    // find a way to avoid duplicating these
+    { TXT_PLAYLIST_RADIO_NAME, TITLE_ONLY, TITLE_ONLY, TITLE_ONLY },
+    { TXT_PLAYLIST_RADIO_S1, MUSIC_BANK_RADIO_1, 0, 0 },
+    { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 1, 0 },
+    { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 2, 0 },
+    { TXT_PLAYLIST_RADIO_S4, MUSIC_BANK_RADIO_1, 3, 0 },
+    { TXT_PLAYLIST_RADIO_S5, MUSIC_BANK_RADIO_1, 4, 0 },
+    { TXT_PLAYLIST_RADIO_S6, MUSIC_BANK_RADIO_1, 5, 0 },
+    { TXT_PLAYLIST_RADIO_S7, MUSIC_BANK_RADIO_1, 0, 1 },
+    { TXT_PLAYLIST_RADIO_S8, MUSIC_BANK_RADIO_1, 1, 1 }
 };
 
 #define PLAYLIST_X 2
-#define PLAYLIST_Y 5
+#define PLAYLIST_Y 4
 static void _displayPlaylist(){
     // songs list
     for(byte i=0;i<PLAYLIST_SIZE;i++){
@@ -118,20 +138,19 @@ static void _downRow(){
     _displayPlaylist();
 }
 
-static void _loadMsx(){
-    // vic.color_back++;
+static void _playMsx(struct Song * song){
     joyCursor.enabled = false;
     if(gms_enableMusic) {
         // set Radio bank
-        char pbank = setBank(PLAYLIST[_currentSong].bank);
+        char pbank = setBank(song->bank);
 
         // stop music
         gms_enableMusic = false;
         ((byte *)0xd418)[0] &= ~0xf;
 
         // load different MSX file
-        loadMusic();
-        byte songIdx = PLAYLIST[_currentSong].songIdx;
+        loadMusic(song->sidIdx);
+        byte songIdx = song->songIdx;
 
         // init it
         __asm {
@@ -145,7 +164,6 @@ static void _loadMsx(){
         mmap_set(MMAP_ROM);
 
         // reenable music
-        // gms_musicSpeed2x = true;
         gms_enableMusic = true;
 
         // revert menu bank
@@ -153,6 +171,11 @@ static void _loadMsx(){
     }
     joyCursor.enabled = true;
     // vic.color_back--;
+}
+
+// menu wrapper
+static void _loadMsx() {
+    _playMsx(&PLAYLIST[_currentSong]);
 }
 
 void _showMusicMenu(){
@@ -209,10 +232,16 @@ static void _backToPreviousMenu(){
     showMenu();
 }
 
+void playNextRadioSong(){
+    if(_currentRadioSong > RADIO_PLAYLIST_SIZE)
+        _currentRadioSong = 0;
+    _playMsx(&RADIO_PLAYLIST[_currentRadioSong]);
+}
+
 const struct MenuOption MUSIC_MENU[] = {
     { TXT_IDX_MENU_OPTIONS_MSX_PLAY, KEY_RETURN, UI_SELECT, &_loadMsx, 0, 1, 1},
-    { TXT_IDX_MENU_OPTIONS_MSX_ON_OFF, '1', UI_SELECT, &_toggleMusic, 0, 16, 1},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LF, &showOptionsMenu, 0, 33, 1},
+    { TXT_IDX_MENU_OPTIONS_MSX_ON_OFF, '1', UI_SELECT, &_toggleMusic, 0, 10, 1},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, UI_LF, &showOptionsMenu, 0, 30, 0},
     { TXT_IDX_MENU_TASK_MANAGER_W, 'w', UI_U+UI_HIDE, &_upRow, 0, 0, 4 },
     { TXT_IDX_MENU_TASK_MANAGER_S, 's', UI_D+UI_HIDE, &_downRow, 0, 0, 22 },
     END_MENU_CHOICES
