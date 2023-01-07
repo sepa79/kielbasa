@@ -1,8 +1,8 @@
 #ifndef VILLIAGE_MAP_MAIN_H
 #define VILLIAGE_MAP_MAIN_H
 
-#define V_MAP_SIZE_X 32
-#define V_MAP_SIZE_Y 24
+#define V_MAP_SIZE_X 28
+#define V_MAP_SIZE_Y 18
 
 #pragma section( villiageMapLoaderData, 0 )
 #pragma section( villiageMapCode, 0 )

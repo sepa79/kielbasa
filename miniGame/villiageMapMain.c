@@ -15,20 +15,29 @@
 
 #pragma data ( villiageMapGfx1 )
 
-static const char ro_attribs[] = {
-    #embed "assets/charGfx/VilliageMapHiresMain - CharAttribs_L1.bin"
+static const char _charAttribsL1[] = {
+    #embed "assets/charGfx/HiresVilliage_L1 - CharAttribs_L1.bin"
+};
+static const char _charAttribsL2[] = {
+    #embed "assets/charGfx/HiresVilliage_L2 - CharAttribs_L1.bin"
+};
+static const char _charAttribsL3[] = {
+    #embed "assets/charGfx/HiresVilliage_L3 - CharAttribs_L1.bin"
+};
+static const char _charAttribsL4[] = {
+    #embed "assets/charGfx/HiresVilliage_L4 - CharAttribs_L1.bin"
 };
 
 static const char ro_chars[] = {
-    #embed "assets/charGfx/VilliageMapHiresMain - Chars.bin"
+    #embed "assets/charGfx/HiresVilliage_L3 - Chars.bin"
 };
 
 static const char ro_map[] = {
-    #embed "assets/charGfx/VilliageMapHiresMain - (8bpc, 32x24) Map.bin"
+    #embed "assets/charGfx/HiresVilliage_L3 - (8bpc, 28x18) Map.bin"
 };
 
 static const char ro_tiles[] = {
-    #embed "assets/charGfx/VilliageMapHiresMain - Tiles.bin"
+    #embed "assets/charGfx/HiresVilliage_L3 - Tiles.bin"
 };
 
 static const char _lightMap[] = {
@@ -87,7 +96,7 @@ RIRQCode topMap, msxMap, openMap;
 #pragma code ( villiageMapCode )
 #pragma data ( villiageMapRAMData )
 static char ro_xmap[V_MAP_SIZE_X * V_MAP_SIZE_Y];
-static char _moonlight = VCOL_BROWN;
+static char _moonlight = VCOL_DARK_GREY;
 
 // copy base map from ROM, add any specials to it
 void tiles_remap(void)
@@ -101,6 +110,27 @@ void tiles_remap(void)
     }
 }
 
+// L0 is moonlight, +3 chars, dark grey/all black
+// L1 is darker, +3 chars, grey-ish
+// L2 is dark, +2 chars, dimmer colors
+// L3 is neutral, +1 chars, normal light
+// L4 is bright, normal char, brighter colors
+// Chars will be remapped according to entry here, number on given index indicates charcode to use instead
+// static const byte _charRemapL3[256] = {
+//     // we don't remap currently the first 192 chars
+//     0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0,    0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, // 32 bytes
+//     0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0,    0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, // 32 bytes
+//     0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0,    0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, // 32 bytes
+//     0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0,    0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, // 32 bytes
+//     0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0,    0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, // 32 bytes
+//     0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0,    0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, // 32 bytes
+//     // we are at our remappable chars
+//     0xc0, 0xc1, 0xc2, 0xc3,
+//     0xc4, 0xc5, 0xc6, 0xc7,
+//     0xc8, 0xc9, 0xca, 0xcb,
+//     0xcc, 0xcd, 0xce, 0xcf,
+// };
+
 void tiles_put4x4row0(char * dp, char * cp, const char * lmp, const char * mp, const char * tp)
 {
     for(char tx=0; tx<10; tx++)
@@ -110,24 +140,27 @@ void tiles_put4x4row0(char * dp, char * cp, const char * lmp, const char * mp, c
 #assign cx 0
 #repeat
         {
+            byte lightMap = lm[cx];
             char ci = ti[cx];
+            if(lightMap && ci >= 0xc0){
+                ci += lightMap-1;
+            }
             dp[cx] = ci;
-            byte colorMap = lm[cx];
-            switch (colorMap){
+            switch (lightMap){
                 case 0:
                     cp[cx] = _moonlight;
                     break;
                 case 1:
-                    cp[cx] = VCOL_BROWN;
+                    cp[cx] = _charAttribsL1[ci];
                     break;
                 case 2:
-                    cp[cx] = VCOL_DARK_GREY;
+                    cp[cx] = _charAttribsL2[ci];
                     break;
                 case 3:
-                    cp[cx] = VCOL_MED_GREY;
+                    cp[cx] = _charAttribsL3[ci];
                     break;
                 case 4:
-                    cp[cx] = ro_attribs[ci];
+                    cp[cx] = _charAttribsL4[ci];
                     break;
             }
         }
@@ -148,7 +181,7 @@ void tiles_put4x4row1(char * dp, char * cp, const char * mp, const char * tp)
     {
         char ci = ti[cx];
         dp[cx] = ci;
-        cp[cx] = ro_attribs[ci];
+        cp[cx] = _charAttribsL3[ci];
         // cp[cx] = _moonlight;
     }
 #assign cx cx + 1
@@ -166,7 +199,7 @@ void tiles_put4x4row1(char * dp, char * cp, const char * mp, const char * tp)
         {
             char ci = ti[cx];
             dp[cx] = ci;
-            cp[cx] = ro_attribs[ci];
+            cp[cx] = _charAttribsL3[ci];
             // cp[cx] = _moonlight;
         }
 #assign cx cx + 1
@@ -183,7 +216,7 @@ void tiles_put4x4row1(char * dp, char * cp, const char * mp, const char * tp)
     {
         char ci = ti[cx];
         dp[cx] = ci;
-        cp[cx] = ro_attribs[ci];
+        cp[cx] = _charAttribsL3[ci];
         // cp[cx] = _moonlight;
     }
 #assign cx cx + 1
@@ -199,7 +232,7 @@ void tiles_put4x4row2(char * dp, char * cp, const char * mp, const char * tp)
     {
         char ci = ti[cx];
         dp[cx] = ci;
-        cp[cx] = ro_attribs[ci];
+        cp[cx] = _charAttribsL3[ci];
         // cp[cx] = _moonlight;
     }
 #assign cx cx + 1
@@ -217,7 +250,7 @@ void tiles_put4x4row2(char * dp, char * cp, const char * mp, const char * tp)
         {
             char ci = ti[cx];
             dp[cx] = ci;
-            cp[cx] = ro_attribs[ci];
+            cp[cx] = _charAttribsL3[ci];
             // cp[cx] = _moonlight;
         }
 #assign cx cx + 1
@@ -234,7 +267,7 @@ void tiles_put4x4row2(char * dp, char * cp, const char * mp, const char * tp)
     {
         char ci = ti[cx];
         dp[cx] = ci;
-        cp[cx] = ro_attribs[ci];
+        cp[cx] = _charAttribsL3[ci];
         // cp[cx] = _moonlight;
     }
 #assign cx cx + 1
@@ -250,7 +283,7 @@ void tiles_put4x4row3(char * dp, char * cp, const char * mp, const char * tp)
     {
         char ci = ti[cx];
         dp[cx] = ci;
-        cp[cx] = ro_attribs[ci];
+        cp[cx] = _charAttribsL3[ci];
         // cp[cx] = _moonlight;
     }
 #assign cx cx + 1
@@ -268,7 +301,7 @@ void tiles_put4x4row3(char * dp, char * cp, const char * mp, const char * tp)
         {
             char ci = ti[cx];
             dp[cx] = ci;
-            cp[cx] = ro_attribs[ci];
+            cp[cx] = _charAttribsL3[ci];
             // cp[cx] = _moonlight;
         }
 #assign cx cx + 1
@@ -285,7 +318,7 @@ void tiles_put4x4row3(char * dp, char * cp, const char * mp, const char * tp)
     {
         char ci = ti[cx];
         dp[cx] = ci;
-        cp[cx] = ro_attribs[ci];
+        cp[cx] = _charAttribsL3[ci];
         // cp[cx] = _moonlight;
     }
 #assign cx cx + 1
