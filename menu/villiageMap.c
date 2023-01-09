@@ -19,7 +19,7 @@
 // Menu code
 // ---------------------------------------------------------------------------------------------
 #pragma code ( villiageMapCode )
-char vMapX = 10, vMapY = 10;
+char vMapX = 128, vMapY = 128;
 
 static void _villiageMapCodeLoader(){
     // source is where the regionVilliageMapRam section starts in real mem

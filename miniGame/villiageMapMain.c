@@ -28,13 +28,13 @@ static const char _charAttribsL2[] = {
     #embed ctm_attr1    "assets/charGfx/HiresVilliage_L2.ctm"
 };
 static const char _charAttribsL3[] = {
-    #embed ctm_attr1    "assets/charGfx/VilliageMapHiresMainBig.ctm"
+    #embed ctm_attr1    "assets/charGfx/HiresVilliage_L3.ctm"
 };
 static const char _charAttribsL4[] = {
     #embed ctm_attr1    "assets/charGfx/HiresVilliage_L4.ctm"
 };
 static const char _chars[] = {
-    #embed ctm_chars    "assets/charGfx/VilliageMapHiresMainBig.ctm"
+    #embed ctm_chars    "assets/charGfx/HiresVilliage_L1.ctm"
 };
 
 
@@ -69,10 +69,10 @@ static void _mapInit(){
     // ROM on, I/O off - as we will copy to RAM under I/O ports
     mmap_set(0b00110011);
     memcpy(GFX_1_FNT2, _chars, sizeof(_chars));
-    memcpy(COLOR_MAP_1, _charAttribsL1, 0xff);
-    memcpy(COLOR_MAP_2, _charAttribsL2, 0xff);
-    memcpy(COLOR_MAP_3, _charAttribsL3, 0xff);
-    memcpy(COLOR_MAP_4, _charAttribsL4, 0xff);
+    memcpy(COLOR_MAP_1, _charAttribsL1, 0x100);
+    memcpy(COLOR_MAP_2, _charAttribsL2, 0x100);
+    memcpy(COLOR_MAP_3, _charAttribsL3, 0x100);
+    memcpy(COLOR_MAP_4, _charAttribsL4, 0x100);
     // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
     mmap_set(MMAP_ROM);
     vic.color_back = VCOL_BROWN;
@@ -112,11 +112,10 @@ void tiles_put4x4row0(char * dp, char * cp, const char * lmp, const char * mp, c
         {
             byte lightMap = lm[cx];
             char ci = ti[cx];
-            if(lightMap && ci >= 0xc0){
+            if(lightMap && ci >= 0x80){
                 ci += lightMap-1;
             }
             dp[cx] = ci;
-            cp[cx] = _moonlight;
             switch (lightMap){
                 case 0:
                     cp[cx] = _moonlight;
