@@ -15,47 +15,64 @@
 
 #pragma data ( villiageMapGfx1 )
 
+// L0 is moonlight, +3 chars, dark grey/all black
+// L1 is darker, +3 chars, grey-ish
+// L2 is dark, +2 chars, dimmer colors
+// L3 is neutral, +1 chars, normal light
+// L4 is bright, normal char, brighter colors
+
 static const char _charAttribsL1[] = {
-    #embed "assets/charGfx/HiresVilliage_L1 - CharAttribs_L1.bin"
+    #embed ctm_attr1    "assets/charGfx/HiresVilliage_L1.ctm"
 };
 static const char _charAttribsL2[] = {
-    #embed "assets/charGfx/HiresVilliage_L2 - CharAttribs_L1.bin"
+    #embed ctm_attr1    "assets/charGfx/HiresVilliage_L2.ctm"
 };
 static const char _charAttribsL3[] = {
-    #embed "assets/charGfx/HiresVilliage_L3 - CharAttribs_L1.bin"
+    #embed ctm_attr1    "assets/charGfx/VilliageMapHiresMainBig.ctm"
 };
 static const char _charAttribsL4[] = {
-    #embed "assets/charGfx/HiresVilliage_L4 - CharAttribs_L1.bin"
+    #embed ctm_attr1    "assets/charGfx/HiresVilliage_L4.ctm"
+};
+static const char _chars[] = {
+    #embed ctm_chars    "assets/charGfx/VilliageMapHiresMainBig.ctm"
 };
 
-static const char _charsRom[] = {
-    #embed "assets/charGfx/HiresVilliage_L3 - Chars.bin"
+
+
+#pragma data ( villiageMapData )
+
+static const char _map[] = {
+    #embed ctm_map8     "assets/charGfx/VilliageMapHiresMainBig.ctm"
 };
 
-static const char _mapRom[] = {
-    #embed "assets/charGfx/HiresVilliage_L3 - (8bpc, 112x72) Map.bin"
-    // #embed "assets/charGfx/HiresVilliage_L3 - (8bpc, 28x18) Map.bin"
-};
-
-static const char _tilesRom[] = {
-    #embed "assets/charGfx/HiresVilliage_L3 - Tiles.bin"
+static const char _tiles[] = {
+    #embed ctm_tiles8   "assets/charGfx/VilliageMapHiresMainBig.ctm"
 };
 
 static const char _lightMap[] = {
-    #embed "assets/charGfx/lightMap_up.bin"
+    #embed ctm_map8     "assets/charGfx/lightMap_up_andy.ctm"
 };
 
-// static const char ro_tileAttribs[] = {
-//     #embed "assets/charGfx/kielbasaMapS2 - TileAttribs_L1.bin"
-// };
 
+// ---------------------------------------------------------------------------------------------
+// Loaders code, called with IRQ off
+// ---------------------------------------------------------------------------------------------
 #pragma code ( villiageMapGfx1Loaders )
 #pragma data ( villiageMapRAMData )
+#define COLOR_MAP_1 (char *)0xcc00
+#define COLOR_MAP_2 (char *)0xcd00
+#define COLOR_MAP_3 (char *)0xce00
+#define COLOR_MAP_4 (char *)0xcf00
 
-static void _screenInit(){
+// Copy chars and lightmaps, any sprites etc
+static void _mapInit(){
     // ROM on, I/O off - as we will copy to RAM under I/O ports
     mmap_set(0b00110011);
-    memcpy(GFX_1_FNT2, _charsRom, sizeof(_charsRom));
+    memcpy(GFX_1_FNT2, _chars, sizeof(_chars));
+    memcpy(COLOR_MAP_1, _charAttribsL1, 0xff);
+    memcpy(COLOR_MAP_2, _charAttribsL2, 0xff);
+    memcpy(COLOR_MAP_3, _charAttribsL3, 0xff);
+    memcpy(COLOR_MAP_4, _charAttribsL4, 0xff);
     // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
     mmap_set(MMAP_ROM);
     vic.color_back = VCOL_BROWN;
@@ -64,110 +81,259 @@ static void _screenInit(){
     vic.color_back2 = VCOL_LT_GREY;
 }
 
-// Copy base map from ROM, 'unpack' it from tilesets to plain simple bytes, add any 'specials' like
-// crops status or 'permanent' map changes to it.
-// Also apply light conditions straight away, to speed things up.
-void _tilesRemap(void){
-    // unpack map to RAM
-    // for(char y=0; y<V_MAP_SIZE_Y; y++) {
-    //     for(char x=0; x<V_MAP_SIZE_X; x++) {
-    //         // get tileId, then pointer to tile data
-    //         const char tileId = _mapRom[V_MAP_SIZE_X * y + x];
-    //         const char * tileP = _tilesRom + tileId*V_MAP_TILE_SIZE_Y*V_MAP_TILE_SIZE_X;
-    //         // pointer to map's RAM position
-    //         char * mapPos = MAP_RAM + V_MAP_SIZE_X * V_MAP_TILE_SIZE_Y * y + x * V_MAP_TILE_SIZE_X;
 
-    //         // loop over tile's Y
-    //         for(char ty=0; ty<V_MAP_TILE_SIZE_Y; ty++) {
-    //             // copy tile characters to RAM
-    //             #assign cx 0
-    //             #repeat
-    //             mapPos[cx] = tileP[cx];
-    //             #assign cx cx + 1
-    //             #until cx == 4
-    //             // move tile pointer one row down
-    //             tileP += V_MAP_TILE_SIZE_X;
-    //             // adjust map position
-    //             mapPos += V_MAP_SIZE_X*V_MAP_TILE_SIZE_X;
-    //         }
+// copy base map from ROM, add any specials to it
+static void _tilesRemap(void)
+{
+    // for(char y=0; y<V_MAP_SIZE_Y; y++)
+    // {
+    //     for(char x=0; x<V_MAP_SIZE_X; x++)
+    //     {
+    //         _map[V_MAP_SIZE_X * y + x] = ro_map[V_MAP_SIZE_X * y + x];
     //     }
     // }
-    memcpy(MAP_RAM, _mapRom, 8192);
 }
 
-// this code needs to be in main block, as it switches banks
-#pragma code ( villiageMapRAMCode )
+// ---------------------------------------------------------------------------------------------
+// Display code
+// ---------------------------------------------------------------------------------------------
+#pragma code ( villiageMapDisplayCode )
 #pragma data ( villiageMapRAMData )
-static char _moonlight = 0;
+static char _moonlight = VCOL_DARK_GREY;
 
-static void villiageMapTilesRemap(){
-    char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
-    _tilesRemap();
-    setBank(pbank);
-}
-
-void villiageMapScreenInit(void){
-    char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
-    _screenInit();
-    setBank(pbank);
-}
-
-// void villiageMapSpriteLoader(){
-//     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
-//     _spriteLoader();
-//     setBank(pbank);
-// }
-
-void drawVilliageMapNight(char ox, char oy){
-    rirq_stop();
-    vic.color_border++;
-    mmap_set(MMAP_NO_ROM);
-    char * dp = GFX_1_SCR, * cp = COLOR_RAM, * lmp = ((char *)_lightMap);
-
-    char * mapPos = MAP_RAM;// + V_MAP_SIZE_X * V_MAP_TILE_SIZE_Y * oy + ox;
-
-    for(char ty=0; ty<24; ty++) {
-        for(char tx=0; tx<40; tx++) {
-            // *((char *)0x01) = MMAP_NO_ROM;
-            mmap_set(MMAP_NO_ROM);
-            char c = mapPos[tx];
-            mmap_set(MMAP_ROM);
-            // *((char *)0x01) = MMAP_ROM;
-            char lightMap = lmp[tx];
-
-            if(lightMap && c >= 0xc0){
-                c += lightMap-1;
+void tiles_put4x4row0(char * dp, char * cp, const char * lmp, const char * mp, const char * tp)
+{
+    for(char tx=0; tx<10; tx++)
+    {
+        const char  * ti = tp + mp[tx] * 16;
+        const char * lm = lmp + tx*4;
+#assign cx 0
+#repeat
+        {
+            byte lightMap = lm[cx];
+            char ci = ti[cx];
+            if(lightMap && ci >= 0xc0){
+                ci += lightMap-1;
             }
-            dp[tx] = c;
+            dp[cx] = ci;
+            cp[cx] = _moonlight;
             switch (lightMap){
                 case 0:
-                    cp[tx] = VCOL_DARK_GREY;
+                    cp[cx] = _moonlight;
                     break;
                 case 1:
-                    cp[tx] = _charAttribsL1[c];
+                    cp[cx] = (COLOR_MAP_1)[ci];
                     break;
                 case 2:
-                    cp[tx] = _charAttribsL2[c];
+                    cp[cx] = (COLOR_MAP_2)[ci];
                     break;
                 case 3:
-                    cp[tx] = _charAttribsL3[c];
+                    cp[cx] = (COLOR_MAP_3)[ci];
                     break;
                 case 4:
-                    // cp[tx] = _charAttribsL4[c];
-                    cp[tx] = _charAttribsL3[c];
+                    cp[cx] = (COLOR_MAP_4)[ci];
                     break;
             }
+        }
+#assign cx cx + 1
+#until cx == 4
+
+        dp += 4;
+        cp += 4;
+    }
+}
+
+void tiles_put4x4row1(char * dp, char * cp, const char * mp, const char * tp)
+{
+    const char  * ti = tp + mp[0] * 16 + 1;
+
+#assign cx 0
+#repeat
+    {
+        char ci = ti[cx];
+        dp[cx] = ci;
+        cp[cx] = _charAttribsL3[ci];
+        // cp[cx] = _moonlight;
+    }
+#assign cx cx + 1
+#until cx == 3
+
+    dp += 3;
+    cp += 3;
+
+    for(char tx=1; tx<10; tx++)
+    {
+        ti = tp + mp[tx] * 16;
+
+#assign cx 0
+#repeat
+        {
+            char ci = ti[cx];
+            dp[cx] = ci;
+            cp[cx] = _charAttribsL3[ci];
+            // cp[cx] = _moonlight;
+        }
+#assign cx cx + 1
+#until cx == 4
+
+        dp += 4;
+        cp += 4;
+    }
+
+    ti = tp + mp[10] * 16;
+
+#assign cx 0
+#repeat
+    {
+        char ci = ti[cx];
+        dp[cx] = ci;
+        cp[cx] = _charAttribsL3[ci];
+        // cp[cx] = _moonlight;
+    }
+#assign cx cx + 1
+#until cx == 1
+}
+
+void tiles_put4x4row2(char * dp, char * cp, const char * mp, const char * tp)
+{
+    const char  * ti = tp + mp[0] * 16 + 2;
+
+#assign cx 0
+#repeat
+    {
+        char ci = ti[cx];
+        dp[cx] = ci;
+        cp[cx] = _charAttribsL3[ci];
+        // cp[cx] = _moonlight;
+    }
+#assign cx cx + 1
+#until cx == 2
+
+    dp += 2;
+    cp += 2;
+
+    for(char tx=1; tx<10; tx++)
+    {
+        ti = tp + mp[tx] * 16;
+
+#assign cx 0
+#repeat
+        {
+            char ci = ti[cx];
+            dp[cx] = ci;
+            cp[cx] = _charAttribsL3[ci];
+            // cp[cx] = _moonlight;
+        }
+#assign cx cx + 1
+#until cx == 4
+
+        dp += 4;
+        cp += 4;
+    }
+
+    ti = tp + mp[10] * 16;
+
+#assign cx 0
+#repeat
+    {
+        char ci = ti[cx];
+        dp[cx] = ci;
+        cp[cx] = _charAttribsL3[ci];
+        // cp[cx] = _moonlight;
+    }
+#assign cx cx + 1
+#until cx == 2
+}
+
+void tiles_put4x4row3(char * dp, char * cp, const char * mp, const char * tp)
+{
+    const char  * ti = tp + mp[0] * 16 + 3;
+
+#assign cx 0
+#repeat
+    {
+        char ci = ti[cx];
+        dp[cx] = ci;
+        cp[cx] = _charAttribsL3[ci];
+        // cp[cx] = _moonlight;
+    }
+#assign cx cx + 1
+#until cx == 1
+
+    dp += 1;
+    cp += 1;
+
+    for(char tx=1; tx<10; tx++)
+    {
+        ti = tp + mp[tx] * 16;
+
+#assign cx 0
+#repeat
+        {
+            char ci = ti[cx];
+            dp[cx] = ci;
+            cp[cx] = _charAttribsL3[ci];
+            // cp[cx] = _moonlight;
+        }
+#assign cx cx + 1
+#until cx == 4
+
+        dp += 4;
+        cp += 4;
+    }
+
+    ti = tp + mp[10] * 16;
+
+#assign cx 0
+#repeat
+    {
+        char ci = ti[cx];
+        dp[cx] = ci;
+        cp[cx] = _charAttribsL3[ci];
+        // cp[cx] = _moonlight;
+    }
+#assign cx cx + 1
+#until cx == 3
+}
+
+void tiles_put4x4(const char * mp, char ox, char oy)
+{
+    char * dp = GFX_1_SCR, * cp = COLOR_RAM, * lmp = ((char *)_lightMap);
+
+    mp += V_MAP_SIZE_X * (oy >> 2) + (ox >> 2);
+    oy &= 3;
+    ox &= 3;
+
+    for(char ty=0; ty<24; ty++)
+    {
+        switch (ox)
+        {
+            case 0:
+                tiles_put4x4row0(dp, cp, lmp, mp, _tiles + 4 * oy);
+                break;
+            case 1:
+                tiles_put4x4row1(dp, cp, mp, _tiles + 4 * oy);
+                break;
+            case 2:
+                tiles_put4x4row2(dp, cp, mp, _tiles + 4 * oy);
+                break;
+            case 3:
+                tiles_put4x4row3(dp, cp, mp, _tiles + 4 * oy);
+                break;
         }
         dp += 40;
         cp += 40;
         lmp += 40;
-        mapPos += V_MAP_SIZE_X*V_MAP_TILE_SIZE_X;
-    }
-    mmap_set(MMAP_ROM);
 
-    vic.color_border--;
-    rirq_start();
+        oy ++;
+        if (oy == 4)
+        {
+            mp += V_MAP_SIZE_X;
+            oy = 0;
+        }
+    }
 }
+
 
 // ---------------------------------------------------------------------------------------------
 // Game code
@@ -175,49 +341,29 @@ void drawVilliageMapNight(char ox, char oy){
 #pragma code ( villiageMapCode )
 #pragma data ( villiageMapRAMData )
 
-// L0 is moonlight, +3 chars, dark grey/all black
-// L1 is darker, +3 chars, grey-ish
-// L2 is dark, +2 chars, dimmer colors
-// L3 is neutral, +1 chars, normal light
-// L4 is bright, normal char, brighter colors
-
-// void tiles_put4x4row0(char * dp, char * cp, const char * lmp, const char * mp, const char * tp){
-//     for(char tx=0; tx<40; tx++) {
-//         const char * lm = lmp + tx*4;
-//         byte lightMap = lm[cx];
-
-//         char * mapPos = mp + tx;
-
-//         char ci = mapPos[0];
-//         if(lightMap && ci >= 0xc0){
-//             ci += lightMap-1;
-//         }
-//         dp[cx] = ci;
-//         switch (lightMap){
-//             case 0:
-//                 cp[cx] = _moonlight;
-//                 break;
-//             case 1:
-//                 cp[cx] = _charAttribsL1[ci];
-//                 break;
-//             case 2:
-//                 cp[cx] = _charAttribsL2[ci];
-//                 break;
-//             case 3:
-//                 cp[cx] = _charAttribsL3[ci];
-//                 break;
-//             case 4:
-//                 cp[cx] = _charAttribsL4[ci];
-//                 break;
-//         }
-//         dp += 4;
-//         cp += 4;
-//     }
-// }
-
 // Main game loop, entered every VSYNC
-void mapGameLoop(){
-    drawVilliageMapNight(vMapX, vMapY);
+void villiageMapGameLoop(){
+    // tiles_put4x4(_map, vMapX, vMapY);
+}
+
+
+// ---------------------------------------------------------------------------------------------
+// RAM code
+// ---------------------------------------------------------------------------------------------
+// this code needs to be in main block, as it switches banks
+#pragma code ( villiageMapRAMCode )
+#pragma data ( villiageMapRAMData )
+
+void villiageMapScreenInit(void){
+    char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
+    _mapInit();
+    setBank(pbank);
+}
+
+void villiageMapDraw(){
+    char pbank = setBank(MENU_BANK_MAP_VILLIAGE_2);
+    tiles_put4x4(_map, vMapX, vMapY);
+    setBank(pbank);
 }
 
 void villiageMapInit(){
@@ -252,10 +398,12 @@ void villiageMapInit(){
     // Load GFX
     villiageMapScreenInit();
     // villiageMapSpriteLoader();
-    villiageMapTilesRemap();
+    // tiles_remap();
 
     splashScreen(false, 2);
     // start raster IRQ processing
     rirq_start();
-    mapGameLoop();
+
+    // draw map
+    villiageMapDraw();
 }

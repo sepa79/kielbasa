@@ -40,22 +40,22 @@ __interrupt static void _villiageMapSpriteNoop(){
 static void _mapUp(){
     if (vMapY > 0)
         vMapY--;
-    mapGameLoop();
+    villiageMapDraw();
 }
 static void _mapDown(){
     if (vMapY < V_MAP_SIZE_Y*3-1)
         vMapY++;
-    mapGameLoop();
+    villiageMapDraw();
 }
 static void _mapLeft(){
     if (vMapX > 0)
         vMapX--;
-    mapGameLoop();
+    villiageMapDraw();
 }
 static void _mapRight(){
     if (vMapX < V_MAP_SIZE_X*3-2*4)
         vMapX++;
-    mapGameLoop();
+    villiageMapDraw();
 }
 
 const struct MenuOption VILLIAGE_MAP_MENU[] = {
