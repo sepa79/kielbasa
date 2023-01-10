@@ -133,8 +133,11 @@ __interrupt void setSpritesTopScr(){
         // store/restore memory config, as we need to ensure BASIC ROM is on
         byte _prevRomCfg = ((byte *)0x01)[0];
         mmap_set(MMAP_ROM);
+        char pbank = setBank(mnu_menuBank);
+
         showSprites();
         ((byte *)0x01)[0] = _prevRomCfg;
+        setBank(pbank);
     }
 }
 
@@ -161,6 +164,7 @@ void setSpritesBottomScr(){
 }
 
 void showUiSpritesTop(){
+    gms_frameCount++;
     vic.spr_enable = 0;
     
     // already set in the bottom IRQ

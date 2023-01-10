@@ -226,7 +226,8 @@ static void _changeLanguage(){
 }
 
 void playNextRadioSong(){
-    if(_currentRadioSong > RADIO_PLAYLIST_SIZE)
+    _currentRadioSong++;
+    if(_currentRadioSong >= RADIO_PLAYLIST_SIZE)
         _currentRadioSong = 0;
     _playMsx(&RADIO_PLAYLIST[_currentRadioSong]);
 }

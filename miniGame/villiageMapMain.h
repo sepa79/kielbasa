@@ -20,12 +20,20 @@
 
 #pragma data ( villiageMapRAMData )
 #pragma code ( villiageMapRAMCode )
+
+enum WalkDir {
+    WALK_UP,
+    WALK_DOWN,
+    WALK_LEFT,
+    WALK_RIGHT
+};
+
 // load and init routines, from MENU_BANK_MAP_VILLIAGE_1
 void villiageMapScreenInit();
 void villiageMapSpriteLoader();
 void villiageMapInit();
 // display routine, from MENU_BANK_MAP_VILLIAGE_2
-void villiageMapDraw();
+void villiageMapDraw(char dir);
 
 #pragma code ( villiageMapCode )
 void villiageMapGameLoop();

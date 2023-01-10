@@ -68,6 +68,8 @@ struct Loaders {
 };
 
 extern bool mnu_isGfxLoaded;
+extern volatile char mnu_menuBank;
+
 void loadMenu(byte bank);
 void loadMenuGfx(bool isDay);
 void loadMenuSprites();

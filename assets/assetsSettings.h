@@ -91,10 +91,4 @@ static char * const MENU_CODE_DST = (char *)0x7000;
 
 #define TBL_V "\x7e"
 
-#define MAP_RAM ((char *)0xe000)
-// #define MAP_CHAR_ATTRIBS_L1 ((char *)0xbc00)
-// #define MAP_CHAR_ATTRIBS_L2 ((char *)0xbd00)
-// #define MAP_CHAR_ATTRIBS_L3 ((char *)0xbe00)
-// #define MAP_CHAR_ATTRIBS_L4 ((char *)0xbf00)
-
 #endif

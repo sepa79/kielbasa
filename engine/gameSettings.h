@@ -52,7 +52,10 @@ extern volatile bool gms_enableMusic;
 extern volatile byte isc_weatherSprite;
 
 //TODO: make a variable
-#define JOY_CURSOR_MOVE_DELAY_INIT 1
+#define JOY_CURSOR_MOVE_DELAY_INIT 8
+
+// debug variable, counts frames (showUiSpritesTop() increases it every time it is called)
+extern volatile char gms_frameCount;
 
 #pragma compile("gameSettings.c")
 #endif

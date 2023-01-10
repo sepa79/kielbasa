@@ -7,7 +7,9 @@
 
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
+#include <assets/mainGfx.h>
 #include <miniGame/villiageMapMain.h>
+#include <menu/menuSystem.h>
 
 // ---------------------------------------------------------------------------------------------
 // Main screen and sprite bank + loaders code
@@ -49,17 +51,25 @@ static const char _tiles[] = {
     #embed ctm_tiles8   "assets/charGfx/VilliageMapHiresMainBig.ctm"
 };
 
-static const char _lightMap[] = {
-    #embed ctm_map8     "assets/charGfx/lightMap_up_andy.ctm"
-};
+typedef char char1024[1024];
+// static char1024 * const _lightMap = &_lightMapU;
 
-
+const char1024 _lightMap[4] = { { 
+    #embed ctm_map8     "assets/charGfx/lightMap_up.ctm"
+},{
+    #embed ctm_map8     "assets/charGfx/lightMap_down.ctm"
+},{
+    #embed ctm_map8     "assets/charGfx/lightMap_left.ctm"
+},{
+    #embed ctm_map8     "assets/charGfx/lightMap_right.ctm"
+}};
 // ---------------------------------------------------------------------------------------------
 // Loaders code, called with IRQ off
 // ---------------------------------------------------------------------------------------------
 #pragma code ( villiageMapGfx1Loaders )
 #pragma data ( villiageMapRAMData )
 
+static char _previousDir = WALK_UP;
 typedef char char256[256];
 static char256 * const colorMap = (char256 *)0xcc00;
 
@@ -98,30 +108,51 @@ static void _tilesRemap(void)
 // ---------------------------------------------------------------------------------------------
 #pragma code ( villiageMapDisplayCode )
 #pragma data ( villiageMapRAMData )
+// no moon
+// static char _moonlight = VCOL_BLACK;
+// dark moon
 static char _moonlight = VCOL_DARK_GREY;
 
-void tiles_put4x4row0(char * dp, char * cp, const char * lmp, const char * mp, const char * tp)
-{
+#define LIGHTMAP_DRAW_ROUTINE \
+         {\
+            byte lightMap = lm[cx];\
+            char ci = ti[cx];\
+            if(lightMap){\
+                --lightMap;\
+                cp[cx] = colorMap[lightMap][ci];\
+                if(ci >= 0x80){\
+                    ci += lightMap;\
+                } \
+            }\
+            dp[cx] = ci;\
+        }
+
+// #define LIGHTMAP_DRAW_ROUTINE \
+//          {\
+//             byte lightMap = lm[cx];\
+//             char ci = ti[cx];\
+//             if(lightMap){\
+//                 --lightMap;\
+//                 cp[cx] = colorMap[lightMap][ci];\
+//                 if(ci >= 0x80){\
+//                     ci += lightMap;\
+//                 } \
+//             // no need to color bits that are moonlight color - done at the beginning\
+//             // } else {\
+//             //     cp[cx] = _moonlight;\
+//             }\
+//             dp[cx] = ci;\
+//         }
+
+
+void tiles_put4x4row0(char * dp, char * cp, const char * lmp, const char * mp, const char * tp){
     for(char tx=0; tx<10; tx++)
     {
         const char  * ti = tp + mp[tx] * 16;
         const char * lm = lmp + tx*4;
 #assign cx 0
 #repeat
-        {
-            byte lightMap = lm[cx];
-            char ci = ti[cx];
-            if(lightMap){
-                --lightMap;
-                cp[cx] = colorMap[lightMap][ci];
-                if(ci >= 0x80){
-                    ci += lightMap;
-                } 
-            } else {
-                cp[cx] = _moonlight;
-            }
-            dp[cx] = ci;
-        }
+LIGHTMAP_DRAW_ROUTINE
 #assign cx cx + 1
 #until cx == 4
 
@@ -130,18 +161,13 @@ void tiles_put4x4row0(char * dp, char * cp, const char * lmp, const char * mp, c
     }
 }
 
-void tiles_put4x4row1(char * dp, char * cp, const char * mp, const char * tp)
-{
+void tiles_put4x4row1(char * dp, char * cp, const char * lmp, const char * mp, const char * tp){
     const char  * ti = tp + mp[0] * 16 + 1;
+    const char * lm = lmp;
 
 #assign cx 0
 #repeat
-    {
-        char ci = ti[cx];
-        dp[cx] = ci;
-        cp[cx] = _charAttribsL3[ci];
-        // cp[cx] = _moonlight;
-    }
+LIGHTMAP_DRAW_ROUTINE
 #assign cx cx + 1
 #until cx == 3
 
@@ -151,15 +177,11 @@ void tiles_put4x4row1(char * dp, char * cp, const char * mp, const char * tp)
     for(char tx=1; tx<10; tx++)
     {
         ti = tp + mp[tx] * 16;
+        lm = lmp + tx*4 -1;
 
 #assign cx 0
 #repeat
-        {
-            char ci = ti[cx];
-            dp[cx] = ci;
-            cp[cx] = _charAttribsL3[ci];
-            // cp[cx] = _moonlight;
-        }
+LIGHTMAP_DRAW_ROUTINE
 #assign cx cx + 1
 #until cx == 4
 
@@ -168,31 +190,22 @@ void tiles_put4x4row1(char * dp, char * cp, const char * mp, const char * tp)
     }
 
     ti = tp + mp[10] * 16;
+    lm = lmp + 40-1;
 
 #assign cx 0
 #repeat
-    {
-        char ci = ti[cx];
-        dp[cx] = ci;
-        cp[cx] = _charAttribsL3[ci];
-        // cp[cx] = _moonlight;
-    }
+LIGHTMAP_DRAW_ROUTINE
 #assign cx cx + 1
 #until cx == 1
 }
 
-void tiles_put4x4row2(char * dp, char * cp, const char * mp, const char * tp)
-{
+void tiles_put4x4row2(char * dp, char * cp, const char * lmp, const char * mp, const char * tp){
     const char  * ti = tp + mp[0] * 16 + 2;
+    const char * lm = lmp;
 
 #assign cx 0
 #repeat
-    {
-        char ci = ti[cx];
-        dp[cx] = ci;
-        cp[cx] = _charAttribsL3[ci];
-        // cp[cx] = _moonlight;
-    }
+LIGHTMAP_DRAW_ROUTINE
 #assign cx cx + 1
 #until cx == 2
 
@@ -202,15 +215,11 @@ void tiles_put4x4row2(char * dp, char * cp, const char * mp, const char * tp)
     for(char tx=1; tx<10; tx++)
     {
         ti = tp + mp[tx] * 16;
+        lm = lmp + tx*4-2;
 
 #assign cx 0
 #repeat
-        {
-            char ci = ti[cx];
-            dp[cx] = ci;
-            cp[cx] = _charAttribsL3[ci];
-            // cp[cx] = _moonlight;
-        }
+LIGHTMAP_DRAW_ROUTINE
 #assign cx cx + 1
 #until cx == 4
 
@@ -219,31 +228,23 @@ void tiles_put4x4row2(char * dp, char * cp, const char * mp, const char * tp)
     }
 
     ti = tp + mp[10] * 16;
+    lm = lmp + 40-2;
 
 #assign cx 0
 #repeat
-    {
-        char ci = ti[cx];
-        dp[cx] = ci;
-        cp[cx] = _charAttribsL3[ci];
-        // cp[cx] = _moonlight;
-    }
+LIGHTMAP_DRAW_ROUTINE
 #assign cx cx + 1
 #until cx == 2
 }
 
-void tiles_put4x4row3(char * dp, char * cp, const char * mp, const char * tp)
+void tiles_put4x4row3(char * dp, char * cp, const char * lmp, const char * mp, const char * tp)
 {
     const char  * ti = tp + mp[0] * 16 + 3;
+    const char * lm = lmp;
 
 #assign cx 0
 #repeat
-    {
-        char ci = ti[cx];
-        dp[cx] = ci;
-        cp[cx] = _charAttribsL3[ci];
-        // cp[cx] = _moonlight;
-    }
+LIGHTMAP_DRAW_ROUTINE
 #assign cx cx + 1
 #until cx == 1
 
@@ -253,15 +254,11 @@ void tiles_put4x4row3(char * dp, char * cp, const char * mp, const char * tp)
     for(char tx=1; tx<10; tx++)
     {
         ti = tp + mp[tx] * 16;
+        lm = lmp + tx*4 -3;
 
 #assign cx 0
 #repeat
-        {
-            char ci = ti[cx];
-            dp[cx] = ci;
-            cp[cx] = _charAttribsL3[ci];
-            // cp[cx] = _moonlight;
-        }
+LIGHTMAP_DRAW_ROUTINE
 #assign cx cx + 1
 #until cx == 4
 
@@ -270,42 +267,42 @@ void tiles_put4x4row3(char * dp, char * cp, const char * mp, const char * tp)
     }
 
     ti = tp + mp[10] * 16;
+    lm = lmp + 40-3;
 
 #assign cx 0
 #repeat
-    {
-        char ci = ti[cx];
-        dp[cx] = ci;
-        cp[cx] = _charAttribsL3[ci];
-        // cp[cx] = _moonlight;
-    }
+LIGHTMAP_DRAW_ROUTINE
 #assign cx cx + 1
 #until cx == 3
 }
 
-void tiles_put4x4(const char * mp, char ox, char oy)
-{
-    char * dp = GFX_1_SCR, * cp = COLOR_RAM, * lmp = ((char *)_lightMap);
+void tiles_put4x4(const char * mp, char ox, char oy, char dir){
+    char * dp = GFX_1_SCR, * cp = COLOR_RAM;
+    char * lmp = _lightMap[dir];
+
+    if(_previousDir != dir){
+        // fill screen with moonlight
+        memset(COLOR_RAM, _moonlight, 1000);
+    }
+    _previousDir = dir;
 
     mp += V_MAP_SIZE_X * (oy >> 2) + (ox >> 2);
     oy &= 3;
     ox &= 3;
 
-    for(char ty=0; ty<24; ty++)
-    {
-        switch (ox)
-        {
+    for(char ty=0; ty<24; ty++){
+        switch (ox){
             case 0:
                 tiles_put4x4row0(dp, cp, lmp, mp, _tiles + 4 * oy);
                 break;
             case 1:
-                tiles_put4x4row1(dp, cp, mp, _tiles + 4 * oy);
+                tiles_put4x4row1(dp, cp, lmp, mp, _tiles + 4 * oy);
                 break;
             case 2:
-                tiles_put4x4row2(dp, cp, mp, _tiles + 4 * oy);
+                tiles_put4x4row2(dp, cp, lmp, mp, _tiles + 4 * oy);
                 break;
             case 3:
-                tiles_put4x4row3(dp, cp, mp, _tiles + 4 * oy);
+                tiles_put4x4row3(dp, cp, lmp, mp, _tiles + 4 * oy);
                 break;
         }
         dp += 40;
@@ -313,8 +310,7 @@ void tiles_put4x4(const char * mp, char ox, char oy)
         lmp += 40;
 
         oy ++;
-        if (oy == 4)
-        {
+        if (oy == 4){
             mp += V_MAP_SIZE_X;
             oy = 0;
         }
@@ -345,12 +341,26 @@ void villiageMapScreenInit(void){
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
     _mapInit();
     setBank(pbank);
+    // fill screen with moonlight
+    memset(COLOR_RAM, _moonlight, 1000);
 }
 
-void villiageMapDraw(){
+void villiageMapDraw(char dir){
+    byte frameStart = gms_frameCount;
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_2);
-    tiles_put4x4(_map, vMapX, vMapY);
+    tiles_put4x4(_map, vMapX, vMapY, dir);
     setBank(pbank);
+    // frame counter
+    sprBankPointer = SPR_CHARACTER_BAR2;
+    byte framesUsed = gms_frameCount - frameStart;
+    byte str[4];
+    sprintf(str, "%03u", framesUsed);
+    copyCharToSprite(str[0], 0, 0);
+    copyCharToSprite(str[1], 1, 0);
+    copyCharToSprite(str[2], 2, 0);
+
+    // ready to move again
+    joyCursor.moveDelayCurrent = 0;
 }
 
 void villiageMapInit(){
@@ -392,5 +402,6 @@ void villiageMapInit(){
     rirq_start();
 
     // draw map
-    villiageMapDraw();
+    villiageMapDraw(WALK_UP);
+
 }

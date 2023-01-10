@@ -11,12 +11,12 @@
 
 // Global var used with menuGfxLoaderSingleBitmap(isDay)
 bool mnu_isGfxLoaded = false;
-static volatile char _menuBank = 0;
+volatile char mnu_menuBank = 0;
 
 // Switch bank, load any code into RAM if needed.
 // Default noop loader is _menuNoop().
 void loadMenu(char bank){
-    _menuBank = bank;
+    mnu_menuBank = bank;
     setBank(bank);
     ((Loaders *)0x8000)->loadMenuCode();
 }
@@ -25,7 +25,7 @@ void loadMenu(char bank){
 // Default loader is _menuGfxLoader(bool isDay).
 // Default noop loader is _menuNoop().
 void loadMenuGfx(bool isDay){
-    char pbank = setBank(_menuBank);
+    char pbank = setBank(mnu_menuBank);
     ((Loaders *)0x8000)->loadMenuGfx(isDay);
     setBank(pbank);
 }
@@ -42,14 +42,14 @@ void loadMenuSprites(){
 // Re-mounts last loaded CRT bank and starts its showMenu() function.
 // No defaults here.
 void showMenu(){
-    setBank(_menuBank);
+    setBank(mnu_menuBank);
     ((Loaders *)0x8000)->showMenu();
 }
 
 // Call currently mounted CRT bank's showSprites() function - has to be interrupt safe, called every frame on top Split IRQ.
 // Default noop function is _menuNoop().
 __interrupt void showSprites(){
-    char pbank = setBank(_menuBank);
+    char pbank = setBank(mnu_menuBank);
     ((Loaders *)0x8000)->showSprites();
     setBank(pbank);
 }
@@ -59,7 +59,7 @@ __interrupt void showSprites(){
 void updateMenu(){
     // don't update when in any of the option menus - time is stopped, they handle their own screens
     if(!gms_disableTimeControls){
-        char pbank = setBank(_menuBank);
+        char pbank = setBank(mnu_menuBank);
         ((Loaders *)0x8000)->updateMenu();
         setBank(pbank);
     }
@@ -67,7 +67,7 @@ void updateMenu(){
 
 // check what menu is actually open and update it if it matches chosen bank
 void updateMenuIfIn(char bank){
-    if(bank == _menuBank)
+    if(bank == mnu_menuBank)
         updateMenu();
 }
 
