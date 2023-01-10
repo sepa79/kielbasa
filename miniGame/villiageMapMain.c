@@ -59,20 +59,19 @@ static const char _lightMap[] = {
 // ---------------------------------------------------------------------------------------------
 #pragma code ( villiageMapGfx1Loaders )
 #pragma data ( villiageMapRAMData )
-#define COLOR_MAP_1 (char *)0xcc00
-#define COLOR_MAP_2 (char *)0xcd00
-#define COLOR_MAP_3 (char *)0xce00
-#define COLOR_MAP_4 (char *)0xcf00
+
+typedef char char256[256];
+static char256 * const colorMap = (char256 *)0xcc00;
 
 // Copy chars and lightmaps, any sprites etc
 static void _mapInit(){
     // ROM on, I/O off - as we will copy to RAM under I/O ports
     mmap_set(0b00110011);
     memcpy(GFX_1_FNT2, _chars, sizeof(_chars));
-    memcpy(COLOR_MAP_1, _charAttribsL1, 0x100);
-    memcpy(COLOR_MAP_2, _charAttribsL2, 0x100);
-    memcpy(COLOR_MAP_3, _charAttribsL3, 0x100);
-    memcpy(COLOR_MAP_4, _charAttribsL4, 0x100);
+    memcpy(colorMap[0], _charAttribsL1, 0x100);
+    memcpy(colorMap[1], _charAttribsL2, 0x100);
+    memcpy(colorMap[2], _charAttribsL3, 0x100);
+    memcpy(colorMap[3], _charAttribsL4, 0x100);
     // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
     mmap_set(MMAP_ROM);
     vic.color_back = VCOL_BROWN;
@@ -112,27 +111,16 @@ void tiles_put4x4row0(char * dp, char * cp, const char * lmp, const char * mp, c
         {
             byte lightMap = lm[cx];
             char ci = ti[cx];
-            if(lightMap && ci >= 0x80){
-                ci += lightMap-1;
+            if(lightMap){
+                --lightMap;
+                cp[cx] = colorMap[lightMap][ci];
+                if(ci >= 0x80){
+                    ci += lightMap;
+                } 
+            } else {
+                cp[cx] = _moonlight;
             }
             dp[cx] = ci;
-            switch (lightMap){
-                case 0:
-                    cp[cx] = _moonlight;
-                    break;
-                case 1:
-                    cp[cx] = (COLOR_MAP_1)[ci];
-                    break;
-                case 2:
-                    cp[cx] = (COLOR_MAP_2)[ci];
-                    break;
-                case 3:
-                    cp[cx] = (COLOR_MAP_3)[ci];
-                    break;
-                case 4:
-                    cp[cx] = (COLOR_MAP_4)[ci];
-                    break;
-            }
         }
 #assign cx cx + 1
 #until cx == 4
