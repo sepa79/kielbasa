@@ -15,11 +15,11 @@
 
 #pragma data ( villiageMapGfx1 )
 
-// L0 is moonlight, +3 chars, dark grey/all black
-// L1 is darker, +3 chars, grey-ish
-// L2 is dark, +2 chars, dimmer colors
-// L3 is neutral, +1 chars, normal light
-// L4 is bright, normal char, brighter colors
+// L0 is moonlight, +0 chars, dark grey/all black
+// L1 is darker, +0 chars, grey-ish
+// L2 is dark, +1 chars, dimmer colors
+// L3 is neutral, +2 chars, normal light
+// L4 is bright, +3 normal char, brighter colors
 
 static const char _charAttribsL1[] = {
     #embed ctm_attr1    "assets/charGfx/HiresVilliage_L1.ctm"
