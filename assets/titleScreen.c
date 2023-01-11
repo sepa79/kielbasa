@@ -83,9 +83,6 @@ void initGame(){
     // splash and turn screen on
     splashScreen(true, 3);
 
-    // get the main sprites
-    loadMainGfx();
-
     setBank(MUSIC_BANK);
     loadMusic(MSX_MAIN_THEME_SID_IDX);
 
@@ -121,6 +118,9 @@ void initGame(){
     // ready steady GO
     do { keyb_poll(); rand();} while (!keyb_key);
     keyb_key = 0;
+
+    // get the main sprites
+    loadMainGfx();
 
     // splash and turn screen off
     // splashScreen(false, 1);

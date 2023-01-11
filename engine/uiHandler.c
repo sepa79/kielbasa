@@ -378,7 +378,7 @@ void drawFullDate(){
     // cal_dateYearL = 9;
 
     byte str[3];
-    sprBankPointer = SpriteResources.DATE_TXT;
+    sprBankPointer = SPR_DATE_TXT1;
     // draw hour
     sprintf(str, "%02u", cal_dateHour);
     copyCharToSprite(str[0], 0, 0);
@@ -409,7 +409,7 @@ void drawFullDate(){
     copyCharToSprite('0', 4, 2);
     copyCharToSprite(28, 5, 2); //28 is 'zl'
 
-    sprBankPointer = SpriteResources.CURRENCY_TXT;
+    sprBankPointer = SPR_CURRENCY1;
 
     // toilet paper
     copyCharToSprite(50, 1, 2);
@@ -417,7 +417,7 @@ void drawFullDate(){
 }
 
 void updateHour(byte newHour){
-    sprBankPointer = SpriteResources.DATE_TXT;
+    sprBankPointer = SPR_DATE_TXT1;
 
     byte d = newHour;
 
@@ -437,7 +437,7 @@ void updateHour(byte newHour){
 }
 
 void updateDay(byte newDay){
-    sprBankPointer = SpriteResources.DATE_TXT;
+    sprBankPointer = SPR_DATE_TXT1;
 
     byte d = newDay;
 
@@ -461,7 +461,7 @@ void updateDay(byte newDay){
 }
 
 void updateMonth(byte newMonth){
-    sprBankPointer = SpriteResources.DATE_TXT;
+    sprBankPointer = SPR_DATE_TXT1;
 
     byte d = newMonth;
 
@@ -477,11 +477,11 @@ void updateMonth(byte newMonth){
 }
 
 void drawYearH(){
-    sprBankPointer = SpriteResources.DATE_TXT;
+    sprBankPointer = SPR_DATE_TXT1;
     copyCharToSprite(cal_dateYearH + 48, 4, 1);
 }
 
 void drawYearL(){
-    sprBankPointer = SpriteResources.DATE_TXT;
+    sprBankPointer = SPR_DATE_TXT1;
     copyCharToSprite(cal_dateYearL + 48, 5, 1);
 }

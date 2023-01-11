@@ -1,6 +1,8 @@
 #include <c64/vic.h>
 #include <engine/easyFlashBanks.h>
 #include <c64/memmap.h>
+#include <string.h>
+
 #include <assets/assetsSettings.h>
 #include "mainGfx.h"
 
@@ -136,16 +138,10 @@ static void _loadMainGfx(){
     // ROM on, I/O off - as we will copy to RAM under I/O ports
     mmap_set(0b00110011);
 
-    // sprites
-    char i = 0;
-    do {
-#assign y 0
-#repeat
-        GFX_1_SPR[y + i] = GFX_1_SPR_SRC[y + i];
-#assign y y + 0x100
-#until y == 0x100*0x10
-        i++;
-    } while (i != 0);
+    // sprites - cursor, to GFX1
+    memcpy((char *)GFX_1_SPR_DST_ADR, GFX_1_SPR_SRC, 0x80);
+    // sprites - UI - skip 2 UI sprites
+    memcpy((char *)UI_SPR_ADR, GFX_1_SPR_SRC+0x80, 0x800);
     // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
     mmap_set(MMAP_ROM);
 }

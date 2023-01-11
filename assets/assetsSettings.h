@@ -21,12 +21,6 @@
 #define GFX_1_SPR_SRC_ADR 0x8000
 // where to put in memory
 #define GFX_1_SPR_DST_ADR 0xc400
-// (unsigned int)(GFX_1_SPR_DST_ADR / 0x40) - the start bank of sprites
-#define SPRITE_BANKS_START_VALUE 0x10
-
-// any sprites and data that are only copied into Vic bank as needed (can be outside VIC addressable memory)
-#define GFX_1_AUX_SRC_ADR 0x9000
-// #define GFX_1_AUX_DST_ADR 0xa000
 
 // main font
 #define GFX_1_FNT_SRC_ADR 0xb000
@@ -41,6 +35,17 @@
 // used for title screen
 #define SEC_SCR_ADR 0xc000
 #define SEC_BMP_ADR 0xe000
+// used for UI sprites - they go to screen memory
+#define UI_SCR_ADR 0xb800
+#define UI_SPR_ADR 0xb000
+#define UI_BMP_ADR 0x8000
+// (unsigned int)(UI_SCR_ADR / 0x40) - the start bank of sprites
+#define UI_SPRITE_BANKS_START_VALUE 0xc0
+#define UI_SPR ((volatile char *)UI_SPR_ADR)
+
+// any sprites and data that are only copied into Vic bank as needed (can be outside VIC addressable memory)
+#define GFX_1_AUX_SRC_ADR 0x9000
+#define GFX_1_AUX_DST_ADR UI_BMP_ADR
 
 // music
 #define MSX_MAIN_THEME_BANK MUSIC_BANK
@@ -60,6 +65,7 @@
 #define GFX_1_SCR ((char *)GFX_1_SCR_ADR)
 #define GFX_1_SCR2 ((char *)GFX_1_SCR2_ADR)
 #define GFX_1_SCR3 ((char *)GFX_1_SCR3_ADR)
+#define UI_SCR ((char *)UI_SCR_ADR)
 // auxiliary sprites, sprite fonts and color tables, copied to destination bank on use
 #define GFX_1_AUX_SRC ((char *)GFX_1_AUX_SRC_ADR)
 #define GFX_1_AUX ((volatile char *)GFX_1_AUX_DST_ADR)
@@ -67,7 +73,7 @@
 #define GFX_1_FNT ((volatile char *)GFX_1_FNT_DST_ADR)
 #define GFX_1_FNT2 ((volatile char *)GFX_1_FNT2_DST_ADR)
 #define GFX_1_SPR_SRC ((char *)GFX_1_SPR_SRC_ADR)
-#define GFX_1_SPR ((volatile char *)GFX_1_SPR_DST_ADR)
+// #define GFX_1_SPR ((volatile char *)GFX_1_SPR_DST_ADR)
 
 #define GFX_2_BMP ((char *)SEC_BMP_ADR)
 #define GFX_2_SCR ((char *)SEC_SCR_ADR)
@@ -84,6 +90,8 @@
 #define d018_txt2_1 (((unsigned)GFX_1_SCR_ADR >> 6) & 0xf0) | (((unsigned)GFX_1_FNT2_DST_ADR >> 10) & 0x0e)
 #define d018_txt2_2 (((unsigned)GFX_1_SCR2_ADR >> 6) & 0xf0) | (((unsigned)GFX_1_FNT2_DST_ADR >> 10) & 0x0e)
 #define d018_txt2_3 (((unsigned)GFX_1_SCR3_ADR >> 6) & 0xf0) | (((unsigned)GFX_1_FNT2_DST_ADR >> 10) & 0x0e)
+#define dd00_UI ((UI_BMP_ADR ^ 0xffff) >> 14)
+#define d018_UI (((unsigned)UI_SCR_ADR >> 6) & 0xf0) | (((unsigned)UI_BMP_ADR >> 10) & 0x0e)
 
 // *******************
 // additional defines

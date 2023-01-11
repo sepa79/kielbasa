@@ -85,10 +85,10 @@ __interrupt static void IRQ_topMCGfxScreen() {
     // vic.color_back++;
     // vic.color_border++;
     // Select GFX screen
-    // vic_setmode(VICM_HIRES_MC, GFX_1_SCR, GFX_1_BMP);
     vic.ctrl1 = VIC_CTRL1_BMM | VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
     vic.ctrl2 = VIC_CTRL2_MCM | VIC_CTRL2_CSEL | 0;
     vic.memptr = d018_gfx1;
+    cia2.pra = dd00_gfx1;
 
     // show any sprites the menu might have
     setSpritesTopScr();
@@ -109,6 +109,7 @@ __interrupt static void IRQ_topTxtScreen() {
     vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
     vic.ctrl2 = VIC_CTRL2_CSEL | 0;
     vic.memptr = d018_txt1;
+    cia2.pra = dd00_gfx1;
 
     // tick the game
     _timeControl();
@@ -125,6 +126,7 @@ __interrupt static void IRQ_topHiresTxtScreen() {
     // Select TEXT screen
     vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
     vic.ctrl2 = VIC_CTRL2_CSEL | 0;
+    cia2.pra = dd00_gfx1;
     if(map_2ndScreen){
         vic.memptr = d018_txt2_3;
     } else {
@@ -148,6 +150,7 @@ __interrupt static void IRQ_topMCTxtScreen() {
     vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
     vic.ctrl2 = VIC_CTRL2_CSEL | VIC_CTRL2_MCM;
     vic.memptr = d018_txt1;
+    cia2.pra = dd00_gfx1;
 
     // tick the game
     _timeControl();
@@ -217,6 +220,10 @@ __interrupt static void IRQ_bottomScrollAndUISprites_C() {
 
     // Set screen height back to 25 lines (preparing for the next screen)
     vic.ctrl1 |= VIC_CTRL1_RSEL;
+
+    // UI sprite bank
+    vic.memptr = d018_UI;
+    cia2.pra = dd00_UI;
 
     // vic.color_border++;
     playMsx();
@@ -380,10 +387,6 @@ void initRasterIRQ_SplitMCTxt(){
 
     // sort the raster IRQs
     rirq_sort();
-
-    // GFX_1_SCR, GFX_1_FNT
-    cia2.pra = dd00_gfx1;
-    vic.memptr = d018_gfx1;
 }
 
 void initRasterIRQ(){

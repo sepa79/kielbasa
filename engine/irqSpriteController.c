@@ -1,6 +1,7 @@
 #include <c64/vic.h>
 #include <c64/memmap.h>
 #include <c64/easyflash.h>
+#include <c64/cia.h>
 
 #include <menu/menuSystem.h>
 #include <engine/easyFlashBanks.h>
@@ -16,6 +17,10 @@ char* characterSlotSpriteBarPtr[CHARACTER_SLOTS] = {
     SPR_CHARACTER_BAR3,
     SPR_CHARACTER_BAR4
 };
+
+static char _batteryColors[4] = {0, 0, 0, 0};
+static char _characterColors[4] = {0, 0, 0, 0};
+
 char* characterSlotSpritePicPtr[CHARACTER_SLOTS] = {
     SPR_CHARACTER_PORTRAIT1,
     SPR_CHARACTER_PORTRAIT2,
@@ -65,7 +70,7 @@ void setCharacterSlotPic(char charSlot, const char * picturePtr){
             i++;
             i++;
         } while (i<63);
-        charPicPtr[63] = picturePtr[63];
+        _characterColors[charSlot] = picturePtr[63];
         // mmap_set(MMAP_ROM);
         setBank(pbank);
     }
@@ -94,7 +99,7 @@ void drawBattery(char charSlot, char energy){
     // vic.BORDER_COLOR++;
     char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
     char max = BATTERY_LEVEL[energy];
-    charBarPtr[63] = BATTERY_COLOR[max];
+    _batteryColors[charSlot] = BATTERY_COLOR[max];
     
     __asm{
         ldy #9
@@ -166,7 +171,9 @@ void setSpritesBottomScr(){
 void showUiSpritesTop(){
     gms_frameCount++;
     vic.spr_enable = 0;
-    
+    vic.memptr = d018_UI;
+    cia2.pra = dd00_UI;
+
     // already set in the bottom IRQ
     // vic.spr_expand_x = 0b00000000;
     // vic.spr_expand_y = 0b00000000;
@@ -187,12 +194,12 @@ void showUiSpritesTop(){
 
     vic.spr_msbx = 0b00111000;
 
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = SPR_BANK_DATE_TXT1;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+1] = SPR_BANK_DATE_TXT2;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+2] = SPR_BANK_TIME_ICON1+gms_gameSpeed;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+3] = SPR_BANK_WEATHER1+isc_weatherSprite;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+4] = SPR_BANK_CURRENCY1;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+5] = SPR_BANK_CURRENCY_TXT;
+    UI_SCR[OFFSET_SPRITE_PTRS+0] = SPR_BANK_DATE_TXT1;
+    UI_SCR[OFFSET_SPRITE_PTRS+1] = SPR_BANK_DATE_TXT2;
+    UI_SCR[OFFSET_SPRITE_PTRS+2] = SPR_BANK_TIME_ICON1+gms_gameSpeed;
+    UI_SCR[OFFSET_SPRITE_PTRS+3] = SPR_BANK_WEATHER1+isc_weatherSprite;
+    UI_SCR[OFFSET_SPRITE_PTRS+4] = SPR_BANK_CURRENCY1;
+    UI_SCR[OFFSET_SPRITE_PTRS+5] = SPR_BANK_CURRENCY_TXT;
 
     vic.spr_pos[0].x = 50-12;
     vic.spr_pos[1].x = 50+12;
@@ -214,7 +221,6 @@ void showUiSpritesTop(){
 
 void showUiSpritesBottom(){
     // vic.color_border--;
-
     vic.spr_expand_x = 0b00000000;
     vic.spr_expand_y = 0b00000000;
     vic.spr_priority = 0b00000000;
@@ -225,14 +231,14 @@ void showUiSpritesBottom(){
 
     vic.spr_msbx = 0b11000000;
 
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = SPR_BANK_CHARACTER_PORTRAIT1;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+1] = SPR_BANK_CHARACTER_BAR1;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+2] = SPR_BANK_CHARACTER_PORTRAIT2;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+3] = SPR_BANK_CHARACTER_BAR2;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+4] = SPR_BANK_CHARACTER_PORTRAIT3;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+5] = SPR_BANK_CHARACTER_BAR3;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+6] = SPR_BANK_CHARACTER_PORTRAIT4;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+7] = SPR_BANK_CHARACTER_BAR4;
+    UI_SCR[OFFSET_SPRITE_PTRS+0] = SPR_BANK_CHARACTER_PORTRAIT1;
+    UI_SCR[OFFSET_SPRITE_PTRS+1] = SPR_BANK_CHARACTER_BAR1;
+    UI_SCR[OFFSET_SPRITE_PTRS+2] = SPR_BANK_CHARACTER_PORTRAIT2;
+    UI_SCR[OFFSET_SPRITE_PTRS+3] = SPR_BANK_CHARACTER_BAR2;
+    UI_SCR[OFFSET_SPRITE_PTRS+4] = SPR_BANK_CHARACTER_PORTRAIT3;
+    UI_SCR[OFFSET_SPRITE_PTRS+5] = SPR_BANK_CHARACTER_BAR3;
+    UI_SCR[OFFSET_SPRITE_PTRS+6] = SPR_BANK_CHARACTER_PORTRAIT4;
+    UI_SCR[OFFSET_SPRITE_PTRS+7] = SPR_BANK_CHARACTER_BAR4;
 
     #define SPACER_WIDTH 16
     #define SPRITE_WIDTH 24
@@ -262,14 +268,14 @@ void showUiSpritesBottom(){
     vic.spr_pos[6].y = 2;
     vic.spr_pos[7].y = 2;
 
-    vic.spr_color[0] = SpriteResources.CHARACTER_PORTRAITS[64*0 + 63];
-    vic.spr_color[1] = SpriteResources.CHARACTER_BARS[64*0 + 63];
-    vic.spr_color[2] = SpriteResources.CHARACTER_PORTRAITS[64*1 + 63];
-    vic.spr_color[3] = SpriteResources.CHARACTER_BARS[64*1 + 63];
-    vic.spr_color[4] = SpriteResources.CHARACTER_PORTRAITS[64*2 + 63];
-    vic.spr_color[5] = SpriteResources.CHARACTER_BARS[64*2 + 63];
-    vic.spr_color[6] = SpriteResources.CHARACTER_PORTRAITS[64*3 + 63];
-    vic.spr_color[7] = SpriteResources.CHARACTER_BARS[64*3 + 63];
+    vic.spr_color[0] = _characterColors[0];
+    vic.spr_color[1] = _batteryColors[0];
+    vic.spr_color[2] = _characterColors[1];
+    vic.spr_color[3] = _batteryColors[1];
+    vic.spr_color[4] = _characterColors[2];
+    vic.spr_color[5] = _batteryColors[2];
+    vic.spr_color[6] = _characterColors[3];
+    vic.spr_color[7] = _batteryColors[3];
 
     vic.spr_enable = 0b11111111;
     // indicate frame position

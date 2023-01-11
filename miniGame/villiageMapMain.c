@@ -146,11 +146,20 @@ static char _moonlight = VCOL_DARK_GREY;
 //             dp[cx] = ci;\
 //         }
 
+typedef char mapTile[16];
+static char * fieldTiles = (char *)0xc000;
+
+// first 0x30 tiles are fields, remap them to point to memory location where we got visualised fields
+#define TILE_REMAP_ROUTINE \
+         if(ti[0] <=0x30)\
+            ti = fieldTiles[0];
 
 void tiles_put4x4row0(char * dp, char * cp, const char * lmp, const char * mp, const char * tp){
-    for(char tx=0; tx<10; tx++)
-    {
-        const char  * ti = tp + mp[tx] * 16;
+    for(char tx=0; tx<10; tx++){
+        const char * tileP = tp;
+        if(mp[tx] <=0x30)
+            tileP = fieldTiles;
+        const char * ti = tileP + mp[tx] * 16;
         const char * lm = lmp + tx*4;
 #assign cx 0
 #repeat
@@ -176,8 +185,7 @@ LIGHTMAP_DRAW_ROUTINE
     dp += 3;
     cp += 3;
 
-    for(char tx=1; tx<10; tx++)
-    {
+    for(char tx=1; tx<10; tx++){
         ti = tp + mp[tx] * 16;
         lm = lmp + tx*4 -1;
 
@@ -214,8 +222,7 @@ LIGHTMAP_DRAW_ROUTINE
     dp += 2;
     cp += 2;
 
-    for(char tx=1; tx<10; tx++)
-    {
+    for(char tx=1; tx<10; tx++){
         ti = tp + mp[tx] * 16;
         lm = lmp + tx*4-2;
 
@@ -253,8 +260,7 @@ LIGHTMAP_DRAW_ROUTINE
     dp += 1;
     cp += 1;
 
-    for(char tx=1; tx<10; tx++)
-    {
+    for(char tx=1; tx<10; tx++){
         ti = tp + mp[tx] * 16;
         lm = lmp + tx*4 -3;
 
@@ -358,6 +364,7 @@ static void _drawPlayer(){
     // while(gms_framePos != FRAME_TOP){};
     // vic.color_border--;
 
+    // TODO: Don't copy full screen, no need to at night, colors are on flashlight only
     #pragma unroll(full)
     for(int i=0; i<960; i++)
         COLOR_RAM[i] = GFX_1_SCR[i];
