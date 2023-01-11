@@ -35,6 +35,8 @@
 
 // screen and bitmap addresses
 #define GFX_1_SCR_ADR 0xc000
+#define GFX_1_SCR2_ADR 0xe000
+#define GFX_1_SCR3_ADR 0xe400
 #define GFX_1_BMP_ADR 0xe000
 // used for title screen
 #define SEC_SCR_ADR 0xc000
@@ -56,6 +58,8 @@
 // *****************************
 #define GFX_1_BMP ((char *)GFX_1_BMP_ADR)
 #define GFX_1_SCR ((char *)GFX_1_SCR_ADR)
+#define GFX_1_SCR2 ((char *)GFX_1_SCR2_ADR)
+#define GFX_1_SCR3 ((char *)GFX_1_SCR3_ADR)
 // auxiliary sprites, sprite fonts and color tables, copied to destination bank on use
 #define GFX_1_AUX_SRC ((char *)GFX_1_AUX_SRC_ADR)
 #define GFX_1_AUX ((volatile char *)GFX_1_AUX_DST_ADR)
@@ -77,7 +81,9 @@
 #define dd00_gfx1 ((GFX_1_SCR_ADR ^ 0xffff) >> 14)
 #define d018_gfx1 (((unsigned)GFX_1_SCR_ADR >> 6) & 0xf0) | (((unsigned)GFX_1_BMP_ADR >> 10) & 0x0e)
 #define d018_txt1 (((unsigned)GFX_1_SCR_ADR >> 6) & 0xf0) | (((unsigned)GFX_1_FNT_DST_ADR >> 10) & 0x0e)
-#define d018_txt2 (((unsigned)GFX_1_SCR_ADR >> 6) & 0xf0) | (((unsigned)GFX_1_FNT2_DST_ADR >> 10) & 0x0e)
+#define d018_txt2_1 (((unsigned)GFX_1_SCR_ADR >> 6) & 0xf0) | (((unsigned)GFX_1_FNT2_DST_ADR >> 10) & 0x0e)
+#define d018_txt2_2 (((unsigned)GFX_1_SCR2_ADR >> 6) & 0xf0) | (((unsigned)GFX_1_FNT2_DST_ADR >> 10) & 0x0e)
+#define d018_txt2_3 (((unsigned)GFX_1_SCR3_ADR >> 6) & 0xf0) | (((unsigned)GFX_1_FNT2_DST_ADR >> 10) & 0x0e)
 
 // *******************
 // additional defines

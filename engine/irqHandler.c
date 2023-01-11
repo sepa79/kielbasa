@@ -17,6 +17,8 @@
 #define IRQ_RASTER_BOTTOM_SCROLL_ETC 0xee
 #define IRQ_RASTER_TOP_UI_SPRITES 0x01
 
+bool map_2ndScreen = true;
+
 static byte _scrollIt = 7;
 static byte _emptyStatus[] = {0xff, 0};
 #define statusLine 24*40
@@ -123,7 +125,11 @@ __interrupt static void IRQ_topHiresTxtScreen() {
     // Select TEXT screen
     vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
     vic.ctrl2 = VIC_CTRL2_CSEL | 0;
-    vic.memptr = d018_txt2;
+    if(map_2ndScreen){
+        vic.memptr = d018_txt2_3;
+    } else {
+        vic.memptr = d018_txt2_2;
+    }
 
     // tick the game
     _timeControl();

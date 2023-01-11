@@ -2,10 +2,12 @@
 #define IRQ_HANDLER_H
 
 extern const char * SB_TEXT;
-// stores screen mode on change
-extern char currentScreenMode;
-// used by F1-F7 menus to store previous screen mode, to be able to change back
-extern char previousScreenMode;
+// // stores screen mode on change
+// extern char currentScreenMode;
+// // used by F1-F7 menus to store previous screen mode, to be able to change back
+// extern char previousScreenMode;
+
+extern bool map_2ndScreen;
 
 enum SCREEN_MODE {
 // Restore the screen using 'previousScreenMode'

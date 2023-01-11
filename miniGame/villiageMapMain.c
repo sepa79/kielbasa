@@ -7,6 +7,7 @@
 
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
+#include <engine/gameSettings.h>
 #include <assets/mainGfx.h>
 #include <miniGame/villiageMapMain.h>
 #include <menu/menuSystem.h>
@@ -70,6 +71,7 @@ const char1024 _lightMap[4] = { {
 #pragma data ( villiageMapRAMData )
 
 static char _previousDir = WALK_UP;
+
 typedef char char256[256];
 static char256 * const colorMap = (char256 *)0xcc00;
 
@@ -277,12 +279,20 @@ LIGHTMAP_DRAW_ROUTINE
 }
 
 void tiles_put4x4(const char * mp, char ox, char oy, char dir){
-    char * dp = GFX_1_SCR, * cp = COLOR_RAM;
+    char * dp;
+    if(map_2ndScreen){
+        dp = GFX_1_SCR2;
+    } else {
+        dp = GFX_1_SCR3;
+    }
+    
+    // char * cp = COLOR_RAM;
+    char * cp = GFX_1_SCR;
     char * lmp = _lightMap[dir];
 
     if(_previousDir != dir){
-        // fill screen with moonlight
-        memset(COLOR_RAM, _moonlight, 1000);
+        // fill screen with moonlight, TODO: Unpack it.
+        memset(GFX_1_SCR, _moonlight, 1000);
     }
     _previousDir = dir;
 
@@ -329,6 +339,33 @@ void villiageMapGameLoop(){
     // tiles_put4x4(_map, vMapX, vMapY);
 }
 
+static void _drawPlayer(){
+    // vic.color_border--;
+
+    // draw player, signal IRQ to switch screen at next frame
+    if(map_2ndScreen){
+        GFX_1_SCR2[40*11+19] = 0;
+        map_2ndScreen = false;
+    } else {
+        GFX_1_SCR3[40*11+19] = 0;
+        map_2ndScreen = true;
+    }
+
+    if(gms_framePos == FRAME_MIDDLE){
+        while(gms_framePos == FRAME_MIDDLE){};
+    }
+    // now wait until we move to top of the screen
+    // while(gms_framePos != FRAME_TOP){};
+    // vic.color_border--;
+
+    #pragma unroll(full)
+    for(int i=0; i<960; i++)
+        COLOR_RAM[i] = GFX_1_SCR[i];
+    // vic.color_border+=2;
+    // player color
+    COLOR_RAM[40*11+19] = VCOL_MED_GREY;
+
+}
 
 // ---------------------------------------------------------------------------------------------
 // RAM code
@@ -342,14 +379,30 @@ void villiageMapScreenInit(void){
     _mapInit();
     setBank(pbank);
     // fill screen with moonlight
-    memset(COLOR_RAM, _moonlight, 1000);
+    memset(COLOR_RAM, _moonlight, 960);
+    memset(GFX_1_SCR, _moonlight, 960);
+}
+
+void drawPlayer(){
+    char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
+    _drawPlayer();
+    setBank(pbank);
 }
 
 void villiageMapDraw(char dir){
     byte frameStart = gms_frameCount;
+
+
+    // draw map
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_2);
     tiles_put4x4(_map, vMapX, vMapY, dir);
     setBank(pbank);
+
+    // draw player
+    drawPlayer();
+
+
+
     // frame counter
     sprBankPointer = SPR_CHARACTER_BAR2;
     byte framesUsed = gms_frameCount - frameStart;
