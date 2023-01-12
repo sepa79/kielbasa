@@ -12,6 +12,7 @@
 #include <miniGame/villiageMapMain.h>
 #include <miniGame/villiageMapDay.h>
 #include <menu/menuSystem.h>
+#include <tick/farmlandTick.h>
 
 // ---------------------------------------------------------------------------------------------
 // Main screen and sprite bank + loaders code
@@ -348,50 +349,59 @@ void villiageMapDrawNight(const char * mp, char ox, char oy, char dir){
 #pragma code ( villiageMapCode )
 #pragma data ( villiageMapRAMData )
 
-#define FIELD_1_WIDTH 3
-// *4 to go through 4 tile characters
-#define FIELD_1_HEIGHT 2
-#define FIELD_2_WIDTH 2
-#define FIELD_2_HEIGHT 3
-#define FIELD_3_WIDTH 3
-#define FIELD_3_HEIGHT 4
-#define FIELD_4_WIDTH 3
-#define FIELD_4_HEIGHT 6
-
-#define GROUND_TILE 0xbc
+#define GROUND_CHAR 0xbc
+#define CROPS_CHAR 0x10
 // 1st tile is empty
 #define FIELD_START ramTiles+0x10
 
+struct Field {
+    char width;
+    char height;
+    char crop;
+    char plantedCount;
+    char aliveCount;
+    char rseed;
+    char stage;
+    char padding2;
+};
+
+struct Field fields[FIELDS_COUNT] = {
+    {3, 2, 0, 66, 0, 0, 3, 0},
+    {2, 3, 1, 66, 0, 0, 3, 0},
+    {3, 4, 2, 66, 0, 0, 3, 0},
+    {4, 6, 3, 66, 0, 0, 3, 0}
+};
 // copy base map from ROM, add any specials to it
 static void buildRamTiles(void){
-    // memset(ramTiles, GROUND_TILE, 16*(RAM_TILES_COUNT+1));
+    // memset(ramTiles, GROUND_CHAR, 16*(RAM_TILES_COUNT+1));
     
-    // how many crops to draw
-    char cropCount = 44;
-    // plant & stage to draw
-    // char plant = 0x10 + 4*plant + 3-stage;
-    char plant = 0x10 + 4*0 + 3-0;
-    // field
-    char * field = FIELD_START;
     // Field Y
-    for(char fy=0; fy<FIELD_1_HEIGHT; fy++){
-        // Tile Y
-        for(char ty=0; ty<4; ty++){
-            // Field X
-            for(char fx=0; fx<FIELD_1_WIDTH; fx++){
-                // set pointer to current X tile, Y row
-                field = FIELD_START + fx*16 + fy*FIELD_1_WIDTH*16;
-                // Tile X
-                for(char tx=0; tx<4; tx++){
-                    if(cropCount){
-                        field[tx+4*ty] = plant;
-                        cropCount--;
-                    } else {
-                        field[tx+4*ty] = GROUND_TILE;
+    char * fieldPointer = FIELD_START;
+    for(char fi=0; fi<FIELDS_COUNT; fi++){
+        // how many crops to draw
+        char cropCount = fields[fi].plantedCount;
+        // plant & stage to draw, 
+        char plant = CROPS_CHAR + 4*fields[fi].crop + 3-fields[fi].stage;
+        for(char fy=0; fy<fields[fi].height; fy++){
+            // Tile Y
+            for(char ty=0; ty<4; ty++){
+                // Field X
+                for(char fx=0; fx<fields[fi].width; fx++){
+                    // set pointer to current X tile, Y row
+                    char * field = fieldPointer + fx*16 + fy*fields[fi].width*16;
+                    // Tile X
+                    for(char tx=0; tx<4; tx++){
+                        if(cropCount){
+                            field[tx+4*ty] = plant;
+                            cropCount--;
+                        } else {
+                            field[tx+4*ty] = GROUND_CHAR;
+                        }
                     }
                 }
             }
         }
+        fieldPointer += fields[fi].width*fields[fi].height*16;
     }
 }
 
