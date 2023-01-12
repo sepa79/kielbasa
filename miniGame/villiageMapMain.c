@@ -348,9 +348,51 @@ void villiageMapDrawNight(const char * mp, char ox, char oy, char dir){
 #pragma code ( villiageMapCode )
 #pragma data ( villiageMapRAMData )
 
+#define FIELD_1_WIDTH 3
+// *4 to go through 4 tile characters
+#define FIELD_1_HEIGHT 2
+#define FIELD_2_WIDTH 2
+#define FIELD_2_HEIGHT 3
+#define FIELD_3_WIDTH 3
+#define FIELD_3_HEIGHT 4
+#define FIELD_4_WIDTH 3
+#define FIELD_4_HEIGHT 6
+
+#define GROUND_TILE 0xbc
+// 1st tile is empty
+#define FIELD_START ramTiles+0x10
+
 // copy base map from ROM, add any specials to it
 static void buildRamTiles(void){
-    memset(ramTiles, 0x12, 16*(RAM_TILES_COUNT+1));
+    // memset(ramTiles, GROUND_TILE, 16*(RAM_TILES_COUNT+1));
+    
+    // how many crops to draw
+    char cropCount = 44;
+    // plant & stage to draw
+    // char plant = 0x10 + 4*plant + 3-stage;
+    char plant = 0x10 + 4*0 + 3-0;
+    // field
+    char * field = FIELD_START;
+    // Field Y
+    for(char fy=0; fy<FIELD_1_HEIGHT; fy++){
+        // Tile Y
+        for(char ty=0; ty<4; ty++){
+            // Field X
+            for(char fx=0; fx<FIELD_1_WIDTH; fx++){
+                // set pointer to current X tile, Y row
+                field = FIELD_START + fx*16 + fy*FIELD_1_WIDTH*16;
+                // Tile X
+                for(char tx=0; tx<4; tx++){
+                    if(cropCount){
+                        field[tx+4*ty] = plant;
+                        cropCount--;
+                    } else {
+                        field[tx+4*ty] = GROUND_TILE;
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Main game loop, entered every VSYNC
