@@ -3,6 +3,8 @@
 
 #define V_MAP_SIZE_X 64
 #define V_MAP_SIZE_Y 64
+// first 0xXX tiles are fields, remap them to point to memory location where we got visualised fields
+#define RAM_TILES_COUNT 0x30
 
 #pragma section( villiageMapLoaderData, 0 )
 #pragma section( villiageMapCode, 0 )
@@ -27,6 +29,13 @@ enum WalkDir {
     WALK_LEFT,
     WALK_RIGHT
 };
+
+typedef char char256[256];
+extern char256 * const colorMap;
+typedef char mapTile[16];
+extern char * ramTiles;
+extern const char * romTiles;
+extern bool isMapDay;
 
 // load and init routines, from MENU_BANK_MAP_VILLIAGE_1
 void villiageMapScreenInit();

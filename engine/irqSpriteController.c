@@ -18,7 +18,7 @@ char* characterSlotSpriteBarPtr[CHARACTER_SLOTS] = {
     SPR_CHARACTER_BAR4
 };
 
-static char _batteryColors[4] = {0, 0, 0, 0};
+static char _batteryColors[4] = {VCOL_BLUE, VCOL_BLUE, VCOL_BLUE, VCOL_BLUE};
 static char _characterColors[4] = {0, 0, 0, 0};
 
 char* characterSlotSpritePicPtr[CHARACTER_SLOTS] = {
