@@ -11,6 +11,7 @@
 #include <assets/mainGfx.h>
 #include <miniGame/villiageMapMain.h>
 #include <miniGame/villiageMapDay.h>
+#include <miniGame/villiageMapNight.h>
 #include <menu/menuSystem.h>
 #include <tick/farmlandTick.h>
 
@@ -99,249 +100,6 @@ static void _mapInit(){
 // ---------------------------------------------------------------------------------------------
 #pragma code ( villiageMapDisplayCode )
 #pragma data ( villiageMapRAMData )
-// no moon
-// static char _moonlight = VCOL_BLACK;
-// dark moon
-static char _moonlight = VCOL_DARK_GREY;
-bool isMapDay = true;
-
-#define LIGHTMAP_DRAW_ROUTINE \
-        {\
-            byte lightMap = lm[cx];\
-            char ci = ti[cx];\
-            if(lightMap){\
-                --lightMap;\
-                cp[cx] = colorMap[lightMap][ci];\
-                if(ci >= 0x80){\
-                    ci += lightMap;\
-                } \
-            }\
-            dp[cx] = ci;\
-        }
-
-// #define LIGHTMAP_DRAW_ROUTINE \
-//          {\
-//             byte lightMap = lm[cx];\
-//             char ci = ti[cx];\
-//             if(lightMap){\
-//                 --lightMap;\
-//                 cp[cx] = colorMap[lightMap][ci];\
-//                 if(ci >= 0x80){\
-//                     ci += lightMap;\
-//                 } \
-//             // no need to color bits that are moonlight color - done at the beginning\
-//             // } else {\
-//             //     cp[cx] = _moonlight;\
-//             }\
-//             dp[cx] = ci;\
-//         }
-
-char * ramTiles = (char *)0xc480;
-
-void tiles_put4x4row0(char * dp, char * cp, const char * lmp, const char * mp, const char * tp, const char * rtp){
-    for(char tx=0; tx<10; tx++){
-        const char * tileP = tp;
-        if(mp[tx] <= RAM_TILES_COUNT)
-            tileP = rtp;
-        const char * ti = tileP + mp[tx] * 16;
-        const char * lm = lmp + tx*4;
-#assign cx 0
-#repeat
-LIGHTMAP_DRAW_ROUTINE
-#assign cx cx + 1
-#until cx == 4
-
-        dp += 4;
-        cp += 4;
-    }
-}
-
-void tiles_put4x4row1(char * dp, char * cp, const char * lmp, const char * mp, const char * tp, const char * rtp){
-    const char * tileP = tp;
-    if(mp[0] <= RAM_TILES_COUNT)
-        tileP = rtp;
-    const char  * ti = tileP + mp[0] * 16 + 1;
-    const char * lm = lmp;
-
-#assign cx 0
-#repeat
-LIGHTMAP_DRAW_ROUTINE
-#assign cx cx + 1
-#until cx == 3
-
-    dp += 3;
-    cp += 3;
-
-    for(char tx=1; tx<10; tx++){
-        const char * tileP = tp;
-        if(mp[tx] <= RAM_TILES_COUNT)
-            tileP = rtp;
-        ti = tileP + mp[tx] * 16;
-        lm = lmp + tx*4 -1;
-
-#assign cx 0
-#repeat
-LIGHTMAP_DRAW_ROUTINE
-#assign cx cx + 1
-#until cx == 4
-
-        dp += 4;
-        cp += 4;
-    }
-    tileP = tp;
-    if(mp[10] <= RAM_TILES_COUNT)
-        tileP = rtp;
-    ti = tileP + mp[10] * 16;
-    lm = lmp + 40-1;
-
-#assign cx 0
-#repeat
-LIGHTMAP_DRAW_ROUTINE
-#assign cx cx + 1
-#until cx == 1
-}
-
-void tiles_put4x4row2(char * dp, char * cp, const char * lmp, const char * mp, const char * tp, const char * rtp){
-    const char * tileP = tp;
-    if(mp[0] <= RAM_TILES_COUNT)
-        tileP = rtp;
-    const char  * ti = tileP + mp[0] * 16 + 2;
-    const char * lm = lmp;
-
-#assign cx 0
-#repeat
-LIGHTMAP_DRAW_ROUTINE
-#assign cx cx + 1
-#until cx == 2
-
-    dp += 2;
-    cp += 2;
-
-    for(char tx=1; tx<10; tx++){
-        const char * tileP = tp;
-        if(mp[tx] <= RAM_TILES_COUNT)
-            tileP = rtp;
-        ti = tileP + mp[tx] * 16;
-        lm = lmp + tx*4-2;
-
-#assign cx 0
-#repeat
-LIGHTMAP_DRAW_ROUTINE
-#assign cx cx + 1
-#until cx == 4
-
-        dp += 4;
-        cp += 4;
-    }
-
-    tileP = tp;
-    if(mp[10] <= RAM_TILES_COUNT)
-        tileP = rtp;
-    ti = tileP + mp[10] * 16;
-    lm = lmp + 40-2;
-
-#assign cx 0
-#repeat
-LIGHTMAP_DRAW_ROUTINE
-#assign cx cx + 1
-#until cx == 2
-}
-
-void tiles_put4x4row3(char * dp, char * cp, const char * lmp, const char * mp, const char * tp, const char * rtp){
-    const char * tileP = tp;
-    if(mp[0] <= RAM_TILES_COUNT)
-        tileP = rtp;
-    const char  * ti = tileP + mp[0] * 16 + 3;
-    const char * lm = lmp;
-
-#assign cx 0
-#repeat
-LIGHTMAP_DRAW_ROUTINE
-#assign cx cx + 1
-#until cx == 1
-
-    dp += 1;
-    cp += 1;
-
-    for(char tx=1; tx<10; tx++){
-        const char * tileP = tp;
-        if(mp[tx] <= RAM_TILES_COUNT)
-            tileP = rtp;
-        ti = tileP + mp[tx] * 16;
-        lm = lmp + tx*4 -3;
-
-#assign cx 0
-#repeat
-LIGHTMAP_DRAW_ROUTINE
-#assign cx cx + 1
-#until cx == 4
-
-        dp += 4;
-        cp += 4;
-    }
-
-    tileP = tp;
-    if(mp[10] <= RAM_TILES_COUNT)
-        tileP = rtp;
-    ti = tileP + mp[10] * 16;
-    lm = lmp + 40-3;
-
-#assign cx 0
-#repeat
-LIGHTMAP_DRAW_ROUTINE
-#assign cx cx + 1
-#until cx == 3
-}
-
-void villiageMapDrawNight(const char * mp, char ox, char oy, char dir){
-    char * dp;
-    if(map_2ndScreen){
-        dp = GFX_1_SCR2;
-    } else {
-        dp = GFX_1_SCR3;
-    }
-    
-    // char * cp = COLOR_RAM;
-    char * cp = GFX_1_SCR;
-    char * lmp = _lightMap[dir];
-
-    if(_previousDir != dir){
-        // fill screen with moonlight, TODO: Unpack it.
-        memset(GFX_1_SCR, _moonlight, 960);
-    }
-    _previousDir = dir;
-
-    mp += V_MAP_SIZE_X * (oy >> 2) + (ox >> 2);
-    oy &= 3;
-    ox &= 3;
-
-    for(char ty=0; ty<24; ty++){
-        switch (ox){
-            case 0:
-                tiles_put4x4row0(dp, cp, lmp, mp, romTiles + 4 * oy, ramTiles + 4 * oy);
-                break;
-            case 1:
-                tiles_put4x4row1(dp, cp, lmp, mp, romTiles + 4 * oy, ramTiles + 4 * oy);
-                break;
-            case 2:
-                tiles_put4x4row2(dp, cp, lmp, mp, romTiles + 4 * oy, ramTiles + 4 * oy);
-                break;
-            case 3:
-                tiles_put4x4row3(dp, cp, lmp, mp, romTiles + 4 * oy, ramTiles + 4 * oy);
-                break;
-        }
-        dp += 40;
-        cp += 40;
-        lmp += 40;
-
-        oy ++;
-        if (oy == 4){
-            mp += V_MAP_SIZE_X;
-            oy = 0;
-        }
-    }
-}
-
 
 // ---------------------------------------------------------------------------------------------
 // Game code
@@ -358,30 +116,56 @@ struct Field {
     char width;
     char height;
     char crop;
-    char plantedCount;
-    char aliveCount;
-    char rseed;
+    unsigned int plantedCount;
+    unsigned int aliveCount;
+    unsigned int rseed;
     char stage;
-    char padding2;
 };
 
 struct Field fields[FIELDS_COUNT] = {
-    {3, 2, 0, 66, 0, 0, 3, 0},
-    {2, 3, 1, 66, 0, 0, 3, 0},
-    {3, 4, 2, 66, 0, 0, 3, 0},
-    {4, 6, 3, 66, 0, 0, 3, 0}
+    {3, 2, 0, 48, 20, 123, 3},
+    {2, 3, 1, 30, 10, 456, 3},
+    {3, 4, 2, 192, 40, 789, 3},
+    {4, 6, 3, 384, 284, 345, 3}
 };
+
+static unsigned int fLayout[96*4] = {0xffff};
+unsigned lmul16ux(unsigned a, unsigned b)
+{
+    return lmul16u(a, b) >> 16;
+}
 // copy base map from ROM, add any specials to it
 static void buildRamTiles(void){
     // memset(ramTiles, GROUND_CHAR, 16*(RAM_TILES_COUNT+1));
     
+    // for showing crops die in nice ways
     // Field Y
     char * fieldPointer = FIELD_START;
     for(char fi=0; fi<FIELDS_COUNT; fi++){
         // how many crops to draw
-        char cropCount = fields[fi].plantedCount;
+        unsigned int plantedCount = fields[fi].plantedCount;
+        unsigned int aliveCount = fields[fi].aliveCount;
+        // prepare field dithering
+        unsigned int fSize = fields[fi].width * fields[fi].height * 16;
+        for(unsigned int i=0; i<fSize; i++){
+            if(i<plantedCount){
+                fLayout[i] = i;
+            } else {
+                fLayout[i] = 0xffff;
+            }
+        }
+        // seed the generator to repeat the same patterns
+        srand(fields[fi].rseed);
+        for(unsigned int i=0; i<plantedCount; i++){
+            unsigned int rnd = lmul16ux(plantedCount, rand());
+            unsigned int tmp = fLayout[rnd];
+            fLayout[rnd] = fLayout[i];
+            fLayout[i] = tmp;
+        }
         // plant & stage to draw, 
         char plant = CROPS_CHAR + 4*fields[fi].crop + 3-fields[fi].stage;
+        // reset fLayout index
+        int i = 0;
         for(char fy=0; fy<fields[fi].height; fy++){
             // Tile Y
             for(char ty=0; ty<4; ty++){
@@ -391,12 +175,12 @@ static void buildRamTiles(void){
                     char * field = fieldPointer + fx*16 + fy*fields[fi].width*16;
                     // Tile X
                     for(char tx=0; tx<4; tx++){
-                        if(cropCount){
+                        if(fLayout[i] < aliveCount){
                             field[tx+4*ty] = plant;
-                            cropCount--;
                         } else {
                             field[tx+4*ty] = GROUND_CHAR;
-                        }
+                        } 
+                        i++;
                     }
                 }
             }
@@ -461,14 +245,18 @@ static void _drawPlayerAndColors(){
 #pragma code ( villiageMapRAMCode )
 #pragma data ( villiageMapRAMData )
 
+// dark moon
+char moonLight = VCOL_DARK_GREY;
+bool isMapDay = true;
+
 void villiageMapScreenInit(void){
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
     _mapInit();
     isMapDay = cal_isDay;
     setBank(pbank);
     // fill screen with moonlight
-    memset(COLOR_RAM, _moonlight, 960);
-    memset(GFX_1_SCR, _moonlight, 960);
+    memset(COLOR_RAM, moonLight, 960);
+    memset(GFX_1_SCR, moonLight, 960);
 }
 
 void drawPlayer(){
@@ -486,6 +274,11 @@ void villiageMapDraw(char dir){
     if(isMapDay){
         villiageMapDrawDay(_map, vMapX, vMapY, dir);
     } else {
+        if(_previousDir != dir){
+            // fill screen with moonlight, TODO: Unpack it.
+            memset(GFX_1_SCR, moonLight, 960);
+        }
+        _previousDir = dir;
         villiageMapDrawNight(_map, vMapX, vMapY, dir);
     }
     
