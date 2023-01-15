@@ -113,20 +113,20 @@
       {
         "id": "MENU_MAIN1",
         "menu_opt": "1",
-        "pl": "Pole",
-        "en": "Farmland"
+        "pl": "Kuchnia",
+        "en": "Kitchen"
       },
       {
         "id": "MENU_MAIN2",
         "menu_opt": "2",
-        "pl": "Chlewik",
-        "en": "Pigpen"
+        "pl": "Pole",
+        "en": "Farmland"
       },
       {
         "id": "MENU_MAIN3",
         "menu_opt": "3",
-        "pl": "Spiżarnia",
-        "en": "Pantry"
+        "pl": "Chlewik",
+        "en": "Pigpen"
       },
       {
         "id": "MENU_MAIN4",
@@ -397,19 +397,19 @@
         "en": "Upgrade"
       },
       {
-        "id": "MENU_SMOKEHOUSE1",
+        "id": "MENU_KITCHEN1",
         "menu_opt": "1",
         "pl": "Przepisy",
         "en": "Recipes"
       },
       {
-        "id": "MENU_SMOKEHOUSE2",
+        "id": "MENU_KITCHEN2",
         "menu_opt": "2",
         "pl": "Sprzątanie",
         "en": "Cleanup"
       },
       {
-        "id": "MENU_SMOKEHOUSE3",
+        "id": "MENU_KITCHEN3",
         "menu_opt": "3",
         "pl": "Przebudowa",
         "en": "Upgrade"

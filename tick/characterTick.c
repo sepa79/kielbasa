@@ -1,6 +1,5 @@
 #include <c64/types.h>
 
-#include <translation/common.h>
 #include <character/character.h>
 
 // =============================================================================

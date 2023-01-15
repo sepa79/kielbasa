@@ -21,6 +21,7 @@
 #include <character/character.h>
 #include <tick/calendar.h>
 #include <tick/farmlandTick.h>
+#include <tick/kitchenTick.h>
 
 void prepareScroll(){
     // clear line 25 and its color
@@ -87,6 +88,7 @@ void mainLoop(){
     initCalendar();
     initTaskList();
     initFarmland();
+    initKitchen();
 
     // start on Main Menu
     gotoMainMenu();

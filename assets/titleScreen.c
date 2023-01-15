@@ -69,6 +69,7 @@ void loadTitleScreen(){
 // load Init and IRQ code into temp space and go
 void loadAndRunInit(){
     loggerInit();
+    // bankTitleCode2 is b200 in crt, see titleScreen.h
     memcpy((char *)0x7000, (char *)0xb200, 0x07ff);
     initGame();
 }

@@ -47,11 +47,11 @@ void initTaskList() {
         task_params[i][2] = 0;
         task_params[i][3] = 0;
         task_params[i][4] = 0;
-        task_reqType[i] = NO_TASK;
-        task_worker[i] = NO_CHARACTER;
+        task_reqType[i]   = NO_TASK;
+        task_worker[i]    = NO_CHARACTER;
         strcpy(task_desc[i], TXT[TXT_IDX_TASK_EMPTY_DESCRIPTION]);
-        task_icon[i] = SPR_TASK_MIA;
-        task_status[i] = TASK_STATUS_NOTASK;
+        task_icon[i]      = SPR_TASK_MIA;
+        task_status[i]    = TASK_STATUS_NOTASK;
     }
 }
 
