@@ -208,41 +208,41 @@
         "en_m": "                     ------------------"
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_2",
-        "pl":   "                     | |R|M|  |  |R|M| ",
+        "pl":   "                     | |R|G|  |  |R|G| ",
         "en":   "                     | | | |  |  | | | "
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_3",
-        "pl":   "                     | |o|a|  |  |o|a| ",
-        "en":   "                     |B| |B|  | B| |B| "
+        "pl":   "                     | |o|o|  |  |o|o| ",
+        "en":   "                     | | | |  |  | | | "
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_4",
-        "pl":   "                     |H|l|s|  | H|l|s| ",
-        "en":   "                     |r|F|u|  | r|F|u| "
+        "pl":   "                     |H|l|t|  | H|l|t| ",
+        "en":   "                     |A|F|C|  | A|F|C| "
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_5",
-        "pl":   "                     |o|n|a|H | o|n|a|H",
-        "en":   "                     |e|a|t|  | e|a|t| "
+        "pl":   "                     |o|n|o|H | o|n|o|H",
+        "en":   "                     |n|a|o|  | n|a|o| "
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_6",
-        "pl":   "                     |d|i|r|a | d|i|r|a",
-        "en":   "                     |e|r|c|T | e|r|c|T"
+        "pl":   "                     |d|i|w|a | d|i|w|a",
+        "en":   "                     |i|r|o|T | i|r|o|T"
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_7",
-        "pl":   "                     |o|c|s|n | o|c|s|n",
-        "en":   "                     |d|m|h|r | d|m|h|r"
+        "pl":   "                     |o|c|a|n | o|c|a|n",
+        "en":   "                     |m|m|k|r | m|m|k|r"
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_8",
-        "pl":   "                     |w|t|t|d | w|t|t|d",
-        "en":   "                     |i|i|e|a | i|i|e|a"
+        "pl":   "                     |w|t|n|d | w|t|n|d",
+        "en":   "                     |a|i|i|a | a|i|i|a"
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_9",
-        "pl":   "                     |l|w|w|e | l|w|w|e",
-        "en":   "                     |n|n|r|d | n|n|r|d"
+        "pl":   "                     |l|w|i|e | l|w|i|e",
+        "en":   "                     |l|n|n|d | l|n|n|d"
       }, {
         "id": "TASK_MANAGER_PRIO_TABLE_HEADER_10",
-        "pl":   "Postać               |a|o|o|l | a|o|o|l",
+        "pl":   "Postać               |a|o|e|l | a|o|e|l",
         "pl_m": "---------------------------------------",
-        "en":   "Character            |g|g|y|e | g|g|y|e",
+        "en":   "Character            |s|g|g|e | s|g|g|e",
         "en_m": "---------------------------------------"
       },
       {

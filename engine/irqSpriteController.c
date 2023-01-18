@@ -55,13 +55,13 @@ void setNormalCursor(){
 }
 
 // copy face to character portrait
-void setCharacterSlotPic(char charSlot, const char * picturePtr){
-    // might be redundant, init checks it, and no pic should be set for empty charslot elsewhere
-    if(characterSlots[charSlot] != NO_CHARACTER){
+void setCharacterSlotPic(struct CharacterStruct * charPtr){
+    byte charSlot = charPtr->slot;
+    const char * picturePtr = charPtr->picture;
+    if(charSlot != NO_SLOT){
         char * charPicPtr = characterSlotSpritePicPtr[charSlot];
         char i = 0;
         char pbank = setBank(MAIN_GFX_BANK);
-        // mmap_set(MMAP_NO_BASIC);
         do{
             charPicPtr[i]   = picturePtr[i];
             charPicPtr[i+1] = picturePtr[i+1];
@@ -71,14 +71,14 @@ void setCharacterSlotPic(char charSlot, const char * picturePtr){
             i++;
         } while (i<63);
         _characterColors[charSlot] = picturePtr[63];
-        // mmap_set(MMAP_ROM);
         setBank(pbank);
     }
 }
 
 // copy task icon to character's SPR_CHARACTER_BARX
-void setCharacterSlotIcon(char charSlot, const char * taskIconPtr){
-    if(characterSlots[charSlot] != NO_CHARACTER){
+void setCharacterSlotIcon(struct CharacterStruct * charPtr, const char * taskIconPtr){
+    byte charSlot = charPtr->slot;
+    if(charSlot != NO_SLOT){
         char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
         char i = 1;
         char pbank = setBank(MAIN_GFX_BANK);
@@ -95,42 +95,43 @@ void setCharacterSlotIcon(char charSlot, const char * taskIconPtr){
     }
 }
 
-void drawBattery(char charSlot, char energy){
-    // vic.BORDER_COLOR++;
-    char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
-    char max = BATTERY_LEVEL[energy];
-    _batteryColors[charSlot] = BATTERY_COLOR[max];
-    
-    __asm{
-        ldy #9
-        ldx #0
-        cpx max
-        beq loop2s
-        lda #BATTERY_ROW_EMPTY
-    loop1:
-        sta (charBarPtr),y
-        iny
-        iny
-        iny
-        inx
-        cpx max
-        bcc loop1
-        cpx #$11
-        bcs done
-    loop2s:
-        lda #BATTERY_ROW_FULL
-    loop2:
-        sta (charBarPtr),y
-        iny
-        iny
-        iny
-        inx
-        cpx #$11
-        bcc loop2
-    done:
-    };
-
-    // vic.BORDER_COLOR--;
+void drawBattery(struct CharacterStruct * charPtr){
+    byte charSlot = charPtr->slot;
+    byte energy = charPtr->energy;
+    if(charSlot != NO_SLOT){
+        char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
+        char max = BATTERY_LEVEL[energy];
+        _batteryColors[charSlot] = BATTERY_COLOR[max];
+        
+        __asm{
+            ldy #9
+            ldx #0
+            cpx max
+            beq loop2s
+            lda #BATTERY_ROW_EMPTY
+        loop1:
+            sta (charBarPtr),y
+            iny
+            iny
+            iny
+            inx
+            cpx max
+            bcc loop1
+            cpx #$11
+            bcs done
+        loop2s:
+            lda #BATTERY_ROW_FULL
+        loop2:
+            sta (charBarPtr),y
+            iny
+            iny
+            iny
+            inx
+            cpx #$11
+            bcc loop2
+        done:
+        };
+    }
 }
 
 __interrupt void setSpritesTopScr(){

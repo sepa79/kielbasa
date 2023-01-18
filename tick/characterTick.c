@@ -15,7 +15,7 @@ void sleepTick(){
         if(characterSlots[charSlot] != NO_CHARACTER){
             word rnd = rand();
             byte rnd0 = (rnd & 15) + 5;
-            incEnergyLevel(charSlot, rnd0);
+            incEnergyLevel(characterSlots[charSlot], rnd0);
         }
     }
 }
@@ -24,11 +24,10 @@ void miaTick(){
     for(byte charSlot = 0; charSlot < CHARACTER_SLOTS; charSlot++){
         if(characterSlots[charSlot] != NO_CHARACTER){
             // check if character is not nusy (mia)
-            byte charIdx = characterSlots[charSlot];
-            if(allChars_busy[charIdx] == false){
+            if(characterSlots[charSlot]->busy == false){
                 word rnd = rand();
                 byte rnd0 = (rnd & 7) + 1;
-                decEnergyLevel(charSlot, rnd0);
+                decEnergyLevel(characterSlots[charSlot], rnd0);
             }
         }
     }

@@ -1,15 +1,16 @@
 #ifndef IRQ_SPRITE_CONTROLLER_H
 #define IRQ_SPRITE_CONTROLLER_H
+#include <character/character.h>
 
-void setCharacterSlotPic(char charSlot, const char * picturePtr);
-void setCharacterSlotIcon(char charSlot, const char * taskIconPtr);
+void setCharacterSlotPic(struct CharacterStruct * charPtr);
+void setCharacterSlotIcon(struct CharacterStruct * charPtr, const char * taskIconPtr);
 void setErrorCursor();
 void setNormalCursor();
 __interrupt void setSpritesTopScr();
 void setSpritesBottomScr();
 void showUiSpritesTop();
 void showUiSpritesBottom();
-void drawBattery(char charSlot, char energy);
+void drawBattery(struct CharacterStruct * charPtr);
 
 #pragma compile("irqSpriteController.c")
 

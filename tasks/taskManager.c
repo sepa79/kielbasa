@@ -48,7 +48,7 @@ void initTaskList() {
         task_params[i][3] = 0;
         task_params[i][4] = 0;
         task_reqType[i]   = NO_TASK;
-        task_worker[i]    = NO_CHARACTER;
+        task_worker[i]    = NO_SLOT;
         strcpy(task_desc[i], TXT[TXT_IDX_TASK_EMPTY_DESCRIPTION]);
         task_icon[i]      = SPR_TASK_MIA;
         task_status[i]    = TASK_STATUS_NOTASK;
@@ -102,7 +102,7 @@ static bool _addTask(struct Task * task){
     task_icon[nextFreeTask]      = task->icon;
     task_status[nextFreeTask]    = task->status;
     // assigned later during ticks
-    task_worker[nextFreeTask]    = NO_CHARACTER;
+    task_worker[nextFreeTask]    = NO_SLOT;
 
     LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_NEW_TASK;
     setTaskLogMsg(nextFreeTask);
@@ -207,17 +207,18 @@ static void _removeTask(byte taskId){
 
 // Returns first matching charSlot for a required skill priority value (must not be busy).
 // Returns NO_CHARACTER if none found.
-static byte _findFreeWorkerWithPrioXForSkillY(byte reqPrio, byte reqSkill) {
+static struct CharacterStruct * _findFreeWorkerWithPrioXForSkillY(byte reqPrio, byte reqSkill) {
     for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
         // only check active chars
         if(characterSlots[charSlot] != NO_CHARACTER){
-            byte charIdx = characterSlots[charSlot];
-            // check if busy
-            if(!allChars_busy[charIdx]){
+            struct CharacterStruct * character = characterSlots[charSlot];
+
+            // check if busy TODO: change it so we got task reference, not 'busy' bool
+            if(!character->busy){
                 // check reqSkill prio value
                 // if matching the request - return this charSLot
-                if(allChars_prios[charIdx][reqSkill] == reqPrio){
-                    return charSlot;
+                if(character->prio[reqSkill] == reqPrio){
+                    return character;
                 }
             }
         }
@@ -241,16 +242,15 @@ static byte _findUnassignedTaskForSkill(byte skillIt) {
     return NO_TASK;
 }
 
-static void _assignTaskToWorker(byte taskId, byte charSlot) {
-    byte charIdx = characterSlots[charSlot];
-    task_worker[taskId] = charIdx;
-    allChars_busy[charIdx] = true;
+static void _assignTaskToWorker(byte taskId, struct CharacterStruct * character) {
+    task_worker[taskId] = character->slot;
+    character->busy = true;
 
     // byte str[5];
     // sprintf(str, "%3u  %3u", taskId, charSlot);
     // cwin_putat_string_raw(&cw, 25, 0, str, VCOL_WHITE);
 
-    setCharacterSlotIcon(charSlot, task_icon[taskId]);
+    setCharacterSlotIcon(character, task_icon[taskId]);
     // updateStatusBar(s"  Task assigned  ");
 
     LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_ASSIGNED_TO_WORKER;
@@ -272,10 +272,10 @@ void tasksTick(){
     byte freeWorkersCount = 0;
     for(byte it = 0; it < CHARACTER_SLOTS; it++){
         if(characterSlots[it] != NO_CHARACTER){
-            byte charIdx = characterSlots[it];
-            if(!allChars_busy[charIdx]){
+            struct CharacterStruct * character = characterSlots[it];
+            if(!character->busy){
                 //check if he is not exhausted
-                if(allChars_energy[charIdx] >= MIN_ENERGY_TO_CONTINUE)
+                if(character->energy >= MIN_ENERGY_TO_CONTINUE)
                     freeWorkersCount++;
             }
         }
@@ -293,11 +293,11 @@ void tasksTick(){
             // foreach skill Y
             for(byte skillIt = 0; skillIt < SKILL_COUNT; skillIt++){
                 // find worker with prio X for skill Y (starting at 1)
-                byte charSlot = _findFreeWorkerWithPrioXForSkillY(prioIt, skillIt);
+                struct CharacterStruct * character = _findFreeWorkerWithPrioXForSkillY(prioIt, skillIt);
                     // byte str[4];
                     // sprintf(str, "%3u", charSlot);
                     // cwin_putat_string_raw(&cw, prioIt*6, skillIt, str, VCOL_GREEN);
-                if(charSlot != NO_CHARACTER){
+                if(character != NO_CHARACTER){
                     // see if there is any task for this max prio skill
                     byte taskId = _findUnassignedTaskForSkill(skillIt);
 
@@ -307,7 +307,7 @@ void tasksTick(){
 
                     // asign it if there is
                     if(taskId != NO_TASK){
-                        _assignTaskToWorker(taskId, charSlot);
+                        _assignTaskToWorker(taskId, character);
                         freeWorkersCount--;
                         if(freeWorkersCount == 0){
                             break;
@@ -364,11 +364,11 @@ bool addTask(struct Task * task){
 
 // finds who was working on it, resets his icon, resets task_worker
 void unassignTask(byte taskId){
-    byte charId = task_worker[taskId];
-    if(charId != NO_CHARACTER){
-        byte charSlot = allChars_slot[charId];
-        setCharacterSlotIcon(charSlot, SPR_TASK_MIA);
-        allChars_busy[charId] = false;
-        task_worker[taskId] = NO_CHARACTER;
+    byte charSlot = task_worker[taskId];
+    if(charSlot != NO_SLOT){
+        struct CharacterStruct * character = characterSlots[charSlot];
+        setCharacterSlotIcon(character, SPR_TASK_MIA);
+        character->busy = false;
+        task_worker[taskId] = NO_SLOT;
     }
 }

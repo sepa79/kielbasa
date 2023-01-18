@@ -48,11 +48,12 @@ void sowFieldTask(byte taskId){
         field_timer[fieldId]   = plant_stage1timer[plantId];
 
         // get worker, get his skills and the value he can 'do' in a turn from the table
-        byte worker      = task_worker[taskId];
-        byte skill       = allChars_skills[ worker ][ task_reqType[taskId] ];
-        byte priModifier = allChars_stats[ worker ][ STAT_STR ] -1;
-        byte secModifier = allChars_stats[ worker ][ STAT_INT ] -1;
-        byte terModifier = allChars_stats[ worker ][ STAT_CUN ] -1;
+        byte charSlot      = task_worker[taskId];
+        struct CharacterStruct * worker = characterSlots[charSlot];
+        byte skill       = worker->skill[ task_reqType[taskId] ];
+        byte priModifier = worker->stat[ STAT_STR ] -1;
+        byte secModifier = worker->stat[ STAT_INT ] -1;
+        byte terModifier = worker->stat[ STAT_CUN ] -1;
         partDone = skill * 10 + priModifierTable[priModifier]-10 + secModifierTable[secModifier]-10 + terModifierTable[terModifier]-10;
         if(partDone <= 0){
             partDone = 1;
@@ -75,7 +76,7 @@ void sowFieldTask(byte taskId){
                 flt_storage[plantId] -= partDone;
 
                 // decrease energy
-                decEnergyLevel(allChars_slot[worker], energyNeeded);
+                decEnergyLevel(worker, energyNeeded);
                 // process task
                 field_stage_planted[fieldId] += partDone;
                 field_stage_grown[fieldId]   = 0;
@@ -151,11 +152,12 @@ void reapFieldTask(byte taskId){
         // reap is simple, same logic as with planting really
 
         // get worker, get his skills and the value he can 'do' in a turn from the table
-        byte worker      = task_worker[taskId];
-        byte skill       = allChars_skills[ worker ][ task_reqType[taskId] ];
-        byte priModifier = allChars_stats[ worker ][ STAT_STR ] -1;
-        byte secModifier = allChars_stats[ worker ][ STAT_INT ] -1;
-        byte terModifier = allChars_stats[ worker ][ STAT_CUN ] -1;
+        byte charSlot      = task_worker[taskId];
+        struct CharacterStruct * worker = characterSlots[charSlot];
+        byte skill       = worker->skill[ task_reqType[taskId] ];
+        byte priModifier = worker->stat[ STAT_STR ] -1;
+        byte secModifier = worker->stat[ STAT_INT ] -1;
+        byte terModifier = worker->stat[ STAT_CUN ] -1;
         signed int partDone = skill * 10 + priModifierTable[priModifier]-10 + secModifierTable[secModifier]-10 + terModifierTable[terModifier]-10;
         if(partDone <= 0){
             partDone = 1;
@@ -171,7 +173,7 @@ void reapFieldTask(byte taskId){
             flt_storage[plantId] += partDone;
 
             // decrease energy
-            decEnergyLevel(allChars_slot[worker], energyNeeded);
+            decEnergyLevel(worker, energyNeeded);
             // process task
             field_stage_grown[fieldId] -= partDone;
 

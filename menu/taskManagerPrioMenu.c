@@ -36,10 +36,10 @@ static void _showTaskPriorities(){
     for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
         // only check active chars
         if(characterSlots[charSlot] != NO_CHARACTER){
-            byte character = characterSlots[charSlot];
+            struct CharacterStruct * character = characterSlots[charSlot];
 
-            byte line = TASK_SHOW_LINE+character;
-            if(character == _currentCharacter){
+            byte line = TASK_SHOW_LINE+charSlot;
+            if(charSlot == _currentCharacter){
                 col1 = VCOL_LT_GREEN;
                 col2[0] = VCOL_LT_GREY;
                 col2[1] = VCOL_LT_GREY;
@@ -55,17 +55,17 @@ static void _showTaskPriorities(){
                 col2[3] = VCOL_MED_GREY;
             }
 
-            cwin_putat_string_raw(&cw, 0, line, TXT[allChars_nameIdx[character]], col1);
+            cwin_putat_string_raw(&cw, 0, line, TXT[character->nameIdx], col1);
 
             cwin_putat_string_raw(&cw, 21, line, TBL_V, VCOL_YELLOW);
 
-            sprintf(str, "%u", allChars_skills[character][SKILL_BREEDING]);
+            sprintf(str, "%u", character->skill[SKILL_ANIMALS]);
             cwin_putat_string_raw(&cw, 22,  line, str, col1);
-            sprintf(str, "%u", allChars_skills[character][SKILL_FARMING]);
+            sprintf(str, "%u", character->skill[SKILL_FARMING]);
             cwin_putat_string_raw(&cw, 24,  line, str, col1);
-            sprintf(str, "%u", allChars_skills[character][SKILL_BUTCHERY]);
+            sprintf(str, "%u", character->skill[SKILL_COOKING]);
             cwin_putat_string_raw(&cw, 26,  line, str, col1);
-            sprintf(str, "%u", allChars_skills[character][SKILL_TRADE]);
+            sprintf(str, "%u", character->skill[SKILL_TRADE]);
             cwin_putat_string_raw(&cw, 28,  line, str, col1);
             cwin_putat_string_raw(&cw, 23, line, TBL_V, VCOL_YELLOW);
             cwin_putat_string_raw(&cw, 25, line, TBL_V, VCOL_YELLOW);
@@ -73,13 +73,13 @@ static void _showTaskPriorities(){
             cwin_putat_string_raw(&cw, 30, line, TBL_V, VCOL_YELLOW);
 
 
-            sprintf(str, "%u", allChars_prios[character][SKILL_BREEDING]);
+            sprintf(str, "%u", character->prio[SKILL_ANIMALS]);
             cwin_putat_string_raw(&cw, 32,  line, str, col2[0]);
-            sprintf(str, "%u", allChars_prios[character][SKILL_FARMING]);
+            sprintf(str, "%u", character->prio[SKILL_FARMING]);
             cwin_putat_string_raw(&cw, 34,  line, str, col2[1]);
-            sprintf(str, "%u", allChars_prios[character][SKILL_BUTCHERY]);
+            sprintf(str, "%u", character->prio[SKILL_COOKING]);
             cwin_putat_string_raw(&cw, 36,  line, str, col2[2]);
-            sprintf(str, "%u", allChars_prios[character][SKILL_TRADE]);
+            sprintf(str, "%u", character->prio[SKILL_TRADE]);
             cwin_putat_string_raw(&cw, 38,  line, str, col2[3]);
 
             cwin_putat_string_raw(&cw, 33, line, TBL_V, VCOL_YELLOW);
@@ -125,24 +125,24 @@ static void _skillRight(){
 }
 
 static void _prioDown(){
-    byte prio = allChars_prios[_currentCharacter][_currentSkill];
+    byte prio = characterSlots[_currentCharacter]->prio[_currentSkill];
     if(prio > 0){
         prio--;
     } else {
         prio = MAX_PRIO;
     }
-    allChars_prios[_currentCharacter][_currentSkill] = prio;
+    characterSlots[_currentCharacter]->prio[_currentSkill] = prio;
     _showTaskPriorities();
 }
 
 static void _prioUp(){
-    byte prio = allChars_prios[_currentCharacter][_currentSkill];
+    byte prio = characterSlots[_currentCharacter]->prio[_currentSkill];
     if(prio < MAX_PRIO){
         prio++;
     } else {
         prio = 0;
     }
-    allChars_prios[_currentCharacter][_currentSkill] = prio;
+    characterSlots[_currentCharacter]->prio[_currentSkill] = prio;
     _showTaskPriorities();
 }
 
