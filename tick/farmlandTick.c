@@ -12,16 +12,7 @@ volatile byte flt_waterLevel = 30;
 // add 1 as plant '0' is ----- (nothing planted) in farm management
 volatile unsigned int flt_storage[PLANTS_COUNT+1] = 0;
 
-// used instead of struct
-__export byte field_area[FIELDS_COUNT]                  = {0,0,0,0};
-__export byte field_fertility[FIELDS_COUNT]             = {127,127,127,127};
-__export byte field_plantId[FIELDS_COUNT]               = {0,0,0,0};
-__export byte field_stage[FIELDS_COUNT]                 = {0,0,0,0};
-__export unsigned int field_stage_planted[FIELDS_COUNT] = {0,0,0,0};
-__export unsigned int field_stage_gFactor[FIELDS_COUNT] = {0,0,0,0};
-__export unsigned int field_stage_grown[FIELDS_COUNT]   = {0,0,0,0};
-__export unsigned int field_stage_ready[FIELDS_COUNT]   = {0,0,0,0};
-__export byte field_timer[FIELDS_COUNT]                 = {0,0,0,0};
+struct FieldStruct fields[FIELDS_COUNT];
 
 void initFarmland(){
     flt_waterLevel = 25;
@@ -30,10 +21,15 @@ void initFarmland(){
     flt_storage[PLANT_WHEAT]  = 50;
     flt_storage[PLANT_CORN]   = 50;
 
-    field_area[0] = 1;
-    field_area[1] = 1;
-    field_area[2] = 2;
-    field_area[3] = 4;
+    static const struct FieldStruct f0 = {1, 0, 0, 0, 0, 0, 0, 0};
+    static const struct FieldStruct f1 = {1, 0, 0, 0, 0, 0, 0, 0};
+    static const struct FieldStruct f2 = {2, 0, 0, 0, 0, 0, 0, 0};
+    static const struct FieldStruct f3 = {4, 0, 0, 0, 0, 0, 0, 0};
+
+    fields[0] = f0;
+    fields[1] = f1;
+    fields[2] = f2;
+    fields[3] = f3;
 }
 
 // =============================================================================
@@ -67,7 +63,7 @@ byte _waterCheck(byte min, byte max){
 // In this stage we are only removing some sprouts (they can die if conditions are not optimal)
 void _fieldStateSprout(byte fieldId){
     // get our plant data
-    byte plantId = field_plantId[fieldId];
+    byte plantId = fields[fieldId].plantId;
 
     // temp check
     byte diff = _tempCheck(plant_stage1minTemp[plantId], plant_stage1maxTemp[plantId]);
@@ -80,26 +76,26 @@ void _fieldStateSprout(byte fieldId){
     // printf("+ rain diff %-5u ", diff);
 
     if(diff != 0){
-        int planted = field_stage_planted[fieldId];
+        int planted = fields[fieldId].planted;
         if(diff < planted) {
-            field_stage_planted[fieldId] = planted - diff;
+            fields[fieldId].planted = planted - diff;
         } else {
-            field_stage_planted[fieldId] = 0;
+            fields[fieldId].planted = 0;
         }
     }
 
-    field_timer[fieldId]--;
-    if(field_timer[fieldId] == 0){
-        if(field_stage_planted[fieldId] == 0){
+    fields[fieldId].timer--;
+    if(fields[fieldId].timer == 0){
+        if(fields[fieldId].planted == 0){
             // everything died, end growing cycle
-            field_stage[fieldId] = PLANT_STAGE_NONE;
+            fields[fieldId].stage = PLANT_STAGE_NONE;
         } else {
-            field_stage[fieldId] = PLANT_STAGE_GROWTH;
-            field_stage_grown[fieldId] = field_stage_planted[fieldId];
-            field_timer[fieldId] = plant_stage2timer[plantId];
+            fields[fieldId].stage = PLANT_STAGE_GROWTH;
+            fields[fieldId].grown = fields[fieldId].planted;
+            fields[fieldId].timer = plant_stage2timer[plantId];
 
             // calculate growth factor
-            field_stage_gFactor[fieldId] = lmuldiv16u(field_stage_planted[fieldId], plant_maxYeldFactor[plantId], plant_stage2timer[plantId]);
+            fields[fieldId].gFactor = lmuldiv16u(fields[fieldId].planted, plant_maxYeldFactor[plantId], plant_stage2timer[plantId]);
         }
     }
 }
@@ -108,7 +104,7 @@ void _fieldStateSprout(byte fieldId){
 // Growth stage
 void _fieldStateGrowth(byte fieldId){
     // get our plant data
-    byte plantId = field_plantId[fieldId];
+    byte plantId = fields[fieldId].plantId;
 
     // temp check
     byte diff = _tempCheck(plant_stage2minTemp[plantId], plant_stage2maxTemp[plantId]);
@@ -120,16 +116,16 @@ void _fieldStateGrowth(byte fieldId){
     // printf("+ rain diff %-5u ", diff);
 
     // adjust the diff for the size of field
-    byte adjustedDiff = diff*field_area[fieldId];
+    byte adjustedDiff = diff*fields[fieldId].area;
 
-    if(adjustedDiff < field_stage_gFactor[fieldId]){
-        field_stage_grown[fieldId] += field_stage_gFactor[fieldId] - adjustedDiff;
+    if(adjustedDiff < fields[fieldId].gFactor){
+        fields[fieldId].grown += fields[fieldId].gFactor - adjustedDiff;
     }
 
-    field_timer[fieldId]--;
-    if(field_timer[fieldId] == 0){
-        field_stage[fieldId] = PLANT_STAGE_RIPEN;
-        field_timer[fieldId] = plant_stage3timer[plantId];
+    fields[fieldId].timer--;
+    if(fields[fieldId].timer == 0){
+        fields[fieldId].stage = PLANT_STAGE_RIPEN;
+        fields[fieldId].timer = plant_stage3timer[plantId];
     }
 }
 
@@ -138,7 +134,7 @@ void _fieldStateGrowth(byte fieldId){
 
 void _fieldStateRipen(byte fieldId){
     // get our plant data
-    byte plantId = field_plantId[fieldId];
+    byte plantId = fields[fieldId].plantId;
 
     // temp check
     byte diff = _tempCheck(plant_stage3minTemp[plantId], plant_stage3maxTemp[plantId]);
@@ -152,17 +148,17 @@ void _fieldStateRipen(byte fieldId){
     if(diff > 10)
         diff = 10;
 
-    field_stage_ready[fieldId] += 10 - diff;
+    fields[fieldId].ready += 10 - diff;
 
-    if(field_stage_ready[fieldId] > 100)
-        field_stage_ready[fieldId] = 100;
+    if(fields[fieldId].ready > 100)
+        fields[fieldId].ready = 100;
 
-    field_timer[fieldId]--;
-    if(field_timer[fieldId] == 0){
-        field_stage[fieldId] = PLANT_STAGE_READY;
+    fields[fieldId].timer--;
+    if(fields[fieldId].timer == 0){
+        fields[fieldId].stage = PLANT_STAGE_READY;
         // apply the percentage to the 'grown' plants
-        if(field_stage_ready[fieldId] < 100)
-            field_stage_grown[fieldId] = lmuldiv16u(field_stage_grown[fieldId], 100, field_stage_ready[fieldId]);
+        if(fields[fieldId].ready < 100)
+            fields[fieldId].grown = lmuldiv16u(fields[fieldId].grown, 100, fields[fieldId].ready);
     }
 }
 
@@ -207,13 +203,13 @@ void _waterFields(){
 }
 
 void _tickField(byte i){
-    if(field_stage[i] == PLANT_STAGE_SPROUT){
+    if(fields[i].stage == PLANT_STAGE_SPROUT){
         _fieldStateSprout(i);
     }
-    else if(field_stage[i] == PLANT_STAGE_GROWTH){
+    else if(fields[i].stage == PLANT_STAGE_GROWTH){
         _fieldStateGrowth(i);
     }
-    else if(field_stage[i] == PLANT_STAGE_RIPEN){
+    else if(fields[i].stage == PLANT_STAGE_RIPEN){
         _fieldStateRipen(i);
     }
 }
@@ -224,7 +220,7 @@ void farmlandTick(){
     byte fieldId = 0;
     do {
         // only tick populated fields
-        byte id = field_plantId[fieldId];
+        byte id = fields[fieldId].plantId;
         if(id != 0){
             _tickField(fieldId);
         }

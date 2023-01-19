@@ -251,8 +251,8 @@ __interrupt static void _menuShowSprites(){
     vic.spr_color[5] = VCOL_MED_GREY;
     vic.spr_color[6] = VCOL_MED_GREY;
 
-    if(field_plantId[_currentField]){
-        vic.spr_color[2+field_plantId[_currentField]] = VCOL_WHITE;
+    if(fields[_currentField].plantId){
+        vic.spr_color[2+fields[_currentField].plantId] = VCOL_WHITE;
     }
     if(_currentPlant){
         vic.spr_color[2+_currentPlant] = VCOL_LT_GREY;
@@ -289,10 +289,10 @@ static void _displayFieldList(){
 
     cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST, 7, TXT[TXT_IDX_FIELD_LIST_HEADER], VCOL_YELLOW);
 
-    byte str[4];
+    byte str[6];
     byte col;
     for(byte i=0;i<FIELDS_COUNT;i++){
-        sprintf(str, "%u", field_area[i]);
+        sprintf(str, "%u", fields[i].area);
         if(i==_currentField){
             col = VCOL_LT_GREEN;
         } else {
@@ -302,27 +302,27 @@ static void _displayFieldList(){
 
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+2, 8+i, TBL_V, VCOL_YELLOW);
 
-        byte plantId = field_plantId[i];
+        byte plantId = fields[i].plantId;
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+3, 8+i, PLANT_TYPES_TXT[plantId], col);
 
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+12, 8+i, TBL_V, VCOL_YELLOW);
-        byte stage = field_stage[i];
+        byte stage = fields[i].stage;
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+13, 8+i, PLANT_STAGE_NAMES[stage], col);
 
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+21, 8+i, TBL_V, VCOL_YELLOW);
-        sprintf(str, "%3u", field_timer[i]);
+        sprintf(str, "%3u", fields[i].timer);
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+22, 8+i, str, col);
 
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+25, 8+i, TBL_V, VCOL_YELLOW);
-        sprintf(str, "%3u", field_stage_planted[i]);
+        sprintf(str, "%3u", fields[i].planted);
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+26, 8+i, str, col);
 
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+29, 8+i, TBL_V, VCOL_YELLOW);
-        sprintf(str, "%4u", field_stage_grown[i]);
+        sprintf(str, "%4u", fields[i].grown);
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+30, 8+i, str, col);
 
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+34, 8+i, TBL_V, VCOL_YELLOW);
-        sprintf(str, "%3u", field_stage_ready[i]);
+        sprintf(str, "%3u", fields[i].ready);
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+35, 8+i, str, col);
     }
 }
@@ -383,6 +383,7 @@ static void _previousField(){
 static void _reorganise(){
     updateStatusBar(p"   reorganise");
 }
+
 // Set the plant task
 static void _sowPlant(){
     if(_currentPlant == 0){
@@ -390,17 +391,17 @@ static void _sowPlant(){
         return;
     }
     // don't allow to ruin growth in progress
-    if(field_stage[_currentField] != PLANT_STAGE_NONE){
+    if(fields[_currentField].stage != PLANT_STAGE_NONE){
         setErrorCursor();
         return;
     }
     // indicate task is assigned
-    field_plantId[_currentField] = _currentPlant;
-    field_stage[_currentField]   = PLANT_STAGE_SOW_TASK_ASSIGNED;
-    field_timer[_currentField]   = 0;
-    field_stage_planted[_currentField] = 0; // in percent
-    field_stage_grown[_currentField]   = 0;
-    field_stage_ready[_currentField]   = 0;
+    fields[_currentField].plantId = _currentPlant;
+    fields[_currentField].stage   = PLANT_STAGE_SOW_TASK_ASSIGNED;
+    fields[_currentField].timer   = 0;
+    fields[_currentField].planted = 0;
+    fields[_currentField].grown   = 0;
+    fields[_currentField].ready   = 0;
     _displayFieldList();
 
     // create Task
@@ -427,18 +428,17 @@ static void _maintainPlant(){
 
 static void _reapPlant(){
     // don't allow to ruin growth in progress
-    if(field_stage[_currentField] != PLANT_STAGE_READY){
+    if(fields[_currentField].stage != PLANT_STAGE_READY){
         setErrorCursor();
         return;
     }
     // indicate task is assigned
-    // field_plantId[_currentField] = _currentPlant;
-    field_stage[_currentField]   = PLANT_STAGE_REAP_TASK_ASSIGNED;
+    fields[_currentField].stage = PLANT_STAGE_REAP_TASK_ASSIGNED;
     _displayFieldList();
 
     // create Task
     struct Task task;
-    byte idx = plant_taskDscIdx[field_plantId[_currentField]];
+    byte idx = plant_taskDscIdx[fields[_currentField].plantId];
     // "Field 2, Potatoes"
     sprintf(task.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
     task.codeRef   = &reapFieldTask;
@@ -487,7 +487,7 @@ const struct MenuOption FARMLAND_MENU[] = {
 };
 
 static void _menuHandler(void){
-    _currentPlant = field_plantId[_currentField];
+    _currentPlant = fields[_currentField].plantId;
     mnu_isGfxLoaded = false;
     loadMenuGfx(cal_isDay);
     loadMenuSprites();

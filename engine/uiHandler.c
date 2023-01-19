@@ -10,7 +10,7 @@
 #include <menu/menuSystem.h>
 #include <menu/optionsMenu.h>
 #include <menu/taskManagerMenu.h>
-#include <menu/taskManagerPrioMenu.h>
+// #include <menu/taskManagerPrioMenu.h>
 #include <menu/logMenu.h>
 #include <engine/gameSettings.h>
 #include <engine/uiHandler.h>
@@ -297,10 +297,10 @@ void checkKeys(){
             showTaskManagerMenu();
             return;
         // task manager priorities
-        } else if (_key == KEY_F4) {
-            _prepareFullScreenMenu();
-            showTaskManagerPrioMenu();
-            return;
+        // } else if (_key == KEY_F4) {
+        //     _prepareFullScreenMenu();
+        //     showTaskManagerPrioMenu();
+        //     return;
         // logs
         } else if (_key == KEY_F7) {
             _prepareFullScreenMenu();

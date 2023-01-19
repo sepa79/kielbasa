@@ -5,10 +5,16 @@
 
 #define FIELDS_COUNT 4
 #define PLANTS_COUNT 4
-#define PLANT_POTATO 1
-#define PLANT_LUPINE 2
-#define PLANT_WHEAT 3
-#define PLANT_CORN 4
+// capacity is determined by Map field size. As tiles are 4x4, and field size 1 is 6 tiles - 96 is the number
+#define FIELD_CAPACITY 96
+
+enum PantName {
+    PLANT_NONE,
+    PLANT_POTATO,
+    PLANT_LUPINE,
+    PLANT_WHEAT,
+    PLANT_CORN,
+};
 
 extern volatile byte flt_waterLevel = 50;
 
@@ -20,24 +26,31 @@ extern volatile unsigned int flt_storage[PLANTS_COUNT+1];
 //******************************
 // Field
 //******************************
-// area of the field
-extern byte field_area[PLANTS_COUNT];
-// fertility left
-extern byte field_fertility[PLANTS_COUNT];
-// what plant is on it
-extern byte field_plantId[PLANTS_COUNT];
-// which growth stage is the plant in
-extern byte field_stage[PLANTS_COUNT];
-// how much was planted in stage 1
-extern unsigned int field_stage_planted[PLANTS_COUNT];
-// how much was grown in stage 2
-extern unsigned int field_stage_grown[PLANTS_COUNT];
-// growth factor calculated at the end of the 1st stage
-extern unsigned int field_stage_gFactor[FIELDS_COUNT];
-// how much has rippened in stage 3
-extern unsigned int field_stage_ready[PLANTS_COUNT];
-// timer till the end of current stage (days)
-extern byte field_timer[PLANTS_COUNT];
+
+struct FieldStruct {
+    // area of the field
+    char area;
+    // what plant is on it
+    char plantId;
+    // which growth stage is the plant in
+    char stage;
+    // random seed used to visualise this field
+    unsigned int rseed;
+    // how much was planted in stage 1
+    unsigned int planted;
+    // how much have survived stage 1
+    unsigned int alive;
+    // how much was grown in stage 2
+    unsigned int grown;
+    // growth factor calculated at the end of the 1st stage
+    unsigned int gFactor;
+    // how much has rippened in stage 3
+    unsigned int ready;
+    // timer till the end of current stage (days)
+    char timer;
+};
+
+extern FieldStruct fields[FIELDS_COUNT];
 
 //******************************
 // Plant

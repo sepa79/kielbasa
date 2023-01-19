@@ -234,7 +234,7 @@ static byte _findUnassignedTaskForSkill(byte skillIt) {
             return NO_TASK;
         }
         // there is something we can do
-        if(task_worker[taskId] == NO_CHARACTER && task_reqType[taskId] == skillIt){
+        if(task_worker[taskId] == NO_SLOT && task_reqType[taskId] == skillIt){
             return taskId;
         }
     }
@@ -326,7 +326,7 @@ void tasksTick(){
     byte taskId = 0;
     do {
         taskId = taskRef[i];
-        if(task_worker[taskId] != NO_CHARACTER){
+        if(task_worker[taskId] != NO_SLOT){
             // updateStatusBar(s"  Exec  ");
             // got a worker? tick that task
             (*task_codeRef[taskId])(taskId);

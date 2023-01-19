@@ -13,8 +13,6 @@ const byte priModifierTable[5] = {0, 5, 10, 15, 20};
 const byte secModifierTable[5] = {2, 6, 10, 14, 18};
 const byte terModifierTable[5] = {4, 8, 10, 12, 16};
 
-#define FIELD_CAPACITY 100
-
 void sowFieldTask(byte taskId){
     LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_ENTRY;
     setTaskLogMsg(taskId);
@@ -43,9 +41,9 @@ void sowFieldTask(byte taskId){
         //              (when reach 100% task is done, unless there will be a shortage of seeds - in that case we end early)
         // seeds left -= seeds used (based on skill + Int)
 
-        field_plantId[fieldId] = plantId;
-        field_stage[fieldId]   = PLANT_STAGE_SPROUT;
-        field_timer[fieldId]   = plant_stage1timer[plantId];
+        fields[fieldId].plantId = plantId;
+        fields[fieldId].stage   = PLANT_STAGE_SPROUT;
+        fields[fieldId].timer   = plant_stage1timer[plantId];
 
         // get worker, get his skills and the value he can 'do' in a turn from the table
         byte charSlot      = task_worker[taskId];
@@ -59,8 +57,8 @@ void sowFieldTask(byte taskId){
             partDone = 1;
         }
         // make sure we don't plant more than field 'capacity'
-        if(field_stage_planted[fieldId]+partDone > FIELD_CAPACITY*field_area[fieldId]){
-            partDone = FIELD_CAPACITY*field_area[fieldId] - field_stage_planted[fieldId];
+        if(fields[fieldId].planted+partDone > FIELD_CAPACITY*fields[fieldId].area){
+            partDone = FIELD_CAPACITY*fields[fieldId].area - fields[fieldId].planted;
         }
         
         // check if we got enough seeds
@@ -78,12 +76,12 @@ void sowFieldTask(byte taskId){
                 // decrease energy
                 decEnergyLevel(worker, energyNeeded);
                 // process task
-                field_stage_planted[fieldId] += partDone;
-                field_stage_grown[fieldId]   = 0;
-                field_stage_ready[fieldId]   = 0; // reap takes this / SOME_DIVIDER
+                fields[fieldId].planted += partDone;
+                fields[fieldId].grown   = 0;
+                fields[fieldId].ready   = 0; // reap takes this / SOME_DIVIDER
 
                 // is the whole field done now?
-                if(field_stage_planted[fieldId] >= FIELD_CAPACITY*field_area[fieldId]) {
+                if(fields[fieldId].planted >= FIELD_CAPACITY*fields[fieldId].area) {
                     // task done, set status & remove
                     task_status[taskId] = TASK_STATUS_DONE;
 
@@ -114,7 +112,7 @@ void sowFieldTask(byte taskId){
     // handle task removal
     } else if(task_status[taskId] == TASK_STATUS_REMOVE){
         // clean up, don't leave field in dangling 'sowing' state
-        field_stage[fieldId] = PLANT_STAGE_NONE;
+        fields[fieldId].stage = PLANT_STAGE_NONE;
     // hanlde errors - should never happen!
     } else {
         // Sum Ting Wong, We Tu Lo
@@ -146,7 +144,7 @@ void reapFieldTask(byte taskId){
     // task.params[3] = 0;
     // task.params[4] = 0;
     byte fieldId = task_params[taskId][0];
-    byte plantId = field_plantId[fieldId];
+    byte plantId = fields[fieldId].plantId;
 
     if(task_status[taskId] == TASK_STATUS_NEW){
         // reap is simple, same logic as with planting really
@@ -163,8 +161,8 @@ void reapFieldTask(byte taskId){
             partDone = 1;
         }
         // make sure we don't reap more than field 'capacity'
-        if(field_stage_grown[fieldId] < partDone){
-            partDone = field_stage_grown[fieldId];
+        if(fields[fieldId].grown < partDone){
+            partDone = fields[fieldId].grown;
         }
         
         // check if we got enough energy
@@ -175,13 +173,13 @@ void reapFieldTask(byte taskId){
             // decrease energy
             decEnergyLevel(worker, energyNeeded);
             // process task
-            field_stage_grown[fieldId] -= partDone;
+            fields[fieldId].grown -= partDone;
 
             // is the whole field done now?
-            if(field_stage_grown[fieldId] == 0) {
+            if(fields[fieldId].grown == 0) {
                 // task done, set status & remove
                 task_status[taskId] = TASK_STATUS_DONE;
-                field_stage[fieldId] = PLANT_STAGE_NONE;
+                fields[fieldId].stage = PLANT_STAGE_NONE;
                 removeTask(taskId);
             }
         } else {
@@ -192,7 +190,7 @@ void reapFieldTask(byte taskId){
     // handle task removal - currently unused
     } else if(task_status[taskId] == TASK_STATUS_REMOVE){
         // clean up, don't leave field in dangling 'reaping' state
-        field_stage[fieldId] = PLANT_STAGE_READY;
+        fields[fieldId].stage = PLANT_STAGE_READY;
     // hanlde errors - should never happen!
     } else {
         // Sum Ting Wong, We Tu Lo
