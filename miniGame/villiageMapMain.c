@@ -113,9 +113,7 @@ static void _mapInit(){
 #define FIELD_START ramTiles+0x10
 
 static unsigned int fLayout[96*4] = {0xffff};
-unsigned lmul16ux(unsigned a, unsigned b){
-    return lmul16u(a, b) >> 16;
-}
+
 // copy base map from ROM, add any specials to it
 static void buildRamTiles(void){
     // memset(ramTiles, GROUND_CHAR, 16*(RAM_TILES_COUNT+1));
@@ -123,7 +121,8 @@ static void buildRamTiles(void){
     // for showing crops die in nice ways
     // Field Y
     char * fieldPointer = FIELD_START;
-    for(char fi=0; fi<FIELDS_COUNT; fi++){
+    for(char fi=0; fi<1; fi++){
+    // for(char fi=0; fi<FIELDS_COUNT; fi++){
         // how many crops to draw
         unsigned int plantedCount = fields[fi].planted;
         unsigned int aliveCount = fields[fi].alive;
@@ -139,13 +138,18 @@ static void buildRamTiles(void){
         // seed the generator to repeat the same patterns
         srand(fields[fi].rseed);
         for(unsigned int i=0; i<plantedCount; i++){
-            unsigned int rnd = lmul16ux(plantedCount, rand());
+            unsigned int rnd = lmul16u(plantedCount, rand()) >> 16;
             unsigned int tmp = fLayout[rnd];
             fLayout[rnd] = fLayout[i];
             fLayout[i] = tmp;
         }
-        // plant & stage to draw, 
-        char plant = CROPS_CHAR + 4*fields[fi].plantId + 3-fields[fi].stage;
+        // plant & stage to draw, plantId 0 is nothing, so -1 there
+        char plant = CROPS_CHAR + 4*(fields[fi].plantId-1);
+        // stages start at 2 for planting, but above 5 its just tasks, so stop there
+        if(fields[fi].stage < 5){
+            plant += 5-fields[fi].stage;
+        }
+
         // reset fLayout index
         int i = 0;
         for(char fy=0; fy<fields[fi].height; fy++){

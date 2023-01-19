@@ -74,6 +74,7 @@ void sowFieldTask(char taskId){
                 decEnergyLevel(charIdx, energyNeeded);
                 // process task
                 fields[fieldId].planted += partDone;
+                fields[fieldId].alive   += partDone;
                 fields[fieldId].grown   = 0;
                 fields[fieldId].ready   = 0; // reap takes this / SOME_DIVIDER
 
@@ -165,15 +166,17 @@ void reapFieldTask(char taskId){
         char energyNeeded = partDone > 10 ? 10 : partDone;
         if(checkEnergyLevel(charIdx, energyNeeded)){
             flt_storage[plantId] += partDone;
-
             // decrease energy
             decEnergyLevel(charIdx, energyNeeded);
             // process task
             fields[fieldId].grown -= partDone;
+            // decrease Alive count
+            fields[fieldId].alive = ldiv16u(fields[fieldId].grown, fields[fieldId].gFactor);
 
             // is the whole field done now?
             if(fields[fieldId].grown == 0) {
                 // task done, set status & remove
+                fields[fieldId].alive = 0;
                 task_status[taskId] = TASK_STATUS_DONE;
                 fields[fieldId].stage = PLANT_STAGE_NONE;
                 removeTask(taskId);

@@ -19,7 +19,7 @@ static void _setCharacterToSlot(char charIdx, char charSlot){
 }
 
 void initCharacterList(){
-    static const struct CharacterStruct initialChars[CHARACTER_COUNT] = {
+    __striped static const struct CharacterStruct initialChars[CHARACTER_COUNT] = {
         {TXT_IDX_CHAR_1_STORY, TXT_IDX_CHAR_1_NAME, 100, 100, 100, SPR_PORTRAIT01, {3,3,3}, {3,3,4,3}, {1,2,3,4}, NO_SLOT, false},
         {TXT_IDX_CHAR_2_STORY, TXT_IDX_CHAR_2_NAME, 100, 100, 100, SPR_PORTRAIT02, {2,3,2}, {2,6,1,1}, {3,3,3,3}, NO_SLOT, false},
         {TXT_IDX_CHAR_3_STORY, TXT_IDX_CHAR_3_NAME, 100, 100, 100, SPR_PORTRAIT03, {4,3,4}, {1,1,1,7}, {3,3,3,3}, NO_SLOT, false},

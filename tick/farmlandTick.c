@@ -28,7 +28,7 @@ void initFarmland(){
     flt_storage[PLANT_WHEAT]  = 50;
     flt_storage[PLANT_CORN]   = 50;
 
-    static const struct FieldStruct initialFields[FIELDS_COUNT] = {
+    __striped static const struct FieldStruct initialFields[FIELDS_COUNT] = {
         {1, 3, 2, 0, 0, 0, 0, 0, 0, 0},
         {1, 2, 3, 0, 0, 0, 0, 0, 0, 0},
         {2, 3, 4, 0, 0, 0, 0, 0, 0, 0},
@@ -37,6 +37,7 @@ void initFarmland(){
 
     for(char i=0; i<FIELDS_COUNT; i++){
         fields[i] = initialFields[i];
+        fields[i].rseed = rand();
     }
 }
 
@@ -84,26 +85,26 @@ void _fieldStateSprout(byte fieldId){
     // printf("+ rain diff %-5u ", diff);
 
     if(diff != 0){
-        int planted = fields[fieldId].planted;
-        if(diff < planted) {
-            fields[fieldId].planted = planted - diff;
+        int alive = fields[fieldId].alive;
+        if(diff < alive) {
+            fields[fieldId].alive = alive - diff;
         } else {
-            fields[fieldId].planted = 0;
+            fields[fieldId].alive = 0;
         }
     }
 
     fields[fieldId].timer--;
     if(fields[fieldId].timer == 0){
-        if(fields[fieldId].planted == 0){
+        if(fields[fieldId].alive == 0){
             // everything died, end growing cycle
             fields[fieldId].stage = PLANT_STAGE_NONE;
         } else {
             fields[fieldId].stage = PLANT_STAGE_GROWTH;
-            fields[fieldId].grown = fields[fieldId].planted;
+            fields[fieldId].grown = fields[fieldId].alive;
             fields[fieldId].timer = plants[plantId].stage2timer;
 
             // calculate growth factor
-            fields[fieldId].gFactor = lmuldiv16u(fields[fieldId].planted, plants[plantId].maxYeldFactor, plants[plantId].stage2timer);
+            fields[fieldId].gFactor = lmuldiv16u(fields[fieldId].alive, plants[plantId].maxYeldFactor, plants[plantId].stage2timer);
         }
     }
 }
@@ -167,6 +168,8 @@ void _fieldStateRipen(byte fieldId){
         // apply the percentage to the 'grown' plants
         if(fields[fieldId].ready < 100)
             fields[fieldId].grown = lmuldiv16u(fields[fieldId].grown, 100, fields[fieldId].ready);
+        // calculate the amount to reap which decreases 'alive', store in gFactor as its not needed now
+        fields[fieldId].gFactor = ldiv16u(fields[fieldId].grown, fields[fieldId].alive);
     }
 }
 

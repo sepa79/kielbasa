@@ -314,7 +314,7 @@ static void _displayFieldList(){
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+22, 8+i, str, col);
 
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+25, 8+i, TBL_V, VCOL_YELLOW);
-        sprintf(str, "%3u", fields[i].planted);
+        sprintf(str, "%3u", fields[i].alive);
         cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+26, 8+i, str, col);
 
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+29, 8+i, TBL_V, VCOL_YELLOW);
@@ -398,8 +398,10 @@ static void _sowPlant(){
     // indicate task is assigned
     fields[_currentField].plantId = _currentPlant;
     fields[_currentField].stage   = PLANT_STAGE_SOW_TASK_ASSIGNED;
+    fields[_currentField].rseed   = rand();
     fields[_currentField].timer   = 0;
     fields[_currentField].planted = 0;
+    fields[_currentField].alive   = 0;
     fields[_currentField].grown   = 0;
     fields[_currentField].ready   = 0;
     _displayFieldList();

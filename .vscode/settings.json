@@ -49,7 +49,8 @@
         "vcruntime_string.h": "c",
         "charactertick.h": "c",
         "asm6502.h": "c",
-        "villiagemapmain.h": "c"
+        "villiagemapmain.h": "c",
+        "fixmath.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }
