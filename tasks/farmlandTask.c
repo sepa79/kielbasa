@@ -43,7 +43,7 @@ void sowFieldTask(byte taskId){
 
         fields[fieldId].plantId = plantId;
         fields[fieldId].stage   = PLANT_STAGE_SPROUT;
-        fields[fieldId].timer   = plant_stage1timer[plantId];
+        fields[fieldId].timer   = plants[plantId].stage1timer;
 
         // get worker, get his skills and the value he can 'do' in a turn from the table
         byte charSlot      = task_worker[taskId];

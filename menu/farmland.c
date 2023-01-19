@@ -406,7 +406,7 @@ static void _sowPlant(){
 
     // create Task
     struct Task task;
-    byte idx = plant_taskDscIdx[_currentPlant];
+    byte idx = plants[_currentPlant].taskDscIdx;
     // "Field 2, Potatoes"
     sprintf(task.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
     task.codeRef   = &sowFieldTask;
@@ -438,7 +438,7 @@ static void _reapPlant(){
 
     // create Task
     struct Task task;
-    byte idx = plant_taskDscIdx[fields[_currentField].plantId];
+    byte idx = plants[fields[_currentField].plantId].taskDscIdx;
     // "Field 2, Potatoes"
     sprintf(task.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
     task.codeRef   = &reapFieldTask;

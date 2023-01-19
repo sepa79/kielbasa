@@ -13,6 +13,13 @@ volatile byte flt_waterLevel = 30;
 volatile unsigned int flt_storage[PLANTS_COUNT+1] = 0;
 
 struct FieldStruct fields[FIELDS_COUNT];
+const struct PlantStruct plants[PLANTS_COUNT+1] = {
+    {TXT_IDX_TASK_EMPTY_DESCRIPTION, 0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0 },
+    {TXT_IDX_TASK_DSC_FARMLAND_POTATO, 10,  8,20,20,40, 15,  18,23,10,30,60, 15,22, 5,20,25 },
+    {TXT_IDX_TASK_DSC_FARMLAND_LUPINE,  5,  1,15,20,40, 20,  13,18,15,40,70, 15,20,15,40,20 },
+    {TXT_IDX_TASK_DSC_FARMLAND_WHEAT,   5, -5,15, 5,60,180,   8,25,10,40,90, 20,30, 5,20,45 },
+    {TXT_IDX_TASK_DSC_FARMLAND_CORN,    5, -5,30, 5,40, 30,   5,30,10,40,40, 10,30,10,50,20 }
+};
 
 void initFarmland(){
     flt_waterLevel = 25;
@@ -66,11 +73,11 @@ void _fieldStateSprout(byte fieldId){
     byte plantId = fields[fieldId].plantId;
 
     // temp check
-    byte diff = _tempCheck(plant_stage1minTemp[plantId], plant_stage1maxTemp[plantId]);
+    byte diff = _tempCheck(plants[plantId].stage1minTemp, plants[plantId].stage1maxTemp);
     // gotoxy(0, 16);
     // printf("S 1 plantId [%u]temp diff %-5u ", plantId, diff);
     // rain check
-    diff += _waterCheck(plant_stage1minWater[plantId], plant_stage1maxWater[plantId]);
+    diff += _waterCheck(plants[plantId].stage1minWater, plants[plantId].stage1maxWater);
 
     // gotoxy(20, 16);
     // printf("+ rain diff %-5u ", diff);
@@ -92,10 +99,10 @@ void _fieldStateSprout(byte fieldId){
         } else {
             fields[fieldId].stage = PLANT_STAGE_GROWTH;
             fields[fieldId].grown = fields[fieldId].planted;
-            fields[fieldId].timer = plant_stage2timer[plantId];
+            fields[fieldId].timer = plants[plantId].stage2timer;
 
             // calculate growth factor
-            fields[fieldId].gFactor = lmuldiv16u(fields[fieldId].planted, plant_maxYeldFactor[plantId], plant_stage2timer[plantId]);
+            fields[fieldId].gFactor = lmuldiv16u(fields[fieldId].planted, plants[plantId].maxYeldFactor, plants[plantId].stage2timer);
         }
     }
 }
@@ -107,11 +114,11 @@ void _fieldStateGrowth(byte fieldId){
     byte plantId = fields[fieldId].plantId;
 
     // temp check
-    byte diff = _tempCheck(plant_stage2minTemp[plantId], plant_stage2maxTemp[plantId]);
+    byte diff = _tempCheck(plants[plantId].stage2minTemp, plants[plantId].stage2maxTemp);
     // gotoxy(0, 17);
     // printf("S 2 temp diff %-5u ", diff);
     // rain check
-    diff += _waterCheck(plant_stage2minWater[plantId], plant_stage2maxWater[plantId]);
+    diff += _waterCheck(plants[plantId].stage2minWater, plants[plantId].stage2maxWater);
     // gotoxy(20, 17);
     // printf("+ rain diff %-5u ", diff);
 
@@ -125,7 +132,7 @@ void _fieldStateGrowth(byte fieldId){
     fields[fieldId].timer--;
     if(fields[fieldId].timer == 0){
         fields[fieldId].stage = PLANT_STAGE_RIPEN;
-        fields[fieldId].timer = plant_stage3timer[plantId];
+        fields[fieldId].timer = plants[plantId].stage3timer;
     }
 }
 
@@ -137,11 +144,11 @@ void _fieldStateRipen(byte fieldId){
     byte plantId = fields[fieldId].plantId;
 
     // temp check
-    byte diff = _tempCheck(plant_stage3minTemp[plantId], plant_stage3maxTemp[plantId]);
+    byte diff = _tempCheck(plants[plantId].stage3minTemp, plants[plantId].stage3maxTemp);
     // gotoxy(0, 18);
     // printf("s 3 temp %-5d diff %-5u ", cal_currentTemp, diff);
     // rain check
-    diff += _waterCheck(plant_stage2minWater[plantId], plant_stage2maxWater[plantId]);
+    diff += _waterCheck(plants[plantId].stage2minWater, plants[plantId].stage2maxWater);
     // gotoxy(0, 18);
     // printf("temp + rain diff %-5u ", diff);
 

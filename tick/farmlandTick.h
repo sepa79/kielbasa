@@ -15,6 +15,11 @@ enum PantName {
     PLANT_WHEAT,
     PLANT_CORN,
 };
+// Plant name is in PLANT_TYPE_TXT
+// TXT_PLANT_NAME_POTATO,
+// TXT_PLANT_NAME_LUPINE,
+// TXT_PLANT_NAME_WHEAT,
+// TXT_PLANT_NAME_CORN,
 
 extern volatile byte flt_waterLevel = 50;
 
@@ -50,47 +55,49 @@ struct FieldStruct {
     char timer;
 };
 
-extern FieldStruct fields[FIELDS_COUNT];
+extern struct FieldStruct fields[FIELDS_COUNT];
 
 //******************************
 // Plant
 //******************************
 
-// Plant name is in PLANT_TYPE_TXT
-// TXT_PLANT_NAME_POTATO,
-// TXT_PLANT_NAME_LUPINE,
-// TXT_PLANT_NAME_WHEAT,
-// TXT_PLANT_NAME_CORN,
-static const byte plant_taskDscIdx[5]             = { TXT_IDX_TASK_EMPTY_DESCRIPTION, TXT_IDX_TASK_DSC_FARMLAND_POTATO, TXT_IDX_TASK_DSC_FARMLAND_LUPINE, TXT_IDX_TASK_DSC_FARMLAND_WHEAT, TXT_IDX_TASK_DSC_FARMLAND_CORN};
-static const signed char plant_stage1minTemp[5]   = { 0,  8,  1, -5, -5};
-static const signed char plant_stage1maxTemp[5]   = { 0, 20, 15, 15, 30};
-static const byte plant_stage1minWater[5]         = { 0, 20, 20,  5,  5};
-static const byte plant_stage1maxWater[5]         = { 0, 40, 40, 60, 40};
-static const byte plant_stage1timer[5]            = { 0, 15, 20,180, 30};
-static const byte plant_stage1upkeep[5]           = { 0,  0,  0,  0,  0};
-static const signed char plant_stage2minTemp[5]   = { 0, 18, 13,  8,  5};
-static const signed char plant_stage2maxTemp[5]   = { 0, 23, 18, 25, 30};
-// static const signed char plant_stage2minTemp[5]   = { 0, 15, 13,  8,  5};
-// static const signed char plant_stage2maxTemp[5]   = { 0, 26, 18, 25, 30};
-static const byte plant_stage2minWater[5]         = { 0, 10, 15, 10, 10};
-static const byte plant_stage2maxWater[5]         = { 0, 30, 40, 40, 40};
-static const byte plant_stage2timer[5]            = { 0, 60, 70, 90, 40};
-static const byte plant_stage2upkeep[5]           = { 0,  0,  0,  0,  0};
-static const signed char plant_stage3minTemp[5]   = { 0, 15, 15, 20, 10};
-static const signed char plant_stage3maxTemp[5]   = { 0, 22, 20, 30, 30};
-static const byte plant_stage3minWater[5]         = { 0,  5, 15,  5, 10};
-static const byte plant_stage3maxWater[5]         = { 0, 20, 40, 20, 50};
-static const byte plant_stage3timer[5]            = { 0, 25, 20, 45, 20};
-static const byte plant_stage3upkeep[5]           = { 0,  0,  0,  0,  0};
-static const byte plant_maxYeldFactor[5]          = { 0, 10,  5,  5,  5};
+struct PlantStruct {
+    // Text used in task description, usualy lower case plant name
+    const char        taskDscIdx;
+    const char        maxYeldFactor;
 
-#define PLANT_STAGE_NONE 0x00
-#define PLANT_STAGE_SOW_TASK_ASSIGNED 0x01
-#define PLANT_STAGE_SPROUT 0x02
-#define PLANT_STAGE_GROWTH 0x03
-#define PLANT_STAGE_RIPEN 0x04
-#define PLANT_STAGE_READY 0x05
-#define PLANT_STAGE_REAP_TASK_ASSIGNED 0x06
+    const signed char stage1minTemp;
+    const signed char stage1maxTemp;
+    const char        stage1minWater;
+    const char        stage1maxWater;
+    const char        stage1timer;
+
+    const signed char stage2minTemp;
+    const signed char stage2maxTemp;
+    const char        stage2minWater;
+    const char        stage2maxWater;
+    const char        stage2timer;
+
+    const signed char stage3minTemp;
+    const signed char stage3maxTemp;
+    const char        stage3minWater;
+    const char        stage3maxWater;
+    const char        stage3timer;
+};
+
+// add 1 as plant '0' is ----- (nothing planted) in farm management
+// makes it easier in tasks etc to manage IDs
+extern const struct PlantStruct plants[PLANTS_COUNT+1];
+
+enum PLANT_STAGE {
+    PLANT_STAGE_NONE,
+    PLANT_STAGE_SOW_TASK_ASSIGNED,
+    PLANT_STAGE_SPROUT,
+    PLANT_STAGE_GROWTH,
+    PLANT_STAGE_RIPEN,
+    PLANT_STAGE_READY,
+    PLANT_STAGE_REAP_TASK_ASSIGNED,
+};
 
 
 //-----------------------------------------------------------------------------------------
