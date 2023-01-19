@@ -55,7 +55,7 @@ struct FieldStruct {
     char timer;
 };
 
-extern struct FieldStruct fields[FIELDS_COUNT];
+extern __striped struct FieldStruct fields[FIELDS_COUNT];
 
 //******************************
 // Plant
@@ -87,7 +87,7 @@ struct PlantStruct {
 
 // add 1 as plant '0' is ----- (nothing planted) in farm management
 // makes it easier in tasks etc to manage IDs
-extern const struct PlantStruct plants[PLANTS_COUNT+1];
+extern __striped const struct PlantStruct plants[PLANTS_COUNT+1];
 
 enum PLANT_STAGE {
     PLANT_STAGE_NONE,

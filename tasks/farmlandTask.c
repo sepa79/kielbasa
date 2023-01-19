@@ -1,5 +1,3 @@
-#include <c64/types.h>
-
 #include <engine/logger.h>
 
 #include <tick/farmlandTick.h>
@@ -9,11 +7,11 @@
 
 // modifier values, make sure stat is -1'ed so that '3' means middle value is chosen
 // substract 10 from it.
-const byte priModifierTable[5] = {0, 5, 10, 15, 20};
-const byte secModifierTable[5] = {2, 6, 10, 14, 18};
-const byte terModifierTable[5] = {4, 8, 10, 12, 16};
+const char priModifierTable[5] = {0, 5, 10, 15, 20};
+const char secModifierTable[5] = {2, 6, 10, 14, 18};
+const char terModifierTable[5] = {4, 8, 10, 12, 16};
 
-void sowFieldTask(byte taskId){
+void sowFieldTask(char taskId){
     LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_ENTRY;
     setTaskLogMsg(taskId);
     logger(LOG_DEBUG | LOG_MSG_TASK);
@@ -24,10 +22,10 @@ void sowFieldTask(byte taskId){
     // task.params[2] = 0;
     // task.params[3] = 0;
     // task.params[4] = 0;
-    byte plantId = task_params[taskId][0];
-    byte fieldId = task_params[taskId][1];
+    char plantId = task_params[taskId][0];
+    char fieldId = task_params[taskId][1];
 
-    byte energyNeeded = 0;
+    char energyNeeded = 0;
     signed int partDone = 0;
 
     if(task_status[taskId] == TASK_STATUS_NEW){
@@ -46,12 +44,11 @@ void sowFieldTask(byte taskId){
         fields[fieldId].timer   = plants[plantId].stage1timer;
 
         // get worker, get his skills and the value he can 'do' in a turn from the table
-        byte charSlot      = task_worker[taskId];
-        struct CharacterStruct * worker = characterSlots[charSlot];
-        byte skill       = worker->skill[ task_reqType[taskId] ];
-        byte priModifier = worker->stat[ STAT_STR ] -1;
-        byte secModifier = worker->stat[ STAT_INT ] -1;
-        byte terModifier = worker->stat[ STAT_CUN ] -1;
+        char charIdx     = task_worker[taskId];
+        char skill       = allCharacters[charIdx].skill[ task_reqType[taskId] ];
+        char priModifier = allCharacters[charIdx].stat[ STAT_STR ] -1;
+        char secModifier = allCharacters[charIdx].stat[ STAT_INT ] -1;
+        char terModifier = allCharacters[charIdx].stat[ STAT_CUN ] -1;
         partDone = skill * 10 + priModifierTable[priModifier]-10 + secModifierTable[secModifier]-10 + terModifierTable[terModifier]-10;
         if(partDone <= 0){
             partDone = 1;
@@ -70,11 +67,11 @@ void sowFieldTask(byte taskId){
 
             // check if we got enough energy
             energyNeeded = partDone > 10 ? 10 : partDone;
-            if(checkEnergyLevel(worker, energyNeeded)){
+            if(checkEnergyLevel(charIdx, energyNeeded)){
                 flt_storage[plantId] -= partDone;
 
                 // decrease energy
-                decEnergyLevel(worker, energyNeeded);
+                decEnergyLevel(charIdx, energyNeeded);
                 // process task
                 fields[fieldId].planted += partDone;
                 fields[fieldId].grown   = 0;
@@ -121,7 +118,7 @@ void sowFieldTask(byte taskId){
         setTaskLogMsg(taskId);
         logger(LOG_ERROR | LOG_MSG_TASK);
 
-        byte str[50];
+        char str[50];
         sprintf(str, s"  ""[%3u]"s"sowFieldTask - unknown status code   ", task_status[taskId]);
         updateStatusBar(str);
         setErrorCursor();
@@ -136,26 +133,25 @@ void sowFieldTask(byte taskId){
     updateMenuIfIn(MENU_BANK_FARMLAND);
 }
 
-void reapFieldTask(byte taskId){
+void reapFieldTask(char taskId){
     // get the fieldId - this is the definition from menu/farmland.c
     // task.params[0] = _currentField;
     // task.params[1] = 0;
     // task.params[2] = 0;
     // task.params[3] = 0;
     // task.params[4] = 0;
-    byte fieldId = task_params[taskId][0];
-    byte plantId = fields[fieldId].plantId;
+    char fieldId = task_params[taskId][0];
+    char plantId = fields[fieldId].plantId;
 
     if(task_status[taskId] == TASK_STATUS_NEW){
         // reap is simple, same logic as with planting really
 
         // get worker, get his skills and the value he can 'do' in a turn from the table
-        byte charSlot      = task_worker[taskId];
-        struct CharacterStruct * worker = characterSlots[charSlot];
-        byte skill       = worker->skill[ task_reqType[taskId] ];
-        byte priModifier = worker->stat[ STAT_STR ] -1;
-        byte secModifier = worker->stat[ STAT_INT ] -1;
-        byte terModifier = worker->stat[ STAT_CUN ] -1;
+        char charIdx     = task_worker[taskId];
+        char skill       = allCharacters[charIdx].skill[ task_reqType[taskId] ];
+        char priModifier = allCharacters[charIdx].stat[ STAT_STR ] -1;
+        char secModifier = allCharacters[charIdx].stat[ STAT_INT ] -1;
+        char terModifier = allCharacters[charIdx].stat[ STAT_CUN ] -1;
         signed int partDone = skill * 10 + priModifierTable[priModifier]-10 + secModifierTable[secModifier]-10 + terModifierTable[terModifier]-10;
         if(partDone <= 0){
             partDone = 1;
@@ -166,12 +162,12 @@ void reapFieldTask(byte taskId){
         }
         
         // check if we got enough energy
-        byte energyNeeded = partDone > 10 ? 10 : partDone;
-        if(checkEnergyLevel(worker, energyNeeded)){
+        char energyNeeded = partDone > 10 ? 10 : partDone;
+        if(checkEnergyLevel(charIdx, energyNeeded)){
             flt_storage[plantId] += partDone;
 
             // decrease energy
-            decEnergyLevel(worker, energyNeeded);
+            decEnergyLevel(charIdx, energyNeeded);
             // process task
             fields[fieldId].grown -= partDone;
 
@@ -198,7 +194,7 @@ void reapFieldTask(byte taskId){
         setTaskLogMsg(taskId);
         logger(LOG_ERROR | LOG_MSG_TASK);
 
-        byte str[50];
+        char str[50];
         sprintf(str, s"  ""[%3u]"s"reapFieldTask - unknown status code   ", task_status[taskId]);
         updateStatusBar(str);
         setErrorCursor();

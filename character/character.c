@@ -1,20 +1,19 @@
-#include <c64/types.h>
 #include "character.h"
 
 #include <assets/mainGfx.h>
 #include <engine/irqSpriteController.h>
 
-struct CharacterStruct allCharacters[CHARACTER_COUNT];
-struct CharacterStruct * characterSlots[CHARACTER_SLOTS];
+__striped struct CharacterStruct allCharacters[CHARACTER_COUNT];
+char characterSlots[CHARACTER_SLOTS];
 
-static void _setCharacterToSlot(CharacterStruct * charPtr, byte charSlot){
-    characterSlots[charSlot] = charPtr;
+static void _setCharacterToSlot(char charIdx, char charSlot){
+    characterSlots[charSlot] = charIdx;
 
-    if(charPtr != NO_CHARACTER){
-        charPtr->slot = charSlot;
-        setCharacterSlotPic(charPtr);
-        setCharacterSlotIcon(charPtr, SPR_TASK_MIA);
-        drawBattery(charPtr);
+    if(charIdx != NO_CHARACTER){
+        allCharacters[charIdx].slot = charSlot;
+        setCharacterSlotPic(charIdx);
+        setCharacterSlotIcon(charIdx, SPR_TASK_MIA);
+        drawBattery(charIdx);
     }
     // TODO: Add slot cleanup
 }
@@ -29,41 +28,41 @@ void initCharacterList(){
     allCharacters[2] = ch2;
     allCharacters[3] = ch3;
 
-    _setCharacterToSlot(&(allCharacters[0]), 0);
+    _setCharacterToSlot(0, 0);
     _setCharacterToSlot(NO_CHARACTER, 1);
     _setCharacterToSlot(NO_CHARACTER, 2);
     _setCharacterToSlot(NO_CHARACTER, 3);
 }
 
 // checks if given charIdx (from allCharSlots) has at least 'amount' energy
-bool checkEnergyLevel(struct CharacterStruct * charPtr, byte amount){
-    if(charPtr->energy >= amount){
+bool checkEnergyLevel(char charIdx, char amount){
+    if(allCharacters[charIdx].energy >= amount){
         return true;
     }
     return false;
 }
 
 // call only on populated slots
-void incEnergyLevel(struct CharacterStruct * charPtr, byte amount){
-    byte energy = charPtr->energy;
+void incEnergyLevel(char charIdx, char amount){
+    char energy = allCharacters[charIdx].energy;
     energy += amount;
 
     if(energy > 100){
         energy = 100;
     }
-    charPtr->energy = energy;
-    drawBattery(charPtr);
+    allCharacters[charIdx].energy = energy;
+    drawBattery(charIdx);
 }
 
 // call only on populated slots
-void decEnergyLevel(struct CharacterStruct * charPtr, byte amount){
-    byte energy = charPtr->energy;
+void decEnergyLevel(char charIdx, char amount){
+    char energy = allCharacters[charIdx].energy;
     energy -= amount;
 
     if(energy > 100){
         energy = 0;
     }
 
-    charPtr->energy = energy;
-    drawBattery(charPtr);
+    allCharacters[charIdx].energy = energy;
+    drawBattery(charIdx);
 }

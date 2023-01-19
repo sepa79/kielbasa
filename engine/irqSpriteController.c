@@ -55,9 +55,9 @@ void setNormalCursor(){
 }
 
 // copy face to character portrait
-void setCharacterSlotPic(struct CharacterStruct * charPtr){
-    byte charSlot = charPtr->slot;
-    const char * picturePtr = charPtr->picture;
+void setCharacterSlotPic(char charIdx){
+    char charSlot = allCharacters[charIdx].slot;
+    const char * picturePtr = allCharacters[charIdx].picture;
     if(charSlot != NO_SLOT){
         char * charPicPtr = characterSlotSpritePicPtr[charSlot];
         char i = 0;
@@ -76,8 +76,8 @@ void setCharacterSlotPic(struct CharacterStruct * charPtr){
 }
 
 // copy task icon to character's SPR_CHARACTER_BARX
-void setCharacterSlotIcon(struct CharacterStruct * charPtr, const char * taskIconPtr){
-    byte charSlot = charPtr->slot;
+void setCharacterSlotIcon(char charIdx, const char * taskIconPtr){
+    char charSlot = allCharacters[charIdx].slot;
     if(charSlot != NO_SLOT){
         char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
         char i = 1;
@@ -95,9 +95,9 @@ void setCharacterSlotIcon(struct CharacterStruct * charPtr, const char * taskIco
     }
 }
 
-void drawBattery(struct CharacterStruct * charPtr){
-    byte charSlot = charPtr->slot;
-    byte energy = charPtr->energy;
+void drawBattery(char charIdx){
+    char charSlot = allCharacters[charIdx].slot;
+    char energy = allCharacters[charIdx].energy;
     if(charSlot != NO_SLOT){
         char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
         char max = BATTERY_LEVEL[energy];

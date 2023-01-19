@@ -12,8 +12,8 @@ volatile byte flt_waterLevel = 30;
 // add 1 as plant '0' is ----- (nothing planted) in farm management
 volatile unsigned int flt_storage[PLANTS_COUNT+1] = 0;
 
-struct FieldStruct fields[FIELDS_COUNT];
-const struct PlantStruct plants[PLANTS_COUNT+1] = {
+__striped struct FieldStruct fields[FIELDS_COUNT];
+__striped const struct PlantStruct plants[PLANTS_COUNT+1] = {
     {TXT_IDX_TASK_EMPTY_DESCRIPTION, 0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0 },
     {TXT_IDX_TASK_DSC_FARMLAND_POTATO, 10,  8,20,20,40, 15,  18,23,10,30,60, 15,22, 5,20,25 },
     {TXT_IDX_TASK_DSC_FARMLAND_LUPINE,  5,  1,15,20,40, 20,  13,18,15,40,70, 15,20,15,40,20 },

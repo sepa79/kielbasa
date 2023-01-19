@@ -15,8 +15,8 @@
 #include "shopOutside.h"
 #include "shopInside.h"
 #include "crew.h"
-// #include "pigsleCommand.h"
-// #include "villiageMap.h"
+#include "pigsleCommand.h"
+#include "villiageMap.h"
 
 // column offset for printing data
 #define COL_OFFSET_TASKLIST 12
@@ -336,8 +336,8 @@ const struct MenuOption MAIN_MENU[] = {
     {TXT_IDX_MENU_MAIN3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &showMenu, MENU_BANK_PIG_PEN, 1, 3},
     {TXT_IDX_MENU_MAIN4, '4', SCREEN_SPLIT_MC_TXT, UI_SELECT, &showMenu, MENU_BANK_SHOP, 1, 4},
     {TXT_IDX_MENU_MAIN5, '5', SCREEN_SPLIT_MC_TXT, UI_SELECT, &showMenu, MENU_BANK_CREW, 1, 5},
-    // {TXT_IDX_MENU_MAIN6, '6', SCREEN_PIGSLE_COMMAND, UI_SELECT, &showMenu, MENU_BANK_PIGSLE_COMMAND_1, 1, 6},
-    // {TXT_IDX_MENU_MAIN7, '7', SCREEN_HIRES_TXT, UI_LF+UI_SELECT, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 1, 8},
+    {TXT_IDX_MENU_MAIN6, '6', SCREEN_PIGSLE_COMMAND, UI_SELECT, &showMenu, MENU_BANK_PIGSLE_COMMAND_1, 1, 6},
+    {TXT_IDX_MENU_MAIN7, '7', SCREEN_HIRES_TXT, UI_LF+UI_SELECT, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 1, 8},
     END_MENU_CHOICES
 };
 

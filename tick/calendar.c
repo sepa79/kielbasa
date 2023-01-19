@@ -240,7 +240,7 @@ void timeTick(){
             for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
                 // only check active chars
                 if(characterSlots[charSlot] != NO_CHARACTER){
-                    characterSlots[charSlot]->busy = false;
+                    allCharacters[characterSlots[charSlot]].busy = false;
                 }
             }
         }
