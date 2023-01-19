@@ -28,15 +28,16 @@ void initFarmland(){
     flt_storage[PLANT_WHEAT]  = 50;
     flt_storage[PLANT_CORN]   = 50;
 
-    static const struct FieldStruct f0 = {1, 0, 0, 0, 0, 0, 0, 0};
-    static const struct FieldStruct f1 = {1, 0, 0, 0, 0, 0, 0, 0};
-    static const struct FieldStruct f2 = {2, 0, 0, 0, 0, 0, 0, 0};
-    static const struct FieldStruct f3 = {4, 0, 0, 0, 0, 0, 0, 0};
+    static const struct FieldStruct initialFields[FIELDS_COUNT] = {
+        {1, 3, 2, 0, 0, 0, 0, 0, 0, 0},
+        {1, 2, 3, 0, 0, 0, 0, 0, 0, 0},
+        {2, 3, 4, 0, 0, 0, 0, 0, 0, 0},
+        {4, 4, 6, 0, 0, 0, 0, 0, 0, 0},
+    };
 
-    fields[0] = f0;
-    fields[1] = f1;
-    fields[2] = f2;
-    fields[3] = f3;
+    for(char i=0; i<FIELDS_COUNT; i++){
+        fields[i] = initialFields[i];
+    }
 }
 
 // =============================================================================

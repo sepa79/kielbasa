@@ -26,10 +26,6 @@
 #define BAR_PATTERN         0x2a    // 0x2a = 0b00101010
 #define BAR_PATTERN_CLEAR   0x00    // delete bar pattern
 
-// remember previous character; mandatory for optimized bars drawing
-extern volatile char character_old;
-
-extern const char bar_height[];
 extern const struct MenuOption CREW_MENU[];
 
 #pragma compile("crew.c")

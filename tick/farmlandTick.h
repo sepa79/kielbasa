@@ -35,6 +35,10 @@ extern volatile unsigned int flt_storage[PLANTS_COUNT+1];
 struct FieldStruct {
     // area of the field
     char area;
+    // on map width, in tiles
+    char width;
+    // on map height, in tiles
+    char height;
     // what plant is on it
     char plantId;
     // which growth stage is the plant in

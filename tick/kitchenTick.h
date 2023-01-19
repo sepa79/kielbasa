@@ -24,10 +24,15 @@ struct FOOD_ITEM {
 extern char kit_storage[FOOD_ITEMS_COUNT];
 
 //-----------------------------------------------------------------------------------------
-#pragma code ( code )
-#pragma data ( data )
+#pragma code ( gameInitRAMCode )
+#pragma data ( gameInitData )
+//-----------------------------------------------------------------------------------------
 
 void initKitchen();
+
+//-----------------------------------------------------------------------------------------
+#pragma code ( code )
+#pragma data ( data )
 //-----------------------------------------------------------------------------------------
 #pragma compile("kitchenTick.c")
 

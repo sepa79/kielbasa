@@ -15,7 +15,7 @@
 #pragma data ( data )
 
 // remember previous character; mandatory for optimized bars drawing
-static volatile char character_old = 0;
+static char character_old = 0;
 static volatile char charPicColor = 0;
 #pragma data ( crewGfxDay )
 
@@ -54,7 +54,7 @@ static void _drawByteK(int x, int y, char b) {
 }
 
 // bars height table
-const char bar_height[] =   {
+static const char bar_height[] =   {
     BARS_Y_POSITION_MAX-0*BAR_PART_HEIGHT, BARS_Y_POSITION_MAX-1*BAR_PART_HEIGHT,
     BARS_Y_POSITION_MAX-2*BAR_PART_HEIGHT, BARS_Y_POSITION_MAX-3*BAR_PART_HEIGHT,
     BARS_Y_POSITION_MAX-4*BAR_PART_HEIGHT, BARS_Y_POSITION_MAX-5*BAR_PART_HEIGHT,

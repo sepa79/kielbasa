@@ -112,81 +112,63 @@ static void _mapInit(){
 // 1st tile is empty
 #define FIELD_START ramTiles+0x10
 
-// struct Field {
-//     char width;
-//     char height;
-//     char crop;
-//     unsigned int plantedCount;
-//     unsigned int aliveCount;
-//     unsigned int rseed;
-//     char stage;
-// };
-
-// struct Field fields[FIELDS_COUNT] = {
-//     {3, 2, 0, 48, 20, 123, 3},
-//     {2, 3, 1, 30, 10, 456, 3},
-//     {3, 4, 2, 192, 40, 789, 3},
-//     {4, 6, 3, 384, 284, 345, 3}
-// };
-
 static unsigned int fLayout[96*4] = {0xffff};
-unsigned lmul16ux(unsigned a, unsigned b)
-{
+unsigned lmul16ux(unsigned a, unsigned b){
     return lmul16u(a, b) >> 16;
 }
 // copy base map from ROM, add any specials to it
 static void buildRamTiles(void){
-    // // memset(ramTiles, GROUND_CHAR, 16*(RAM_TILES_COUNT+1));
+    // memset(ramTiles, GROUND_CHAR, 16*(RAM_TILES_COUNT+1));
     
-    // // for showing crops die in nice ways
-    // // Field Y
-    // char * fieldPointer = FIELD_START;
-    // for(char fi=0; fi<FIELDS_COUNT; fi++){
-    //     // how many crops to draw
-    //     unsigned int plantedCount = fields[fi].plantedCount;
-    //     unsigned int aliveCount = fields[fi].aliveCount;
-    //     // prepare field dithering
-    //     unsigned int fSize = fields[fi].width * fields[fi].height * 16;
-    //     for(unsigned int i=0; i<fSize; i++){
-    //         if(i<plantedCount){
-    //             fLayout[i] = i;
-    //         } else {
-    //             fLayout[i] = 0xffff;
-    //         }
-    //     }
-    //     // seed the generator to repeat the same patterns
-    //     srand(fields[fi].rseed);
-    //     for(unsigned int i=0; i<plantedCount; i++){
-    //         unsigned int rnd = lmul16ux(plantedCount, rand());
-    //         unsigned int tmp = fLayout[rnd];
-    //         fLayout[rnd] = fLayout[i];
-    //         fLayout[i] = tmp;
-    //     }
-    //     // plant & stage to draw, 
-    //     char plant = CROPS_CHAR + 4*fields[fi].crop + 3-fields[fi].stage;
-    //     // reset fLayout index
-    //     int i = 0;
-    //     for(char fy=0; fy<fields[fi].height; fy++){
-    //         // Tile Y
-    //         for(char ty=0; ty<4; ty++){
-    //             // Field X
-    //             for(char fx=0; fx<fields[fi].width; fx++){
-    //                 // set pointer to current X tile, Y row
-    //                 char * field = fieldPointer + fx*16 + fy*fields[fi].width*16;
-    //                 // Tile X
-    //                 for(char tx=0; tx<4; tx++){
-    //                     if(fLayout[i] < aliveCount){
-    //                         field[tx+4*ty] = plant;
-    //                     } else {
-    //                         field[tx+4*ty] = GROUND_CHAR;
-    //                     } 
-    //                     i++;
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     fieldPointer += fields[fi].width*fields[fi].height*16;
-    // }
+    // for showing crops die in nice ways
+    // Field Y
+    char * fieldPointer = FIELD_START;
+    for(char fi=0; fi<FIELDS_COUNT; fi++){
+        // how many crops to draw
+        unsigned int plantedCount = fields[fi].planted;
+        unsigned int aliveCount = fields[fi].alive;
+        // prepare field dithering
+        unsigned int fSize = fields[fi].width * fields[fi].height * 16;
+        for(unsigned int i=0; i<fSize; i++){
+            if(i<plantedCount){
+                fLayout[i] = i;
+            } else {
+                fLayout[i] = 0xffff;
+            }
+        }
+        // seed the generator to repeat the same patterns
+        srand(fields[fi].rseed);
+        for(unsigned int i=0; i<plantedCount; i++){
+            unsigned int rnd = lmul16ux(plantedCount, rand());
+            unsigned int tmp = fLayout[rnd];
+            fLayout[rnd] = fLayout[i];
+            fLayout[i] = tmp;
+        }
+        // plant & stage to draw, 
+        char plant = CROPS_CHAR + 4*fields[fi].plantId + 3-fields[fi].stage;
+        // reset fLayout index
+        int i = 0;
+        for(char fy=0; fy<fields[fi].height; fy++){
+            // Tile Y
+            for(char ty=0; ty<4; ty++){
+                // Field X
+                for(char fx=0; fx<fields[fi].width; fx++){
+                    // set pointer to current X tile, Y row
+                    char * field = fieldPointer + fx*16 + fy*fields[fi].width*16;
+                    // Tile X
+                    for(char tx=0; tx<4; tx++){
+                        if(fLayout[i] < aliveCount){
+                            field[tx+4*ty] = plant;
+                        } else {
+                            field[tx+4*ty] = GROUND_CHAR;
+                        } 
+                        i++;
+                    }
+                }
+            }
+        }
+        fieldPointer += fields[fi].width*fields[fi].height*16;
+    }
 }
 
 // Main game loop, entered every VSYNC

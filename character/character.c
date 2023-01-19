@@ -19,14 +19,15 @@ static void _setCharacterToSlot(char charIdx, char charSlot){
 }
 
 void initCharacterList(){
-    static const struct CharacterStruct ch0 = {TXT_IDX_CHAR_1_STORY, TXT_IDX_CHAR_1_NAME, 100, 100, 100, SPR_PORTRAIT01, {3,3,3}, {3,3,4,3}, {1,2,3,4}, NO_SLOT, false};
-    static const struct CharacterStruct ch1 = {TXT_IDX_CHAR_2_STORY, TXT_IDX_CHAR_2_NAME, 100, 100, 100, SPR_PORTRAIT02, {2,3,2}, {2,6,1,1}, {3,3,3,3}, NO_SLOT, false};
-    static const struct CharacterStruct ch2 = {TXT_IDX_CHAR_3_STORY, TXT_IDX_CHAR_3_NAME, 100, 100, 100, SPR_PORTRAIT03, {4,3,4}, {1,1,1,7}, {3,3,3,3}, NO_SLOT, false};
-    static const struct CharacterStruct ch3 = {TXT_IDX_CHAR_4_STORY, TXT_IDX_CHAR_4_NAME, 100, 100, 100, SPR_PORTRAIT04, {3,3,4}, {6,2,1,1}, {3,3,3,3}, NO_SLOT, false};
-    allCharacters[0] = ch0;
-    allCharacters[1] = ch1;
-    allCharacters[2] = ch2;
-    allCharacters[3] = ch3;
+    static const struct CharacterStruct initialChars[CHARACTER_COUNT] = {
+        {TXT_IDX_CHAR_1_STORY, TXT_IDX_CHAR_1_NAME, 100, 100, 100, SPR_PORTRAIT01, {3,3,3}, {3,3,4,3}, {1,2,3,4}, NO_SLOT, false},
+        {TXT_IDX_CHAR_2_STORY, TXT_IDX_CHAR_2_NAME, 100, 100, 100, SPR_PORTRAIT02, {2,3,2}, {2,6,1,1}, {3,3,3,3}, NO_SLOT, false},
+        {TXT_IDX_CHAR_3_STORY, TXT_IDX_CHAR_3_NAME, 100, 100, 100, SPR_PORTRAIT03, {4,3,4}, {1,1,1,7}, {3,3,3,3}, NO_SLOT, false},
+        {TXT_IDX_CHAR_4_STORY, TXT_IDX_CHAR_4_NAME, 100, 100, 100, SPR_PORTRAIT04, {3,3,4}, {6,2,1,1}, {3,3,3,3}, NO_SLOT, false}
+    };
+    for(char i=0; i<CHARACTER_COUNT; i++){
+        allCharacters[i] = initialChars[i];
+    }
 
     _setCharacterToSlot(0, 0);
     _setCharacterToSlot(NO_CHARACTER, 1);
