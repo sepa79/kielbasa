@@ -53,8 +53,10 @@ struct FieldStruct {
     unsigned int grown;
     // growth factor calculated at the end of the 1st stage
     unsigned int gFactor;
-    // how much has rippened in stage 3
+    // how much has rippened in stage 3, percent
     unsigned int ready;
+    // used to show nicely how much is left during reaping
+    unsigned int reaped;
     // timer till the end of current stage (days)
     char timer;
 };

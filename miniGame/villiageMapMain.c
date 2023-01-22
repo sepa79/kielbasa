@@ -121,8 +121,7 @@ static void buildRamTiles(void){
     // for showing crops die in nice ways
     // Field Y
     char * fieldPointer = FIELD_START;
-    for(char fi=0; fi<1; fi++){
-    // for(char fi=0; fi<FIELDS_COUNT; fi++){
+    for(char fi=0; fi<FIELDS_COUNT; fi++){
         // how many crops to draw
         unsigned int plantedCount = fields[fi].planted;
         unsigned int aliveCount = fields[fi].alive;
@@ -148,8 +147,18 @@ static void buildRamTiles(void){
         // stages start at 2 for planting, but above 5 its just tasks, so stop there
         if(fields[fi].stage < 5){
             plant += 5-fields[fi].stage;
+        } else {
+            // stage 5 has special needs - we have leave the used squares in their random positions,
+            // but sort them so that reaping process is in sensible order
+            unsigned int newFieldOrder = aliveCount;
+            for(unsigned int i=0; i<plantedCount; i++){
+                if(fLayout[i] < aliveCount){
+                    fLayout[i] = newFieldOrder;
+                    newFieldOrder--;
+                }
+            }
+            aliveCount = aliveCount - fields[fi].reaped;
         }
-
         // reset fLayout index
         int i = 0;
         for(char fy=0; fy<fields[fi].height; fy++){

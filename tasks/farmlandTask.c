@@ -170,8 +170,8 @@ void reapFieldTask(char taskId){
             decEnergyLevel(charIdx, energyNeeded);
             // process task
             fields[fieldId].grown -= partDone;
-            // decrease Alive count
-            fields[fieldId].alive = ldiv16u(fields[fieldId].grown, fields[fieldId].gFactor);
+            // increase Reaped count
+            fields[fieldId].reaped = fields[fieldId].alive - ldiv16u(fields[fieldId].grown, fields[fieldId].gFactor);
 
             // is the whole field done now?
             if(fields[fieldId].grown == 0) {
