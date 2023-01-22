@@ -117,10 +117,10 @@ enum TEXT_INDEXES {
 static const char TXT_TASK_EMPTY_NAME[] = {0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
 //     "common": "                  "
 static const char TXT_TASK_EMPTY_DESCRIPTION[] = {0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
-//     "common": "<"
-static const char TXT_MENU_FARMLAND1[] = {0x3c, 0x00};
-//     "common": ">"
-static const char TXT_MENU_FARMLAND2[] = {0x3e, 0x00};
+//     "common": "À"
+static const char TXT_MENU_FARMLAND1[] = {0x1c, 0x00};
+//     "common": "÷"
+static const char TXT_MENU_FARMLAND2[] = {0x77, 0x00};
 //     "common": "["
 static const char TXT_MENU_FARMLAND3[] = {0x1b, 0x00};
 //     "common": "]"

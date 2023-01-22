@@ -479,8 +479,8 @@ const struct MenuOption FARMLAND_MENU[] = {
     { TXT_IDX_MENU_FARMLAND3, ':', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_previousPlant, 0, 12+10, 2},
     { TXT_IDX_MENU_FARMLAND4, ';', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_nextPlant, 0, 12+10+11, 2},
     { TXT_IDX_MENU_FARMLAND5, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_sowPlant, 0, 1, 3},
-    { TXT_IDX_MENU_FARMLAND6, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_maintainPlant, 0, 11, 3},
-    { TXT_IDX_MENU_FARMLAND7, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_reapPlant, 0, 21, 3},
+    // { TXT_IDX_MENU_FARMLAND6, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_maintainPlant, 0, 11, 3},
+    { TXT_IDX_MENU_FARMLAND7, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_reapPlant, 0, 21, 3},
     // standard navigation
     { TXT_IDX_MENU_FARMLAND1, 'w', SCREEN_SPLIT_MC_TXT, UI_U+UI_HIDE, &_previousField, 0, 7, 2},
     { TXT_IDX_MENU_FARMLAND2, 's', SCREEN_SPLIT_MC_TXT, UI_D+UI_HIDE, &_nextField, 0, 9, 2},
@@ -497,8 +497,13 @@ static void _menuHandler(void){
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);
     cwin_clear(&cw);
-    
+
     displayMenu(FARMLAND_MENU);
+
+    // print arrows up/down
+    char str[4] = {0x1e, 0x20, 0x75, 0x00};
+    cwin_putat_string_raw(&cw, 7, 2, str, VCOL_MED_GREY);
+
     _showMenuDetails();
     _updateFieldView();
 }

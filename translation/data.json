@@ -180,8 +180,9 @@
       },
       {
         "id": "MENU_OPTIONS_MSX_ON_OFF",
-        "pl": "1 Muzyka on/off",
-        "en": "1 Music on/off"
+        "menu_opt": "1",
+        "pl": " Muzyka on/off",
+        "en": " Music on/off"
       },
       {
         "id": "LOG_MENU_HEADER",
@@ -289,11 +290,11 @@
       },
       {
         "id": "MENU_FARMLAND1",
-        "common": "<"
+        "common": "À"
       },
       {
         "id": "MENU_FARMLAND2",
-        "common": ">"
+        "common": "÷"
       },
       {
         "id": "MENU_FARMLAND3",
@@ -317,7 +318,7 @@
       },
       {
         "id": "MENU_FARMLAND7",
-        "menu_opt": "3",
+        "menu_opt": "2",
         "pl": "Zbiory",
         "en": "Reap"
       },
