@@ -342,17 +342,17 @@
       {
         "id": "TASK_FARMLAND_FARM",
         "pl": "Uprawa  ",
-        "en": "Farm"
+        "en": "Farm    "
       },
       {
         "id": "TASK_FARMLAND_CARE",
         "pl": "Opieka  ",
-        "en": "Care"
+        "en": "Care    "
       },
       {
         "id": "TASK_FARMLAND_REAP",
         "pl": "Zbiory  ",
-        "en": "Reap"
+        "en": "Reap    "
       },
       {
         "id": "TASK_DSC_FARMLAND_FIELD",
@@ -380,6 +380,16 @@
         "en": "corn"
       },
       {
+        "id": "TASK_KITCHEN",
+        "pl": "Kuchnia ",
+        "en": "Kitchen "
+      },
+      {
+        "id": "TASK_DSC_KITCHEN_BAKE_BREAD",
+        "pl": "Upiecz chleb",
+        "en": "Bake bread"
+      },
+      {
         "id": "MENU_PIGPEN1",
         "menu_opt": "1",
         "pl": "Karmienie",
@@ -400,20 +410,24 @@
       {
         "id": "MENU_KITCHEN1",
         "menu_opt": "1",
-        "pl": "Przepisy",
-        "en": "Recipes"
+        "pl": "Upiecz chleb",
+        "en": "Bake bread"
       },
       {
         "id": "MENU_KITCHEN2",
         "menu_opt": "2",
-        "pl": "Sprzątanie",
-        "en": "Cleanup"
+        "pl": "Piecz chleb codziennie",
+        "en": "Bake bread daily"
       },
       {
-        "id": "MENU_KITCHEN3",
-        "menu_opt": "3",
-        "pl": "Przebudowa",
-        "en": "Upgrade"
+        "id": "MENU_KITCHEN2_ON",
+        "pl": "Włączone",
+        "en": "On"
+      },
+      {
+        "id": "MENU_KITCHEN2_OFF",
+        "pl": "Wyłączone",
+        "en": "Off"
       },
       {
         "id": "MENU_SHOPOUT1",

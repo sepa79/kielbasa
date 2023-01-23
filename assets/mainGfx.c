@@ -35,7 +35,7 @@ __export const struct SPRITES SpriteResources = {{
 #pragma data ( mainGfxAux )
 
 __export const struct AUX_GFX AuxResources = {{
-    #embed 0xffff 16 "assets/sprites/taskIcons.spd"
+    #embed 0xffff 20 "assets/sprites/taskIcons.spd"
 },{
     #embed 0xffff 20 "assets/sprites/faces.spd"
 },{

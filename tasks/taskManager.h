@@ -42,13 +42,13 @@ struct Task {
     void (*codeRef)(byte);
 
     // Short name displayed on screen
-    byte nameIdx;
-    byte desc[19];
-    byte params[TASK_PARAMS_SIZE];
+    char nameIdx;
+    char desc[19];
+    char params[TASK_PARAMS_SIZE];
 
-    byte reqType;
+    char reqType;
     const char * icon;
-    byte status;
+    char status;
 };
 
 //-----------------------------------------------------------------------------------------

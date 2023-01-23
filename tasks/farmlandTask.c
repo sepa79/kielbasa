@@ -7,9 +7,9 @@
 
 // modifier values, make sure stat is -1'ed so that '3' means middle value is chosen
 // substract 10 from it.
-const char priModifierTable[5] = {0, 5, 10, 15, 20};
-const char secModifierTable[5] = {2, 6, 10, 14, 18};
-const char terModifierTable[5] = {4, 8, 10, 12, 16};
+static const char priModifierTable[5] = {0, 5, 10, 15, 20};
+static const char secModifierTable[5] = {2, 6, 10, 14, 18};
+static const char terModifierTable[5] = {4, 8, 10, 12, 16};
 
 void sowFieldTask(char taskId){
     LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_ENTRY;

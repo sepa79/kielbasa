@@ -12,6 +12,7 @@
 #define FOOD_CANNED_MEAT 2
 #define FOOD_SOUSAGE 3
 
+
 struct FOOD_ITEM {
     char * nameIdx;
     char food;
@@ -22,6 +23,8 @@ struct FOOD_ITEM {
 };
 
 extern char kit_storage[FOOD_ITEMS_COUNT];
+// maybe later some fridge upgrades?
+extern char kit_maxStorage;
 
 //-----------------------------------------------------------------------------------------
 #pragma code ( gameInitRAMCode )
@@ -29,6 +32,12 @@ extern char kit_storage[FOOD_ITEMS_COUNT];
 //-----------------------------------------------------------------------------------------
 
 void initKitchen();
+//-----------------------------------------------------------------------------------------
+#pragma code ( ticksCode )
+#pragma data ( data )
+//-----------------------------------------------------------------------------------------
+
+void kitchenTick();
 
 //-----------------------------------------------------------------------------------------
 #pragma code ( code )

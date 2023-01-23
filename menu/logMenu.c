@@ -107,6 +107,13 @@ static void _prepareTaskLogData(){
             sprintf(_str, p"No seeds - finished Task [""%u"p"] char[""%u"p"] status [""%u"p"] field [""%u"p"] plant [""%u"p"] ", currentLogMsg.LOG_DATA_TASK_ID, currentLogMsg.LOG_DATA_TASK_WORKER, currentLogMsg.LOG_DATA_TASK_STATUS,
                 currentLogMsg.LOG_DATA_TASK_PARAMS2, currentLogMsg.LOG_DATA_TASK_PARAMS1);
             break;
+
+        // kitchen tasks
+        case LOG_DATA_CONTEXT_TASK_KITCHEN_BAKE_BREAD:
+            sprintf(_str, p"Processing Bake Bread Task [""%u"p"] char[""%u"p"] status [""%u"p"]", currentLogMsg.LOG_DATA_TASK_ID, currentLogMsg.LOG_DATA_TASK_WORKER, currentLogMsg.LOG_DATA_TASK_STATUS);
+            break;
+
+
     }
 }
 

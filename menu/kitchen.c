@@ -7,8 +7,10 @@
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
 #include <engine/uiHandler.h>
+#include <tasks/taskManager.h>
+#include <character/character.h>
 #include <tick/kitchenTick.h>
-
+#include <tasks/kitchenTask.h>
 
 enum FARMLAND_SPRITE_VIC_BANKS {
     SPR_BANK_FOOD_1=0xbc,
@@ -103,9 +105,24 @@ static void _updateView(){
     _updateSprite(kit_storage[FOOD_SOUSAGE]);
 }
 
-static void _shMenu1(){
-    updateStatusBar("   kitchen menu, opcja 1");
+static void _kitchenBakeBread(){
+    // create Task
+    struct Task task;
+    // "Bake Bread"
+    sprintf(task.desc, "%s",TXT[TXT_IDX_TASK_DSC_KITCHEN_BAKE_BREAD]);
+    task.codeRef   = &bakeBreadTask;
+    task.nameIdx   = TXT_IDX_TASK_KITCHEN;
+    task.params[0] = 0;
+    task.params[1] = 0;
+    task.params[2] = 0;
+    task.params[3] = 0;
+    task.params[4] = 0;
+    task.reqType   = SKILL_COOKING;
+    task.icon      = SPR_TASK_COOK;
+    task.status    = TASK_STATUS_NEW;
+    addTask(&task);
 }
+
 static void _shMenu2(){
     updateStatusBar("   kitchen menu, opcja 2");
 }
@@ -114,9 +131,8 @@ static void _shMenu3(){
 }
 
 const struct MenuOption KITCHEN_MENU[] = {
-    { TXT_IDX_MENU_KITCHEN1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_shMenu1, 0, 1, 1},
+    { TXT_IDX_MENU_KITCHEN1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenBakeBread, 0, 1, 1},
     { TXT_IDX_MENU_KITCHEN2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_shMenu2, 0, 1, 2},
-    { TXT_IDX_MENU_KITCHEN3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_shMenu3, 0, 1, 3},
     { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
     END_MENU_CHOICES
 };

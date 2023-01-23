@@ -12,6 +12,7 @@
 #pragma data ( data )
 
 char kit_storage[FOOD_ITEMS_COUNT] = {0};
+char kit_maxStorage = 10;
 
 // Switching code generation back to shared section
 #pragma code ( code )
@@ -19,7 +20,7 @@ char kit_storage[FOOD_ITEMS_COUNT] = {0};
 
 void initKitchen(){
     kit_storage[FOOD_SHOP_BREAD]  = 0;
-    kit_storage[FOOD_HOME_BREAD]  = 100;
-    kit_storage[FOOD_CANNED_MEAT] = 255;
+    kit_storage[FOOD_HOME_BREAD]  = 0;
+    kit_storage[FOOD_CANNED_MEAT] = 0;
     kit_storage[FOOD_SOUSAGE]     = 0;
 }
