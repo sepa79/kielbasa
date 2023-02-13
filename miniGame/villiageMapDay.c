@@ -25,7 +25,7 @@
 #define LIGHTMAP_DRAW_ROUTINE \
         {\
             char ci = ti[cx];\
-            if(ci >= 0x80){\
+            if(ci >= 0xa0){\
                 ci += DAY_CHAR_MAP;\
             }\
             cp[cx] = colorMap[DAY_COLOR_MAP][ci];\

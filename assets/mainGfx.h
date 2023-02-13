@@ -122,7 +122,7 @@ struct SPRITES {
 
 const struct AUX_GFX {
     // task icons
-    char TASK_ICONS[64*15];
+    char TASK_ICONS[64*16];
     // Portraits
     char PORTRAITS[64*4];
     // sprite fonts

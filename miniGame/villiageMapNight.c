@@ -25,7 +25,7 @@
             if(lightMap){\
                 --lightMap;\
                 cp[cx] = colorMap[lightMap][ci];\
-                if(ci >= 0x80){\
+                if(ci >= 0xa0){\
                     ci += lightMap;\
                 } \
             }\
