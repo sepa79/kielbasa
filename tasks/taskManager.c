@@ -31,6 +31,8 @@ const char * task_icon[TASK_ARRAY_SIZE];
 
 // helper variable, stores last free task entry to speed things up
 static char _nextFreeTaskRef = 0;
+// helper, everytime we unassignTask but do not reset icon it gets increased
+static char _pendingIconResets = 0;
 
 //-----------------------------------------------------------------------------------------
 // In Init bank
@@ -124,8 +126,8 @@ static void _removeTaskByRef(char taskRefId){
     setTaskLogMsg(taskId);
     logger(LOG_INFO | LOG_MSG_TASK);
 
-    // remove worker
-    unassignTask(taskId);
+    // remove worker, leave the icon, it will be reset on next tick
+    finishTask(taskId);
 
     // wipe the task in task_ array (just the task_reqType + text fields is enough)
     task_reqType[taskId] = NO_TASK;
@@ -262,7 +264,7 @@ static void _assignTaskToWorker(char taskId, char charIdx) {
 // Called by callendar.c
 void tasksTick(){
     // no point going through the loop if there are no tasks
-    if(_nextFreeTaskRef == 0) {
+    if(_nextFreeTaskRef == 0 && !_pendingIconResets) {
         return;
     }
 
@@ -273,6 +275,11 @@ void tasksTick(){
         char charIdx = characterSlots[it];
         if(charIdx != NO_CHARACTER){
             if(!allCharacters[charIdx].busy){
+                // reset icon
+                setCharacterSlotIcon(charIdx, SPR_TASK_MIA);
+                if(_pendingIconResets) {
+                    _pendingIconResets--;
+                }
                 //check if he is not exhausted
                 if(allCharacters[charIdx].energy >= MIN_ENERGY_TO_CONTINUE)
                     freeWorkersCount++;
@@ -285,7 +292,7 @@ void tasksTick(){
     // cwin_putat_string_raw(&cw, 0, 10, str, VCOL_GREEN);
 
     // find a task for free workers
-    if(freeWorkersCount > 0){
+    if(freeWorkersCount > 0 && _nextFreeTaskRef){
         // iterate through prios starting at 1
         char prioIt = 1;
         do {
@@ -342,6 +349,8 @@ void tasksTick(){
 #pragma data ( data )
 //-----------------------------------------------------------------------------------------
 // Wrappers in RAM
+
+// Remove task means its gone (done most likely), won't be picked up again
 void removeTask(char taskId){
     char pbank = setBank(TASKS_BANK);
     _removeTask(taskId);
@@ -361,13 +370,26 @@ bool addTask(struct Task * task){
     return result;
 }
 
-// finds who was working on it, resets his icon, resets task_worker
-void unassignTask(char taskId){
+// Finds who was working on it, resets his icon, resets task_worker.
+// Unassign means task remains on queue to be picked up again.
+// As removal/unassign might happen at the end of the tick within the same hour it was picked up, the reset icon might not be desirable.
+// - We do not want to reset icon if task was done within an hour (as it would not be visible at all).
+// - We do want to reset icon if task was aborted (to indicate that it is not being worked on).
+void _unassignTask(char taskId, bool resetIcon){
     char charSlot = task_worker[taskId];
     if(charSlot != NO_SLOT){
         char charIdx = characterSlots[charSlot];
-        setCharacterSlotIcon(charIdx, SPR_TASK_MIA);
+        if(resetIcon){
+            setCharacterSlotIcon(charIdx, SPR_TASK_MIA);
+        }
         allCharacters[charIdx].busy = false;
         task_worker[taskId] = NO_SLOT;
     }
+}
+void finishTask(char taskId){
+    _pendingIconResets++;
+    _unassignTask(taskId, false);
+}
+void unassignTask(char taskId){
+    _unassignTask(taskId, true);
 }

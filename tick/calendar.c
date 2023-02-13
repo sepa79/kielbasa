@@ -225,16 +225,16 @@ void timeTick(){
     if(cal_dateHour > 20 || cal_dateHour < 5) {
         // eat, then sleep well my little redneck - change task sprite once only
         if(cal_dateHour == 21){
-            // setCharacterSlotIcon(0, SPR_TASK_EAT);
-            // setCharacterSlotIcon(1, SPR_TASK_EAT);
-            // setCharacterSlotIcon(2, SPR_TASK_EAT);
-            // setCharacterSlotIcon(3, SPR_TASK_EAT);
+            setCharacterSlotIcon(0, SPR_TASK_EAT);
+            setCharacterSlotIcon(1, SPR_TASK_EAT);
+            setCharacterSlotIcon(2, SPR_TASK_EAT);
+            setCharacterSlotIcon(3, SPR_TASK_EAT);
         }
         if(cal_dateHour == 22){
-            // setCharacterSlotIcon(0, SPR_TASK_SLEEP);
-            // setCharacterSlotIcon(1, SPR_TASK_SLEEP);
-            // setCharacterSlotIcon(2, SPR_TASK_SLEEP);
-            // setCharacterSlotIcon(3, SPR_TASK_SLEEP);
+            setCharacterSlotIcon(0, SPR_TASK_SLEEP);
+            setCharacterSlotIcon(1, SPR_TASK_SLEEP);
+            setCharacterSlotIcon(2, SPR_TASK_SLEEP);
+            setCharacterSlotIcon(3, SPR_TASK_SLEEP);
 
             // reset busy stats
             for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
@@ -248,10 +248,10 @@ void timeTick(){
     } else {
         // temp - tasksTick should do it later
         if(cal_dateHour == 5){
-            // setCharacterSlotIcon(0, SPR_TASK_MIA);
-            // setCharacterSlotIcon(1, SPR_TASK_MIA);
-            // setCharacterSlotIcon(2, SPR_TASK_MIA);
-            // setCharacterSlotIcon(3, SPR_TASK_MIA);
+            setCharacterSlotIcon(0, SPR_TASK_MIA);
+            setCharacterSlotIcon(1, SPR_TASK_MIA);
+            setCharacterSlotIcon(2, SPR_TASK_MIA);
+            setCharacterSlotIcon(3, SPR_TASK_MIA);
         }
         // tasks are done during daytime only
         tasksTick();
