@@ -48,11 +48,11 @@ static const char _chars[] = {
 #pragma data ( villiageMapData )
 
 static const char _map[] = {
-    #embed ctm_map8     "assets/charGfx/VilliageMapHiresMain16x.ctm"
+    #embed ctm_map8     "assets/charGfx/VilliageMapHiresMain16xWood.ctm"
 };
 
 const char romTiles[] = {
-    #embed ctm_tiles8   "assets/charGfx/VilliageMapHiresMain16x.ctm"
+    #embed ctm_tiles8   "assets/charGfx/VilliageMapHiresMain16xWood.ctm"
 };
 
 typedef char char1024[1024];
