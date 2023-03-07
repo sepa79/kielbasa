@@ -18,6 +18,8 @@
 #define IRQ_RASTER_TOP_UI_SPRITES 0x01
 
 bool map_2ndScreen = true;
+// used to check if move to given tile is possible
+char * mapScreen;
 
 static byte _scrollIt = 7;
 static byte _emptyStatus[] = {0xff, 0};
@@ -129,8 +131,10 @@ __interrupt static void IRQ_topHiresTxtScreen() {
     cia2.pra = dd00_gfx1;
     if(map_2ndScreen){
         vic.memptr = d018_txt2_3;
+        mapScreen = GFX_1_SCR3;
     } else {
         vic.memptr = d018_txt2_2;
+        mapScreen = GFX_1_SCR2;
     }
 
     // tick the game

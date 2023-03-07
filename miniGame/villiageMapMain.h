@@ -38,6 +38,9 @@ extern const char * romTiles;
 extern bool isMapDay;
 extern char moonLight;
 
+// main char attribs, day light and materials (walkable, water etc)
+extern const char charAttribs[];
+
 // load and init routines, from MENU_BANK_MAP_VILLIAGE_1
 void villiageMapScreenInit();
 void villiageMapSpriteLoader();

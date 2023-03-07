@@ -33,7 +33,7 @@ static const char _charAttribsL1[] = {
 static const char _charAttribsL2[] = {
     #embed ctm_attr1    "assets/charGfx/HiresVilliage_L2.ctm"
 };
-static const char _charAttribsL3[] = {
+extern const char charAttribs[] = {
     #embed ctm_attr1    "assets/charGfx/HiresVilliage_L3.ctm"
 };
 static const char _charAttribsL4[] = {
@@ -48,7 +48,8 @@ static const char _chars[] = {
 #pragma data ( villiageMapData )
 
 static const char _map[] = {
-    #embed ctm_map8     "assets/charGfx/VilliageMapHiresMain16xWood.ctm"
+    // #embed ctm_map8     "assets/charGfx/VilliageMapHiresMain16xWood.ctm"
+    #embed "assets/charGfx/VilliageMapHiresMain16xWood_-_8bpc_64x64_Map_-_grass_16_pion_poziom_slash_backslash.bin"
 };
 
 const char romTiles[] = {
@@ -85,7 +86,7 @@ static void _mapInit(){
     memcpy(GFX_1_FNT2, _chars, sizeof(_chars));
     memcpy(colorMap[0], _charAttribsL1, 0x100);
     memcpy(colorMap[1], _charAttribsL2, 0x100);
-    memcpy(colorMap[2], _charAttribsL3, 0x100);
+    memcpy(colorMap[2], charAttribs, 0x100);
     memcpy(colorMap[3], _charAttribsL4, 0x100);
     // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
     mmap_set(MMAP_ROM);

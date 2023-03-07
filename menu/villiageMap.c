@@ -13,6 +13,9 @@
 #include <engine/uiHandler.h>
 #include <miniGame/villiageMapMain.h>
 
+#include <assets/mainGfx.h>
+#include <c64/memmap.h>
+
 // Sections and regions in villiageMapMain.h
 
 // ---------------------------------------------------------------------------------------------
@@ -37,25 +40,64 @@ __interrupt static void _villiageMapSpriteNoop(){
 #pragma code ( villiageMapRAMCode )
 #pragma data ( villiageMapRAMData )
 
+#define WALKABLE 0b00010000
 static void _mapUp(){
-    if (vMapY > 0)
-        vMapY--;
-    villiageMapDraw(WALK_UP);
+    // check if tile above us is walkable
+    mmap_set(MMAP_RAM);
+    char mapCharAttr = charAttribs[mapScreen[40*10+19]];
+    bool canWalk = mapCharAttr & WALKABLE;
+    mmap_set(MMAP_ROM);
+    // sprBankPointer = SPR_CHARACTER_BAR3;
+    // byte str[4];
+    // sprintf(str, "%03u", canWalk);
+    // copyCharToSprite(str[0], 0, 0);
+    // copyCharToSprite(str[1], 1, 0);
+    // copyCharToSprite(str[2], 2, 0);
+
+    if(canWalk){
+        if (vMapY > 0)
+            vMapY--;
+        villiageMapDraw(WALK_UP);
+    }
 }
 static void _mapDown(){
-    if (vMapY < V_MAP_SIZE_Y*3-1)
-        vMapY++;
-    villiageMapDraw(WALK_DOWN);
+    // check if tile below us is walkable
+    mmap_set(MMAP_RAM);
+    char mapCharAttr = charAttribs[mapScreen[40*12+19]];
+    bool canWalk = mapCharAttr & WALKABLE;
+    mmap_set(MMAP_ROM);
+
+    if(canWalk){
+        if (vMapY < V_MAP_SIZE_Y*3-1)
+            vMapY++;
+        villiageMapDraw(WALK_DOWN);
+    }
 }
 static void _mapLeft(){
-    if (vMapX > 0)
-        vMapX--;
-    villiageMapDraw(WALK_LEFT);
+    // check if tile to the left is walkable
+    mmap_set(MMAP_RAM);
+    char mapCharAttr = charAttribs[mapScreen[40*11+18]];
+    bool canWalk = mapCharAttr & WALKABLE;
+    mmap_set(MMAP_ROM);
+
+    if(canWalk){
+        if (vMapX > 0)
+            vMapX--;
+        villiageMapDraw(WALK_LEFT);
+    }
 }
 static void _mapRight(){
-    if (vMapX < V_MAP_SIZE_X*3-2*4)
-        vMapX++;
-    villiageMapDraw(WALK_RIGHT);
+    // check if tile to the right is walkable
+    mmap_set(MMAP_RAM);
+    char mapCharAttr = charAttribs[mapScreen[40*11+20]];
+    bool canWalk = mapCharAttr & WALKABLE;
+    mmap_set(MMAP_ROM);
+
+    if(canWalk){
+        if (vMapX < V_MAP_SIZE_X*3-2*4)
+            vMapX++;
+        villiageMapDraw(WALK_RIGHT);
+    }
 }
 static void _mapFire(){
     isMapDay = !isMapDay;
