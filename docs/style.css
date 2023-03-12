@@ -1,3 +1,32 @@
+@font-face {
+    font-family: "C64";
+    src: url("fonts/C64_Pro_Mono-STYLE.ttf");
+}
+
 body{
-background-color: #252525;
+    background-color: #7c71da;
+    margin: 96px;
+    font-family: "C64";
+    color: #7c71da;
+    user-select: none;
+    line-height: 100%;
+}
+
+#insideBody{
+    background-color: #3e32a2;
+    position: absolute;
+    width: calc(100% - 200px);
+    height: calc(100% - 200px);
+}
+
+#titleGFX{
+    
+}
+
+#typing{
+    display: inline;
+}
+
+#flash{
+    display: inline;
 }
