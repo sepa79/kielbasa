@@ -42,11 +42,13 @@ __interrupt static void _villiageMapSpriteNoop(){
 
 #define WALKABLE 0b00010000
 static void _mapUp(){
-    // check if tile above us is walkable
+    // check if tiles above us are walkable
     mmap_set(MMAP_RAM);
-    char mapCharAttr = charAttribs[mapScreen[40*10+19]];
-    bool canWalk = mapCharAttr & WALKABLE;
+    char mapCharAttr1 = ((volatile const char *)&charAttribs)[mapScreen[40*10+19]];
+    char mapCharAttr2 = ((volatile const char *)&charAttribs)[mapScreen[40*10+20]];
+    bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
     mmap_set(MMAP_ROM);
+    
     // sprBankPointer = SPR_CHARACTER_BAR3;
     // byte str[4];
     // sprintf(str, "%03u", canWalk);
@@ -63,7 +65,7 @@ static void _mapUp(){
 static void _mapDown(){
     // check if tile below us is walkable
     mmap_set(MMAP_RAM);
-    char mapCharAttr = charAttribs[mapScreen[40*12+19]];
+    char mapCharAttr = charAttribs[mapScreen[40*13+19]];
     bool canWalk = mapCharAttr & WALKABLE;
     mmap_set(MMAP_ROM);
 
@@ -89,7 +91,7 @@ static void _mapLeft(){
 static void _mapRight(){
     // check if tile to the right is walkable
     mmap_set(MMAP_RAM);
-    char mapCharAttr = charAttribs[mapScreen[40*11+20]];
+    char mapCharAttr = charAttribs[mapScreen[40*11+21]];
     bool canWalk = mapCharAttr & WALKABLE;
     mmap_set(MMAP_ROM);
 

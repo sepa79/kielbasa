@@ -33,14 +33,14 @@ static const char _charAttribsL1[] = {
 static const char _charAttribsL2[] = {
     #embed ctm_attr1    "assets/charGfx/HiresVilliage_L2.ctm"
 };
-extern const char charAttribs[] = {
+const char charAttribs[] = {
     #embed ctm_attr1    "assets/charGfx/HiresVilliage_L3.ctm"
 };
 static const char _charAttribsL4[] = {
     #embed ctm_attr1    "assets/charGfx/HiresVilliage_L4.ctm"
 };
 static const char _chars[] = {
-    #embed ctm_chars    "assets/charGfx/HiresVilliage_L1.ctm"
+    #embed ctm_chars    "assets/charGfx/HiresVilliage_L3.ctm"
 };
 
 
@@ -223,15 +223,24 @@ static void _drawPlayerAndColors(){
     while(gms_framePos != FRAME_MIDDLE){};
     // change buffer - it will be visible at next frame
     if(map_2ndScreen){
-        GFX_1_SCR2[40*11+19] = 0;
+        GFX_1_SCR2[40*11+19] = PLAYER_CHAR_0;
+        GFX_1_SCR2[40*11+20] = PLAYER_CHAR_1;
+        GFX_1_SCR2[40*12+19] = PLAYER_CHAR_2;
+        GFX_1_SCR2[40*12+20] = PLAYER_CHAR_3;
         map_2ndScreen = false;
     } else {
-        GFX_1_SCR3[40*11+19] = 0;
+        GFX_1_SCR3[40*11+19] = PLAYER_CHAR_0;
+        GFX_1_SCR3[40*11+20] = PLAYER_CHAR_1;
+        GFX_1_SCR3[40*12+19] = PLAYER_CHAR_2;
+        GFX_1_SCR3[40*12+20] = PLAYER_CHAR_3;
         map_2ndScreen = true;
     }
     _drawColors();
     // player color
-    COLOR_RAM[40*11+19] = VCOL_MED_GREY;
+    COLOR_RAM[40*11+19] = colorMap[2][PLAYER_CHAR_0];
+    COLOR_RAM[40*11+20] = colorMap[2][PLAYER_CHAR_1];
+    COLOR_RAM[40*12+19] = colorMap[2][PLAYER_CHAR_2];
+    COLOR_RAM[40*12+20] = colorMap[2][PLAYER_CHAR_3];
 }
 
 // ---------------------------------------------------------------------------------------------

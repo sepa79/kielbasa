@@ -197,7 +197,21 @@ static void _dayTick(){
     updateMenu();
 }
 
+static void _handleFoodConsumption(){
+    for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
+        // only check active chars
+        if(characterSlots[charSlot] != NO_CHARACTER){
+            allCharacters[characterSlots[charSlot]].food -= 1;
+            if(allCharacters[characterSlots[charSlot]].food == 0){
+                // game over, character died
+            }
+        }
+    }
+}
+
 void timeTick(){
+    _handleFoodConsumption();
+
     if(cal_dateHour < 23){
         updateHour(cal_dateHour+1);
         cal_dateHour++;

@@ -5,6 +5,11 @@
 #define V_MAP_SIZE_Y 64
 // first 0xXX tiles are fields, remap them to point to memory location where we got visualised fields
 #define RAM_TILES_COUNT 0x30
+// player character codes
+#define PLAYER_CHAR_0 0
+#define PLAYER_CHAR_1 1
+#define PLAYER_CHAR_2 16
+#define PLAYER_CHAR_3 17
 
 #pragma section( villiageMapLoaderData, 0 )
 #pragma section( villiageMapCode, 0 )
@@ -28,6 +33,14 @@ enum WalkDir {
     WALK_DOWN,
     WALK_LEFT,
     WALK_RIGHT
+};
+
+struct MapArea {
+    char startX;
+    char startY;
+    char endX;
+    char endY;
+    char menuBank;
 };
 
 typedef char char256[256];
