@@ -12,7 +12,7 @@ void splashScreen(bool turnOn, char stage) {
         VCOL_BLACK,
         VCOL_BLUE,
         VCOL_LT_BLUE,
-        VCOL_CYAN, 
+        VCOL_CYAN,
     
         VCOL_LT_GREY,
         VCOL_MED_GREY,

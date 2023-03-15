@@ -17,7 +17,11 @@
 #define IRQ_RASTER_BOTTOM_SCROLL_ETC 0xee
 #define IRQ_RASTER_TOP_UI_SPRITES 0x01
 
-bool map_2ndScreen = true;
+volatile bool map_2ndScreen = true;
+const char * fontCopySrc = nullptr;
+volatile char * fontCopyDst = GFX_1_FNT2;
+volatile bool fontCopyDone = true;
+
 // used to check if move to given tile is possible
 char * mapScreen;
 
@@ -36,7 +40,7 @@ byte currentScreenMode = 0;
 /* ================================================================================
 Play msx, if enabled
 ================================================================================ */
-void playMsx(){
+static void playMsx(){
     if(gms_enableMusic){
         byte _prevRomCfgPC = ((byte *)0x01)[0];
         __asm {
@@ -51,7 +55,7 @@ void playMsx(){
 /* ================================================================================
 Deal with joystick anims etc
 ================================================================================ */
-void joyUpdate(){
+static void joyUpdate(){
     // update joy cursor/read keyboard only if cursor is enabled
     if(joyCursor.enabled){
         _joy1Status = ((byte *)0xdc00)[1];
@@ -166,9 +170,41 @@ __interrupt static void IRQ_topMCTxtScreen() {
     // vic.color_border--;
 }
 
-// /* ================================================================================
-// Middle raster/split
-// ================================================================================ */
+__interrupt static void IRQ_topNoScreen() {
+    // vic.color_back++;
+    // vic.color_border++;
+    // screen off
+    vic.ctrl1 = VIC_CTRL1_BMM | VIC_CTRL1_RSEL | 3;
+
+    // indicate frame position
+    gms_framePos = FRAME_TOP;
+    if(!fontCopyDone) {
+        // ROM on, I/O off - as we will copy to RAM under I/O ports - IRQs must be off
+        mmap_set(0b00110011);
+        memcpy(fontCopyDst, fontCopySrc, 2*256);
+        fontCopyDst += 2*256;
+        fontCopySrc += 2*256;
+        if(fontCopyDst == GFX_1_FNT2+2048){
+            fontCopyDone = true;
+            fontCopyDst = GFX_1_FNT2;
+        }
+        // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
+        mmap_set(MMAP_ROM);
+    }
+    // vic.color_back--;
+    // vic.color_border--;
+}
+
+/* ================================================================================
+Middle raster/split
+================================================================================ */
+__interrupt static void IRQ_middleNoScreen() {
+    playMsx();
+
+    // indicate frame position
+    gms_framePos = FRAME_MIDDLE;
+}
+
 __interrupt static void IRQ_middleScreenMsx() {
     playMsx();
 
@@ -364,6 +400,22 @@ void initRasterIRQ_HiresTxtMode(){
     rirq_sort();
 }
 
+// main init raster must be called first, this one just remaps some IRQs
+void initRasterIRQ_Transition(){
+    // Top - switch to txt, play music
+    rirq_build(&rirqc_topScreen, 1);
+    rirq_call(&rirqc_topScreen, 0, IRQ_topNoScreen);
+    rirq_set(1, IRQ_RASTER_TOP_MC_SCREEN, &rirqc_topScreen);
+
+    // Middle - play msx
+    rirq_build(&rirqc_middleScreen, 1);
+    rirq_call(&rirqc_middleScreen, 0, IRQ_middleNoScreen);
+    rirq_set(2, IRQ_RASTER_MIDDLE_TXT_SCREEN, &rirqc_middleScreen);
+
+    // sort the raster IRQs
+    rirq_sort();
+}
+
 // main IRQ routine
 void initRasterIRQ_SplitMCTxt(){
     // Top
@@ -458,6 +510,9 @@ void switchScreenTo(byte screenMode){
                 break;
             case SCREEN_HIRES_TXT:
                 initRasterIRQ_HiresTxtMode();
+                break;
+            case SCREEN_TRANSITION:
+                initRasterIRQ_Transition();
                 break;
         }
     }

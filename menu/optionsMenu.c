@@ -6,6 +6,7 @@
 #include <c64/memmap.h>
 
 #include <menu/menuSystem.h>
+#include <menu/optionsMenu.h>
 #include <translation/common.h>
 #include <assets/assetsSettings.h>
 #include <engine/easyFlashBanks.h>
@@ -15,17 +16,6 @@
 const byte LANGUAGE_BANKS[MAX_LANG+1] = {TRANSLATION_PL_BANK, TRANSLATION_EN_BANK};
 static byte _currentLang = 1;
 static byte _currentSong = 2;
-
-struct Song {
-    /* Text to display */
-    const char* textIdx;
-    /* SID bank */
-    byte bank;
-    /* Song index in SID */
-    byte songIdx;
-    /* SID index in the bank */
-    byte sidIdx;
-};
 
 // TODO: toss somewhere into ROM - the main menu is in RAM so music menu might one day need its own bank
 const char TXT_PLAYLIST_GM_NAME[] = s" Kielbasa music";
@@ -230,6 +220,10 @@ void playNextRadioSong(){
     if(_currentRadioSong >= RADIO_PLAYLIST_SIZE)
         _currentRadioSong = 0;
     _playMsx(&RADIO_PLAYLIST[_currentRadioSong]);
+}
+
+void playSong(char song){
+    _playMsx(&PLAYLIST[song]);
 }
 
 const struct MenuOption MUSIC_MENU[] = {

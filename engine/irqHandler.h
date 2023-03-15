@@ -1,13 +1,13 @@
 #ifndef IRQ_HANDLER_H
 #define IRQ_HANDLER_H
 
+// scroll text pointer
 extern const char * SB_TEXT;
-// // stores screen mode on change
-// extern char currentScreenMode;
-// // used by F1-F7 menus to store previous screen mode, to be able to change back
-// extern char previousScreenMode;
 
-extern bool map_2ndScreen;
+// used by villiage map, for double buffering and loading fonts seamlesly
+extern volatile bool map_2ndScreen;
+extern const char * fontCopySrc;
+extern volatile bool fontCopyDone;
 
 enum SCREEN_MODE {
 // Restore the screen using 'previousScreenMode'
@@ -20,6 +20,8 @@ enum SCREEN_MODE {
     SCREEN_MC_TXT,
 // Partial IRQ init - full Hires (normal) TXT mode, with regular UI on top & bottom, MSX, no sprite handlers.
     SCREEN_HIRES_TXT,
+// Changing screen modes - keep screen off
+    SCREEN_TRANSITION,
     SCREEN_PIGSLE_COMMAND,
 };
 

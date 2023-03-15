@@ -20,7 +20,6 @@
 // ---------------------------------------------------------------------------------------------
 
 #pragma data ( villiageMapGfx1 )
-
 // L0 is moonlight, +0 chars, dark grey/all black
 // L1 is darker, +0 chars, grey-ish
 // L2 is dark, +1 chars, dimmer colors
@@ -33,7 +32,7 @@ static const char _charAttribsL1[] = {
 static const char _charAttribsL2[] = {
     #embed ctm_attr1    "assets/charGfx/HiresVilliage_L2.ctm"
 };
-const char charAttribs[] = {
+static const char _charAttribsL3[] = {
     #embed ctm_attr1    "assets/charGfx/HiresVilliage_L3.ctm"
 };
 static const char _charAttribsL4[] = {
@@ -81,19 +80,15 @@ char256 * const colorMap = (char256 *)0xcc00;
 
 // Copy chars and lightmaps, any sprites etc
 static void _mapInit(){
-    // ROM on, I/O off - as we will copy to RAM under I/O ports
-    mmap_set(0b00110011);
-    memcpy(GFX_1_FNT2, _chars, sizeof(_chars));
+    // ROM on, I/O off - as we will copy to RAM under I/O ports - IRQs must be off
+    // mmap_set(0b00110011);
+    // memcpy(GFX_1_FNT2, _chars, sizeof(_chars));
+    // // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
+    // mmap_set(MMAP_ROM);
     memcpy(colorMap[0], _charAttribsL1, 0x100);
     memcpy(colorMap[1], _charAttribsL2, 0x100);
-    memcpy(colorMap[2], charAttribs, 0x100);
+    memcpy(colorMap[2], _charAttribsL3, 0x100);
     memcpy(colorMap[3], _charAttribsL4, 0x100);
-    // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
-    mmap_set(MMAP_ROM);
-    vic.color_back = VCOL_BROWN;
-    vic.color_border = VCOL_BLACK;
-    vic.color_back1 = VCOL_DARK_GREY;
-    vic.color_back2 = VCOL_LT_GREY;
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -185,11 +180,6 @@ static void buildRamTiles(void){
     }
 }
 
-// Main game loop, entered every VSYNC
-void villiageMapGameLoop(){
-    // tiles_put4x4(_map, vMapX, vMapY);
-}
-
 static void _drawColors(){
     // color top of the screen, hoping to be just behind the raster
     // vic.color_border++;
@@ -256,6 +246,10 @@ bool isMapDay = true;
 
 void villiageMapScreenInit(void){
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
+    // set the pointer for chars to copy and indicate it needs to be done, SCREEN_TRANSITION IRQ handler will pick it up
+    fontCopySrc = _chars;
+    fontCopyDone = false;
+
     _mapInit();
     isMapDay = cal_isDay;
     setBank(pbank);
@@ -308,44 +302,26 @@ void villiageMapDraw(char dir){
 }
 
 void villiageMapInit(){
-    // could replace with simply changing screens
-    splashScreen(false, 1);
-    // stop IRQs and change to ours
-    rirq_stop();
+    // SCREEN_TRANSITION mode is on, so screen is black
 
-    // msx off
-    ((byte *)0xd418)[0] &= ~0xf;
-    // screen off, sprites off
-    // vic.ctrl1 = VIC_CTRL1_BMM | VIC_CTRL1_RSEL | 3;
-    vic.spr_enable = 0b00000000;
+    // // stop IRQs
+    // rirq_stop();
 
-    __asm {
-        // init music
-        lda #MSX_ROM
-        sta $01
-        lda #$04
-        jsr MSX_INIT
-    }
-    // if you use the mmap_trampoline() you have to call the mmap_set() at least once to init the shadow variable
-    mmap_set(MMAP_ROM);
-    // Activate trampoline
-    mmap_trampoline();
-    // Disable CIA interrupts, we do not want interference
-    // with our joystick interrupt
-    cia_init();
+    playSong(VILLIAGE_MAP_SONG);
+
     // clean 0xffff - so we don't have artefacts when we open borders
     ((char *)0xffff)[0] = 0;
-
     // Load GFX
     villiageMapScreenInit();
+    
+    // // start raster IRQ processing
+    // rirq_start();
     // villiageMapSpriteLoader();
     buildRamTiles();
-
-    splashScreen(false, 2);
-    // start raster IRQ processing
-    rirq_start();
 
     // draw map
     villiageMapDraw(WALK_UP);
 
+    // make screen visible
+    switchScreenTo(SCREEN_HIRES_TXT);
 }

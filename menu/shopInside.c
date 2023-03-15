@@ -68,35 +68,7 @@ void _goBackToPrvMenu(){
     // vic.color_back++;
     joyCursor.enabled = false;
 
-    if(gms_enableMusic) {
-        // set Main Music bank
-        char pbank = setBank(MUSIC_BANK);
-
-        // stop music
-        gms_enableMusic = false;
-        ((byte *)0xd418)[0] &= ~0xf;
-
-        // load different MSX file
-        loadMusic(MSX_MAIN_THEME_SID_IDX);
-
-        // init it
-        __asm {
-            lda #MSX_ROM
-            sta $01
-            lda #MSX_MAIN_THEME_SNG_IDX
-            jsr MSX_INIT
-        };
-
-        // set ROM back
-        mmap_set(MMAP_ROM);
-
-        // reenable music
-        gms_enableMusic = true;
-
-        // revert menu bank
-        setBank(pbank);
-    }
-
+    playSong(MAIN_MENU_SONG);
     loadMenu(MENU_BANK_SHOP);
     showMenu();
     joyCursor.enabled = true;

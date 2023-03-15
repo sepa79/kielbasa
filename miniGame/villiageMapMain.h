@@ -44,15 +44,16 @@ struct MapArea {
 };
 
 typedef char char256[256];
+// clolor map + main char attribs, day light and materials (walkable, water etc) - defined as colorMap[CHAR_ATTRIBS]
 extern char256 * const colorMap;
+// which map file holds main attribs, use like colorMap[CHAR_ATTRIBS]
+#define CHAR_ATTRIBS 2
 typedef char mapTile[16];
 extern char * ramTiles;
 extern const char * romTiles;
 extern bool isMapDay;
 extern char moonLight;
 
-// main char attribs, day light and materials (walkable, water etc)
-extern const char charAttribs[];
 
 // load and init routines, from MENU_BANK_MAP_VILLIAGE_1
 void villiageMapScreenInit();

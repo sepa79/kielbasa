@@ -44,8 +44,8 @@ __interrupt static void _villiageMapSpriteNoop(){
 static void _mapUp(){
     // check if tiles above us are walkable
     mmap_set(MMAP_RAM);
-    char mapCharAttr1 = ((volatile const char *)&charAttribs)[mapScreen[40*10+19]];
-    char mapCharAttr2 = ((volatile const char *)&charAttribs)[mapScreen[40*10+20]];
+    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*10+19]];
+    char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*10+20]];
     bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
     mmap_set(MMAP_ROM);
     
@@ -65,8 +65,9 @@ static void _mapUp(){
 static void _mapDown(){
     // check if tile below us is walkable
     mmap_set(MMAP_RAM);
-    char mapCharAttr = charAttribs[mapScreen[40*13+19]];
-    bool canWalk = mapCharAttr & WALKABLE;
+    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*13+19]];
+    char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*13+20]];
+    bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
     mmap_set(MMAP_ROM);
 
     if(canWalk){
@@ -78,8 +79,9 @@ static void _mapDown(){
 static void _mapLeft(){
     // check if tile to the left is walkable
     mmap_set(MMAP_RAM);
-    char mapCharAttr = charAttribs[mapScreen[40*11+18]];
-    bool canWalk = mapCharAttr & WALKABLE;
+    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*11+18]];
+    char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*12+18]];
+    bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
     mmap_set(MMAP_ROM);
 
     if(canWalk){
@@ -91,8 +93,9 @@ static void _mapLeft(){
 static void _mapRight(){
     // check if tile to the right is walkable
     mmap_set(MMAP_RAM);
-    char mapCharAttr = charAttribs[mapScreen[40*11+21]];
-    bool canWalk = mapCharAttr & WALKABLE;
+    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*11+21]];
+    char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*12+21]];
+    bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
     mmap_set(MMAP_ROM);
 
     if(canWalk){
@@ -117,9 +120,9 @@ const struct MenuOption VILLIAGE_MAP_MENU[] = {
 };
 
 static void _villiageMapInit(void){
-    villiageMapInit();
     gms_disableTimeControls = true;
     gms_gameSpeed = SPEED_PAUSED;
+    villiageMapInit();
     displayMenu(VILLIAGE_MAP_MENU);
 }
 

@@ -48,7 +48,10 @@
 #define GFX_1_AUX_DST_ADR UI_BMP_ADR
 
 // music
-#define MSX_MAIN_THEME_BANK MUSIC_BANK
+// bound to PLAYLIST defined in optionsMenu.c
+#define MAIN_MENU_SONG 2
+#define VILLIAGE_MAP_SONG 5
+// used in loader only
 #define MSX_MAIN_THEME_SID_IDX 0
 #define MSX_MAIN_THEME_SNG_IDX 1
 #define MSX_SRC_ADR_0 0x8000

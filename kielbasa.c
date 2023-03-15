@@ -48,6 +48,8 @@ void prepareScroll(){
 void gotoMainMenu(){
     // splash and turn screen off
     splashScreen(false, 1);
+
+    // TODO: CLEANUP, initRasterIRQ does all of it already, called at the end. Most likely this should be simplified
     // stop IRQs and change to ours
     __asm {
         sei
