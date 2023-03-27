@@ -179,11 +179,21 @@ __interrupt static void IRQ_topNoScreen() {
     // indicate frame position
     gms_framePos = FRAME_TOP;
     if(!fontCopyDone) {
-        // ROM on, I/O off - as we will copy to RAM under I/O ports - IRQs must be off
+        // ROM on, I/O off - as we will copy to RAM under I/O ports
         mmap_set(0b00110011);
-        memcpy(fontCopyDst, fontCopySrc, 2*256);
-        fontCopyDst += 2*256;
-        fontCopySrc += 2*256;
+
+        char i = 0;
+        do {
+#assign y 0
+#repeat
+        fontCopyDst[y + i] = fontCopySrc[y + i];
+#assign y y + 0x100
+#until y == 0x100*1
+            i++;
+        } while (i != 0);
+
+        fontCopyDst += 1*256;
+        fontCopySrc += 1*256;
         if(fontCopyDst == GFX_1_FNT2+2048){
             fontCopyDone = true;
             fontCopyDst = GFX_1_FNT2;
@@ -243,6 +253,7 @@ __interrupt static void IRQ_bottomScrollAndUISprites_C() {
     // vic.color_back++;
     
     // Soft scroll
+    // vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
     vic.ctrl2 = _scrollIt;
     vic.memptr = d018_txt1;
 
@@ -353,7 +364,7 @@ RIRQCode rirqc_topUISprites, rirqc_botomUISprites, rirqc_topScreen, rirqc_middle
 
 // main init raster must be called first, this one just remaps some IRQs
 void initRasterIRQ_TxtMode(){
-    // Top - switch to txt, play music
+    // Top - switch to txt
     rirq_build(&rirqc_topScreen, 2);
     rirq_call(&rirqc_topScreen, 0, IRQ_topTxtScreen);
     rirq_call(&rirqc_topScreen, 1, setSpritesBottomScr);
@@ -370,7 +381,7 @@ void initRasterIRQ_TxtMode(){
 
 // main init raster must be called first, this one just remaps some IRQs
 void initRasterIRQ_MCTxtMode(){
-    // Top - switch to txt, play music
+    // Top - switch to txt
     rirq_build(&rirqc_topScreen, 1);
     rirq_call(&rirqc_topScreen, 0, IRQ_topMCTxtScreen);
     rirq_set(1, IRQ_RASTER_TOP_MC_SCREEN, &rirqc_topScreen);
@@ -386,7 +397,7 @@ void initRasterIRQ_MCTxtMode(){
 
 // main init raster must be called first, this one just remaps some IRQs
 void initRasterIRQ_HiresTxtMode(){
-    // Top - switch to txt, play music
+    // Top - switch to txt
     rirq_build(&rirqc_topScreen, 1);
     rirq_call(&rirqc_topScreen, 0, IRQ_topHiresTxtScreen);
     rirq_set(1, IRQ_RASTER_TOP_MC_SCREEN, &rirqc_topScreen);
@@ -402,7 +413,7 @@ void initRasterIRQ_HiresTxtMode(){
 
 // main init raster must be called first, this one just remaps some IRQs
 void initRasterIRQ_Transition(){
-    // Top - switch to txt, play music
+    // Top - switch to blank
     rirq_build(&rirqc_topScreen, 1);
     rirq_call(&rirqc_topScreen, 0, IRQ_topNoScreen);
     rirq_set(1, IRQ_RASTER_TOP_MC_SCREEN, &rirqc_topScreen);
@@ -498,6 +509,7 @@ void switchScreenTo(byte screenMode){
     if(currentScreenMode != screenMode){
         currentScreenMode = screenMode;
         rirq_wait();
+
         switch (screenMode) {
             case SCREEN_SPLIT_MC_TXT:
                 initRasterIRQ_SplitMCTxt();

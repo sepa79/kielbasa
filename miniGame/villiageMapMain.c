@@ -241,7 +241,7 @@ static void _drawPlayerAndColors(){
 #pragma data ( villiageMapRAMData )
 
 // dark moon
-char moonLight = VCOL_DARK_GREY;
+char moonLight = VCOL_BLACK;
 bool isMapDay = true;
 
 void villiageMapScreenInit(void){
