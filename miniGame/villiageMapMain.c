@@ -104,7 +104,7 @@ static void _mapInit(){
 #pragma data ( villiageMapRAMData )
 
 #define GROUND_CHAR 0xbc
-#define CROPS_CHAR 0x10
+#define CROPS_CHAR 0x20
 // 1st tile is empty
 #define FIELD_START ramTiles+0x10
 
