@@ -50,6 +50,7 @@ static void _loadFullKoalaToBMP2(){
 #until y == 8192
         i++;
     } while (i != 0);
+#undef y
 
 }
 
@@ -118,14 +119,14 @@ void initGame(){
     loadTranslation();
 
     // show sprites for menu text
-    #define TITLE_SPR_POS_X 80
+    #define TITLE_SPR_POS_X 00
     #define TITLE_SPR_POS_Y 80
 
     vic.spr_enable = 0;
     vic.spr_expand_x = 0b00000000;
     vic.spr_expand_y = 0b00000000;
     vic.spr_priority = 0b00000000;
-    vic.spr_multi    = 0b00011000;
+    vic.spr_multi    = 0b00000000;
 
     vic.spr_pos[0].y = TITLE_SPR_POS_Y;
     vic.spr_pos[1].y = TITLE_SPR_POS_Y;
@@ -137,19 +138,16 @@ void initGame(){
     vic.spr_pos[6].y = TITLE_SPR_POS_Y+21;
     vic.spr_pos[7].y = TITLE_SPR_POS_Y+21;
     
-    vic.spr_mcolor0 = SPR_WEATHER_MULTICOLOR_1;
-    vic.spr_mcolor1 = SPR_WEATHER_MULTICOLOR_2;
+    vic.spr_msbx = 0b11111111;
 
-    vic.spr_msbx = 0b00000000;
-
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+0] = 20;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+1] = 21;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+2] = 22;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+3] = 23;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+4] = 24;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+5] = 25;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+6] = 26;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+7] = 27;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+0] = 0x10;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+1] = 0x11;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+2] = 0x12;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+3] = 0x13;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+4] = 0x14;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+5] = 0x15;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+6] = 0x16;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+7] = 0x17;
 
     vic.spr_pos[0].x = TITLE_SPR_POS_X+24*0;
     vic.spr_pos[1].x = TITLE_SPR_POS_X+24*1;
@@ -171,6 +169,9 @@ void initGame(){
     vic.spr_color[7] = VCOL_MED_GREY;
 
     vic.spr_enable = 0b11111111;
+
+    textSprBankPt = (char *)0xc400;
+    textToSprite((char *)s"hello world", 4);
 
     // ready steady GO
     do { keyb_poll(); rand();} while (!keyb_key);
