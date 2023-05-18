@@ -16,7 +16,6 @@
 #include <engine/uiHandler.h>
 #include <engine/joystick.h>
 #include <translation/common.h>
-#include <engine/easyFlashBanks.h>
 
 #define BORDER_XPOS_LEFT 24
 #define BORDER_YPOS_TOP 50
@@ -351,6 +350,7 @@ void updateStatusBar(const byte * text){
     SB_TEXT = text;
 }
 
+// set sprBankPointer first - this routine will be writing into it
 void copyCharToSprite(byte c, byte col, byte row){
     byte i = 0;
     byte si = colOffset[col] + rowOffset[row];

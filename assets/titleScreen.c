@@ -7,6 +7,7 @@
 
 #include <engine/logger.h>
 #include <engine/easyFlashBanks.h>
+#include <engine/spriteText.h>
 #include <assets/assetsSettings.h>
 #include <engine/titleScreenIrq.h>
 #include <assets/mainGfx.h>
@@ -115,6 +116,61 @@ void initGame(){
 
     setBank(TRANSLATION_EN_BANK);
     loadTranslation();
+
+    // show sprites for menu text
+    #define TITLE_SPR_POS_X 80
+    #define TITLE_SPR_POS_Y 80
+
+    vic.spr_enable = 0;
+    vic.spr_expand_x = 0b00000000;
+    vic.spr_expand_y = 0b00000000;
+    vic.spr_priority = 0b00000000;
+    vic.spr_multi    = 0b00011000;
+
+    vic.spr_pos[0].y = TITLE_SPR_POS_Y;
+    vic.spr_pos[1].y = TITLE_SPR_POS_Y;
+    vic.spr_pos[2].y = TITLE_SPR_POS_Y;
+    vic.spr_pos[3].y = TITLE_SPR_POS_Y;
+    // 2nd row
+    vic.spr_pos[4].y = TITLE_SPR_POS_Y+21;
+    vic.spr_pos[5].y = TITLE_SPR_POS_Y+21;
+    vic.spr_pos[6].y = TITLE_SPR_POS_Y+21;
+    vic.spr_pos[7].y = TITLE_SPR_POS_Y+21;
+    
+    vic.spr_mcolor0 = SPR_WEATHER_MULTICOLOR_1;
+    vic.spr_mcolor1 = SPR_WEATHER_MULTICOLOR_2;
+
+    vic.spr_msbx = 0b00000000;
+
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+0] = 20;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+1] = 21;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+2] = 22;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+3] = 23;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+4] = 24;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+5] = 25;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+6] = 26;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+7] = 27;
+
+    vic.spr_pos[0].x = TITLE_SPR_POS_X+24*0;
+    vic.spr_pos[1].x = TITLE_SPR_POS_X+24*1;
+    vic.spr_pos[2].x = TITLE_SPR_POS_X+24*2;
+    vic.spr_pos[3].x = TITLE_SPR_POS_X+24*3;
+    // 2nd row
+    vic.spr_pos[4].x = TITLE_SPR_POS_X+24*0;
+    vic.spr_pos[5].x = TITLE_SPR_POS_X+24*1;
+    vic.spr_pos[6].x = TITLE_SPR_POS_X+24*2;
+    vic.spr_pos[7].x = TITLE_SPR_POS_X+24*3;
+
+    vic.spr_color[0] = VCOL_MED_GREY;
+    vic.spr_color[1] = VCOL_MED_GREY;
+    vic.spr_color[2] = VCOL_MED_GREY;
+    vic.spr_color[3] = VCOL_MED_GREY;
+    vic.spr_color[4] = VCOL_MED_GREY;
+    vic.spr_color[5] = VCOL_MED_GREY;
+    vic.spr_color[6] = VCOL_MED_GREY;
+    vic.spr_color[7] = VCOL_MED_GREY;
+
+    vic.spr_enable = 0b11111111;
 
     // ready steady GO
     do { keyb_poll(); rand();} while (!keyb_key);
