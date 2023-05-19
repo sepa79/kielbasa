@@ -2,7 +2,7 @@
 #define SPRITE_TEXT_H
 
 // set it to sprite bank that you wish to use textToSprite() on
-extern char * textSprBankPt;
+extern char * textToSpriteBankPt;
 
 void textToSprite(char * str, char width);
 

@@ -20,7 +20,7 @@
 #pragma data ( titleScreenGfx )
 
 __export const char titleScreen[] = {
-    #embed 0xffff 2 "assets/multicolorGfx/title150622.kla"
+    #embed 0xffff 2 "assets/multicolorGfx/title_new_150223.kla"
     // #embed 0xffff 2 "assets/multicolorGfx/kielbasaEmpire.kla"
 };
 
@@ -169,9 +169,9 @@ void initGame(){
     // vic.spr_color[7] = VCOL_MED_GREY;
 
 
-    textSprBankPt = (char *)0xc400;
-    memset(textSprBankPt, 0, 64*6);
-    textToSprite((char *)s"  press   fire or  any key to start   a new    game", 3);
+    textToSpriteBankPt = (char *)0xc400;
+    memset(textToSpriteBankPt, 0, 64*6);
+    textToSprite((char *)s"  press   any key to start   a new    game", 3);
     vic.spr_enable = 0b00111111;
 
     // ready steady GO

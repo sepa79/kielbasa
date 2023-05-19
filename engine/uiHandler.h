@@ -21,7 +21,6 @@ struct JOY_CURSOR {
 };
 
 extern volatile struct JOY_CURSOR joyCursor;
-extern byte * sprBankPointer;
 
 void displayMenu(struct MenuOption * menu);
 void backToPreviousMenu();
