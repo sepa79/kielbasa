@@ -119,8 +119,8 @@ void initGame(){
     loadTranslation();
 
     // show sprites for menu text
-    #define TITLE_SPR_POS_X 00
-    #define TITLE_SPR_POS_Y 80
+    #define TITLE_SPR_POS_X 12
+    #define TITLE_SPR_POS_Y 53
 
     vic.spr_enable = 0;
     vic.spr_expand_x = 0b00000000;
@@ -131,12 +131,12 @@ void initGame(){
     vic.spr_pos[0].y = TITLE_SPR_POS_Y;
     vic.spr_pos[1].y = TITLE_SPR_POS_Y;
     vic.spr_pos[2].y = TITLE_SPR_POS_Y;
-    vic.spr_pos[3].y = TITLE_SPR_POS_Y;
     // 2nd row
+    vic.spr_pos[3].y = TITLE_SPR_POS_Y+21;
     vic.spr_pos[4].y = TITLE_SPR_POS_Y+21;
     vic.spr_pos[5].y = TITLE_SPR_POS_Y+21;
-    vic.spr_pos[6].y = TITLE_SPR_POS_Y+21;
-    vic.spr_pos[7].y = TITLE_SPR_POS_Y+21;
+    // vic.spr_pos[6].y = TITLE_SPR_POS_Y+21;
+    // vic.spr_pos[7].y = TITLE_SPR_POS_Y+21;
     
     vic.spr_msbx = 0b11111111;
 
@@ -146,18 +146,18 @@ void initGame(){
     GFX_2_SCR[OFFSET_SPRITE_PTRS+3] = 0x13;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+4] = 0x14;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+5] = 0x15;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+6] = 0x16;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+7] = 0x17;
+    // GFX_2_SCR[OFFSET_SPRITE_PTRS+6] = 0x16;
+    // GFX_2_SCR[OFFSET_SPRITE_PTRS+7] = 0x17;
 
     vic.spr_pos[0].x = TITLE_SPR_POS_X+24*0;
     vic.spr_pos[1].x = TITLE_SPR_POS_X+24*1;
     vic.spr_pos[2].x = TITLE_SPR_POS_X+24*2;
-    vic.spr_pos[3].x = TITLE_SPR_POS_X+24*3;
     // 2nd row
-    vic.spr_pos[4].x = TITLE_SPR_POS_X+24*0;
-    vic.spr_pos[5].x = TITLE_SPR_POS_X+24*1;
-    vic.spr_pos[6].x = TITLE_SPR_POS_X+24*2;
-    vic.spr_pos[7].x = TITLE_SPR_POS_X+24*3;
+    vic.spr_pos[3].x = TITLE_SPR_POS_X+24*0;
+    vic.spr_pos[4].x = TITLE_SPR_POS_X+24*1;
+    vic.spr_pos[5].x = TITLE_SPR_POS_X+24*2;
+    // vic.spr_pos[6].x = TITLE_SPR_POS_X+24*3;
+    // vic.spr_pos[7].x = TITLE_SPR_POS_X+24*4;
 
     vic.spr_color[0] = VCOL_MED_GREY;
     vic.spr_color[1] = VCOL_MED_GREY;
@@ -165,17 +165,20 @@ void initGame(){
     vic.spr_color[3] = VCOL_MED_GREY;
     vic.spr_color[4] = VCOL_MED_GREY;
     vic.spr_color[5] = VCOL_MED_GREY;
-    vic.spr_color[6] = VCOL_MED_GREY;
-    vic.spr_color[7] = VCOL_MED_GREY;
+    // vic.spr_color[6] = VCOL_MED_GREY;
+    // vic.spr_color[7] = VCOL_MED_GREY;
 
-    vic.spr_enable = 0b11111111;
 
     textSprBankPt = (char *)0xc400;
-    textToSprite((char *)s"hello world", 4);
+    memset(textSprBankPt, 0, 64*6);
+    textToSprite((char *)s"  press   fire or  any key to start   a new    game", 3);
+    vic.spr_enable = 0b00111111;
 
     // ready steady GO
     do { keyb_poll(); rand();} while (!keyb_key);
     keyb_key = 0;
+    // disable sprites
+    vic.spr_enable = 0;
 
     // get the main sprites
     loadMainGfx();
