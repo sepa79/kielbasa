@@ -10,6 +10,8 @@
 
 // Shared code/data region, copied from easyflash bank 0 to ram during startup
 // Code in main region is compressed, so can go over 0x4000 here
+#pragma stacksize( 1024 )
+#pragma heapsize( 0 )
 #pragma section( startup, 0 )
 #pragma region( startup, 0x0100, 0x0200, , , { startup } )
 #pragma region( main, 0x0400, 0x6000, , , { code, data, bss, heap, stack } )
