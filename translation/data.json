@@ -77,6 +77,112 @@
     ]
   },
 
+  "location_names":
+  {
+    "pragma_label": "LocationNames",
+    "array_label": "LOCATION_NAMES",
+    "contents": [
+      {
+        "comment": "// fixed width - 12",
+
+        "id": "NOTHING",
+        "pl": "            ",
+        "en": "            "
+      },
+      {
+        "id": "FARM_HOUSE",
+        "pl": "     Dom    ",
+        "en": "    House   "
+      },
+      {
+        "id": "FARM_BARN",
+        "pl": "   Stodoła  ",
+        "en": "    Barn    "
+      },
+      {
+        "id": "FARM_PIGPEN",
+        "pl": "   Chlewik  ",
+        "en": "   Pigpen   "
+      },
+      {
+        "id": "FARM_EMPTY",
+        "pl": " Ściernisko ",
+        "en": "   Meadows  "
+      },
+      {
+        "id": "FARM_GARAGE",
+        "pl": "    Garaż   ",
+        "en": "    Garage  "
+      },
+      {
+        "id": "FARM_BIG_FIELD",
+        "pl": "  Duże pole ",
+        "en": "  Big field "
+      },
+      {
+        "id": "FARM_SMALL_FIELD_1",
+        "pl": "  Małe pole ",
+        "en": " Small field"
+      },
+      {
+        "id": "FARM_SMALL_FIELD_2",
+        "pl": "  Małe pole ",
+        "en": " Small field"
+      },
+      {
+        "id": "FARM_MEDIUM_FIELD",
+        "pl": "Średnie pole",
+        "en": "Medium field"
+
+      },
+      {
+        "id": "SHOP",
+        "pl": "    Sklep   ",
+        "en": "    Shop    "
+      },
+      {
+        "id": "CHURCH",
+        "pl": "   Kościół  ",
+        "en": "   Church   "
+      },
+      {
+        "id": "HERMAN",
+        "pl": " Dom Hermana",
+        "en": "  Herman's  "
+      },
+      {
+        "id": "SULEJUKOWA",
+        "pl": " Sulejukowa ",
+        "en": " Sulejukowa "
+      },
+      {
+        "id": "HOUSE_1",
+        "pl": " Wiejski dom",
+        "en": "   Cottage  "
+      },
+      {
+        "id": "HOUSE_2",
+        "pl": " Wiejski dom",
+        "en": "   Cottage  "
+      },
+      {
+        "id": "MAIN_ROAD",
+        "pl": "   Szosa    ",
+        "en": "  Main road "
+      },
+      {
+        "id": "VILLIAGE_ROAD",
+        "pl": "   Droga    ",
+        "en": "    Road    "
+      },
+      {
+        "id": "DIRT_ROAD",
+        "pl": " Polna droga",
+        "en": "  Dirt road "
+      }
+    ]
+  },
+
   "main_contents":
   {
     "pragma_label": "MainArray",
@@ -131,25 +237,19 @@
       {
         "id": "MENU_MAIN4",
         "menu_opt": "4",
-        "pl": "Sklep",
-        "en": "Shop"
-      },
-      {
-        "id": "MENU_MAIN5",
-        "menu_opt": "5",
         "pl": "Załoga",
         "en": "Crew"
       },
       {
         "id": "MENU_MAIN6",
-        "menu_opt": "6",
+        "menu_opt": "5",
         "pl": "Stonka",
         "en": "Air Defence"
       },
       {
-        "id": "MENU_MAIN7",
-        "pl": "7ü Mapa",
-        "en": "7ü Map"
+        "id": "EXIT_TO_MAP",
+        "pl": "÷øùü Mapa",
+        "en": "÷øùü Map"
       },
       {
         "id": "MENU_OPTIONS_LANG",

@@ -10,10 +10,11 @@
 // Sections and regions
 #pragma section( txtPlPlantTypes, 0 )
 #pragma section( txtPlPlantStateNames, 0 )
+#pragma section( txtPlLocationNames, 0 )
 #pragma section( txtPlMainArray, 0 )
 #pragma section( txtPlTxtData, 0 )
 #pragma region( bankTxtPl1, 0x8000, 0x8050, , TRANSLATION_PL_BANK, { txtPlPlantTypes }, 0x6000 )
-#pragma region( bankTxtPl2, 0x8050, 0x8100, , TRANSLATION_PL_BANK, { txtPlPlantStateNames }, 0x6050 )
+#pragma region( bankTxtPl2, 0x8050, 0x8100, , TRANSLATION_PL_BANK, { txtPlPlantStateNames, txtPlLocationNames }, 0x6050 )
 #pragma region( bankTxtPlArray, 0x8100, 0x8200, , TRANSLATION_PL_BANK, { txtPlMainArray }, 0x6100 )
 #pragma region( bankTxtPlData, 0x8200, 0x8eff, , TRANSLATION_PL_BANK, { txtPlTxtData }, 0x6200 )
 

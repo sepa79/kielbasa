@@ -8,13 +8,14 @@
 
 #pragma data ( mainGfxSprites )
 
+// TODO: Proper init of the sprites
 __export const struct SPRITES SpriteResources = {{
     #embed 0xffff 3 "assets/sprites/joyCursor.spd"
 },{
     #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
     #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
-    #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
-    #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
+    // #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
+    // #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
 },{
     0
 },{
@@ -124,7 +125,7 @@ __export const struct AUX_GFX AuxResources = {{
 #pragma data(mainGfxFont)
 __export const char GAME_FONT[0x800] = {
     // #embed 0xffff 2 "assets/fonts.64c"
-    #embed 0xffff 0 "assets/gameFont - Chars.bin"
+    #embed ctm_chars "assets/gameFont.ctm"
 };
 
 // ===========================================================================================

@@ -12,10 +12,11 @@ static char offset = 0;
 static void _charToSprite(char c, char * sprBankPtr){
     char i = 0;
     unsigned int pos = c;
-    pos = pos * 7;
+    pos = pos * 8;
     char pbank = setBank(MAIN_GFX_BANK);
     do{
-        sprBankPtr[0] = AuxResources.SPRITE_FONTS[pos+i];
+        // +0x400 as these are underlinned fonts, already shrunk and moved up nicely so suitable for sprites
+        sprBankPtr[0] = ((char *)GFX_1_FNT_SRC_ADR+0x400)[pos+i];
         i++;
         sprBankPtr++;
         sprBankPtr++;
@@ -35,7 +36,6 @@ void textToSprite(char * str, char width){
     
     char * finalSprBankPtr = textToSpriteBankPt;
     while (c != 0) {
-        c = str[it++];
         _charToSprite(c, finalSprBankPtr);
 
         if(++col == maxCol){
@@ -47,5 +47,6 @@ void textToSprite(char * str, char width){
         }
         finalSprBankPtr = textToSpriteBankPt + colOffset[col] + rowOffset[row];
 
+        c = str[++it];
     };
 }

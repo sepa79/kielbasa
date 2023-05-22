@@ -3,6 +3,7 @@
 
 #include <c64/types.h>
 #include <engine/irqHandler.h>
+#include <c64/keyboard.h>
 
 // Menu regions use these - keep in sync with GFX banks.
 #define DAY_GFX_BMP 0x9000

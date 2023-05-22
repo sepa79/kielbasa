@@ -42,8 +42,6 @@ static const char _chars[] = {
     #embed ctm_chars    "assets/charGfx/HiresVilliage_L3.ctm"
 };
 
-
-
 #pragma data ( villiageMapData )
 
 static const char _map[] = {
@@ -56,7 +54,6 @@ const char romTiles[] = {
 };
 
 typedef char char1024[1024];
-// static char1024 * const _lightMap = &_lightMapU;
 
 const char1024 _lightMap[4] = { { 
     #embed ctm_map8     "assets/charGfx/lightMap_up.ctm"
@@ -67,6 +64,13 @@ const char1024 _lightMap[4] = { {
 },{
     #embed ctm_map8     "assets/charGfx/lightMap_right.ctm"
 }};
+
+#pragma data ( villiageMapData2 )
+
+static const char _mapLocations[] = {
+    #embed "assets/charGfx/VilliageMapHiresMain16xWood.ctm.ids.bin"
+};
+
 // ---------------------------------------------------------------------------------------------
 // Loaders code, called with IRQ off
 // ---------------------------------------------------------------------------------------------
@@ -265,7 +269,7 @@ void drawPlayer(){
 }
 
 void villiageMapDraw(char dir){
-    byte frameStart = gms_frameCount;
+    char frameStart = gms_frameCount;
 
 
     // draw map
@@ -287,17 +291,21 @@ void villiageMapDraw(char dir){
     drawPlayer();
 
 
+    // text window
+    pbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
+    char vx = (vMapX+19) >> 2;
+    char vy = (vMapY+12) >> 2;
+    char locId = _mapLocations[vx + vy*64];
+    setBank(pbank);
+    if(vMapLocation != locId){
+        vMapLocation = locId;
+        textToSpriteBankPt = SPR_CHARACTER_PORTRAIT2;
+        char str[12*3+1];
+        // char framesUsed = gms_frameCount - frameStart;
+        textToSprite((char *)LOCATION_NAMES[locId], 4);
+    }
 
-    // frame counter
-    sprBankPointer = SPR_CHARACTER_BAR2;
-    byte framesUsed = gms_frameCount - frameStart;
-    byte str[4];
-    sprintf(str, "%03u", framesUsed);
-    copyCharToSprite(str[0], 0, 0);
-    copyCharToSprite(str[1], 1, 0);
-    copyCharToSprite(str[2], 2, 0);
 
-    // ready to move again
     joyCursor.moveDelayCurrent = 0;
 }
 

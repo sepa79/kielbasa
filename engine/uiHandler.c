@@ -409,10 +409,10 @@ void drawFullDate(){
     copyCharToSprite('0', 4, 2);
     copyCharToSprite(28, 5, 2); //28 is 'zl'
 
-    sprBankPointer = SPR_CURRENCY1;
+    sprBankPointer = SPR_CURRENCY_TXT;
 
     // toilet paper
-    copyCharToSprite(50, 1, 2);
+    copyCharToSprite('4', 1, 2);
     // vic.color_border++;
 }
 

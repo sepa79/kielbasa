@@ -283,3 +283,68 @@ void showUiSpritesBottom(){
     gms_framePos = FRAME_BOTTOM;
     // vic.color_border++;
 }
+
+void showMapSpritesBottom(){
+    // vic.color_border--;
+    vic.spr_expand_x = 0b00000000;
+    vic.spr_expand_y = 0b00000000;
+    vic.spr_priority = 0b00000000;
+    vic.spr_multi    = 0b10000001;
+    
+    vic.spr_mcolor0  = SPR_CHARACTER_PORTRAIT_MULTICOLOR_1;
+    vic.spr_mcolor1  = SPR_CHARACTER_PORTRAIT_MULTICOLOR_2;
+
+    vic.spr_msbx = 0b11000000;
+
+    // reuse portrait banks, we will write something else there
+    UI_SCR[OFFSET_SPRITE_PTRS+0] = SPR_BANK_CHARACTER_PORTRAIT1;
+    UI_SCR[OFFSET_SPRITE_PTRS+1] = SPR_BANK_CHARACTER_BAR1;
+    UI_SCR[OFFSET_SPRITE_PTRS+2] = SPR_BANK_CHARACTER_PORTRAIT2;
+    UI_SCR[OFFSET_SPRITE_PTRS+3] = SPR_BANK_CHARACTER_BAR2;
+    UI_SCR[OFFSET_SPRITE_PTRS+4] = SPR_BANK_CHARACTER_PORTRAIT3;
+    UI_SCR[OFFSET_SPRITE_PTRS+5] = SPR_BANK_CHARACTER_BAR3;
+    UI_SCR[OFFSET_SPRITE_PTRS+6] = SPR_BANK_CHARACTER_PORTRAIT4;
+    UI_SCR[OFFSET_SPRITE_PTRS+7] = SPR_BANK_CHARACTER_BAR4;
+
+    #define SPACER_WIDTH 16
+    #define SPRITE_WIDTH 24
+    // char
+    vic.spr_pos[0].x = 24 + SPACER_WIDTH*1 + SPRITE_WIDTH*0;
+    // char bar
+    vic.spr_pos[1].x = 24 + SPACER_WIDTH*2 + SPRITE_WIDTH*1 - 10;
+    // char
+    vic.spr_pos[2].x = 24 + SPACER_WIDTH*4 + SPRITE_WIDTH*2;
+    // char bar
+    vic.spr_pos[3].x = 24 + SPACER_WIDTH*4 + SPRITE_WIDTH*3;
+    // char
+    vic.spr_pos[4].x = 24 + SPACER_WIDTH*4 + SPRITE_WIDTH*4;
+    // char bar
+    vic.spr_pos[5].x = 24 + SPACER_WIDTH*4 + SPRITE_WIDTH*5;
+    // char
+    vic.spr_pos[6].x = 24 + SPACER_WIDTH*7 + SPRITE_WIDTH*6;
+    // char bar
+    vic.spr_pos[7].x = 24 + SPACER_WIDTH*8 + SPRITE_WIDTH*7 - 10;
+
+    vic.spr_pos[0].y = 2;
+    vic.spr_pos[1].y = 2;
+    vic.spr_pos[2].y = 2;
+    vic.spr_pos[3].y = 2;
+    vic.spr_pos[4].y = 2;
+    vic.spr_pos[5].y = 2;
+    vic.spr_pos[6].y = 2;
+    vic.spr_pos[7].y = 2;
+
+    vic.spr_color[0] = _characterColors[0];
+    vic.spr_color[1] = _batteryColors[0];
+    vic.spr_color[2] = VCOL_MED_GREY;
+    vic.spr_color[3] = VCOL_MED_GREY;
+    vic.spr_color[4] = VCOL_MED_GREY;
+    vic.spr_color[5] = VCOL_MED_GREY;
+    vic.spr_color[6] = _characterColors[3];
+    vic.spr_color[7] = _batteryColors[3];
+
+    vic.spr_enable = 0b11111111;
+    // indicate frame position
+    gms_framePos = FRAME_BOTTOM;
+    // vic.color_border++;
+}

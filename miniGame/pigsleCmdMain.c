@@ -141,7 +141,7 @@ const char sprDisable[8] = {0xfe, 0xfd, 0xfb, 0xf7, 0xef, 0xdf, 0xbf, 0x7f};
 
 // Charset assets
 const char Chars[] = {
-    #embed 768 2 "assets/game_font2.64c"
+    #embed ctm_chars "assets/gameFont.ctm"
 };
 
 const char charX2[16] = {

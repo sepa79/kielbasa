@@ -350,6 +350,108 @@ void IRQ_bottomScrollAndUISprites(){
     }
 }
 //********************************************
+__interrupt static void IRQ_bottomScrollAndMapSprites_C() {
+    // vic.color_border++;
+    // vic.color_back++;
+    
+    // Soft scroll
+    // vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
+    vic.ctrl2 = _scrollIt;
+    vic.memptr = d018_txt1;
+
+    showMapSpritesBottom();
+    
+    // wait for right line
+    while (vic.raster != 0xfa){}
+
+    // Set screen height to 24 lines - this is done after the border should have started drawing - so it wont start
+    vic.ctrl1 &= (0xff^VIC_CTRL1_RSEL);
+    while (vic.raster != 0xfc){}
+    // no more scrolling, reset it
+    vic.ctrl2 = VIC_CTRL2_CSEL | 0;
+    // vic.color_border--;
+
+    // Set screen height back to 25 lines (preparing for the next screen)
+    vic.ctrl1 |= VIC_CTRL1_RSEL;
+
+    // UI sprite bank
+    vic.memptr = d018_UI;
+    cia2.pra = dd00_UI;
+
+    // vic.color_border++;
+    playMsx();
+    if(!gms_enableMusic){
+        // wait a few lines as msx is off, we don't want to desync the screen.
+        while (vic.raster != 0x1){}
+    }
+    if((char)--_scrollIt==0xff) {
+        _scrollIt = 7;
+        // Hard scroll
+        for(byte i=0;i<39;i++) {
+            GFX_1_SCR[statusLine+i]=GFX_1_SCR[statusLine+i+1];
+        }
+        // Render next char
+        byte c = *SB_TEXT;
+        if(c==0) {
+            SB_TEXT = _emptyStatus;
+            c = *SB_TEXT;
+        }
+        GFX_1_SCR[statusLine+39] = c;
+        SB_TEXT++;
+    }
+
+    _timeControl();
+    // vic.color_border--;
+
+    joyUpdate();
+
+    // vic.color_border--;
+    // vic.color_back--;
+}
+
+void IRQ_bottomScrollAndMapSprites(){
+    __asm {
+        // wait for raster
+        ldy #IRQ_RASTER_BOTTOM_SCROLL_ETC+1
+    l1: cpy $d012
+        bne l1
+        ldx #$09
+    l2: dex
+        bne l2
+        nop
+        nop
+        nop
+        iny
+        cpy $d012
+        beq l5
+        nop
+        nop
+    l5: ldx #$09
+    l6: dex
+        bne l6
+        nop
+        nop
+        nop
+        iny
+        cpy $d012
+        beq l7
+        cpy $ea
+    l7: ldx #$09
+    l8: dex
+        bne l8
+        nop
+        iny
+        cpy $d012
+        bne l9
+    l9: ldx #$04
+    la: dex
+        bne la
+
+        // call C routine
+        jsr IRQ_bottomScrollAndMapSprites_C
+    }
+}
+//********************************************
 __interrupt static void IRQ_topUISprites() {
 
     // VICII->BORDER_COLOR = BLUE;
@@ -406,6 +508,12 @@ void initRasterIRQ_HiresTxtMode(){
     rirq_build(&rirqc_middleScreen, 1);
     rirq_call(&rirqc_middleScreen, 0, IRQ_middleScreenMsx);
     rirq_set(2, IRQ_RASTER_MIDDLE_TXT_SCREEN, &rirqc_middleScreen);
+    
+    // Bottom - Open borders + Scroll + Sprites
+    rirq_build(&rirqc_botomUISprites, 1);
+    rirq_call(&rirqc_botomUISprites, 0, IRQ_bottomScrollAndMapSprites);
+    // Place it into the last line of the screen
+    rirq_set(3, IRQ_RASTER_BOTTOM_SCROLL_ETC, &rirqc_botomUISprites);
 
     // sort the raster IRQs
     rirq_sort();

@@ -2,7 +2,7 @@
 #define KIELBASA_H
 
 void mainLoop();
-void gotoMainMenu();
+void gotoLocation();
 
 #pragma compile("kielbasa.c")
 

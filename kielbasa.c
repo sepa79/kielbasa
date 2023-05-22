@@ -9,6 +9,7 @@
 
 #include <menu/menuSystem.h>
 #include <menu/mainMenu.h>
+#include <menu/villiageMap.h>
 #include <engine/easyFlashBanks.h>
 #include <engine/gameSettings.h>
 #include <engine/irqSpriteController.h>
@@ -45,7 +46,42 @@ void prepareScroll(){
     COLOR_RAM[40*24+39] = VCOL_DARK_GREY;
 }
 
-void gotoMainMenu(){
+#define LOC_FARM_X_MIN 108
+#define LOC_FARM_X_MAX 121
+#define LOC_FARM_Y_MIN 112
+#define LOC_FARM_Y_MAX 129
+
+#define LOC_SHOP_X_MIN 111
+#define LOC_SHOP_X_MAX 120
+#define LOC_SHOP_Y_MIN 88
+#define LOC_SHOP_Y_MAX 93
+
+void gotoLocation(){
+    // farm
+    if(vMapX>=LOC_FARM_X_MIN && vMapX<=LOC_FARM_X_MAX && vMapY>=LOC_FARM_Y_MIN && vMapY<=LOC_FARM_Y_MAX){
+        loadMenu(MENU_BANK_MAIN_MENU);
+        switchScreenTo(SCREEN_SPLIT_MC_TXT);
+        showMenu();
+    } else
+    // shop
+    if(vMapX>=LOC_SHOP_X_MIN && vMapX<=LOC_SHOP_X_MAX && vMapY>=LOC_SHOP_Y_MIN && vMapY<=LOC_SHOP_Y_MAX){
+        loadMenu(MENU_BANK_SHOP);
+        switchScreenTo(SCREEN_SPLIT_MC_TXT);
+        showMenu();
+    }
+
+}
+
+void mainLoop(){
+    memcpy(LOG_DATA, p"Game Start", 10);
+    logger(LOG_INFO | LOG_MSG_TEXT);
+
+    initCharacterList();
+    initCalendar();
+    initTaskList();
+    initFarmland();
+    initKitchen();
+
     // splash and turn screen off
     splashScreen(false, 1);
 
@@ -80,20 +116,6 @@ void gotoMainMenu(){
     splashScreen(false, 2);
 
     initRasterIRQ();
-}
-
-void mainLoop(){
-    memcpy(LOG_DATA, p"Game Start", 10);
-    logger(LOG_INFO | LOG_MSG_TEXT);
-
-    initCharacterList();
-    initCalendar();
-    initTaskList();
-    initFarmland();
-    initKitchen();
-
-    // start on Main Menu
-    gotoMainMenu();
 
     memcpy(LOG_DATA, p"Main Loop ", 10);
     logger(LOG_DEBUG | LOG_MSG_TEXT);

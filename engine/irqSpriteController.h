@@ -10,6 +10,7 @@ __interrupt void setSpritesTopScr();
 void setSpritesBottomScr();
 void showUiSpritesTop();
 void showUiSpritesBottom();
+void showMapSpritesBottom();
 void drawBattery(char charIdx);
 
 #pragma compile("irqSpriteController.c")

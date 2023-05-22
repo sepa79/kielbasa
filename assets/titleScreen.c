@@ -120,7 +120,7 @@ void initGame(){
 
     // show sprites for menu text
     #define TITLE_SPR_POS_X 12
-    #define TITLE_SPR_POS_Y 53
+    #define TITLE_SPR_POS_Y 54
 
     vic.spr_enable = 0;
     vic.spr_expand_x = 0b00000000;
@@ -171,7 +171,7 @@ void initGame(){
 
     textToSpriteBankPt = (char *)0xc400;
     memset(textToSpriteBankPt, 0, 64*6);
-    textToSprite((char *)s"  press   any key to start   a new    game", 3);
+    textToSprite((char *)s"  Press   any key to start     a       new     game.", 3);
     vic.spr_enable = 0b00111111;
 
     // ready steady GO

@@ -15,6 +15,7 @@
 #pragma section( villiageMapCode, 0 )
 #pragma section( villiageMapDisplayCode, 0 )
 #pragma section( villiageMapData, 0 )
+#pragma section( villiageMapData2, 0 )
 #pragma section( villiageMapRAMCode, 0 )
 #pragma section( villiageMapRAMData, 0 )
 #pragma section( villiageMapGfx1, 0 )
@@ -23,7 +24,8 @@
 #pragma region( regionVilliageMapRam1, 0x8000, 0xafff, , MENU_BANK_MAP_VILLIAGE_1, { villiageMapLoaderData, villiageMapCode, villiageMapGfx1, villiageMapGfx1Loaders } )
 #pragma region( regionVilliageMapRam2, 0xb000, 0xbfff, , MENU_BANK_MAP_VILLIAGE_1, { villiageMapRAMCode, villiageMapRAMData }, 0x7000 )
 // place for display code and maps
-#pragma region( regionVilliageMapCrt, 0x8000, 0xbfff, , MENU_BANK_MAP_VILLIAGE_2, { villiageMapDisplayCode, villiageMapData } )
+#pragma region( regionVilliageMapReg1, 0x8000, 0xbfff, , MENU_BANK_MAP_VILLIAGE_2, { villiageMapDisplayCode, villiageMapData } )
+#pragma region( regionVilliageMapReg2, 0x8000, 0xbfff, , MENU_BANK_MAP_VILLIAGE_3, { villiageMapData2 } )
 
 #pragma data ( villiageMapRAMData )
 #pragma code ( villiageMapRAMCode )
@@ -33,14 +35,6 @@ enum WalkDir {
     WALK_DOWN,
     WALK_LEFT,
     WALK_RIGHT
-};
-
-struct MapArea {
-    char startX;
-    char startY;
-    char endX;
-    char endY;
-    char menuBank;
 };
 
 typedef char char256[256];

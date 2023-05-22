@@ -1,6 +1,5 @@
 #include <c64/vic.h>
 #include <c64/charwin.h>
-#include <c64/keyboard.h>
 #include <c64/easyflash.h>
 #include <c64/sprites.h>
 
@@ -22,7 +21,9 @@
 // Menu code
 // ---------------------------------------------------------------------------------------------
 #pragma code ( villiageMapCode )
-char vMapX = 128, vMapY = 128;
+// initial map position, need to be reset on new game. This is top left corner, not player pos.
+char vMapX = 114, vMapY = 129;
+char vMapLocation = 0;
 
 static void _villiageMapCodeLoader(){
     // source is where the regionVilliageMapRam section starts in real mem
@@ -49,13 +50,6 @@ static void _mapUp(){
     bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
     mmap_set(MMAP_ROM);
     
-    // sprBankPointer = SPR_CHARACTER_BAR3;
-    // byte str[4];
-    // sprintf(str, "%03u", canWalk);
-    // copyCharToSprite(str[0], 0, 0);
-    // copyCharToSprite(str[1], 1, 0);
-    // copyCharToSprite(str[2], 2, 0);
-
     if(canWalk){
         if (vMapY > 0)
             vMapY--;
@@ -115,7 +109,7 @@ const struct MenuOption VILLIAGE_MAP_MENU[] = {
     { TXT_IDX_MENU_TASK_MANAGER_A, 'a', SCREEN_HIRES_TXT, UI_L+UI_HIDE, &_mapLeft, 0, 1, 1},
     { TXT_IDX_MENU_TASK_MANAGER_D, 'd', SCREEN_HIRES_TXT, UI_R+UI_HIDE, &_mapRight, 0, 1, 1},
     { TXT_IDX_MENU_TASK_MANAGER_D, KEY_RETURN, SCREEN_HIRES_TXT, UI_F+UI_HIDE, &_mapFire, 0, 1, 1},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF+UI_HIDE, &gotoMainMenu, 0, 2, 5},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_HIRES_TXT, UI_LF+UI_HIDE, &gotoLocation, 0, 2, 5},
     END_MENU_CHOICES
 };
 
