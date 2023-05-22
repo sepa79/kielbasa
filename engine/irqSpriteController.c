@@ -256,9 +256,9 @@ void showUiSpritesBottom(){
     // char bar
     vic.spr_pos[5].x = 24 + SPACER_WIDTH*6 + SPRITE_WIDTH*5 - 10;
     // char
-    vic.spr_pos[6].x = 24 + SPACER_WIDTH*7 + SPRITE_WIDTH*6;
+    vic.spr_pos[6].x = 24 + SPACER_WIDTH*7 + SPRITE_WIDTH*6 -255;
     // char bar
-    vic.spr_pos[7].x = 24 + SPACER_WIDTH*8 + SPRITE_WIDTH*7 - 10;
+    vic.spr_pos[7].x = 24 + SPACER_WIDTH*8 + SPRITE_WIDTH*7 - 10 -255;
 
     vic.spr_pos[0].y = 2;
     vic.spr_pos[1].y = 2;
@@ -321,9 +321,9 @@ void showMapSpritesBottom(){
     // char bar
     vic.spr_pos[5].x = 24 + SPACER_WIDTH*4 + SPRITE_WIDTH*5;
     // char
-    vic.spr_pos[6].x = 24 + SPACER_WIDTH*7 + SPRITE_WIDTH*6;
+    vic.spr_pos[6].x = 24 + SPACER_WIDTH*7 + SPRITE_WIDTH*6 -255;
     // char bar
-    vic.spr_pos[7].x = 24 + SPACER_WIDTH*8 + SPRITE_WIDTH*7 - 10;
+    vic.spr_pos[7].x = 24 + SPACER_WIDTH*8 + SPRITE_WIDTH*7 - 10 -255;
 
     vic.spr_pos[0].y = 2;
     vic.spr_pos[1].y = 2;

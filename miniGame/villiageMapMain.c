@@ -70,6 +70,9 @@ const char1024 _lightMap[4] = { {
 static const char _mapLocations[] = {
     #embed "assets/charGfx/VilliageMapHiresMain16xWood.ctm.ids.bin"
 };
+static const char _halfMoonColorMap[] = {
+    #embed ctm_map8 "assets/charGfx/HalfMoonColorMap.ctm"
+};
 
 // ---------------------------------------------------------------------------------------------
 // Loaders code, called with IRQ off
@@ -246,7 +249,10 @@ static void _drawPlayerAndColors(){
 
 // dark moon
 char moonLight = VCOL_BLACK;
+char moonLightLevel = 0;
 bool isMapDay = true;
+#define MOON_PHASE_FULL 1
+#define MOON_PHASE_NONE 3
 
 void villiageMapScreenInit(void){
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
@@ -257,9 +263,29 @@ void villiageMapScreenInit(void){
     _mapInit();
     isMapDay = cal_isDay;
     setBank(pbank);
-    // fill screen with moonlight
-    memset(COLOR_RAM, moonLight, 960);
-    memset(GFX_1_SCR, moonLight, 960);
+    if(!isMapDay){
+        // fill screen with moonlight
+        switch(cal_moonPhase){
+            case MOON_PHASE_FULL:
+                moonLight = VCOL_DARK_GREY;
+                moonLightLevel = 1;
+                memset(COLOR_RAM, moonLight, 960);
+                memset(GFX_1_SCR, moonLight, 960);
+                break;
+            case MOON_PHASE_NONE:
+                moonLight = VCOL_BLACK;
+                memset(COLOR_RAM, moonLight, 960);
+                memset(GFX_1_SCR, moonLight, 960);
+                break;
+            default:
+                moonLight = VCOL_DARK_GREY;
+                setBank(MENU_BANK_MAP_VILLIAGE_3);
+                memcpy(COLOR_RAM, _halfMoonColorMap, 960);
+                memcpy(GFX_1_SCR, _halfMoonColorMap, 960);
+                moonLightLevel = 0;
+                setBank(MENU_BANK_MAP_VILLIAGE_1);
+        }
+    }
 }
 
 void drawPlayer(){

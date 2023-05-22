@@ -18,6 +18,7 @@
 #pragma code ( villiageMapDisplayCode )
 #pragma data ( villiageMapRAMData )
 
+// 0xa0 - start of 'lightmapped' chars
 #define LIGHTMAP_DRAW_ROUTINE \
         {\
             byte lightMap = lm[cx];\
@@ -26,9 +27,14 @@
                 --lightMap;\
                 cp[cx] = colorMap[lightMap][ci];\
                 if(ci >= 0xa0){\
+                    if(lightMap<3)\
+                        ci += moonLightLevel;\
                     ci += lightMap;\
                 } \
-            }\
+            } else\
+            if(ci >= 0xa0){\
+                ci += moonLightLevel;\
+            } \
             dp[cx] = ci;\
         }
 

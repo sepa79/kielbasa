@@ -225,24 +225,12 @@
       {
         "id": "MENU_MAIN2",
         "menu_opt": "2",
-        "pl": "Pole",
-        "en": "Farmland"
-      },
-      {
-        "id": "MENU_MAIN3",
-        "menu_opt": "3",
-        "pl": "Chlewik",
-        "en": "Pigpen"
-      },
-      {
-        "id": "MENU_MAIN4",
-        "menu_opt": "4",
         "pl": "Załoga",
         "en": "Crew"
       },
       {
-        "id": "MENU_MAIN6",
-        "menu_opt": "5",
+        "id": "MENU_MAIN3",
+        "menu_opt": "3",
         "pl": "Stonka",
         "en": "Air Defence"
       },

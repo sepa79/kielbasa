@@ -46,30 +46,33 @@ void prepareScroll(){
     COLOR_RAM[40*24+39] = VCOL_DARK_GREY;
 }
 
-#define LOC_FARM_X_MIN 108
-#define LOC_FARM_X_MAX 121
-#define LOC_FARM_Y_MIN 112
-#define LOC_FARM_Y_MAX 129
-
-#define LOC_SHOP_X_MIN 111
-#define LOC_SHOP_X_MAX 120
-#define LOC_SHOP_Y_MIN 88
-#define LOC_SHOP_Y_MAX 93
-
+static void _showNormalMenu(){
+    // clean sprites
+    memset(SPR_CHARACTER_PORTRAIT2, 0, 64*4);
+    switchScreenTo(SCREEN_SPLIT_MC_TXT);
+    showMenu();
+    gms_disableTimeControls = false;
+    joyCursor.enabled = true;
+}
 void gotoLocation(){
-    // farm
-    if(vMapX>=LOC_FARM_X_MIN && vMapX<=LOC_FARM_X_MAX && vMapY>=LOC_FARM_Y_MIN && vMapY<=LOC_FARM_Y_MAX){
-        loadMenu(MENU_BANK_MAIN_MENU);
-        switchScreenTo(SCREEN_SPLIT_MC_TXT);
-        showMenu();
-    } else
-    // shop
-    if(vMapX>=LOC_SHOP_X_MIN && vMapX<=LOC_SHOP_X_MAX && vMapY>=LOC_SHOP_Y_MIN && vMapY<=LOC_SHOP_Y_MAX){
-        loadMenu(MENU_BANK_SHOP);
-        switchScreenTo(SCREEN_SPLIT_MC_TXT);
-        showMenu();
+    switch(vMapLocation){
+        case LOCATION_FARM_HOUSE:
+            loadMenu(MENU_BANK_MAIN_MENU);
+            _showNormalMenu();
+            break;
+        case LOCATION_FARM_BARN:
+            loadMenu(MENU_BANK_FARMLAND);
+            _showNormalMenu();
+            break;
+        case LOCATION_FARM_PIGPEN:
+            loadMenu(MENU_BANK_PIG_PEN);
+            _showNormalMenu();
+            break;
+        case LOCATION_SHOP:
+            loadMenu(MENU_BANK_SHOP);
+            _showNormalMenu();
+            break;
     }
-
 }
 
 void mainLoop(){
