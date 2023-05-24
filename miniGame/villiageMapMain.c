@@ -279,6 +279,7 @@ void villiageMapScreenInit(void){
                 break;
             default:
                 moonLight = VCOL_DARK_GREY;
+                while(!fontCopyDone){};
                 setBank(MENU_BANK_MAP_VILLIAGE_3);
                 memcpy(COLOR_RAM, _halfMoonColorMap, 960);
                 memcpy(GFX_1_SCR, _halfMoonColorMap, 960);
@@ -304,8 +305,21 @@ void villiageMapDraw(char dir){
         villiageMapDrawDay(_map, vMapX, vMapY, dir);
     } else {
         if(_previousDir != dir){
-            // fill screen with moonlight, TODO: Unpack it.
-            memset(GFX_1_SCR, moonLight, 960);
+            // fill screen with moonlight, TODO: Unpack it. <- not enough mem, would have to be in ROM... not sure if the speed increase is worth it
+            // memset(GFX_1_SCR, moonLight, 960);
+            switch(cal_moonPhase){
+                case MOON_PHASE_FULL:
+                    // TODO: add a _fullMoonColorMap and copy it
+                    memset(GFX_1_SCR, moonLight, 960);
+                    break;
+                case MOON_PHASE_NONE:
+                    memset(GFX_1_SCR, moonLight, 960);
+                    break;
+                default:
+                    char tbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
+                    memcpy(GFX_1_SCR, _halfMoonColorMap, 960);
+                    setBank(tbank);
+            }
         }
         _previousDir = dir;
         villiageMapDrawNight(_map, vMapX, vMapY, dir);
