@@ -178,6 +178,7 @@ __interrupt static void IRQ_topNoScreen() {
 
     // indicate frame position
     gms_framePos = FRAME_TOP;
+    // copying font on IRQ as it goes to RAM under IO, and doing it in normal code would result in a crash due to some collisions
     if(!fontCopyDone) {
         // ROM on, I/O off - as we will copy to RAM under I/O ports
         mmap_set(0b00110011);

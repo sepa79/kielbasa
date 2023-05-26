@@ -21,23 +21,38 @@
 // 0xa0 - start of 'lightmapped' chars
 #define LIGHTMAP_DRAW_ROUTINE \
         {\
-            byte lightMap = lm[cx];\
             char ci = ti[cx];\
-            if(lightMap){\
-                --lightMap;\
-                cp[cx] = colorMap[lightMap][ci];\
+            char lightMap = lm[cx];\
+            char color = lightMap & 0b00001111;\
+            if(color){\
+                cp[cx] = colorMap[--color][ci];\
                 if(ci >= 0xa0){\
-                    if(lightMap<3)\
-                        ci += moonLightLevel;\
+                    lightMap = lightMap>>4;\
                     ci += lightMap;\
-                } \
-            } else\
-            if(ci >= 0xa0){\
-                ci += moonLightLevel;\
-            } \
+                }\
+            }\
             dp[cx] = ci;\
         }
 
+                // if(lightMap<3)\
+                //     lightMap += moonLightLevel;\
+        // {\
+        //     byte lightMap = lm[cx];\
+        //     char ci = ti[cx];\
+        //     if(lightMap){\
+        //         --lightMap;\
+        //         cp[cx] = colorMap[lightMap][ci];\
+        //         if(ci >= 0xa0){\
+        //             if(lightMap<3)\
+        //                 ci += moonLightLevel;\
+        //             ci += lightMap;\
+        //         } \
+        //     } else\
+        //     if(ci >= 0xa0){\
+        //         ci += moonLightLevel;\
+        //     } \
+        //     dp[cx] = ci;\
+        // }
 char * ramTiles = (char *)0xc480;
 
 void tiles_put4x4row0(char * dp, char * cp, const char * lmp, const char * mp, const char * tp, const char * rtp){

@@ -73,6 +73,8 @@ void gotoLocation(){
             _showNormalMenu();
             break;
     }
+    // reset location so when we are back to map it gets re-set and sprites are drawn
+    vMapLocation = LOCATION_RESET;
 }
 
 void mainLoop(){

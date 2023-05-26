@@ -28,6 +28,7 @@ enum LOCATION {
     LOCATION_VILLIAGE_ROAD,
     LOCATION_DIRT_ROAD
 };
+#define LOCATION_RESET 0xff
 
 #pragma compile("villiageMap.c")
 #endif
