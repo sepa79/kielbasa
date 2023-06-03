@@ -46,8 +46,8 @@ typedef char mapTile[16];
 extern char * ramTiles;
 extern const char * romTiles;
 extern bool isMapDay;
-extern char moonLight;
 extern char moonLightLevel;
+extern char moonDetailLevel;
 
 
 // load and init routines, from MENU_BANK_MAP_VILLIAGE_1

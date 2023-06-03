@@ -23,15 +23,18 @@
         {\
             char ci = ti[cx];\
             char lightMap = lm[cx];\
-            char color = lightMap & 0b00001111;\
-            if(color){\
-                cp[cx] = colorMap[--color][ci];\
-                if(ci >= 0xa0){\
-                    lightMap = lightMap>>4;\
-                    ci += lightMap;\
+            if(lightMap){\
+                char lMapDetail = lightMap & 0b00001111;\
+                char detailLvl = lMapDetail - moonDetailLevel;\
+                if(detailLvl < 4){\
+                    char color = (lightMap >> 4) - moonLightLevel;\
+                    cp[cx] = colorMap[color][ci];\
+                    if(ci >= 0xa0){\
+                        ci += detailLvl;\
+                    }\
                 }\
+                dp[cx] = ci;\
             }\
-            dp[cx] = ci;\
         }
 
                 // if(lightMap<3)\

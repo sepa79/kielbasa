@@ -26,6 +26,7 @@
 // L3 is neutral, +2 chars, normal light
 // L4 is bright, +3 normal char, brighter colors
 
+// just colors used
 static const char _charAttribsL1[] = {
     #embed ctm_attr1    "assets/charGfx/HiresVilliage_L1.ctm"
 };
@@ -38,6 +39,7 @@ static const char _charAttribsL3[] = {
 static const char _charAttribsL4[] = {
     #embed ctm_attr1    "assets/charGfx/HiresVilliage_L4.ctm"
 };
+// main character set
 static const char _chars[] = {
     #embed ctm_chars    "assets/charGfx/HiresVilliage_L3.ctm"
 };
@@ -45,8 +47,8 @@ static const char _chars[] = {
 #pragma data ( villiageMapData )
 
 static const char _map[] = {
-    // #embed ctm_map8     "assets/charGfx/VilliageMapHiresMain16xWood.ctm"
-    #embed "assets/charGfx/VilliageMapHiresMain16xWood_-_8bpc_64x64_Map_-_grass_16_pion_poziom_slash_backslash.bin"
+    #embed ctm_map8     "assets/charGfx/VilliageMapHiresMain16xWood.ctm"
+    // #embed "assets/charGfx/VilliageMapHiresMain16xWood_-_8bpc_64x64_Map_-_grass_16_pion_poziom_slash_backslash.bin"
 };
 
 const char romTiles[] = {
@@ -56,7 +58,7 @@ const char romTiles[] = {
 typedef char char1024[1024];
 
 const char1024 _lightMap[4] = { { 
-    #embed ctm_map8     "assets/charGfx/lightMap_up.ctm"
+    #embed ctm_map8     "assets/charGfx/lightMapNight.ctm"
 },{
     #embed ctm_map8     "assets/charGfx/lightMap_down.ctm"
 },{
@@ -69,12 +71,6 @@ const char1024 _lightMap[4] = { {
 
 static const char _mapLocations[] = {
     #embed "assets/charGfx/VilliageMapHiresMain16xWood.ctm.ids.bin"
-};
-static const char _halfMoonColorMap[] = {
-    #embed ctm_map8 "assets/charGfx/HalfMoonColorMap.ctm"
-};
-static const char _fullMoonColorMap[] = {
-    #embed ctm_map8 "assets/charGfx/FullMoonColorMap.ctm"
 };
 
 // ---------------------------------------------------------------------------------------------
@@ -251,8 +247,9 @@ static void _drawPlayerAndColors(){
 #pragma data ( villiageMapRAMData )
 
 // dark moon
-char moonLightColor = VCOL_BLACK;
+// char moonLightColor = VCOL_BLACK;
 char moonLightLevel = 0;
+char moonDetailLevel = 0;
 bool isMapDay = true;
 #define MOON_PHASE_FULL 1
 #define MOON_PHASE_NONE 3
@@ -268,29 +265,23 @@ void villiageMapScreenInit(void){
     setBank(pbank);
     if(!isMapDay){
         // fill screen with moonlight
+        memset(COLOR_RAM, VCOL_BLACK, 960);
+        memset(GFX_1_SCR, VCOL_BLACK, 960);
         switch(cal_moonPhase){
             case MOON_PHASE_FULL:
-                moonLightColor = VCOL_DARK_GREY;
-                while(!fontCopyDone){};
-                pbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
-                memcpy(COLOR_RAM, _fullMoonColorMap, 960);
-                memcpy(GFX_1_SCR, _fullMoonColorMap, 960);
-                moonLightLevel = 2;
-                setBank(pbank);
+                moonLightLevel = 0;
+                moonDetailLevel = 1;
                 break;
             case MOON_PHASE_NONE:
-                moonLightColor = VCOL_BLACK;
-                memset(COLOR_RAM, moonLight, 960);
-                memset(GFX_1_SCR, moonLight, 960);
+                moonLightLevel = 3;
+                moonDetailLevel = 4;
                 break;
             default:
-                moonLightColor = VCOL_DARK_GREY;
-                while(!fontCopyDone){};
-                pbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
-                memcpy(COLOR_RAM, _halfMoonColorMap, 960);
-                memcpy(GFX_1_SCR, _halfMoonColorMap, 960);
+                memset(COLOR_RAM, VCOL_BLACK, 960);
+                memset(GFX_1_SCR, VCOL_BLACK, 960);
                 moonLightLevel = 1;
-                setBank(pbank);
+                moonDetailLevel = 2;
+
         }
     }
 }
@@ -312,21 +303,7 @@ void villiageMapDraw(char dir){
     } else {
         if(_previousDir != dir){
             // fill screen with moonlight, TODO: Unpack it. <- not enough mem, would have to be in ROM... not sure if the speed increase is worth it
-            // memset(GFX_1_SCR, moonLight, 960);
-            switch(cal_moonPhase){
-                case MOON_PHASE_FULL:
-                    char tbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
-                    memcpy(GFX_1_SCR, _fullMoonColorMap, 960);
-                    setBank(tbank);
-                    break;
-                case MOON_PHASE_NONE:
-                    memset(GFX_1_SCR, moonLight, 960);
-                    break;
-                default:
-                    tbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
-                    memcpy(GFX_1_SCR, _halfMoonColorMap, 960);
-                    setBank(tbank);
-            }
+            memset(GFX_1_SCR, VCOL_BLACK, 960);
         }
         _previousDir = dir;
         villiageMapDrawNight(_map, vMapX, vMapY, dir);
@@ -348,8 +325,10 @@ void villiageMapDraw(char dir){
         vMapLocation = locId;
         textToSpriteBankPt = SPR_CHARACTER_PORTRAIT2;
         char str[12*3+1];
-        // char framesUsed = gms_frameCount - frameStart;
-        textToSprite((char *)LOCATION_NAMES[locId], 4);
+        char framesUsed = gms_frameCount - frameStart;
+        sprintf(str, "%03d", framesUsed);
+        //textToSprite((char *)LOCATION_NAMES[locId], 4);
+        textToSprite(str, 4);
     }
 
 
