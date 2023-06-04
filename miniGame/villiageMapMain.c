@@ -276,7 +276,7 @@ void villiageMapScreenInit(void){
             default:
                 memset(COLOR_RAM, VCOL_BLACK, 960);
                 memset(GFX_1_SCR, VCOL_BLACK, 960);
-                moonDetailLevel = 1;
+                moonDetailLevel = 2;
 
         }
     }
