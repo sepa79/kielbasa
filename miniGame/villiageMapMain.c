@@ -58,7 +58,7 @@ const char romTiles[] = {
 typedef char char1024[1024];
 
 const char1024 _lightMap[4] = { { 
-    #embed ctm_map8     "assets/charGfx/lightMapNight.ctm"
+    #embed ctm_map8     "assets/charGfx/lightMap_up.ctm"
 },{
     #embed ctm_map8     "assets/charGfx/lightMap_down.ctm"
 },{
@@ -248,7 +248,6 @@ static void _drawPlayerAndColors(){
 
 // dark moon
 // char moonLightColor = VCOL_BLACK;
-char moonLightLevel = 0;
 char moonDetailLevel = 0;
 bool isMapDay = true;
 #define MOON_PHASE_FULL 1
@@ -269,18 +268,15 @@ void villiageMapScreenInit(void){
         memset(GFX_1_SCR, VCOL_BLACK, 960);
         switch(cal_moonPhase){
             case MOON_PHASE_FULL:
-                moonLightLevel = 0;
                 moonDetailLevel = 1;
                 break;
             case MOON_PHASE_NONE:
-                moonLightLevel = 3;
-                moonDetailLevel = 4;
+                moonDetailLevel = 3;
                 break;
             default:
                 memset(COLOR_RAM, VCOL_BLACK, 960);
                 memset(GFX_1_SCR, VCOL_BLACK, 960);
-                moonLightLevel = 1;
-                moonDetailLevel = 2;
+                moonDetailLevel = 1;
 
         }
     }

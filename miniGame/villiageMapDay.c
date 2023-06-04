@@ -26,7 +26,7 @@
         {\
             char ci = ti[cx];\
             if(ci >= 0xa0){\
-                ci += DAY_CHAR_MAP;\
+                ci ^= DAY_CHAR_MAP;\
             }\
             cp[cx] = colorMap[DAY_COLOR_MAP][ci];\
             dp[cx] = ci;\

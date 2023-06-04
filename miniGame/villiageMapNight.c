@@ -25,37 +25,26 @@
             char lightMap = lm[cx];\
             if(lightMap){\
                 char lMapDetail = lightMap & 0b00001111;\
-                char detailLvl = lMapDetail - moonDetailLevel;\
-                if(detailLvl < 4){\
-                    char color = (lightMap >> 4) - moonLightLevel;\
+                char color = lightMap >> 4;\
+                if(color){\
                     cp[cx] = colorMap[color][ci];\
                     if(ci >= 0xa0){\
-                        ci += detailLvl;\
+                        ci += lMapDetail -1;\
+                    }\
+                } else {\
+                    char detailLvl = lMapDetail - moonDetailLevel;\
+                    if(detailLvl < 4){\
+                        if(ci >= 0xa0){\
+                            ci += detailLvl;\
+                        }\
+                        cp[cx] = VCOL_DARK_GREY;\
                     }\
                 }\
                 dp[cx] = ci;\
             }\
         }
 
-                // if(lightMap<3)\
-                //     lightMap += moonLightLevel;\
-        // {\
-        //     byte lightMap = lm[cx];\
-        //     char ci = ti[cx];\
-        //     if(lightMap){\
-        //         --lightMap;\
-        //         cp[cx] = colorMap[lightMap][ci];\
-        //         if(ci >= 0xa0){\
-        //             if(lightMap<3)\
-        //                 ci += moonLightLevel;\
-        //             ci += lightMap;\
-        //         } \
-        //     } else\
-        //     if(ci >= 0xa0){\
-        //         ci += moonLightLevel;\
-        //     } \
-        //     dp[cx] = ci;\
-        // }
+
 char * ramTiles = (char *)0xc480;
 
 void tiles_put4x4row0(char * dp, char * cp, const char * lmp, const char * mp, const char * tp, const char * rtp){
