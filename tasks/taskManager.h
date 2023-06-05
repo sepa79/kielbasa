@@ -32,7 +32,7 @@ extern byte task_worker[TASK_ARRAY_SIZE];
 // e.g. sowing fields can 'finish' at any percent if there are not enough seeds
 // extern byte task_percentDone[TASK_ARRAY_SIZE];
 // task icon
-extern const char * task_icon[TASK_ARRAY_SIZE];
+extern char * task_icon[TASK_ARRAY_SIZE];
 // one of the task statuses, tells the task handler why it is called
 extern byte task_status[TASK_ARRAY_SIZE];
 
@@ -47,7 +47,7 @@ struct Task {
     char params[TASK_PARAMS_SIZE];
 
     char reqType;
-    const char * icon;
+    char * icon;
     char status;
 };
 

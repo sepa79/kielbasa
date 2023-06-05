@@ -1,6 +1,8 @@
 #ifndef EASYFLASH_BANKS_H
 #define EASYFLASH_BANKS_H
 
+#include <c64/memmap.h>
+
 #define TITLE_SCREEN_BANK 1
 #define MAIN_GFX_BANK 2
 #define TRANSLATION_PL_BANK 3
@@ -30,8 +32,10 @@
 #define MENU_BANK_MAP_VILLIAGE_2 22
 #define MENU_BANK_MAP_VILLIAGE_3 23
 
-// Set main bank, reset history.
+// Set CRT bank, return previous bank that was set.
 char setBank(char bank);
+// Set Port ($01), return previous value that was set.
+char setPort(char port);
 
 #pragma compile("easyFlashBanks.c")
 

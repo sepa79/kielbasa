@@ -10,24 +10,24 @@
 
 // TODO: Proper init of the sprites
 __export const struct SPRITES SpriteResources = {{
-    #embed 0xffff 3 "assets/sprites/joyCursor.spd"
+    #embed 0x40 3 "assets/sprites/joyCursor.spd"
 },{
-    #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
     #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
     // #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
     // #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
+    // #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
 },{
     0
 },{
     0
 },{
-    #embed 0xffff 3 "assets/sprites/timeIcons.spd"
-},{
-    #embed 0x40 20 "assets/sprites/currency.spd"
+    0
 },{
     0
 },{
-    #embed 0x0280 16 "assets/sprites/weather.spd"
+    0
+},{
+    0
 }};
 
 // ===========================================================================================
@@ -39,6 +39,10 @@ __export const struct AUX_GFX AuxResources = {{
     #embed 0xffff 20 "assets/sprites/taskIcons.spd"
 },{
     #embed 0xffff 20 "assets/sprites/faces.spd"
+},{
+    #embed 0xffff 20 "assets/sprites/timeIcons.spd"
+},{
+    #embed 0xffff 20 "assets/sprites/weather.spd"
 },{
 // sprite font - 7 lines high only
     0,0,0,0,0,0,0,
@@ -134,22 +138,24 @@ __export const char GAME_FONT[0x800] = {
 #pragma code ( mainGfxCode )
 #pragma data ( mainGfxData )
 
+// TODO: if there is space, provide unpacked routines to speed it up. Done often, worth it.
+
 // Loading fonts and sprites
 static void _loadMainGfx(){
     // ROM on, I/O off - as we will copy to RAM under I/O ports
-    mmap_set(0b00110011);
+    // mmap_set(MMAP_ALL_ROM);
 
     // sprites - cursor, to GFX1
-    memcpy((char *)GFX_1_SPR_DST_ADR, GFX_1_SPR_SRC, 0x80);
+    memcpy((char *)GFX_1_SPR_DST_ADR, GFX_1_SPR_SRC, 0x40);
     // sprites - UI - skip 2 UI sprites
     memcpy((char *)UI_SPR_ADR, GFX_1_SPR_SRC+0x80, 0x800);
     // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
-    mmap_set(MMAP_ROM);
+    // mmap_set(MMAP_ROM);
 }
 
 static void _loadMainFont(){
     // ROM on, I/O off - as we will copy to RAM under I/O ports
-    mmap_set(0b00110011);
+    char pport = setPort(MMAP_ALL_ROM);
     // fonts & aux (but only half of the cart region atm - copy as needed later)
     char i = 0;
     do {
@@ -165,16 +171,15 @@ static void _loadMainFont(){
     } while (i != 0);
 
     // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
-    mmap_set(MMAP_ROM);
+    setPort(pport);
 }
 // Switching code generation back to shared section
 #pragma code ( code )
 #pragma data ( data )
 
 // used often, kept in RAM
-__export const char SPR_CURRENCY_COLORS[1] = {0x9};
-__export const char SPR_TIME_ICONS_COLORS[8] = {0x1, 0xb, 0xc, 0xf, 0x3, 0xf, 0xc, 0xb};
-__export const char SPR_WEATHER_COLORS[10] = {0x7, 0x7, 0x7, 0xe, 0x7, 0x1, 0xb, 0xb, 0xb, 0xb};
+// __export const char SPR_TIME_ICONS_COLORS[8] = {0x1, 0xb, 0xc, 0xf, 0x3, 0xf, 0xc, 0xb};
+// __export const char SPR_WEATHER_COLORS[10] = {0x7, 0x7, 0x7, 0xe, 0x7, 0x1, 0xb, 0xb, 0xb, 0xb};
 // 0 is end of colors, use 0x10 for black
 __export const char SPR_JOY_CURSOR_COLORS[16] = {0x10, 0x10, 0xb, 0xb, 0xf, 0xf, 0x3, 0x3, 0x1, 0x3, 0x3, 0xf, 0xf, 0xb, 0xb, 0x0};
 __export const char SPR_JOY_CURSOR_COLORS_ERROR[16] = {0x10, 0x10, 0x9, 0x9, 0x2, 0x2, 0x8, 0x8, 0xa, 0x8, 0x8, 0x2, 0x2, 0x9, 0x9, 0x0};

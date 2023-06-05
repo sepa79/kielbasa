@@ -60,7 +60,7 @@ static void _screenInit(){
 
 static void _spriteLoader(){
     // ROM on, I/O off - as we will copy to RAM under I/O ports
-    mmap_set(0b00110011);
+    char pport = setPort(MMAP_ALL_ROM);
 
     memcpy((char *)GFX_1_SPR_DST_ADR, PIGSLE_CMD_SPR_AIM, 0x80);
     // memcpy((char *)GFX_1_SPR_DST_ADR+0x40, PIGSLE_CMD_SPR_FILE, 0x400);
@@ -79,7 +79,7 @@ static void _spriteLoader(){
     }
 
     // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
-    mmap_set(MMAP_ROM);
+    setPort(pport);
 }
 
 void pigsleScreenInit(void){
@@ -711,7 +711,7 @@ void pigsleCmdInit(){
         jsr MSX_INIT
     }
     // if you use the mmap_trampoline() you have to call the mmap_set() at least once to init the shadow variable
-    mmap_set(MMAP_ROM);
+    char pport = setPort(MMAP_ROM);
     // Activate trampoline
     mmap_trampoline();
     // Disable CIA interrupts, we do not want interference

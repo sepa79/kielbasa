@@ -21,28 +21,16 @@ enum SPRITE_VIC_BANKS {
     SPR_BANK_CHARACTER_BAR4,
     SPR_BANK_DATE_TXT1,
     SPR_BANK_DATE_TXT2,
-    SPR_BANK_TIME_ICON1,
-    SPR_BANK_TIME_ICON2,
-    SPR_BANK_TIME_ICON3,
-    SPR_BANK_TIME_ICON4,
-    SPR_BANK_TIME_ICON5,
-    SPR_BANK_TIME_ICON6,
-    SPR_BANK_TIME_ICON7,
-    SPR_BANK_TIME_ICON8,
-    SPR_BANK_CURRENCY1,
-    SPR_BANK_CURRENCY2,
-    SPR_BANK_CURRENCY3,
-    SPR_BANK_CURRENCY_TXT,
-    SPR_BANK_WEATHER1,
-    SPR_BANK_WEATHER2,
-    SPR_BANK_WEATHER3,
-    SPR_BANK_WEATHER4,
-    SPR_BANK_WEATHER5,
-    SPR_BANK_WEATHER6,
-    SPR_BANK_WEATHER7,
-    SPR_BANK_WEATHER8,
-    SPR_BANK_WEATHER9,
-    SPR_BANK_WEATHER10
+    SPR_BANK_TIME_ICON,
+    SPR_BANK_WEATHER_ICON,
+    SPR_BANK_TXT_UP_1,
+    SPR_BANK_TXT_UP_2,
+    SPR_BANK_TXT_UP_3,
+    SPR_BANK_TXT_UP_4,
+    SPR_BANK_TXT_BOTTOM_1,
+    SPR_BANK_TXT_BOTTOM_2,
+    SPR_BANK_TXT_BOTTOM_3,
+    SPR_BANK_TXT_BOTTOM_4,
 };
 
 // #define SPR_JOY_CURSOR1         ((char *)GFX_1_BASE + 64*SPR_BANK_JOY_CURSOR1)
@@ -57,28 +45,16 @@ enum SPRITE_VIC_BANKS {
 #define SPR_CHARACTER_PORTRAIT4 ((char *)UI_BMP_ADR + 64*SPR_BANK_CHARACTER_PORTRAIT4)
 #define SPR_DATE_TXT1           ((char *)UI_BMP_ADR + 64*SPR_BANK_DATE_TXT1)
 #define SPR_DATE_TXT2           ((char *)UI_BMP_ADR + 64*SPR_BANK_DATE_TXT2)
-// #define SPR_TIME_ICON1          ((char *)GFX_1_BASE + 64*SPR_BANK_TIME_ICON1)
-// #define SPR_TIME_ICON2          ((char *)GFX_1_BASE + 64*SPR_BANK_TIME_ICON2)
-// #define SPR_TIME_ICON3          ((char *)GFX_1_BASE + 64*SPR_BANK_TIME_ICON3)
-// #define SPR_TIME_ICON4          ((char *)GFX_1_BASE + 64*SPR_BANK_TIME_ICON4)
-// #define SPR_TIME_ICON5          ((char *)GFX_1_BASE + 64*SPR_BANK_TIME_ICON5)
-// #define SPR_TIME_ICON6          ((char *)GFX_1_BASE + 64*SPR_BANK_TIME_ICON6)
-// #define SPR_TIME_ICON7          ((char *)GFX_1_BASE + 64*SPR_BANK_TIME_ICON7)
-// #define SPR_TIME_ICON8          ((char *)GFX_1_BASE + 64*SPR_BANK_TIME_ICON8)
-#define SPR_CURRENCY1           ((char *)UI_BMP_ADR + 64*SPR_BANK_CURRENCY1)
-#define SPR_CURRENCY2           ((char *)UI_BMP_ADR + 64*SPR_BANK_CURRENCY2)
-#define SPR_CURRENCY3           ((char *)UI_BMP_ADR + 64*SPR_BANK_CURRENCY3)
-#define SPR_CURRENCY_TXT        ((char *)UI_BMP_ADR + 64*SPR_BANK_CURRENCY_TXT)
-// #define SPR_WEATHER1            ((char *)GFX_1_BASE + 64*SPR_BANK_WEATHER1)
-// #define SPR_WEATHER2            ((char *)GFX_1_BASE + 64*SPR_BANK_WEATHER2)
-// #define SPR_WEATHER3            ((char *)GFX_1_BASE + 64*SPR_BANK_WEATHER3)
-// #define SPR_WEATHER4            ((char *)GFX_1_BASE + 64*SPR_BANK_WEATHER4)
-// #define SPR_WEATHER5            ((char *)GFX_1_BASE + 64*SPR_BANK_WEATHER5)
-// #define SPR_WEATHER6            ((char *)GFX_1_BASE + 64*SPR_BANK_WEATHER6)
-// #define SPR_WEATHER7            ((char *)GFX_1_BASE + 64*SPR_BANK_WEATHER7)
-// #define SPR_WEATHER8            ((char *)GFX_1_BASE + 64*SPR_BANK_WEATHER8)
-// #define SPR_WEATHER9            ((char *)GFX_1_BASE + 64*SPR_BANK_WEATHER9)
-// #define SPR_WEATHER10           ((char *)GFX_1_BASE + 64*SPR_BANK_WEATHER10)
+#define SPR_TIME_ICON           ((char *)UI_BMP_ADR + 64*SPR_BANK_TIME_ICON)
+#define SPR_WEATHER_ICON        ((char *)UI_BMP_ADR + 64*SPR_BANK_WEATHER_ICON)
+#define SPR_TXT_UP_1            ((char *)UI_BMP_ADR + 64*SPR_BANK_TXT_UP_1)
+#define SPR_TXT_UP_2            ((char *)UI_BMP_ADR + 64*SPR_BANK_TXT_UP_2)
+#define SPR_TXT_UP_3            ((char *)UI_BMP_ADR + 64*SPR_BANK_TXT_UP_3)
+#define SPR_TXT_UP_4            ((char *)UI_BMP_ADR + 64*SPR_BANK_TXT_UP_4)
+#define SPR_TXT_BOTTOM_1        ((char *)UI_BMP_ADR + 64*SPR_BANK_TXT_BOTTOM_1)
+#define SPR_TXT_BOTTOM_2        ((char *)UI_BMP_ADR + 64*SPR_BANK_TXT_BOTTOM_2)
+#define SPR_TXT_BOTTOM_3        ((char *)UI_BMP_ADR + 64*SPR_BANK_TXT_BOTTOM_3)
+#define SPR_TXT_BOTTOM_4        ((char *)UI_BMP_ADR + 64*SPR_BANK_TXT_BOTTOM_4)
 
 // these are just copied into SPR_CHARACTER_BARX as needed
 #define SPR_TASK_FARM1   (AuxResources.TASK_ICONS)
@@ -102,8 +78,8 @@ enum SPRITE_VIC_BANKS {
 #define SPR_PORTRAIT04   (AuxResources.PORTRAITS + 64*3)
 
 struct SPRITES {
-    // sprite cursor - 2x
-    char JOY_CURSOR[64*2];
+    // sprite cursor
+    char JOY_CURSOR[64];
     // empty battery 4x
     char CHARACTER_BARS[64*4];
     // char pictures
@@ -111,13 +87,10 @@ struct SPRITES {
     // Date icons - empty, as game draws over these sprites
     char DATE_TXT[64*2];
     // time icons
-    char TIME_ICONS[64*8];
-    // toilet paper - 'gold' currency - and space for 2 more
-    char CURRENCY[64*3];
-    // text sprite, show number of currency items held by player
-    char CURRENCY_TXT[64*1]; 
-    // weather pictures
-    char WEATHER[64*10];
+    char TIME_ICON[64];
+    char WEATHER_ICON[64];
+    char UI_TXT_UP[64*4];
+    char UI_TXT_BOTTOM[64*4];
 };
 
 const struct AUX_GFX {
@@ -125,6 +98,10 @@ const struct AUX_GFX {
     char TASK_ICONS[64*16];
     // Portraits
     char PORTRAITS[64*4];
+    // time icons
+    char TIME_ICONS[64*8];
+    // weather icons
+    char WEATHER_ICONS[64*10];
     // sprite fonts
     char SPRITE_FONTS[59*7];
 };
@@ -136,7 +113,6 @@ const struct AUX_GFX {
 extern __export const struct SPRITES SpriteResources;
 extern __export const struct AUX_GFX AuxResources;
 
-extern const char SPR_CURRENCY_COLORS[1];
 extern const char SPR_TIME_ICONS_COLORS[8];
 extern const char SPR_WEATHER_COLORS[10];
 // 0 is end of colors, use 0x10 for black

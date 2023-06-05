@@ -22,12 +22,13 @@ struct JOY_CURSOR {
 
 extern volatile struct JOY_CURSOR joyCursor;
 
+void initUI();
 void displayMenu(struct MenuOption * menu);
 void backToPreviousMenu();
 void checkKeys();
 void updateStatusBar(const byte * text);
+void updateStatusBarError(const byte * text);
 void updateGameSpeed();
-void drawFullDate();
 void updateHour(byte newHour);
 void updateDay(byte newDay);
 void updateMonth(byte newMonth);

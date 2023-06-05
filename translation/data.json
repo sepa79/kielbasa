@@ -642,20 +642,42 @@
         "en": "Józek's story will be here."
       },
       {
-        "id": "PAUSE",
+        "id": "TASK_ADDED",
         "prefix": "SB",
-        "pl": "   P  A  U  Z  A   ",
-        "en": "   P  A  U  S  E  " 
+        "pl": [
+          "   Zadanie  ",
+          "  dodane do ",
+          "   kolejki  "
+        ],
+        "en": [
+          "    Task    ",
+          "  added to  ",
+          "   queue    "
+        ]
       },
       {
-        "id": "UNPAUSE",
+        "id": "TASKS_FULL",
         "prefix": "SB",
-        "pl": "   Normalna prędkość gry   ",
-        "en": "   Normal game speed   "
+        "pl": [
+          "   Kolejka  ",
+          "    zadań   ",
+          "    pełna   "
+        ],
+        "en": [
+          "    Task    ",
+          "    queue   ",
+          "    full    "
+        ]
       },
       {
         "id": "WELCOME",
         "prefix": "SB",
+        "pl": "+/-/Space - kontrola czasu",
+        "en": "+/-/Space - time control"
+      },
+      {
+        "id": "ABOUT",
+        "prefix": "HELP",
         "pl": [
           "    Witaj! +/-/Space - kontrola czasu    Kielbasa Empire - wersja alpha. ",
           "    Credits: ",

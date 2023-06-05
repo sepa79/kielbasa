@@ -27,7 +27,7 @@ char task_minReqStat[TASK_ARRAY_SIZE][3];
 char task_minReqSkill[TASK_ARRAY_SIZE][4];
 char task_reqType[TASK_ARRAY_SIZE];
 char task_worker[TASK_ARRAY_SIZE];
-const char * task_icon[TASK_ARRAY_SIZE];
+char * task_icon[TASK_ARRAY_SIZE];
 
 // helper variable, stores last free task entry to speed things up
 static char _nextFreeTaskRef = 0;
@@ -78,11 +78,8 @@ void setTaskLogMsg(char taskId){
 static bool _addTask(struct Task * task){
     // find entry in the task arrays
     if(_nextFreeTaskRef == TASK_ARRAY_SIZE){
-        // LOG_DATA = "TASKS FULL";
-        // logger(LOG_INFO | LOG_MSG_TEXT);
-
-        updateStatusBar(s"  No more room in Task Queue  ");
-        setErrorCursor();
+        memcpy(LOG_DATA, p"Tasks full", 10);
+        logger(LOG_INFO | LOG_MSG_TEXT);
         return false;
     }
 
@@ -367,6 +364,11 @@ bool addTask(struct Task * task){
     char pbank = setBank(TASKS_BANK);
     bool result = _addTask(task);
     setBank(pbank);
+    if(result){
+        updateStatusBar(TXT[SB_IDX_TASK_ADDED]);
+    } else {
+        updateStatusBarError(TXT[SB_IDX_TASKS_FULL]);
+    }
     return result;
 }
 

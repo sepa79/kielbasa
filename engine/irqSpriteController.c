@@ -2,6 +2,7 @@
 #include <c64/memmap.h>
 #include <c64/easyflash.h>
 #include <c64/cia.h>
+#include <string.h>
 
 #include <menu/menuSystem.h>
 #include <engine/easyFlashBanks.h>
@@ -10,7 +11,9 @@
 #include <assets/mainGfx.h>
 #include <character/character.h>
 
-volatile char isc_weatherSprite = 0;
+volatile char isc_statusTextColorIdx = 0;
+static char prvWeatherIcon = 255;
+
 char* characterSlotSpriteBarPtr[CHARACTER_SLOTS] = {
     SPR_CHARACTER_BAR1,
     SPR_CHARACTER_BAR2,
@@ -19,7 +22,6 @@ char* characterSlotSpriteBarPtr[CHARACTER_SLOTS] = {
 };
 
 static char _batteryColors[4] = {VCOL_BLUE, VCOL_BLUE, VCOL_BLUE, VCOL_BLUE};
-static char _characterColors[4] = {0, 0, 0, 0};
 
 char* characterSlotSpritePicPtr[CHARACTER_SLOTS] = {
     SPR_CHARACTER_PORTRAIT1,
@@ -54,44 +56,40 @@ void setNormalCursor(){
     joyCursor.colorIdx = 0;
 }
 
+// copy sprite from sprite cache to static banks
+static void _copySpriteToBank(char * source, char* dest){
+        char pbank = setBank(MAIN_GFX_BANK);
+        memcpy(dest, source, 63);
+        dest[63] = source[63] & 0b00001111;
+        setBank(pbank);
+}
+
+// copy weather sprite
+void setWeatherIcon(char sprIdx){
+    if(sprIdx != prvWeatherIcon){
+        _copySpriteToBank(AuxResources.WEATHER_ICONS + 64 * sprIdx, SPR_WEATHER_ICON);
+        prvWeatherIcon = sprIdx;
+    }
+}
+
+// copy time speed icon
+void setTimeSpeedIcon(char sprIdx){
+    _copySpriteToBank(AuxResources.TIME_ICONS + 64 * sprIdx, SPR_TIME_ICON);
+}
+
 // copy face to character portrait
 void setCharacterSlotPic(char charIdx){
     char charSlot = allCharacters[charIdx].slot;
-    const char * picturePtr = allCharacters[charIdx].picture;
     if(charSlot != NO_SLOT){
-        char * charPicPtr = characterSlotSpritePicPtr[charSlot];
-        char i = 0;
-        char pbank = setBank(MAIN_GFX_BANK);
-        do{
-            charPicPtr[i]   = picturePtr[i];
-            charPicPtr[i+1] = picturePtr[i+1];
-            charPicPtr[i+2] = picturePtr[i+2];
-            i++;
-            i++;
-            i++;
-        } while (i<63);
-        _characterColors[charSlot] = picturePtr[63];
-        setBank(pbank);
+        _copySpriteToBank(allCharacters[charIdx].picture, characterSlotSpritePicPtr[charSlot]);
     }
 }
 
 // copy task icon to character's SPR_CHARACTER_BARX
-void setCharacterSlotIcon(char charIdx, const char * taskIconPtr){
+void setCharacterSlotIcon(char charIdx, char * taskIconPtr){
     char charSlot = allCharacters[charIdx].slot;
     if(charSlot != NO_SLOT){
-        char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
-        char i = 1;
-        char pbank = setBank(MAIN_GFX_BANK);
-        // mmap_set(MMAP_NO_BASIC);
-        do{
-            charBarPtr[i]   = taskIconPtr[i];
-            charBarPtr[i+1] = taskIconPtr[i+1];
-            i++;
-            i++;
-            i++;
-        } while (i<63);
-        // mmap_set(MMAP_ROM);
-        setBank(pbank);
+        _copySpriteToBank(taskIconPtr, characterSlotSpriteBarPtr[charSlot]);
     }
 }
 
@@ -137,12 +135,11 @@ void drawBattery(char charIdx){
 __interrupt void setSpritesTopScr(){
     if(gms_enableMenuSprites){
         // store/restore memory config, as we need to ensure BASIC ROM is on
-        byte _prevRomCfg = ((byte *)0x01)[0];
-        mmap_set(MMAP_ROM);
+        char pport = setPort(MMAP_ROM);
         char pbank = setBank(mnu_menuBank);
 
         showSprites();
-        ((byte *)0x01)[0] = _prevRomCfg;
+        setPort(pport);
         setBank(pbank);
     }
 }
@@ -156,7 +153,7 @@ void setSpritesBottomScr(){
     
     vic.spr_msbx = 0b00000000;
 
-    GFX_1_SCR[OFFSET_SPRITE_PTRS] = SPR_BANK_JOY_CURSOR2;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS] = SPR_BANK_JOY_CURSOR1;
 
     vic_sprxy(0, joyCursor.x, joyCursor.y);
 
@@ -175,11 +172,10 @@ void showUiSpritesTop(){
     vic.memptr = d018_UI;
     cia2.pra = dd00_UI;
 
-    // already set in the bottom IRQ
-    // vic.spr_expand_x = 0b00000000;
-    // vic.spr_expand_y = 0b00000000;
-    // vic.spr_priority = 0b00000000;
-    vic.spr_multi       = 0b00011000;
+    vic.spr_expand_x = 0b00000000;
+    vic.spr_expand_y = 0b00000000;
+    vic.spr_priority = 0b00000000;
+    vic.spr_multi    = 0b00001000;
 
     vic.spr_pos[0].y = 24;
     vic.spr_pos[1].y = 24;
@@ -187,36 +183,54 @@ void showUiSpritesTop(){
     vic.spr_pos[3].y = 24;
     vic.spr_pos[4].y = 24;
     vic.spr_pos[5].y = 24;
-    // vic.spr_pos[6].y = 24;
-    // vic.spr_pos[7].y = 24;
+    vic.spr_pos[6].y = 24;
+    vic.spr_pos[7].y = 24;
     
     vic.spr_mcolor0 = SPR_WEATHER_MULTICOLOR_1;
     vic.spr_mcolor1 = SPR_WEATHER_MULTICOLOR_2;
 
-    vic.spr_msbx = 0b00111000;
+    vic.spr_msbx = 0b00001100;
 
     UI_SCR[OFFSET_SPRITE_PTRS+0] = SPR_BANK_DATE_TXT1;
     UI_SCR[OFFSET_SPRITE_PTRS+1] = SPR_BANK_DATE_TXT2;
-    UI_SCR[OFFSET_SPRITE_PTRS+2] = SPR_BANK_TIME_ICON1+gms_gameSpeed;
-    UI_SCR[OFFSET_SPRITE_PTRS+3] = SPR_BANK_WEATHER1+isc_weatherSprite;
-    UI_SCR[OFFSET_SPRITE_PTRS+4] = SPR_BANK_CURRENCY1;
-    UI_SCR[OFFSET_SPRITE_PTRS+5] = SPR_BANK_CURRENCY_TXT;
+    UI_SCR[OFFSET_SPRITE_PTRS+2] = SPR_BANK_TIME_ICON;
+    UI_SCR[OFFSET_SPRITE_PTRS+3] = SPR_BANK_WEATHER_ICON;
+    UI_SCR[OFFSET_SPRITE_PTRS+4] = SPR_BANK_TXT_UP_1;
+    UI_SCR[OFFSET_SPRITE_PTRS+5] = SPR_BANK_TXT_UP_2;
+    UI_SCR[OFFSET_SPRITE_PTRS+6] = SPR_BANK_TXT_UP_3;
+    UI_SCR[OFFSET_SPRITE_PTRS+7] = SPR_BANK_TXT_UP_4;
 
     vic.spr_pos[0].x = 50-12;
     vic.spr_pos[1].x = 50+12;
-    vic.spr_pos[2].x = 172;
-    vic.spr_pos[3].x = 60-24-10;
-    vic.spr_pos[4].x = 60;
-    vic.spr_pos[5].x = 60;
+    vic.spr_pos[2].x = 60-24-10;
+    vic.spr_pos[3].x = 60;
+    vic.spr_pos[4].x = 160-24;
+    vic.spr_pos[5].x = 160;
+    vic.spr_pos[6].x = 160+24;
+    vic.spr_pos[7].x = 160+48;
 
+    char pport = setPort(MMAP_NO_ROM);
+    vic.spr_color[2] = SPR_TIME_ICON[63];
+    vic.spr_color[3] = SPR_WEATHER_ICON[63];
     vic.spr_color[0] = VCOL_MED_GREY;//DATE;
     vic.spr_color[1] = VCOL_MED_GREY;//DATE;
-    vic.spr_color[2] = SPR_TIME_ICONS_COLORS[gms_gameSpeed];
-    vic.spr_color[3] = SPR_WEATHER_COLORS[isc_weatherSprite];
-    vic.spr_color[4] = SPR_CURRENCY_COLORS[0];
-    vic.spr_color[5] = VCOL_MED_GREY;
+    if(joyCursor.error){
+        vic.spr_color[4] = SPR_JOY_CURSOR_COLORS_ERROR[joyCursor.colorIdx];
+        vic.spr_color[5] = SPR_JOY_CURSOR_COLORS_ERROR[joyCursor.colorIdx];
+        vic.spr_color[6] = SPR_JOY_CURSOR_COLORS_ERROR[joyCursor.colorIdx];
+        vic.spr_color[7] = SPR_JOY_CURSOR_COLORS_ERROR[joyCursor.colorIdx];
+    } else {
+        vic.spr_color[4] = SPR_JOY_CURSOR_COLORS[isc_statusTextColorIdx];
+        vic.spr_color[5] = SPR_JOY_CURSOR_COLORS[isc_statusTextColorIdx];
+        vic.spr_color[6] = SPR_JOY_CURSOR_COLORS[isc_statusTextColorIdx];
+        vic.spr_color[7] = SPR_JOY_CURSOR_COLORS[isc_statusTextColorIdx];
+        if(isc_statusTextColorIdx < 14){
+            isc_statusTextColorIdx++;
+        }
+    }
+    setPort(pport);
 
-    vic.spr_enable = 0b00111111;
+    vic.spr_enable = 0b11111111;
     gms_framePos = FRAME_TOP_BORDER;
 }
 
@@ -269,14 +283,16 @@ void showUiSpritesBottom(){
     vic.spr_pos[6].y = 2;
     vic.spr_pos[7].y = 2;
 
-    vic.spr_color[0] = _characterColors[0];
+    char pport = setPort(MMAP_NO_ROM);
+    vic.spr_color[0] = SPR_CHARACTER_PORTRAIT1[63];
     vic.spr_color[1] = _batteryColors[0];
-    vic.spr_color[2] = _characterColors[1];
+    vic.spr_color[2] = SPR_CHARACTER_PORTRAIT2[63];
     vic.spr_color[3] = _batteryColors[1];
-    vic.spr_color[4] = _characterColors[2];
+    vic.spr_color[4] = SPR_CHARACTER_PORTRAIT3[63];
     vic.spr_color[5] = _batteryColors[2];
-    vic.spr_color[6] = _characterColors[3];
+    vic.spr_color[6] = SPR_CHARACTER_PORTRAIT4[63];
     vic.spr_color[7] = _batteryColors[3];
+    setPort(pport);
 
     vic.spr_enable = 0b11111111;
     // indicate frame position
@@ -334,14 +350,16 @@ void showMapSpritesBottom(){
     vic.spr_pos[6].y = 2;
     vic.spr_pos[7].y = 2;
 
-    vic.spr_color[0] = _characterColors[0];
+    char pport = setPort(MMAP_NO_ROM);
+    vic.spr_color[0] = SPR_CHARACTER_PORTRAIT1[63];
     vic.spr_color[1] = _batteryColors[0];
     vic.spr_color[2] = VCOL_MED_GREY;
     vic.spr_color[3] = VCOL_MED_GREY;
     vic.spr_color[4] = VCOL_MED_GREY;
     vic.spr_color[5] = VCOL_MED_GREY;
-    vic.spr_color[6] = _characterColors[3];
+    vic.spr_color[6] = SPR_CHARACTER_PORTRAIT4[63];
     vic.spr_color[7] = _batteryColors[3];
+    setPort(pport);
 
     vic.spr_enable = 0b11111111;
     // indicate frame position

@@ -19,8 +19,8 @@
 #define SCREEN_Y_START 12
 #define BIG_SCREEN_Y_START 0
 #define SCREEN_WIDTH 40
-#define SCREEN_HEIGHT 12
-#define BIG_SCREEN_HEIGHT 24
+#define SCREEN_HEIGHT 13
+#define BIG_SCREEN_HEIGHT 25
 
 enum UI_MAP {
     UI_U=1,

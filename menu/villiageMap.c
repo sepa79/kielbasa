@@ -44,11 +44,11 @@ __interrupt static void _villiageMapSpriteNoop(){
 #define WALKABLE 0b00010000
 static void _mapUp(){
     // check if tiles above us are walkable
-    mmap_set(MMAP_RAM);
+    char pport = setPort(MMAP_RAM);
     char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*10+19]];
     char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*10+20]];
     bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
-    mmap_set(MMAP_ROM);
+    setPort(pport);
     
     if(canWalk){
         if (vMapY > 0)
@@ -58,11 +58,11 @@ static void _mapUp(){
 }
 static void _mapDown(){
     // check if tile below us is walkable
-    mmap_set(MMAP_RAM);
+    char pport = setPort(MMAP_RAM);
     char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*13+19]];
     char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*13+20]];
     bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
-    mmap_set(MMAP_ROM);
+    setPort(pport);
 
     if(canWalk){
         if (vMapY < V_MAP_SIZE_Y*3-1)
@@ -72,11 +72,11 @@ static void _mapDown(){
 }
 static void _mapLeft(){
     // check if tile to the left is walkable
-    mmap_set(MMAP_RAM);
+    char pport = setPort(MMAP_RAM);
     char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*11+18]];
     char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*12+18]];
     bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
-    mmap_set(MMAP_ROM);
+    setPort(pport);
 
     if(canWalk){
         if (vMapX > 0)
@@ -86,11 +86,11 @@ static void _mapLeft(){
 }
 static void _mapRight(){
     // check if tile to the right is walkable
-    mmap_set(MMAP_RAM);
+    char pport = setPort(MMAP_RAM);
     char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*11+21]];
     char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*12+21]];
     bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
-    mmap_set(MMAP_ROM);
+    setPort(pport);
 
     if(canWalk){
         if (vMapX < V_MAP_SIZE_X*3-2*4)

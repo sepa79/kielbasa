@@ -262,10 +262,10 @@ void villiageMapScreenInit(void){
     _mapInit();
     isMapDay = cal_isDay;
     setBank(pbank);
+    memset(COLOR_RAM, VCOL_BLACK, 1000);
+    memset(GFX_1_SCR, VCOL_BLACK, 1000);
     if(!isMapDay){
         // fill screen with moonlight
-        memset(COLOR_RAM, VCOL_BLACK, 960);
-        memset(GFX_1_SCR, VCOL_BLACK, 960);
         switch(cal_moonPhase){
             case MOON_PHASE_FULL:
                 moonDetailLevel = 1;
@@ -274,8 +274,6 @@ void villiageMapScreenInit(void){
                 moonDetailLevel = 3;
                 break;
             default:
-                memset(COLOR_RAM, VCOL_BLACK, 960);
-                memset(GFX_1_SCR, VCOL_BLACK, 960);
                 moonDetailLevel = 2;
 
         }
@@ -298,7 +296,6 @@ void villiageMapDraw(char dir){
         villiageMapDrawDay(_map, vMapX, vMapY, dir);
     } else {
         if(_previousDir != dir){
-            // fill screen with moonlight, TODO: Unpack it. <- not enough mem, would have to be in ROM... not sure if the speed increase is worth it
             memset(GFX_1_SCR, VCOL_BLACK, 960);
         }
         _previousDir = dir;

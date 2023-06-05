@@ -41,7 +41,7 @@ volatile byte weatherSprite = 0; // cache for night, hourly tick updates isc_wea
 #pragma data ( ticksData )
 
 const byte MONTH_DAYS[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-// temp is in C
+// temp is in Celsius
 // https://meteomodel.pl/dane/srednie-miesieczne/?imgwid=353230295&par=tm&max_empty=2
 const signed char WEEKLY_AVG_TEMP[53] = {
  -1,  -1,   0,   1,   1,   2,   1,   4,
@@ -223,13 +223,14 @@ void timeTick(){
     // day/night cycle
     if(cal_dateHour == sunRaiseHour){
         // restore the sun icon
-        isc_weatherSprite = weatherSprite;
+        setWeatherIcon(weatherSprite);
+        
         // reload gfx to day one
         cal_isDay = true;
         loadMenuGfx(cal_isDay);
     } else if (cal_dateHour == sunSetHour){
         // update isc_weatherSprite to night version
-        isc_weatherSprite = 6 + cal_moonPhase;
+        setWeatherIcon(6 + cal_moonPhase);
         // reload gfx to might one
         cal_isDay = false;
         loadMenuGfx(cal_isDay);
@@ -282,6 +283,9 @@ void timeTick(){
 
 void initCalendar() {
     byte pbank = setBank(TICKS_BANK);
+    // set it twice to ensure it changes to correct one, as it only redraws on change
+    setWeatherIcon(weatherSprite);
     _weatherTick();
+    setWeatherIcon(weatherSprite);
     setBank(pbank);
 }

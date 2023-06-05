@@ -54,10 +54,10 @@ static const char _lightMap[] = {
 
 static void _screenInit(){
     // ROM on, I/O off - as we will copy to RAM under I/O ports
-    mmap_set(0b00110011);
+    char pport = setPort(MMAP_ALL_ROM);
     memcpy(GFX_1_FNT2, _charsRom, sizeof(_charsRom));
     // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
-    mmap_set(MMAP_ROM);
+    setPort(pport);
     vic.color_back = VCOL_BROWN;
     vic.color_border = VCOL_BLACK;
     vic.color_back1 = VCOL_DARK_GREY;
@@ -121,7 +121,7 @@ void villiageMapScreenInit(void){
 void drawVilliageMapNight(char ox, char oy){
     rirq_stop();
     vic.color_border++;
-    mmap_set(MMAP_NO_ROM);
+    char pport = setPort(MMAP_NO_ROM);
     char * dp = GFX_1_SCR, * cp = COLOR_RAM, * lmp = ((char *)_lightMap);
 
     char * mapPos = MAP_RAM;// + V_MAP_SIZE_X * V_MAP_TILE_SIZE_Y * oy + ox;
@@ -163,7 +163,7 @@ void drawVilliageMapNight(char ox, char oy){
         lmp += 40;
         mapPos += V_MAP_SIZE_X*V_MAP_TILE_SIZE_X;
     }
-    mmap_set(MMAP_ROM);
+    setPort(pport);
 
     vic.color_border--;
     rirq_start();
@@ -240,7 +240,7 @@ void villiageMapInit(){
         jsr MSX_INIT
     }
     // if you use the mmap_trampoline() you have to call the mmap_set() at least once to init the shadow variable
-    mmap_set(MMAP_ROM);
+    char pport = setPort(MMAP_ROM);
     // Activate trampoline
     mmap_trampoline();
     // Disable CIA interrupts, we do not want interference

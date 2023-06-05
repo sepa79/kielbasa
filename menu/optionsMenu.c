@@ -145,16 +145,15 @@ static void _playMsx(struct Song * song){
         loadMusic(song->sidIdx);
         byte songIdx = song->songIdx;
 
+        char pport = setPort(MMAP_NO_BASIC);
         // init it
         __asm {
-            lda #MSX_ROM
-            sta $01
             lda songIdx
             jsr MSX_INIT
         };
 
         // set ROM back
-        mmap_set(MMAP_ROM);
+        setPort(pport);
 
         // reenable music
         gms_enableMusic = true;

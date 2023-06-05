@@ -1,8 +1,8 @@
 #include <c64/vic.h>
 #include <c64/cia.h>
 #include <c64/types.h>
-#include <c64/memmap.h>
 #include <c64/rasterirq.h>
+#include <c64/memmap.h>
 
 #include <engine/joystick.h>
 #include <engine/irqHandler.h>
@@ -14,7 +14,7 @@
 #define IRQ_RASTER_TOP_MC_SCREEN 0x2e
 #define IRQ_RASTER_MIDDLE_TXT_SCREEN 0x91
 // special irqs to control sprites
-#define IRQ_RASTER_BOTTOM_SCROLL_ETC 0xee
+#define IRQ_RASTER_BOTTOM_UI 0xf9
 #define IRQ_RASTER_TOP_UI_SPRITES 0x01
 
 volatile bool map_2ndScreen = true;
@@ -24,12 +24,6 @@ volatile bool fontCopyDone = true;
 
 // used to check if move to given tile is possible
 char * mapScreen;
-
-static byte _scrollIt = 7;
-static byte _emptyStatus[] = {0xff, 0};
-#define statusLine 24*40
-
-static byte _prevRomCfg;
 
 // init joysticks to neutral pos
 static byte _joy1Status = 255;
@@ -181,7 +175,7 @@ __interrupt static void IRQ_topNoScreen() {
     // copying font on IRQ as it goes to RAM under IO, and doing it in normal code would result in a crash due to some collisions
     if(!fontCopyDone) {
         // ROM on, I/O off - as we will copy to RAM under I/O ports
-        mmap_set(0b00110011);
+        char pport = setPort(MMAP_ALL_ROM);
 
         char i = 0;
         do {
@@ -200,7 +194,7 @@ __interrupt static void IRQ_topNoScreen() {
             fontCopyDst = GFX_1_FNT2;
         }
         // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
-        mmap_set(MMAP_ROM);
+        setPort(pport);
     }
     // vic.color_back--;
     // vic.color_border--;
@@ -247,31 +241,11 @@ void IRQ_middleTxtScreen(){
     
 }
 /* ================================================================================
-Control IRQ
+Bottom UI
 ================================================================================ */
-__interrupt static void IRQ_bottomScrollAndUISprites_C() {
+static void IRQ_bottomMsxEtc() {
     // vic.color_border++;
     // vic.color_back++;
-    
-    // Soft scroll
-    // vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
-    vic.ctrl2 = _scrollIt;
-    vic.memptr = d018_txt1;
-
-    showUiSpritesBottom();
-    
-    // wait for right line
-    while (vic.raster != 0xfa){}
-
-    // Set screen height to 24 lines - this is done after the border should have started drawing - so it wont start
-    vic.ctrl1 &= (0xff^VIC_CTRL1_RSEL);
-    while (vic.raster != 0xfc){}
-    // no more scrolling, reset it
-    vic.ctrl2 = VIC_CTRL2_CSEL | 0;
-    // vic.color_border--;
-
-    // Set screen height back to 25 lines (preparing for the next screen)
-    vic.ctrl1 |= VIC_CTRL1_RSEL;
 
     // UI sprite bank
     vic.memptr = d018_UI;
@@ -283,21 +257,6 @@ __interrupt static void IRQ_bottomScrollAndUISprites_C() {
         // wait a few lines as msx is off, we don't want to desync the screen.
         while (vic.raster != 0x1){}
     }
-    if((char)--_scrollIt==0xff) {
-        _scrollIt = 7;
-        // Hard scroll
-        for(byte i=0;i<39;i++) {
-            GFX_1_SCR[statusLine+i]=GFX_1_SCR[statusLine+i+1];
-        }
-        // Render next char
-        byte c = *SB_TEXT;
-        if(c==0) {
-            SB_TEXT = _emptyStatus;
-            c = *SB_TEXT;
-        }
-        GFX_1_SCR[statusLine+39] = c;
-        SB_TEXT++;
-    }
 
     _timeControl();
     // vic.color_border--;
@@ -306,152 +265,33 @@ __interrupt static void IRQ_bottomScrollAndUISprites_C() {
 
     // vic.color_border--;
     // vic.color_back--;
-}
-
-void IRQ_bottomScrollAndUISprites(){
-    __asm {
-        // wait for raster
-        ldy #IRQ_RASTER_BOTTOM_SCROLL_ETC+1
-    l1: cpy $d012
-        bne l1
-        ldx #$09
-    l2: dex
-        bne l2
-        nop
-        nop
-        nop
-        iny
-        cpy $d012
-        beq l5
-        nop
-        nop
-    l5: ldx #$09
-    l6: dex
-        bne l6
-        nop
-        nop
-        nop
-        iny
-        cpy $d012
-        beq l7
-        cpy $ea
-    l7: ldx #$09
-    l8: dex
-        bne l8
-        nop
-        iny
-        cpy $d012
-        bne l9
-    l9: ldx #$04
-    la: dex
-        bne la
-
-        // call C routine
-        jsr IRQ_bottomScrollAndUISprites_C
-    }
 }
 //********************************************
-__interrupt static void IRQ_bottomScrollAndMapSprites_C() {
-    // vic.color_border++;
-    // vic.color_back++;
-    
-    // Soft scroll
-    // vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
-    vic.ctrl2 = _scrollIt;
-    vic.memptr = d018_txt1;
-
-    showMapSpritesBottom();
-    
+__interrupt static void IRQ_bottomUI() {
     // wait for right line
-    while (vic.raster != 0xfa){}
-
+    // while (vic.raster != 0xfa){}
     // Set screen height to 24 lines - this is done after the border should have started drawing - so it wont start
     vic.ctrl1 &= (0xff^VIC_CTRL1_RSEL);
     while (vic.raster != 0xfc){}
-    // no more scrolling, reset it
-    vic.ctrl2 = VIC_CTRL2_CSEL | 0;
-    // vic.color_border--;
-
-    // Set screen height back to 25 lines (preparing for the next screen)
-    vic.ctrl1 |= VIC_CTRL1_RSEL;
-
-    // UI sprite bank
-    vic.memptr = d018_UI;
-    cia2.pra = dd00_UI;
-
-    // vic.color_border++;
-    playMsx();
-    if(!gms_enableMusic){
-        // wait a few lines as msx is off, we don't want to desync the screen.
-        while (vic.raster != 0x1){}
-    }
-    if((char)--_scrollIt==0xff) {
-        _scrollIt = 7;
-        // Hard scroll
-        for(byte i=0;i<39;i++) {
-            GFX_1_SCR[statusLine+i]=GFX_1_SCR[statusLine+i+1];
-        }
-        // Render next char
-        byte c = *SB_TEXT;
-        if(c==0) {
-            SB_TEXT = _emptyStatus;
-            c = *SB_TEXT;
-        }
-        GFX_1_SCR[statusLine+39] = c;
-        SB_TEXT++;
-    }
-
-    _timeControl();
-    // vic.color_border--;
-
-    joyUpdate();
-
-    // vic.color_border--;
-    // vic.color_back--;
+    // reset to normal screen height
+    vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
+    showUiSpritesBottom();
+    IRQ_bottomMsxEtc();
 }
 
-void IRQ_bottomScrollAndMapSprites(){
-    __asm {
-        // wait for raster
-        ldy #IRQ_RASTER_BOTTOM_SCROLL_ETC+1
-    l1: cpy $d012
-        bne l1
-        ldx #$09
-    l2: dex
-        bne l2
-        nop
-        nop
-        nop
-        iny
-        cpy $d012
-        beq l5
-        nop
-        nop
-    l5: ldx #$09
-    l6: dex
-        bne l6
-        nop
-        nop
-        nop
-        iny
-        cpy $d012
-        beq l7
-        cpy $ea
-    l7: ldx #$09
-    l8: dex
-        bne l8
-        nop
-        iny
-        cpy $d012
-        bne l9
-    l9: ldx #$04
-    la: dex
-        bne la
-
-        // call C routine
-        jsr IRQ_bottomScrollAndMapSprites_C
-    }
+__interrupt static void IRQ_bottomMapUI() {
+    // wait for right line
+    // while (vic.raster != 0xfa){}
+    // Set screen height to 24 lines - this is done after the border should have started drawing - so it wont start
+    vic.ctrl1 &= (0xff^VIC_CTRL1_RSEL);
+    while (vic.raster != 0xfc){}
+    // reset to normal screen height
+    vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
+    showMapSpritesBottom();
+    IRQ_bottomMsxEtc();
 }
+
+
 //********************************************
 __interrupt static void IRQ_topUISprites() {
 
@@ -463,7 +303,7 @@ __interrupt static void IRQ_topUISprites() {
 /* ================================================================================
 Init routine
 ================================================================================ */
-RIRQCode rirqc_topUISprites, rirqc_botomUISprites, rirqc_topScreen, rirqc_middleScreen;
+RIRQCode rirqc_topUISprites, rirqc_bottomUI, rirqc_topScreen, rirqc_middleScreen, openBorder;
 
 // main init raster must be called first, this one just remaps some IRQs
 void initRasterIRQ_TxtMode(){
@@ -510,11 +350,12 @@ void initRasterIRQ_HiresTxtMode(){
     rirq_call(&rirqc_middleScreen, 0, IRQ_middleScreenMsx);
     rirq_set(2, IRQ_RASTER_MIDDLE_TXT_SCREEN, &rirqc_middleScreen);
     
-    // Bottom - Open borders + Scroll + Sprites
-    rirq_build(&rirqc_botomUISprites, 1);
-    rirq_call(&rirqc_botomUISprites, 0, IRQ_bottomScrollAndMapSprites);
+    // Bottom Sprites
+
+    rirq_build(&rirqc_bottomUI, 1);
+    rirq_call(&rirqc_bottomUI, 0, IRQ_bottomMapUI);
     // Place it into the last line of the screen
-    rirq_set(3, IRQ_RASTER_BOTTOM_SCROLL_ETC, &rirqc_botomUISprites);
+    rirq_set(3, IRQ_RASTER_BOTTOM_UI, &rirqc_bottomUI);
 
     // sort the raster IRQs
     rirq_sort();
@@ -555,18 +396,17 @@ void initRasterIRQ_SplitMCTxt(){
     rirq_call(&rirqc_middleScreen, 0, IRQ_middleTxtScreen);
     rirq_set(2, IRQ_RASTER_MIDDLE_TXT_SCREEN, &rirqc_middleScreen);
 
-    // Bottom - Open borders + Scroll + Sprites
-    rirq_build(&rirqc_botomUISprites, 1);
-    rirq_call(&rirqc_botomUISprites, 0, IRQ_bottomScrollAndUISprites);
+    // Bottom - Open borders + Sprites
+    rirq_build(&rirqc_bottomUI, 1);
+    rirq_call(&rirqc_bottomUI, 0, IRQ_bottomUI);
     // Place it into the last line of the screen
-    rirq_set(3, IRQ_RASTER_BOTTOM_SCROLL_ETC, &rirqc_botomUISprites);
+    rirq_set(3, IRQ_RASTER_BOTTOM_UI, &rirqc_bottomUI);
 
     // sort the raster IRQs
     rirq_sort();
 }
 
 void initRasterIRQ(){
-
     // stop IRQs and change to ours
     rirq_stop();
     
@@ -585,7 +425,8 @@ void initRasterIRQ(){
     }
 
     // if you use the mmap_trampoline() you have to call the mmap_set() at least once to init the shadow variable
-    mmap_set(MMAP_ROM);
+    // set ALL_ROM as default
+    setPort(MMAP_ROM);
     // Activate trampoline
     mmap_trampoline();
     // Disable CIA interrupts, we do not want interference
@@ -601,15 +442,6 @@ void initRasterIRQ(){
     initRasterIRQ_SplitMCTxt();
     currentScreenMode = SCREEN_SPLIT_MC_TXT;
     
-    __asm {
-        // set ALL_ROM as default
-        lda #$27
-        sta $00
-        lda #$37
-        sta _prevRomCfg
-        sta $01
-    }
-
     // start raster IRQ processing
     rirq_start();
 }

@@ -25,15 +25,15 @@
 
 #pragma data ( shopOutGfxDay )
 __export const char shopOutGfx1[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/shopOutsideCropped.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/shopOutsideCropped.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/shopOutsideCropped.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/shopOutside_31.10.22.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/shopOutside_31.10.22.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/shopOutside_31.10.22.kla"
 };
 #pragma data ( shopOutGfxNight )
 __export const char shopOutGfx2[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/shopOutsideCropped.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/shopOutsideCropped.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/shopOutsideCropped.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/shopOutside_31.10.22.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/shopOutside_31.10.22.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/shopOutside_31.10.22.kla"
 };
 
 // menu code is in ROM - data in RAM

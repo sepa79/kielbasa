@@ -66,13 +66,13 @@ __interrupt static void _pigPenShowSprites(){
 }
 
 static void _ppMenu1(){
-    updateStatusBar("   \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0Chlewik menu, opcja 1");
+    updateStatusBar(p"Chlewik menu, opcja 1");
 }
 static void _ppMenu2(){
-    updateStatusBar("   Chlewik menu, opcja 2");
+    updateStatusBar(p"Chlewik menu, opcja 2");
 }
 static void _ppMenu3(){
-    updateStatusBar("   Chlewik menu, opcja 3");
+    updateStatusBar(p"Chlewik menu, opcja 3");
 }
 
 const struct MenuOption PIG_PEN_MENU[] = {

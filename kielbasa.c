@@ -3,8 +3,9 @@
 #include <c64/types.h>
 #include <c64/cia.h>
 #include <stdbool.h>
-#include <c64/easyflash.h>
 #include <string.h>
+#include <c64/rasterirq.h>
+
 #include <engine/logger.h>
 
 #include <menu/menuSystem.h>
@@ -23,28 +24,6 @@
 #include <tick/calendar.h>
 #include <tick/farmlandTick.h>
 #include <tick/kitchenTick.h>
-
-void prepareScroll(){
-    // clear line 25 and its color
-    byte i = 0;
-    do {
-        GFX_1_SCR[40*24+i] = p' ';
-        COLOR_RAM[40*24+i] = VCOL_LT_GREY;
-        i++;
-    } while (i < 40);
-
-    COLOR_RAM[40*24+0] = VCOL_DARK_GREY;
-    COLOR_RAM[40*24+1] = VCOL_DARK_GREY;
-    COLOR_RAM[40*24+2] = VCOL_DARK_GREY;
-    COLOR_RAM[40*24+3] = VCOL_MED_GREY;
-    COLOR_RAM[40*24+4] = VCOL_MED_GREY;
-
-    COLOR_RAM[40*24+35] = VCOL_MED_GREY;
-    COLOR_RAM[40*24+36] = VCOL_MED_GREY;
-    COLOR_RAM[40*24+37] = VCOL_DARK_GREY;
-    COLOR_RAM[40*24+38] = VCOL_DARK_GREY;
-    COLOR_RAM[40*24+39] = VCOL_DARK_GREY;
-}
 
 static void _showNormalMenu(){
     // clean sprites
@@ -90,20 +69,15 @@ void mainLoop(){
     // splash and turn screen off
     splashScreen(false, 1);
 
-    // TODO: CLEANUP, initRasterIRQ does all of it already, called at the end. Most likely this should be simplified
     // stop IRQs and change to ours
-    __asm {
-        sei
-    }
+    rirq_stop();
     // msx off
     ((byte *)0xd418)[0] &= ~0xf;
-    // screen off, sprites off
-    // vic.ctrl1 = VIC_CTRL1_BMM | VIC_CTRL1_RSEL | 3;
     vic.spr_enable   = 0b00000000;
 
     // get the main sprites, fonts etc
     loadMainFont();
-    drawFullDate();
+    initUI();
 
     loadMenu(MENU_BANK_MAIN_MENU);
     // indicate frame position, as IRQs are stopped
@@ -113,13 +87,12 @@ void mainLoop(){
     gms_gameSpeed = SPEED_PAUSED;
     gms_gameSpeedWait = WAIT_TIME_PAUSED;
     gms_disableTimeControls = false;
+    updateGameSpeed();
 
-    prepareScroll();
     updateStatusBar(TXT[SB_IDX_WELCOME]);
 
     // splash and turn screen on
     splashScreen(false, 2);
-
     initRasterIRQ();
 
     memcpy(LOG_DATA, p"Main Loop ", 10);

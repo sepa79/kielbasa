@@ -6,6 +6,7 @@
 #include <c64/easyflash.h>
 
 #include <engine/easyFlashBanks.h>
+#include <engine/spriteText.h>
 #include <assets/mainGfx.h>
 #include <menu/menuSystem.h>
 #include <menu/optionsMenu.h>
@@ -106,6 +107,8 @@ void displayMenu(struct MenuOption * menu){
     joyCursor.menuPos = 0;
     // // vic.color_border--;
     _setJoyCursorPos(joyCursor.menuPos);
+    // clear status bar
+    updateStatusBar(p"                                    ");
 }
 
 static void _incMenuPos(){
@@ -277,10 +280,8 @@ void checkKeys(){
             } else if (_key == ' '){
                 if(gms_gameSpeed){
                     gms_gameSpeed = SPEED_PAUSED;
-                    updateStatusBar(TXT[SB_IDX_PAUSE]);
                 } else {
                     gms_gameSpeed = SPEED_NORMAL;
-                    updateStatusBar(TXT[SB_IDX_UNPAUSE]);
                 }
                 updateGameSpeed();
             }
@@ -343,11 +344,20 @@ void checkKeys(){
 
 void updateGameSpeed(){
     gms_gameSpeedWait = GMS_WAIT_TIMES[gms_gameSpeed];
+    setTimeSpeedIcon(gms_gameSpeed);
 }
 
 // put new text on the scroll
 void updateStatusBar(const byte * text){
-    SB_TEXT = text;
+    // reset flash for text
+    isc_statusTextColorIdx = 0;
+    textToSpriteBankPt = SPR_TXT_UP_1;
+    textToSprite((char *)text, 4);
+}
+void updateStatusBarError(const byte * text){
+    setErrorCursor();
+    textToSpriteBankPt = SPR_TXT_UP_1;
+    textToSprite((char *)text, 4);
 }
 
 // set sprBankPointer first - this routine will be writing into it
@@ -368,7 +378,7 @@ void copyCharToSprite(byte c, byte col, byte row){
 }
 
 // Does not need to be called more than once - at new game
-void drawFullDate(){
+void initUI(){
     // vic.color_border--;
 
     // cal_dateHour  = 13;
@@ -409,10 +419,6 @@ void drawFullDate(){
     copyCharToSprite('0', 4, 2);
     copyCharToSprite(28, 5, 2); //28 is 'zl'
 
-    sprBankPointer = SPR_CURRENCY_TXT;
-
-    // toilet paper
-    copyCharToSprite('4', 1, 2);
     // vic.color_border++;
 }
 

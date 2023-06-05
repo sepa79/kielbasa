@@ -41,7 +41,7 @@ struct CharacterStruct {
     char health;
 
     /* CHARACTER_PORTRAITS index (0 based) */
-    const char * picture;
+    char * picture;
 
     char stat[STAT_COUNT];
     char skill[SKILL_COUNT];

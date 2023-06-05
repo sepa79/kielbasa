@@ -124,7 +124,7 @@ static void _kitchenBakeBread(){
 }
 
 static void _shMenu2(){
-    updateStatusBar("   kitchen menu, opcja 2");
+    updateStatusBar(p"   kitchen menu, opcja 2");
 }
 static void _shMenu3(){
     updateStatusBar("   kitchen menu, opcja 3");
