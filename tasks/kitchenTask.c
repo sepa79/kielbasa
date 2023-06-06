@@ -16,7 +16,7 @@ static const char terModifierTable[5] = {4, 8, 10, 12, 16};
 
 // simplistic atm - takes jus an hour, no bonuses yet
 void bakeBreadTask(char taskId){
-    LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_ENTRY;
+    LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_KITCHEN_BAKE_BREAD;
     setTaskLogMsg(taskId);
     logger(LOG_DEBUG | LOG_MSG_TASK);
 
@@ -61,7 +61,11 @@ void bakeBreadTask(char taskId){
         } else {
             // task done - not enough wheat, set status & remove
             task_status[taskId] = TASK_STATUS_DONE;
-
+            if(kit_storage[FOOD_HOME_BREAD] >= kit_maxStorage){
+                updateStatusBarError(TXT[SB_IDX_TASK_KITCHEN_BAKE_BREAD_STORAGE_FULL]);
+            } else {
+                updateStatusBarError(TXT[SB_IDX_TASK_KITCHEN_BAKE_BREAD_NO_WHEAT]);
+            }
             // LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_NOT_ENOUGH_SEEDS;
             // setTaskLogMsg(taskId);
             // logger(LOG_INFO | LOG_MSG_TASK);
@@ -79,8 +83,8 @@ void bakeBreadTask(char taskId){
         setTaskLogMsg(taskId);
         logger(LOG_ERROR | LOG_MSG_TASK);
 
-        char str[50];
-        sprintf(str, s"  ""[%3u]"s"bakeBreadTask - unknown status code   ", task_status[taskId]);
+        char str[36];
+        sprintf(str, "[%3u]"s"bakeBread status unknown", task_status[taskId]);
         updateStatusBar(str);
         setErrorCursor();
     }

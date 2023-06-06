@@ -115,19 +115,19 @@ volatile char CrossDelay = 0;
 // First free and first used explosion
 Explosion * efree;
 Explosion * eused;
-Explosion explosions[EXPLOSION_COUNT] = 0;
-volatile char explosionAnimX[EXPLOSION_COUNT] = 0;
-volatile char explosionAnimY[EXPLOSION_COUNT] = 0;
-volatile char explosionAnimBank[EXPLOSION_COUNT] = 0;
+Explosion explosions[EXPLOSION_COUNT];
+volatile char explosionAnimX[EXPLOSION_COUNT] = {0};
+volatile char explosionAnimY[EXPLOSION_COUNT] = {0};
+volatile char explosionAnimBank[EXPLOSION_COUNT] = {0};
 volatile char explosionsVisible = 0;
 volatile char explosionsOver255 = 0;
 
 PestDrop * pdFree;
 PestDrop * pdUsed;
-PestDrop pestDrops[DROP_COUNT] = 0;
-volatile char pestDropAnimX[DROP_COUNT] = 0;
-volatile char pestDropAnimY[DROP_COUNT] = 0;
-volatile char pestDropAnimBank[DROP_COUNT] = 0;
+PestDrop pestDrops[DROP_COUNT];
+volatile char pestDropAnimX[DROP_COUNT] = {0};
+volatile char pestDropAnimY[DROP_COUNT] = {0};
+volatile char pestDropAnimBank[DROP_COUNT] = {0};
 volatile char pestDropsVisible = 0;
 volatile char pestDropsOver255 = 0;
 

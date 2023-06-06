@@ -478,6 +478,34 @@
         "en": "Bake bread"
       },
       {
+        "id": "TASK_KITCHEN_BAKE_BREAD_STORAGE_FULL",
+        "prefix": "SB",
+        "pl": [
+          "Brak miejsca",
+          " na chleb w ",
+          "  spiżarni  "
+        ],
+        "en": [
+          "No space for",
+          " more bread ",
+          "  in pantry "
+        ]
+      },
+      {
+        "id": "TASK_KITCHEN_BAKE_BREAD_NO_WHEAT",
+        "prefix": "SB",
+        "pl": [
+          "    Brak    ",
+          "  pszenicy  ",
+          "  na chleb  "
+        ],
+        "en": [
+          "  No wheat  ",
+          "   to bake  ",
+          " bread from "
+        ]
+      },
+      {
         "id": "MENU_PIGPEN1",
         "menu_opt": "1",
         "pl": "Karmienie",
@@ -652,7 +680,7 @@
         "en": [
           "    Task    ",
           "  added to  ",
-          "   queue    "
+          "    queue   "
         ]
       },
       {

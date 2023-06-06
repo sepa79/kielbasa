@@ -73,7 +73,7 @@ void tasksTick();
 
 bool addTask(struct Task * task);
 void removeTaskByRef(byte taskRefId);
-void removeTask(byte taskRefId);
+void removeTask(byte taskId);
 void unassignTask(byte taskId);
 void finishTask(byte taskId);
 

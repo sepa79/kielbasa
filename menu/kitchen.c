@@ -82,7 +82,7 @@ static void _updateSprite(unsigned int num) {
     byte num2str[6];
     utoa(num, num2str, 10);
     // need to max it at 100 or something, food storage is a char
-    if(num > 99) {
+    if(num > 9) {
         copyCharToSprite(num2str[0], 0, 0);
         copyCharToSprite(num2str[1], 1, 0);
         copyCharToSprite(num2str[2], 2, 0);
@@ -124,10 +124,7 @@ static void _kitchenBakeBread(){
 }
 
 static void _shMenu2(){
-    updateStatusBar(p"   kitchen menu, opcja 2");
-}
-static void _shMenu3(){
-    updateStatusBar("   kitchen menu, opcja 3");
+    updateStatusBar(p"kitchen menu, opcja 2");
 }
 
 const struct MenuOption KITCHEN_MENU[] = {

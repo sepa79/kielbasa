@@ -10,7 +10,7 @@
 // how much water is in the ground, aka irrigation (max 100)
 volatile byte flt_waterLevel = 30;
 // add 1 as plant '0' is ----- (nothing planted) in farm management
-volatile unsigned int flt_storage[PLANTS_COUNT+1] = 0;
+volatile unsigned int flt_storage[PLANTS_COUNT+1] = {0};
 
 __striped struct FieldStruct fields[FIELDS_COUNT];
 __striped const struct PlantStruct plants[PLANTS_COUNT+1] = {

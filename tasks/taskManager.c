@@ -139,9 +139,9 @@ static void _removeTaskByRef(char taskRefId){
         (*task_codeRef[taskId])(taskId);
     }
 
-    // char str[5];
-    // sprintf(str, "%3u", taskRefId);
-    // cwin_putat_string_raw(&cw, 0, 0, str, VCOL_GREEN);
+    char strx[5];
+    sprintf(strx, "%03d", taskRefId);
+    cwin_putat_string_raw(&cw, 0, 1, strx, VCOL_MED_GREY);
 
     // seal the gap in taskRef[]
     char currentTask = 0;
@@ -151,11 +151,19 @@ static void _removeTaskByRef(char taskRefId){
             currentTask = taskRef[taskRefId];
             taskRefId++;
         } while (taskRefId < TASK_ARRAY_SIZE && task_reqType[currentTask] != NO_TASK);
-        taskRefId--;
     }
+    taskRefId--;
     _nextFreeTaskRef = taskRefId;
     taskRef[_nextFreeTaskRef] = taskId;
-
+    char str[12*3+1];
+    sprintf(str, "%03d %03d ", taskRefId, taskId);
+    cwin_putat_string_raw(&cw, 0, 2, str, VCOL_GREEN);
+    if(taskRefId >= TASK_ARRAY_SIZE){
+        updateStatusBarError(s"-removeTask - ID out of bounds      ");
+        while(1){
+            vic.color_border--;
+        }
+    }
     // update current menu
     updateMenu();
 }
@@ -166,8 +174,14 @@ static void _removeTask(char taskId){
     char taskRefId = 0;
     for(char i=0;i<TASK_ARRAY_SIZE;i++){
         if(taskRef[i] == taskId){
-            taskId = i;
+            taskRefId = i;
             break;
+        }
+    }
+    if(taskRefId >= TASK_ARRAY_SIZE){
+        updateStatusBarError(s"-removeTask - ID out of bounds      ");
+        while(1){
+            vic.color_border--;
         }
     }
     _removeTaskByRef(taskRefId);
