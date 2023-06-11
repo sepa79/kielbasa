@@ -14,30 +14,11 @@
 // dynamic data - in RAM
 #pragma data ( data )
 
-volatile signed char cal_currentTemp;
-volatile byte cal_currentRain;
+static byte sunRaiseHour;
+static byte sunSetHour;
+static byte weatherSprite; // cache for night, hourly tick updates isc_weatherSprite
 
-volatile byte cal_dateHour  = 13;
-volatile byte cal_dateDay   = 1;
-volatile byte cal_dateMonth = 5;
-volatile byte cal_dateYearH = 8;
-volatile byte cal_dateYearL = 9;
-volatile byte cal_dateWeek  = 17;
-volatile byte cal_moonPhase = 0;
-volatile bool cal_isDay = true;
-
-volatile byte cal_dateWeekDay = 1; // starts monday
-
-signed char rndTempWeekly;
-signed char rndRainWeekly;
-byte sunRaiseHour = 4;
-byte sunSetHour = 20;
-// byte sunRaiseHour = 7;
-// byte sunSetHour = 15;
-
-volatile byte weatherSprite = 0; // cache for night, hourly tick updates isc_weatherSprite
-
-// static data
+// constant data
 #pragma data ( ticksData )
 
 const byte MONTH_DAYS[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -90,36 +71,36 @@ static void _weatherTick(){
     byte rnd0 = rnd & TEMP_RND_RANGE;
     byte rnd1 = rnd & RAIN_RND_RANGE;
 
-    cal_currentTemp = rnd0 - TEMP_RND_SHIFT + rndTempWeekly;
-    cal_currentTemp += WEEKLY_AVG_TEMP[cal_dateWeek];
+    GS.calendar.currentTemp = rnd0 - TEMP_RND_SHIFT + GS.calendar.rndTempWeekly;
+    GS.calendar.currentTemp += WEEKLY_AVG_TEMP[GS.calendar.dateWeek];
 
-    signed char tempRain = rnd1 - RAIN_RND_SHIFT + rndRainWeekly + WEEKLY_AVG_RAIN[cal_dateWeek];
+    signed char tempRain = rnd1 - RAIN_RND_SHIFT + GS.calendar.rndRainWeekly + WEEKLY_AVG_RAIN[GS.calendar.dateWeek];
 
     if(tempRain < 0) {
-        cal_currentRain = 0;
+        GS.calendar.currentRain = 0;
     } else if(tempRain > 4) {
         // max weather sprites
-        cal_currentRain = 4;
+        GS.calendar.currentRain = 4;
     } else {
-        cal_currentRain = (char) tempRain;
+        GS.calendar.currentRain = (char) tempRain;
     }
 
-    weatherSprite = cal_currentRain;
+    weatherSprite = GS.calendar.currentRain;
 
     // snow instead of rain if temp 0 or below
-    if(cal_currentTemp < 1)
+    if(GS.calendar.currentTemp < 1)
         if(weatherSprite == 3)
             weatherSprite = 5;
 
     LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_WEATHER_REPORT;
-    LOG_MSG.data[1] = cal_currentTemp;
-    LOG_MSG.data[2] = cal_currentRain;
+    LOG_MSG.data[1] = GS.calendar.currentTemp;
+    LOG_MSG.data[2] = GS.calendar.currentRain;
     LOG_MSG.data[3] = rnd0;
     LOG_MSG.data[4] = rnd1;
-    LOG_MSG.data[5] = rndTempWeekly;
-    LOG_MSG.data[6] = rndRainWeekly;
-    LOG_MSG.data[7] = WEEKLY_AVG_TEMP[cal_dateWeek];
-    LOG_MSG.data[8] = WEEKLY_AVG_RAIN[cal_dateWeek];
+    LOG_MSG.data[5] = GS.calendar.rndTempWeekly;
+    LOG_MSG.data[6] = GS.calendar.rndRainWeekly;
+    LOG_MSG.data[7] = WEEKLY_AVG_TEMP[GS.calendar.dateWeek];
+    LOG_MSG.data[8] = WEEKLY_AVG_RAIN[GS.calendar.dateWeek];
     LOG_MSG.data[9] = 0;
     logger(LOG_DEBUG | LOG_MSG_REPORT);
 
@@ -131,67 +112,67 @@ static void _weeklyWeatherRandomizer(){
     unsigned int  rnd = rand();
     byte rnd0 = rnd & TEMP_RND_RANGE_WEEKLY;
     byte rnd1 = rnd & RAIN_RND_RANGE_WEEKLY;
-    rndTempWeekly = rnd0 - TEMP_RND_SHIFT_WEEKLY;
-    rndRainWeekly = rnd1 - RAIN_RND_SHIFT_WEEKLY;
+    GS.calendar.rndTempWeekly = rnd0 - TEMP_RND_SHIFT_WEEKLY;
+    GS.calendar.rndRainWeekly = rnd1 - RAIN_RND_SHIFT_WEEKLY;
     // gotoxy(0, 23);
     // printf("Tydzien: %-3u %-3u %-3d %-3d", rnd0, rnd1, rndTempWeekly, rndRainWeekly);
 }
 
 static void _yearTick(){
-    if(cal_dateYearL < 9){
-        cal_dateYearL++;
+    if(GS.calendar.dateYearL < 9){
+        GS.calendar.dateYearL++;
     } else {
-        cal_dateYearL = 0;
+        GS.calendar.dateYearL = 0;
 
-        if(cal_dateYearH < 9){
-            cal_dateYearH++;
+        if(GS.calendar.dateYearH < 9){
+            GS.calendar.dateYearH++;
         } else {
-            cal_dateYearH = 0;
+            GS.calendar.dateYearH = 0;
         }
         drawYearH();
     }
     drawYearL();
-    cal_dateWeek = 0;
+    GS.calendar.dateWeek = 0;
 }
 
 static void _monthTick(){
-    if(cal_dateMonth < 12){
-        updateMonth(cal_dateMonth+1);
-        cal_dateMonth++;
+    if(GS.calendar.dateMonth < 12){
+        updateMonth(GS.calendar.dateMonth+1);
+        GS.calendar.dateMonth++;
     } else {
         updateMonth(1);
-        cal_dateMonth = 1;
+        GS.calendar.dateMonth = 1;
 
         _yearTick();
     }
 }
 
 static void _dayTick(){
-    if(cal_dateDay < MONTH_DAYS[cal_dateMonth-1]){
-        updateDay(cal_dateDay+1);
-        cal_dateDay++;
+    if(GS.calendar.dateDay < MONTH_DAYS[GS.calendar.dateMonth-1]){
+        updateDay(GS.calendar.dateDay+1);
+        GS.calendar.dateDay++;
     } else {
         updateDay(1);
-        cal_dateDay = 1;
+        GS.calendar.dateDay = 1;
         _monthTick();
     }
     
-    cal_dateWeekDay++;
-    if(cal_dateWeekDay > 7){
-        cal_dateWeekDay = 1;
-        cal_dateWeek++;
+    GS.calendar.dateWeekDay++;
+    if(GS.calendar.dateWeekDay > 7){
+        GS.calendar.dateWeekDay = 1;
+        GS.calendar.dateWeek++;
         // add weekly temp/rain randomizer
         _weeklyWeatherRandomizer();
-        cal_moonPhase++;
-        if(cal_moonPhase == MOON_PHASES)
-            cal_moonPhase = 0;
+        GS.calendar.moonPhase++;
+        if(GS.calendar.moonPhase == MOON_PHASES)
+            GS.calendar.moonPhase = 0;
     }
 
     _weatherTick();
     // that might need to go to ROM
     farmlandTick();
-    sunRaiseHour = WEEKLY_SUNRISE[cal_dateWeek];
-    sunSetHour = WEEKLY_SUNSET[cal_dateWeek];
+    sunRaiseHour = WEEKLY_SUNRISE[GS.calendar.dateWeek];
+    sunSetHour = WEEKLY_SUNSET[GS.calendar.dateWeek];
 
     // Handle any installed callback - so that we can get 'refresh' on a screen the game is on
     updateMenu();
@@ -209,43 +190,52 @@ static void _handleFoodConsumption(){
     }
 }
 
+// used by timeTick and by init
+static void _setDay() {
+    // restore the sun icon
+    setWeatherIcon(weatherSprite);
+    // reload gfx to day one
+    GS.calendar.isDay = true;
+}
+// used by timeTick and by init
+static void _setNight() {
+    // update isc_weatherSprite to night version
+    setWeatherIcon(6 + GS.calendar.moonPhase);
+    // reload gfx to night one
+    GS.calendar.isDay = false;
+}
+
 void timeTick(){
     _handleFoodConsumption();
 
-    if(cal_dateHour < 23){
-        updateHour(cal_dateHour+1);
-        cal_dateHour++;
+    if(GS.calendar.dateHour < 23){
+        updateHour(GS.calendar.dateHour+1);
+        GS.calendar.dateHour++;
     } else {
         updateHour(0);
-        cal_dateHour = 0;
+        GS.calendar.dateHour = 0;
         _dayTick();
     }
     // day/night cycle
-    if(cal_dateHour == sunRaiseHour){
-        // restore the sun icon
-        setWeatherIcon(weatherSprite);
-        
-        // reload gfx to day one
-        cal_isDay = true;
-        loadMenuGfx(cal_isDay);
-    } else if (cal_dateHour == sunSetHour){
-        // update isc_weatherSprite to night version
-        setWeatherIcon(6 + cal_moonPhase);
-        // reload gfx to might one
-        cal_isDay = false;
-        loadMenuGfx(cal_isDay);
+    if(GS.calendar.dateHour == sunRaiseHour){
+        _setDay();
+        // has to be separated from _setDay as it must not be called in init
+        loadMenuGfx(GS.calendar.isDay);
+    } else if (GS.calendar.dateHour == sunSetHour){
+        _setNight();
+        loadMenuGfx(GS.calendar.isDay);
     }
 
     // sleep cycle
-    if(cal_dateHour > 20 || cal_dateHour < 5) {
+    if(GS.calendar.dateHour > 20 || GS.calendar.dateHour < 5) {
         // eat, then sleep well my little redneck - change task sprite once only
-        if(cal_dateHour == 21){
+        if(GS.calendar.dateHour == 21){
             setCharacterSlotIcon(0, SPR_TASK_EAT);
             setCharacterSlotIcon(1, SPR_TASK_EAT);
             setCharacterSlotIcon(2, SPR_TASK_EAT);
             setCharacterSlotIcon(3, SPR_TASK_EAT);
         }
-        if(cal_dateHour == 22){
+        if(GS.calendar.dateHour == 22){
             setCharacterSlotIcon(0, SPR_TASK_SLEEP);
             setCharacterSlotIcon(1, SPR_TASK_SLEEP);
             setCharacterSlotIcon(2, SPR_TASK_SLEEP);
@@ -262,7 +252,7 @@ void timeTick(){
         sleepTick();
     } else {
         // temp - tasksTick should do it later
-        if(cal_dateHour == 5){
+        if(GS.calendar.dateHour == 5){
             setCharacterSlotIcon(0, SPR_TASK_MIA);
             setCharacterSlotIcon(1, SPR_TASK_MIA);
             setCharacterSlotIcon(2, SPR_TASK_MIA);
@@ -276,16 +266,51 @@ void timeTick(){
 
 }
 
+//-----------------------------------------------------------------------------------------
+// In Init bank
+#pragma code ( gameInitRAMCode )
+#pragma data ( gameInitData )
+//-----------------------------------------------------------------------------------------
 
-// Switching code generation back to shared section
-#pragma code ( code )
-#pragma data ( data )
-
-void initCalendar() {
+// fully init Calendar - new game
+void initCalendar(Calendar * cal) {
     byte pbank = setBank(TICKS_BANK);
+    setWeatherIcon(weatherSprite);
+
+    cal->dateHour    = 13;
+    cal->dateDay     = 1;
+    cal->dateMonth   = 5;
+    cal->dateYearH   = 8;
+    cal->dateYearL   = 9;
+    cal->dateWeek    = 17;
+    cal->moonPhase   = 0;
+    cal->isDay       = true;
+    cal->dateWeekDay = 1; // starts monday
+
+    // set by _weatherTick()
+    // cal->rndTempWeekly;
+    // cal->rndRainWeekly;
+
+    // update weather randoms
+    _weatherTick();
     // set it twice to ensure it changes to correct one, as it only redraws on change
     setWeatherIcon(weatherSprite);
-    _weatherTick();
-    setWeatherIcon(weatherSprite);
+
+    setBank(pbank);
+    initCalendarAfterLoad();
+}
+
+// used once game has been initialised or loaded
+void initCalendarAfterLoad() {
+    byte pbank = setBank(TICKS_BANK);
+    // init sun
+    sunRaiseHour = WEEKLY_SUNRISE[GS.calendar.dateWeek];
+    sunSetHour = WEEKLY_SUNSET[GS.calendar.dateWeek];
+    // day/night cycle
+    if(GS.calendar.dateHour >= sunRaiseHour && GS.calendar.dateHour < sunSetHour){
+        _setDay();
+    } else {
+        _setNight();
+    }
     setBank(pbank);
 }

@@ -4,18 +4,26 @@
 #include <c64/types.h>
 #include <engine/easyFlashBanks.h>
 
-extern volatile signed char cal_currentTemp;
-extern volatile byte cal_currentRain;
+struct Calendar {
+    volatile signed char currentTemp;
+    volatile byte currentRain;
 
-extern volatile byte cal_dateHour;
-extern volatile byte cal_dateDay;
-extern volatile byte cal_dateMonth;
-extern volatile byte cal_dateYearH;
-extern volatile byte cal_dateYearL;
-extern volatile byte cal_dateWeek;
-extern volatile byte cal_moonPhase;
-extern volatile bool cal_isDay;
-extern volatile byte cal_dateWeekDay;
+    volatile byte dateHour;
+    volatile byte dateDay;
+    volatile byte dateMonth;
+    volatile byte dateYearH;
+    volatile byte dateYearL;
+    volatile byte dateWeek;
+    volatile byte moonPhase;
+    volatile bool isDay;
+    volatile byte dateWeekDay;
+
+    signed char rndTempWeekly;
+    signed char rndRainWeekly;
+
+    byte weatherSprite; // cache for night, hourly tick updates isc_weatherSprite
+};
+
 #define MOON_PHASES 4
 
 extern const byte MONTH_DAYS[12];
@@ -43,7 +51,8 @@ extern const byte WEEKLY_SUNSET[53];
 #pragma code ( ticksCode )
 void timeTick();
 #pragma code ( code )
-void initCalendar();
+void initCalendar(Calendar * cal);
+void initCalendarAfterLoad();
 
 #pragma compile("calendar.c")
 

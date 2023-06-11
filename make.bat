@@ -14,5 +14,5 @@ set GRASS_TILES_COUNT=16
 @REM cd ..
 
 @REM call %OSCAR_HOME%\oscar64 -n -dNOFLOAT -dNOLONG %*
-call %OSCAR_HOME%\oscar64 -xz -n -dNOFLOAT -dNOLONG -tf=crt %*
+call %OSCAR_HOME%\oscar64 -n -dNOFLOAT -dNOLONG -tf=crt %*
 @REM call %OSCAR_HOME%\oscar64 -n -O3 -tf=crt %*

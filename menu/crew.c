@@ -4,6 +4,7 @@
 #include <c64/types.h>
 #include <stdio.h>
 
+#include <engine/gameState.h>
 #include <character/character.h>
 #include <menu/menuSystem.h>
 #include <menu/crew.h>
@@ -231,7 +232,7 @@ const struct MenuOption CREW_MENU[] = {
 
 static void _menuHandler(void){
     mnu_isGfxLoaded = false;
-    loadMenuGfx(cal_isDay);
+    loadMenuGfx(GS.calendar.isDay);
 
     // Bars and portrait
     _prepareBars();

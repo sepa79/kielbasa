@@ -19,7 +19,7 @@ void loadTitleScreen();
 void loadAndRunInit();
 
 #pragma code ( gameInitRAMCode )
-void initGame();
+void initGameStartScreen();
 
 // Switching code generation back to shared section
 #pragma code ( code )

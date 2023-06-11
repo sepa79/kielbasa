@@ -60,21 +60,21 @@ inline signed char babs(signed char val){
 
 void cwin_write_string_raw(CharWin * win, const char * buffer)
 {
-	char * dp = win->sp;
-	for(char y=0; y<win->wy; y++)
-	{
-		for(char x=0; x<win->wx; x++)
-		{
-			char ch = *buffer;
-			if (ch)
-			{
-				dp[x] = ch;
-				buffer++;
-			}
-			else
-				dp[x] = ' ';
-		}
-		dp += 40;
-	}	
+    char * dp = win->sp;
+    for(char y=0; y<win->wy; y++)
+    {
+        for(char x=0; x<win->wx; x++)
+        {
+            char ch = *buffer;
+            if (ch)
+            {
+                dp[x] = ch;
+                buffer++;
+            }
+            else
+                dp[x] = ' ';
+        }
+        dp += 40;
+    }	
 
 }

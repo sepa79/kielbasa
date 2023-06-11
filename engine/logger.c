@@ -2,7 +2,7 @@
 #include <c64/memmap.h>
 
 #include <engine/logger.h>
-#include <tick/calendar.h>
+#include <engine/gameState.h>
 
 #pragma section( logMsgsSection, 0 )
 #pragma region( logMsgsRegion, 0xa000, 0xb000, , , { logMsgsSection } )
@@ -26,11 +26,11 @@ void loggerInit(){
 // - Contexts - no text, just encoded data decrypted by LogMenu.h. Data[0] is specyfying context.
 void logger(byte msgId) {
     // build and store LogMsg
-    LOG_MSGS[log_index].hour  = cal_dateHour;
-    LOG_MSGS[log_index].day   = cal_dateDay;
-    LOG_MSGS[log_index].month = cal_dateMonth;
-    LOG_MSGS[log_index].yearH = cal_dateYearH;
-    LOG_MSGS[log_index].yearL = cal_dateYearL;
+    LOG_MSGS[log_index].hour  = GS.calendar.dateHour;
+    LOG_MSGS[log_index].day   = GS.calendar.dateDay;
+    LOG_MSGS[log_index].month = GS.calendar.dateMonth;
+    LOG_MSGS[log_index].yearH = GS.calendar.dateYearH;
+    LOG_MSGS[log_index].yearL = GS.calendar.dateYearL;
     LOG_MSGS[log_index].msgId = msgId;
 
     if(log_index < LOG_MAX_MSGS){

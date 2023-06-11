@@ -36,6 +36,8 @@ static char _pendingIconResets = 0;
 
 //-----------------------------------------------------------------------------------------
 // In Init bank
+#pragma code ( gameInitRAMCode )
+#pragma data ( gameInitData )
 //-----------------------------------------------------------------------------------------
 void initTaskList() {
     _nextFreeTaskRef = 0;
@@ -58,9 +60,9 @@ void initTaskList() {
 
 //-----------------------------------------------------------------------------------------
 // In Tasks bank
-//-----------------------------------------------------------------------------------------
 #pragma code ( tasksCode )
 #pragma data ( data )
+//-----------------------------------------------------------------------------------------
 
 // definitons in logger.h
 void setTaskLogMsg(char taskId){
@@ -80,6 +82,8 @@ static bool _addTask(struct Task * task){
     if(_nextFreeTaskRef == TASK_ARRAY_SIZE){
         memcpy(LOG_DATA, p"Tasks full", 10);
         logger(LOG_INFO | LOG_MSG_TEXT);
+
+        updateStatusBarError(TXT[SB_IDX_TASKS_FULL]);
         return false;
     }
 
@@ -105,6 +109,8 @@ static bool _addTask(struct Task * task){
     LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_NEW_TASK;
     setTaskLogMsg(nextFreeTask);
     logger(LOG_INFO | LOG_MSG_TASK);
+
+    updateStatusBar(TXT[SB_IDX_TASK_ADDED]);
 
     return true;
 }
@@ -139,31 +145,27 @@ static void _removeTaskByRef(char taskRefId){
         (*task_codeRef[taskId])(taskId);
     }
 
-    char strx[5];
-    sprintf(strx, "%03d", taskRefId);
-    cwin_putat_string_raw(&cw, 0, 1, strx, VCOL_MED_GREY);
+    // char str[12*3+1];
+    // sprintf(str, "%03d %03d ", taskRefId, taskId);
+    // cwin_putat_string_raw(&cw, 0, 1, str, VCOL_DARK_GREY);
 
     // seal the gap in taskRef[]
-    char currentTask = 0;
-    if(taskRefId < TASK_ARRAY_SIZE){
+    if(taskRefId < TASK_ARRAY_SIZE-1){
         do {
-            taskRef[taskRefId] = taskRef[taskRefId+1];
-            currentTask = taskRef[taskRefId];
             taskRefId++;
-        } while (taskRefId < TASK_ARRAY_SIZE && task_reqType[currentTask] != NO_TASK);
-    }
-    taskRefId--;
-    _nextFreeTaskRef = taskRefId;
-    taskRef[_nextFreeTaskRef] = taskId;
-    char str[12*3+1];
-    sprintf(str, "%03d %03d ", taskRefId, taskId);
-    cwin_putat_string_raw(&cw, 0, 2, str, VCOL_GREEN);
-    if(taskRefId >= TASK_ARRAY_SIZE){
-        updateStatusBarError(s"-removeTask - ID out of bounds      ");
-        while(1){
-            vic.color_border--;
+            taskRef[taskRefId-1] = taskRef[taskRefId];
+        } while (task_reqType[taskRef[taskRefId]] != NO_TASK && taskRefId < TASK_ARRAY_SIZE-1);
+        // sprintf(str, "%03d %03d %03d", taskRefId, taskId, task_reqType[taskRef[taskRefId]]);
+        // cwin_putat_string_raw(&cw, 0, 2, str, VCOL_GREEN);
+        if(task_reqType[taskRef[taskRefId]] == NO_TASK){
+            taskRefId--;
         }
     }
+    _nextFreeTaskRef = taskRefId;
+    taskRef[_nextFreeTaskRef] = taskId;
+    // sprintf(str, "%d", _nextFreeTaskRef);
+    // cwin_putat_string_raw(&cw, 0, 3, str, VCOL_DARK_GREY);
+
     // update current menu
     updateMenu();
 }
@@ -176,12 +178,6 @@ static void _removeTask(char taskId){
         if(taskRef[i] == taskId){
             taskRefId = i;
             break;
-        }
-    }
-    if(taskRefId >= TASK_ARRAY_SIZE){
-        updateStatusBarError(s"-removeTask - ID out of bounds      ");
-        while(1){
-            vic.color_border--;
         }
     }
     _removeTaskByRef(taskRefId);
@@ -209,6 +205,24 @@ static void _removeTask(char taskId){
 //     }
 //     return bestCharSlot;
 // }
+
+// Finds who was working on it, resets his icon, resets task_worker.
+// Unassign means task remains on queue to be picked up again.
+// As removal/unassign might happen at the end of the tick within the same hour it was picked up, the reset icon might not be desirable.
+// - We do not want to reset icon if task was done within an hour (as it would not be visible at all).
+// - We do want to reset icon if task was aborted (to indicate that it is not being worked on).
+//-----------------------------------------------------------------------------------------
+static void _unassignTask(char taskId, bool resetIcon){
+    char charSlot = task_worker[taskId];
+    if(charSlot != NO_SLOT){
+        char charIdx = characterSlots[charSlot];
+        if(resetIcon){
+            setCharacterSlotIcon(charIdx, SPR_TASK_MIA);
+        }
+        allCharacters[charIdx].busy = false;
+        task_worker[taskId] = NO_SLOT;
+    }
+}
 
 //-----------------------------------------------------------------------------------------
 // In Ticks bank
@@ -307,6 +321,7 @@ void tasksTick(){
         // iterate through prios starting at 1
         char prioIt = 1;
         do {
+
             // foreach skill Y
             for(char skillIt = 0; skillIt < SKILL_COUNT; skillIt++){
                 // find worker with prio X for skill Y (starting at 1)
@@ -331,6 +346,8 @@ void tasksTick(){
                         }
                     }
                 }
+                // get these tasks out to everybody
+
                 // nope? ok, next X (find next highest prio)
             }
             // no more skills, but we still got free workers? increase Prio and repeat
@@ -355,7 +372,6 @@ void tasksTick(){
 
 }
 
-//-----------------------------------------------------------------------------------------
 #pragma code ( code )
 #pragma data ( data )
 //-----------------------------------------------------------------------------------------
@@ -378,34 +394,17 @@ bool addTask(struct Task * task){
     char pbank = setBank(TASKS_BANK);
     bool result = _addTask(task);
     setBank(pbank);
-    if(result){
-        updateStatusBar(TXT[SB_IDX_TASK_ADDED]);
-    } else {
-        updateStatusBarError(TXT[SB_IDX_TASKS_FULL]);
-    }
     return result;
 }
 
-// Finds who was working on it, resets his icon, resets task_worker.
-// Unassign means task remains on queue to be picked up again.
-// As removal/unassign might happen at the end of the tick within the same hour it was picked up, the reset icon might not be desirable.
-// - We do not want to reset icon if task was done within an hour (as it would not be visible at all).
-// - We do want to reset icon if task was aborted (to indicate that it is not being worked on).
-void _unassignTask(char taskId, bool resetIcon){
-    char charSlot = task_worker[taskId];
-    if(charSlot != NO_SLOT){
-        char charIdx = characterSlots[charSlot];
-        if(resetIcon){
-            setCharacterSlotIcon(charIdx, SPR_TASK_MIA);
-        }
-        allCharacters[charIdx].busy = false;
-        task_worker[taskId] = NO_SLOT;
-    }
-}
 void finishTask(char taskId){
     _pendingIconResets++;
+    char pbank = setBank(TASKS_BANK);
     _unassignTask(taskId, false);
+    setBank(pbank);
 }
 void unassignTask(char taskId){
+    char pbank = setBank(TASKS_BANK);
     _unassignTask(taskId, true);
+    setBank(pbank);
 }

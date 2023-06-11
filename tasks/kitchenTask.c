@@ -6,16 +6,22 @@
 #include <assets/assetsSettings.h>
 #include <character/character.h>
 
+//-----------------------------------------------------------------------------------------
+// In Tasks bank
+//-----------------------------------------------------------------------------------------
+#pragma code ( tasksCode )
+#pragma data ( data )
+
 // modifier values, make sure stat is -1'ed so that '3' means middle value is chosen
 // substract 10 from it.
-static const char priModifierTable[5] = {0, 5, 10, 15, 20};
-static const char secModifierTable[5] = {2, 6, 10, 14, 18};
-static const char terModifierTable[5] = {4, 8, 10, 12, 16};
+// static const char priModifierTable[5] = {0, 5, 10, 15, 20};
+// static const char secModifierTable[5] = {2, 6, 10, 14, 18};
+// static const char terModifierTable[5] = {4, 8, 10, 12, 16};
 
 #define WHEAT_NEEDED_FOR_BREAD 1
 
 // simplistic atm - takes jus an hour, no bonuses yet
-void bakeBreadTask(char taskId){
+static void _bakeBreadTask(char taskId){
     LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_KITCHEN_BAKE_BREAD;
     setTaskLogMsg(taskId);
     logger(LOG_DEBUG | LOG_MSG_TASK);
@@ -36,7 +42,7 @@ void bakeBreadTask(char taskId){
         // }
         
         // check if we got enough wheat
-        if(flt_storage[PLANT_WHEAT] > WHEAT_NEEDED_FOR_BREAD && kit_storage[FOOD_HOME_BREAD] < kit_maxStorage){
+        if(flt_storage[PLANT_WHEAT] > WHEAT_NEEDED_FOR_BREAD && GS.kitchen.storage[FOOD_HOME_BREAD] < GS.kitchen.maxStorage){
             // check if we got enough energy
             if(checkEnergyLevel(charIdx, energyNeeded)){
 
@@ -44,7 +50,7 @@ void bakeBreadTask(char taskId){
                 decEnergyLevel(charIdx, energyNeeded);
                 // process task
                 flt_storage[PLANT_WHEAT] -= WHEAT_NEEDED_FOR_BREAD;
-                kit_storage[FOOD_HOME_BREAD]++;
+                GS.kitchen.storage[FOOD_HOME_BREAD]++;
                 // LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_DONE;
                 // setTaskLogMsg(taskId);
                 // logger(LOG_INFO | LOG_MSG_TASK);
@@ -61,7 +67,7 @@ void bakeBreadTask(char taskId){
         } else {
             // task done - not enough wheat, set status & remove
             task_status[taskId] = TASK_STATUS_DONE;
-            if(kit_storage[FOOD_HOME_BREAD] >= kit_maxStorage){
+            if(GS.kitchen.storage[FOOD_HOME_BREAD] >= GS.kitchen.maxStorage){
                 updateStatusBarError(TXT[SB_IDX_TASK_KITCHEN_BAKE_BREAD_STORAGE_FULL]);
             } else {
                 updateStatusBarError(TXT[SB_IDX_TASK_KITCHEN_BAKE_BREAD_NO_WHEAT]);
@@ -96,4 +102,15 @@ void bakeBreadTask(char taskId){
     // logger(LOG_DEBUG | LOG_MSG_TASK);
 
     updateMenuIfIn(MENU_BANK_KITCHEN);
+}
+
+#pragma code ( code )
+#pragma data ( data )
+//-----------------------------------------------------------------------------------------
+// Wrappers in RAM
+
+void bakeBreadTask(char taskId){
+    char pbank = setBank(TASKS_BANK);
+    _bakeBreadTask(taskId);
+    setBank(pbank);
 }

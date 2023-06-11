@@ -5,13 +5,19 @@
 #include <assets/assetsSettings.h>
 #include <character/character.h>
 
+//-----------------------------------------------------------------------------------------
+// In Tasks bank
+//-----------------------------------------------------------------------------------------
+#pragma code ( tasksCode )
+#pragma data ( data )
+
 // modifier values, make sure stat is -1'ed so that '3' means middle value is chosen
 // substract 10 from it.
 static const char priModifierTable[5] = {0, 5, 10, 15, 20};
 static const char secModifierTable[5] = {2, 6, 10, 14, 18};
 static const char terModifierTable[5] = {4, 8, 10, 12, 16};
 
-void sowFieldTask(char taskId){
+void _sowFieldTask(char taskId){
     LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_ENTRY;
     setTaskLogMsg(taskId);
     logger(LOG_DEBUG | LOG_MSG_TASK);
@@ -134,7 +140,7 @@ void sowFieldTask(char taskId){
     updateMenuIfIn(MENU_BANK_FARMLAND);
 }
 
-void reapFieldTask(char taskId){
+void _reapFieldTask(char taskId){
     // get the fieldId - this is the definition from menu/farmland.c
     // task.params[0] = _currentField;
     // task.params[1] = 0;
@@ -203,4 +209,22 @@ void reapFieldTask(char taskId){
         setErrorCursor();
     }
     updateMenuIfIn(MENU_BANK_FARMLAND);
+}
+
+
+#pragma code ( code )
+#pragma data ( data )
+//-----------------------------------------------------------------------------------------
+// Wrappers in RAM
+
+void sowFieldTask(char taskId){
+    char pbank = setBank(TASKS_BANK);
+    _sowFieldTask(taskId);
+    setBank(pbank);
+}
+
+void reapFieldTask(char taskId){
+    char pbank = setBank(TASKS_BANK);
+    _reapFieldTask(taskId);
+    setBank(pbank);
 }

@@ -22,16 +22,18 @@ struct FOOD_ITEM {
     char price;
 };
 
-extern char kit_storage[FOOD_ITEMS_COUNT];
+struct Kitchen {
+    char storage[FOOD_ITEMS_COUNT];
 // maybe later some fridge upgrades?
-extern char kit_maxStorage;
+    char maxStorage;
+};
 
 //-----------------------------------------------------------------------------------------
 #pragma code ( gameInitRAMCode )
 #pragma data ( gameInitData )
 //-----------------------------------------------------------------------------------------
 
-void initKitchen();
+void initKitchen(Kitchen * kit);
 //-----------------------------------------------------------------------------------------
 #pragma code ( ticksCode )
 #pragma data ( data )

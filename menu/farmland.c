@@ -4,6 +4,7 @@
 #include <c64/types.h>
 #include <stdio.h>
 
+#include <engine/gameState.h>
 #include <menu/menuSystem.h>
 #include <translation/common.h>
 #include <engine/easyFlashBanks.h>
@@ -268,7 +269,7 @@ __interrupt static void _menuShowSprites(){
     // water sprite
     vic.spr_pos[7].x = 73;
     vic.spr_pos[7].y = 120;
-    if(cal_currentTemp < 1){
+    if(GS.calendar.currentTemp < 1){
         vic.spr_color[7] = VCOL_LT_BLUE;
         vic.spr_mcolor0  = VCOL_LT_GREY;
         vic.spr_mcolor1  = VCOL_WHITE;
@@ -285,7 +286,7 @@ static void _displayFieldList(){
     // clearBox(COL_OFFSET_FIELDLIST, 20, 40-COL_OFFSET_FIELDLIST, 5);
 
     // gotoxy(COL_OFFSET_FIELDLIST, 19);
-    // printf("Water 0b-2u Temp 0b-2d Week 0b-2u Rain 0b-1u", flt_waterLevel, cal_currentTemp, cal_dateWeek, WEEKLY_AVG_RAIN[cal_dateWeek]);
+    // printf("Water 0b-2u Temp 0b-2d Week 0b-2u Rain 0b-1u", flt_waterLevel, GS.calendar.currentTemp, GS.calendar.dateWeek, WEEKLY_AVG_RAIN[GS.calendar.dateWeek]);
 
     cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST, 7, TXT[TXT_IDX_FIELD_LIST_HEADER], VCOL_YELLOW);
 
@@ -328,7 +329,7 @@ static void _displayFieldList(){
 }
 
 static void _updateFieldView(){
-    byte temp = (char) (cal_currentTemp + 23);
+    byte temp = (char) (GS.calendar.currentTemp + 23);
     _drawThermometer(temp);
 
     sprBankPointer = SPR_THERMO_BAR_3;
@@ -492,7 +493,7 @@ const struct MenuOption FARMLAND_MENU[] = {
 static void _menuHandler(void){
     _currentPlant = fields[_currentField].plantId;
     mnu_isGfxLoaded = false;
-    loadMenuGfx(cal_isDay);
+    loadMenuGfx(GS.calendar.isDay);
     loadMenuSprites();
 
     // Prepare output window

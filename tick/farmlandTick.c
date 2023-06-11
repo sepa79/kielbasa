@@ -1,6 +1,7 @@
 #include <c64/types.h>
 #include <fixmath.h>
 
+#include <engine/gameState.h>
 #include <translation/common.h>
 #include "farmlandTick.h"
 
@@ -48,11 +49,11 @@ void initFarmland(){
 #pragma code ( ticksCode )
 
 byte _tempCheck(signed char min, signed char max){
-    if(cal_currentTemp < min){
-        return (char) babs(cal_currentTemp - min);
+    if(GS.calendar.currentTemp < min){
+        return (char) babs(GS.calendar.currentTemp - min);
     }
-    if(cal_currentTemp > max){
-        return (char) babs(cal_currentTemp - max);
+    if(GS.calendar.currentTemp > max){
+        return (char) babs(GS.calendar.currentTemp - max);
     }
     return 0;
 }
@@ -148,7 +149,7 @@ void _fieldStateRipen(byte fieldId){
     // temp check
     byte diff = _tempCheck(plants[plantId].stage3minTemp, plants[plantId].stage3maxTemp);
     // gotoxy(0, 18);
-    // printf("s 3 temp %-5d diff %-5u ", cal_currentTemp, diff);
+    // printf("s 3 temp %-5d diff %-5u ", GS.calendar.currentTemp, diff);
     // rain check
     diff += _waterCheck(plants[plantId].stage2minWater, plants[plantId].stage2maxWater);
     // gotoxy(0, 18);
@@ -181,13 +182,13 @@ void _waterFields(){
     byte vaporised = 2;
 
     // now depending on temperature - vaporise more
-    if(cal_currentTemp > 25){
+    if(GS.calendar.currentTemp > 25){
         vaporised ++;
     }
-    if(cal_currentTemp > 20){
+    if(GS.calendar.currentTemp > 20){
         vaporised ++;
     }
-    if(cal_currentTemp < 6){
+    if(GS.calendar.currentTemp < 6){
         if(flt_waterLevel < 25){
             flt_waterLevel = 25;
         } else if(flt_waterLevel > 50){
@@ -198,13 +199,13 @@ void _waterFields(){
     if(flt_waterLevel < 8)
         vaporised --;
 
-    if(vaporised < cal_currentRain){
-        flt_waterLevel += cal_currentRain - vaporised;
+    if(vaporised < GS.calendar.currentRain){
+        flt_waterLevel += GS.calendar.currentRain - vaporised;
         if(flt_waterLevel > 100){
             flt_waterLevel = 100;
         }
     } else {
-        byte diff = vaporised - cal_currentRain;
+        byte diff = vaporised - GS.calendar.currentRain;
         if(flt_waterLevel > diff){
             flt_waterLevel -= diff;
         } else {

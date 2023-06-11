@@ -29,7 +29,7 @@ enum CHAR_SKILLS {
 // priority goes 0 (none) 1 (highest) to 5 (lowest)
 #define MAX_PRIO 5
 
-struct CharacterStruct {
+struct Character {
     /* Pointer to text to display, max 5 x 28, should have newlines */
     char storyTextIdx;
     char nameIdx;
@@ -53,7 +53,7 @@ struct CharacterStruct {
 };
 
 // Player character is the 1st one.
-extern __striped struct CharacterStruct allCharacters[CHARACTER_COUNT];
+extern __striped struct Character allCharacters[CHARACTER_COUNT];
 // Each entry is an index to ALL_CHARACTERS arrays.
 extern char characterSlots[CHARACTER_SLOTS];
 

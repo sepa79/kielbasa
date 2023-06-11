@@ -4,6 +4,7 @@
 #include <c64/easyflash.h>
 #include <c64/memmap.h>
 
+#include <engine/gameState.h>
 #include <menu/menuSystem.h>
 #include <translation/common.h>
 #include <engine/easyFlashBanks.h>
@@ -129,7 +130,7 @@ static void _menuHandler(void){
     animGherkinDelay = SHOP_INSIDE_ANIM_1_DELAY;
     
     mnu_isGfxLoaded = false;
-    loadMenuGfx(cal_isDay);
+    loadMenuGfx(GS.calendar.isDay);
     loadMenuSprites();
 
     // play radio music

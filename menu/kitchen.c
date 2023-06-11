@@ -96,13 +96,13 @@ static void _updateSprite(unsigned int num) {
 
 static void _updateView(){
     sprBankPointer = SPR_FOOD_1;
-    _updateSprite(kit_storage[FOOD_SHOP_BREAD]);
+    _updateSprite(GS.kitchen.storage[FOOD_SHOP_BREAD]);
     sprBankPointer = SPR_FOOD_2;
-    _updateSprite(kit_storage[FOOD_HOME_BREAD]);
+    _updateSprite(GS.kitchen.storage[FOOD_HOME_BREAD]);
     sprBankPointer = SPR_FOOD_3;
-    _updateSprite(kit_storage[FOOD_CANNED_MEAT]);
+    _updateSprite(GS.kitchen.storage[FOOD_CANNED_MEAT]);
     sprBankPointer = SPR_FOOD_4;
-    _updateSprite(kit_storage[FOOD_SOUSAGE]);
+    _updateSprite(GS.kitchen.storage[FOOD_SOUSAGE]);
 }
 
 static void _kitchenBakeBread(){
@@ -155,7 +155,7 @@ __export static const Loaders menuLoaders = {
     .loadMenuSprites = &menuSpriteLoader,
     .showMenu        = &_menuHandler,
     .showSprites     = &_menuShowSprites,
-    .updateMenu      = &menuNoop,
+    .updateMenu      = &_updateView,
 };
 
 // Switching code generation back to shared section

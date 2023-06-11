@@ -52,7 +52,8 @@
         "villiagemapmain.h": "c",
         "fixmath.h": "c",
         "farmlandtask.h": "c",
-        "villiagemap.h": "c"
+        "villiagemap.h": "c",
+        "gamestate.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }

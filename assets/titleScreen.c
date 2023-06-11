@@ -73,7 +73,7 @@ void loadAndRunInit(){
     loggerInit();
     // bankTitleCode2 is b200 in crt, see titleScreen.h
     memcpy((char *)0x7000, (char *)0xb200, 0x07ff);
-    initGame();
+    initGameStartScreen();
 }
 
 //-----------------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ void loadAndRunInit(){
 #pragma data ( gameInitData )
 //-----------------------------------------------------------------------------------------
 
-void initGame(){
+void initGameStartScreen(){
     loadTitleScreen();
     // splash and turn screen on
     splashScreen(true, 3);

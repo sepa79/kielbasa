@@ -5,6 +5,7 @@
 #include <c64/memmap.h>
 #include <c64/keyboard.h>
 
+#include <engine/gameState.h>
 #include <engine/easyFlashBanks.h>
 #include <assets/assetsSettings.h>
 #include <engine/gameSettings.h>
@@ -260,13 +261,13 @@ void villiageMapScreenInit(void){
     fontCopyDone = false;
 
     _mapInit();
-    isMapDay = cal_isDay;
+    isMapDay = GS.calendar.isDay;
     setBank(pbank);
     memset(COLOR_RAM, VCOL_BLACK, 1000);
     memset(GFX_1_SCR, VCOL_BLACK, 1000);
     if(!isMapDay){
         // fill screen with moonlight
-        switch(cal_moonPhase){
+        switch(GS.calendar.moonPhase){
             case MOON_PHASE_FULL:
                 moonDetailLevel = 1;
                 break;
@@ -317,11 +318,11 @@ void villiageMapDraw(char dir){
     if(vMapLocation != locId){
         vMapLocation = locId;
         textToSpriteBankPt = SPR_CHARACTER_PORTRAIT2;
-        char str[12*3+1];
-        char framesUsed = gms_frameCount - frameStart;
-        sprintf(str, "%03d", framesUsed);
-        //textToSprite((char *)LOCATION_NAMES[locId], 4);
-        textToSprite(str, 4);
+        // char str[12*3+1];
+        // char framesUsed = gms_frameCount - frameStart;
+        // sprintf(str, "%03d", framesUsed);
+        // textToSprite(str, 4);
+        textToSprite((char *)LOCATION_NAMES[locId], 4);
     }
 
 

@@ -34,8 +34,8 @@ static void _showTasks(){
         cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST_TM+8, ROW_OFFSET_TASKLIST_TM+i, TBL_V, VCOL_YELLOW);
         cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST_TM+9, ROW_OFFSET_TASKLIST_TM+i, task_desc[taskId], color);
 
-    byte str[10];
-    sprintf(str, "%2u %2u", i, taskId);
+        byte str[10];
+        sprintf(str, "%2u %2u", i, taskId);
 
         cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST_TM+25, ROW_OFFSET_TASKLIST_TM+i, str, color);
     }

@@ -7,6 +7,7 @@
 #include <c64/rasterirq.h>
 
 #include <engine/logger.h>
+#include <engine/gameState.h>
 
 #include <menu/menuSystem.h>
 #include <menu/mainMenu.h>
@@ -26,10 +27,11 @@
 #include <tick/kitchenTick.h>
 
 static void _showNormalMenu(){
+    switchScreenTo(SCREEN_TRANSITION);
     // clean sprites
     memset(SPR_CHARACTER_PORTRAIT2, 0, 64*4);
-    switchScreenTo(SCREEN_SPLIT_MC_TXT);
     showMenu();
+    switchScreenTo(SCREEN_SPLIT_MC_TXT);
     gms_disableTimeControls = false;
     joyCursor.enabled = true;
 }
@@ -60,11 +62,16 @@ void mainLoop(){
     memcpy(LOG_DATA, p"Game Start", 10);
     logger(LOG_INFO | LOG_MSG_TEXT);
 
-    initCharacterList();
-    initCalendar();
+    // active RAM code at 0x7000 is gameInitRAMCode - set by titleScreen.h
+    // all the below modules must be in that section
+    initGame();
+    // initCalendar();
+    // initCharacterList();
     initTaskList();
     initFarmland();
-    initKitchen();
+    // initKitchen();
+
+    // now we are back to main code block
 
     // splash and turn screen off
     splashScreen(false, 1);
@@ -79,7 +86,10 @@ void mainLoop(){
     loadMainFont();
     initUI();
 
+    // this wipes out 0x7000 and puts new code in there
+    // TODO: change menu bank here to whatever comes back from save game
     loadMenu(MENU_BANK_MAIN_MENU);
+    
     // indicate frame position, as IRQs are stopped
     gms_framePos = FRAME_UNKNOWN;
     showMenu();

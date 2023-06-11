@@ -2,6 +2,7 @@
 #include <c64/charwin.h>
 #include <c64/keyboard.h>
 
+#include <engine/gameState.h>
 #include <menu/menuSystem.h>
 #include <translation/common.h>
 #include <engine/easyFlashBanks.h>
@@ -42,12 +43,12 @@ __export const char shopOutGfx2[] = {
 
 static bool _checkIfOpen(){
     // weekdays
-    if(cal_dateHour >= SHOP_OPEN_WEEK_O1)
-        if(cal_dateHour < SHOP_OPEN_WEEK_C1)
+    if(GS.calendar.dateHour >= SHOP_OPEN_WEEK_O1)
+        if(GS.calendar.dateHour < SHOP_OPEN_WEEK_C1)
             return true;
 
-    if(cal_dateHour >= SHOP_OPEN_WEEK_O2)
-        if(cal_dateHour < SHOP_OPEN_WEEK_C2)
+    if(GS.calendar.dateHour >= SHOP_OPEN_WEEK_O2)
+        if(GS.calendar.dateHour < SHOP_OPEN_WEEK_C2)
             return true;
 
     return false;
@@ -89,7 +90,7 @@ const struct MenuOption SHOP_OUTSIDE_MENU[] = {
 };
 
 static void _menuHandler(void){
-    loadMenuGfx(cal_isDay);
+    loadMenuGfx(GS.calendar.isDay);
 
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);
