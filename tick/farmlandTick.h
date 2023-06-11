@@ -21,12 +21,15 @@ enum PantName {
 // TXT_PLANT_NAME_WHEAT,
 // TXT_PLANT_NAME_CORN,
 
-extern volatile byte flt_waterLevel = 50;
-
+// extern volatile byte flt_waterLevel = 50;
 // storage for farming
 // add 1 as plant '0' is ----- (nothing planted) in farm management
 // makes it easier in tasks etc to manage IDs
-extern volatile unsigned int flt_storage[PLANTS_COUNT+1];
+// extern volatile unsigned int flt_storage[PLANTS_COUNT+1];
+struct Farm {
+    char waterLevel;
+    unsigned int storage[PLANTS_COUNT+1];
+};
 
 //******************************
 // Field
@@ -110,7 +113,7 @@ enum PLANT_STAGE {
 #pragma code ( gameInitRAMCode )
 #pragma data ( gameInitData )
 //-----------------------------------------------------------------------------------------
-void initFarmland();
+void initFarmland(Farm* farm);
 
 //-----------------------------------------------------------------------------------------
 #pragma code ( ticksCode )

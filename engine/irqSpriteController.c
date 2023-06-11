@@ -135,16 +135,16 @@ void drawBattery(char charIdx){
 __interrupt void setSpritesTopScr(){
     if(gms_enableMenuSprites){
         // store/restore memory config, as we need to ensure BASIC ROM is on
-        char pport = setPort(MMAP_ROM);
-        char pbank = setBank(mnu_menuBank);
-
+        char pport = setPortIrq(MMAP_ROM);
+        char pbank = setBankIrq(mnu_menuBank);
+        // this must not touch banks anymore!
         showSprites();
-        setPort(pport);
-        setBank(pbank);
+        setPortIrq(pport);
+        setBankIrq(pbank);
     }
 }
 
-void setSpritesBottomScr(){
+__interrupt void setSpritesBottomScr(){
     // vic.BORDER_COLOR--;
     vic.spr_expand_x = 0b00000000;
     vic.spr_expand_y = 0b00000000;
@@ -166,7 +166,7 @@ void setSpritesBottomScr(){
     // vic.BORDER_COLOR++;
 }
 
-void showUiSpritesTop(){
+__interrupt void showUiSpritesTop(){
     gms_frameCount++;
     vic.spr_enable = 0;
     vic.memptr = d018_UI;
@@ -209,7 +209,7 @@ void showUiSpritesTop(){
     vic.spr_pos[6].x = 160+24;
     vic.spr_pos[7].x = 160+48;
 
-    char pport = setPort(MMAP_NO_ROM);
+    char pport = setPortIrq(MMAP_NO_ROM);
     vic.spr_color[2] = SPR_TIME_ICON[63];
     vic.spr_color[3] = SPR_WEATHER_ICON[63];
     vic.spr_color[0] = VCOL_MED_GREY;//DATE;
@@ -228,13 +228,13 @@ void showUiSpritesTop(){
             isc_statusTextColorIdx++;
         }
     }
-    setPort(pport);
+    setPortIrq(pport);
 
     vic.spr_enable = 0b11111111;
     gms_framePos = FRAME_TOP_BORDER;
 }
 
-void showUiSpritesBottom(){
+__interrupt void showUiSpritesBottom(){
     // vic.color_border--;
     vic.spr_expand_x = 0b00000000;
     vic.spr_expand_y = 0b00000000;
@@ -283,7 +283,7 @@ void showUiSpritesBottom(){
     vic.spr_pos[6].y = 2;
     vic.spr_pos[7].y = 2;
 
-    char pport = setPort(MMAP_NO_ROM);
+    char pport = setPortIrq(MMAP_NO_ROM);
     vic.spr_color[0] = SPR_CHARACTER_PORTRAIT1[63];
     vic.spr_color[1] = _batteryColors[0];
     vic.spr_color[2] = SPR_CHARACTER_PORTRAIT2[63];
@@ -292,7 +292,7 @@ void showUiSpritesBottom(){
     vic.spr_color[5] = _batteryColors[2];
     vic.spr_color[6] = SPR_CHARACTER_PORTRAIT4[63];
     vic.spr_color[7] = _batteryColors[3];
-    setPort(pport);
+    setPortIrq(pport);
 
     vic.spr_enable = 0b11111111;
     // indicate frame position
@@ -300,7 +300,7 @@ void showUiSpritesBottom(){
     // vic.color_border++;
 }
 
-void showMapSpritesBottom(){
+__interrupt void showMapSpritesBottom(){
     // vic.color_border--;
     vic.spr_expand_x = 0b00000000;
     vic.spr_expand_y = 0b00000000;
@@ -350,7 +350,7 @@ void showMapSpritesBottom(){
     vic.spr_pos[6].y = 2;
     vic.spr_pos[7].y = 2;
 
-    char pport = setPort(MMAP_NO_ROM);
+    char pport = setPortIrq(MMAP_NO_ROM);
     vic.spr_color[0] = SPR_CHARACTER_PORTRAIT1[63];
     vic.spr_color[1] = _batteryColors[0];
     vic.spr_color[2] = VCOL_MED_GREY;
@@ -359,7 +359,7 @@ void showMapSpritesBottom(){
     vic.spr_color[5] = VCOL_MED_GREY;
     vic.spr_color[6] = SPR_CHARACTER_PORTRAIT4[63];
     vic.spr_color[7] = _batteryColors[3];
-    setPort(pport);
+    setPortIrq(pport);
 
     vic.spr_enable = 0b11111111;
     // indicate frame position

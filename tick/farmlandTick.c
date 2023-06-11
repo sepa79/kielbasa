@@ -8,10 +8,11 @@
 // dynamic data - in RAM
 #pragma data ( data )
 
+// REPLACED by GameState
 // how much water is in the ground, aka irrigation (max 100)
-volatile byte flt_waterLevel = 30;
+// volatile byte farm->waterLevel = 30;
 // add 1 as plant '0' is ----- (nothing planted) in farm management
-volatile unsigned int flt_storage[PLANTS_COUNT+1] = {0};
+// volatile unsigned int farm->storage[PLANTS_COUNT+1] = {0};
 
 __striped struct FieldStruct fields[FIELDS_COUNT];
 __striped const struct PlantStruct plants[PLANTS_COUNT+1] = {
@@ -22,31 +23,10 @@ __striped const struct PlantStruct plants[PLANTS_COUNT+1] = {
     {TXT_IDX_TASK_DSC_FARMLAND_CORN,    4, -5,30, 5,40, 30,   5,30,10,40,40, 10,30,10,50,20 }, // Plant end of winter, low yeld, very robust, 90 days to mature
 };
 
-void initFarmland(){
-    flt_waterLevel = 25;
-    flt_storage[PLANT_POTATO] = 900;
-    flt_storage[PLANT_LUPINE] = 50;
-    flt_storage[PLANT_WHEAT]  = 50;
-    flt_storage[PLANT_CORN]   = 50;
-
-    __striped static const struct FieldStruct initialFields[FIELDS_COUNT] = {
-        {1, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-        {1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0},
-        {2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0},
-        {4, 4, 6, 0, 0, 0, 0, 0, 0, 0, 0},
-    };
-
-    for(char i=0; i<FIELDS_COUNT; i++){
-        fields[i] = initialFields[i];
-        fields[i].rseed = rand();
-    }
-}
-
 // =============================================================================
 // Tick code
-// =============================================================================
-// ticks code
 #pragma code ( ticksCode )
+// =============================================================================
 
 byte _tempCheck(signed char min, signed char max){
     if(GS.calendar.currentTemp < min){
@@ -59,11 +39,11 @@ byte _tempCheck(signed char min, signed char max){
 }
 
 byte _waterCheck(byte min, byte max){
-    if(flt_waterLevel < min){
-        return min - flt_waterLevel;
+    if(GS.farm.waterLevel < min){
+        return min - GS.farm.waterLevel;
     }
-    if(flt_waterLevel > max){
-        return flt_waterLevel - max;
+    if(GS.farm.waterLevel > max){
+        return GS.farm.waterLevel - max;
     }
     return 0;
 }
@@ -177,7 +157,7 @@ void _fieldStateRipen(byte fieldId){
 // =============================================================================
 // Tick itself
 
-void _waterFields(){
+static void _waterFields(){
     // always vaporise/soak some
     byte vaporised = 2;
 
@@ -189,32 +169,32 @@ void _waterFields(){
         vaporised ++;
     }
     if(GS.calendar.currentTemp < 6){
-        if(flt_waterLevel < 25){
-            flt_waterLevel = 25;
-        } else if(flt_waterLevel > 50){
-            flt_waterLevel = 50;
+        if(GS.farm.waterLevel < 25){
+            GS.farm.waterLevel = 25;
+        } else if(GS.farm.waterLevel > 50){
+            GS.farm.waterLevel = 50;
         }
     }
     // at low water levels slow down vaporisation
-    if(flt_waterLevel < 8)
+    if(GS.farm.waterLevel < 8)
         vaporised --;
 
     if(vaporised < GS.calendar.currentRain){
-        flt_waterLevel += GS.calendar.currentRain - vaporised;
-        if(flt_waterLevel > 100){
-            flt_waterLevel = 100;
+        GS.farm.waterLevel += GS.calendar.currentRain - vaporised;
+        if(GS.farm.waterLevel > 100){
+            GS.farm.waterLevel = 100;
         }
     } else {
         byte diff = vaporised - GS.calendar.currentRain;
-        if(flt_waterLevel > diff){
-            flt_waterLevel -= diff;
+        if(GS.farm.waterLevel > diff){
+            GS.farm.waterLevel -= diff;
         } else {
-            flt_waterLevel = 0;
+            GS.farm.waterLevel = 0;
         }
     }
 }
 
-void _tickField(byte i){
+static void _tickField(byte i){
     if(fields[i].stage == PLANT_STAGE_SPROUT){
         _fieldStateSprout(i);
     }
@@ -240,6 +220,34 @@ void farmlandTick(){
     } while (fieldId < FIELDS_COUNT);
 }
 
+
+//-----------------------------------------------------------------------------------------
+// In Init bank
+#pragma code ( gameInitRAMCode )
+#pragma data ( gameInitData )
+//-----------------------------------------------------------------------------------------
+void initFarmland(Farm* farm){
+    farm->waterLevel = 25;
+    farm->storage[PLANT_POTATO] = 900;
+    farm->storage[PLANT_LUPINE] = 50;
+    farm->storage[PLANT_WHEAT]  = 50;
+    farm->storage[PLANT_CORN]   = 50;
+
+    __striped static const struct FieldStruct initialFields[FIELDS_COUNT] = {
+        {1, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0},
+        {1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0},
+        {2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0},
+        {4, 4, 6, 0, 0, 0, 0, 0, 0, 0, 0},
+    };
+
+    for(char i=0; i<FIELDS_COUNT; i++){
+        fields[i] = initialFields[i];
+        fields[i].rseed = rand();
+    }
+}
+
+//-----------------------------------------------------------------------------------------
 // Switching code generation back to shared section
 #pragma code ( code )
 #pragma data ( data )
+//-----------------------------------------------------------------------------------------

@@ -53,7 +53,8 @@
         "fixmath.h": "c",
         "farmlandtask.h": "c",
         "villiagemap.h": "c",
-        "gamestate.h": "c"
+        "gamestate.h": "c",
+        "kitchentick.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }

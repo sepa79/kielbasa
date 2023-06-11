@@ -37,6 +37,11 @@ char setBank(char bank);
 // Set Port ($01), return previous value that was set.
 char setPort(char port);
 
+// Set CRT bank, return previous bank that was set. Inside IRQ use only.
+char setBankIrq(char bank);
+// Set Port ($01), return previous value that was set. Inside IRQ use only.
+char setPortIrq(char port);
+
 #pragma compile("easyFlashBanks.c")
 
 #endif

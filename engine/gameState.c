@@ -17,9 +17,11 @@ __striped struct Character allCharacters[CHARACTER_COUNT];
 #pragma bss ( data )
 
 void initGame() {
-    initCharacterList();
+    initCharacterList(); // data kept in allCharacters
     initCalendar(&GS.calendar);
     initKitchen(&GS.kitchen);
+    initTaskList(); // data kept in arrays in TaskManager
+    initFarmland(&GS.farm);
 }
 
 void loadGame() {

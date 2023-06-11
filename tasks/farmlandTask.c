@@ -65,16 +65,16 @@ void _sowFieldTask(char taskId){
         }
         
         // check if we got enough seeds
-        if(flt_storage[plantId] > 0 && partDone > flt_storage[plantId]){
+        if(GS.farm.storage[plantId] > 0 && partDone > GS.farm.storage[plantId]){
             // reduce 'partDone' to match available seeds
-            partDone = flt_storage[plantId];
+            partDone = GS.farm.storage[plantId];
         }
-        if(flt_storage[plantId] >= partDone) {
+        if(GS.farm.storage[plantId] >= partDone) {
 
             // check if we got enough energy
             energyNeeded = partDone > 10 ? 10 : partDone;
             if(checkEnergyLevel(charIdx, energyNeeded)){
-                flt_storage[plantId] -= partDone;
+                GS.farm.storage[plantId] -= partDone;
 
                 // decrease energy
                 decEnergyLevel(charIdx, energyNeeded);
@@ -171,7 +171,7 @@ void _reapFieldTask(char taskId){
         // check if we got enough energy
         char energyNeeded = partDone > 10 ? 10 : partDone;
         if(checkEnergyLevel(charIdx, energyNeeded)){
-            flt_storage[plantId] += partDone;
+            GS.farm.storage[plantId] += partDone;
             // decrease energy
             decEnergyLevel(charIdx, energyNeeded);
             // process task

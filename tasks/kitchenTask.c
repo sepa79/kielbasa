@@ -42,14 +42,14 @@ static void _bakeBreadTask(char taskId){
         // }
         
         // check if we got enough wheat
-        if(flt_storage[PLANT_WHEAT] > WHEAT_NEEDED_FOR_BREAD && GS.kitchen.storage[FOOD_HOME_BREAD] < GS.kitchen.maxStorage){
+        if(GS.farm.storage[PLANT_WHEAT] > WHEAT_NEEDED_FOR_BREAD && GS.kitchen.storage[FOOD_HOME_BREAD] < GS.kitchen.maxStorage){
             // check if we got enough energy
             if(checkEnergyLevel(charIdx, energyNeeded)){
 
                 // decrease energy
                 decEnergyLevel(charIdx, energyNeeded);
                 // process task
-                flt_storage[PLANT_WHEAT] -= WHEAT_NEEDED_FOR_BREAD;
+                GS.farm.storage[PLANT_WHEAT] -= WHEAT_NEEDED_FOR_BREAD;
                 GS.kitchen.storage[FOOD_HOME_BREAD]++;
                 // LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_DONE;
                 // setTaskLogMsg(taskId);

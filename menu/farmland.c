@@ -207,11 +207,11 @@ static void _drawThermometer(byte temp){
 }
 
 static void _showWaterLevel(){
-    if(flt_waterLevel > 40){
+    if(GS.farm.waterLevel > 40){
         _waterSpriteBank = SPR_BANK_WATER_UI4;
-    } else if(flt_waterLevel > 25){
+    } else if(GS.farm.waterLevel > 25){
         _waterSpriteBank = SPR_BANK_WATER_UI3;
-    } else if(flt_waterLevel > 10){
+    } else if(GS.farm.waterLevel > 10){
         _waterSpriteBank = SPR_BANK_WATER_UI2;
     } else {
         _waterSpriteBank = SPR_BANK_WATER_UI1;
@@ -286,7 +286,7 @@ static void _displayFieldList(){
     // clearBox(COL_OFFSET_FIELDLIST, 20, 40-COL_OFFSET_FIELDLIST, 5);
 
     // gotoxy(COL_OFFSET_FIELDLIST, 19);
-    // printf("Water 0b-2u Temp 0b-2d Week 0b-2u Rain 0b-1u", flt_waterLevel, GS.calendar.currentTemp, GS.calendar.dateWeek, WEEKLY_AVG_RAIN[GS.calendar.dateWeek]);
+    // printf("Water 0b-2u Temp 0b-2d Week 0b-2u Rain 0b-1u", GS.farm.waterLevel, GS.calendar.currentTemp, GS.calendar.dateWeek, WEEKLY_AVG_RAIN[GS.calendar.dateWeek]);
 
     cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST, 7, TXT[TXT_IDX_FIELD_LIST_HEADER], VCOL_YELLOW);
 
@@ -336,19 +336,19 @@ static void _updateFieldView(){
 
     // water debug
     // byte num2str[4];
-    // utoa(flt_waterLevel, num2str, 10);
+    // utoa(GS.farm.waterLevel, num2str, 10);
     // copyCharToSprite(num2str[0], 1, 0);
     // copyCharToSprite(num2str[1], 2, 0);
     _showWaterLevel();
 
     sprBankPointer = SPR_POTATO_UI;
-    _updateSprite(flt_storage[PLANT_POTATO]);
+    _updateSprite(GS.farm.storage[PLANT_POTATO]);
     sprBankPointer = SPR_LUPINE_UI;
-    _updateSprite(flt_storage[PLANT_LUPINE]);
+    _updateSprite(GS.farm.storage[PLANT_LUPINE]);
     sprBankPointer = SPR_WHEAT_UI;
-    _updateSprite(flt_storage[PLANT_WHEAT]);
+    _updateSprite(GS.farm.storage[PLANT_WHEAT]);
     sprBankPointer = SPR_CORN_UI;
-    _updateSprite(flt_storage[PLANT_CORN]);
+    _updateSprite(GS.farm.storage[PLANT_CORN]);
 
     _displayFieldList();
 }

@@ -85,6 +85,7 @@ static char _previousDir = WALK_UP;
 // 4 colorsets for 4 light levels
 char256 * const colorMap = (char256 *)0xcc00;
 
+// TODO: a bit obsolete as almost nothing is here
 // Copy chars and lightmaps, any sprites etc
 static void _mapInit(){
     // ROM on, I/O off - as we will copy to RAM under I/O ports - IRQs must be off
@@ -331,8 +332,9 @@ void villiageMapDraw(char dir){
 
 void villiageMapInit(){
     // SCREEN_TRANSITION mode is on, so screen is black
-
+    // vic.color_border++;
     playSong(VILLIAGE_MAP_SONG);
+    // vic.color_border--;
 
     // clean 0xffff - so we don't have artefacts when we open borders
     ((char *)0xffff)[0] = 0;

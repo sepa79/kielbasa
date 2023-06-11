@@ -11,6 +11,7 @@
 
 #include <menu/menuSystem.h>
 #include <menu/mainMenu.h>
+#include <menu/optionsMenu.h>
 #include <menu/villiageMap.h>
 #include <engine/easyFlashBanks.h>
 #include <engine/gameSettings.h>
@@ -28,6 +29,7 @@
 
 static void _showNormalMenu(){
     switchScreenTo(SCREEN_TRANSITION);
+    playSong(MAIN_MENU_SONG);
     // clean sprites
     memset(SPR_CHARACTER_PORTRAIT2, 0, 64*4);
     showMenu();
@@ -65,11 +67,6 @@ void mainLoop(){
     // active RAM code at 0x7000 is gameInitRAMCode - set by titleScreen.h
     // all the below modules must be in that section
     initGame();
-    // initCalendar();
-    // initCharacterList();
-    initTaskList();
-    initFarmland();
-    // initKitchen();
 
     // now we are back to main code block
 
