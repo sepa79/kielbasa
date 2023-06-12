@@ -79,19 +79,10 @@ __interrupt static void _menuShowSprites(){
 
 
 static void _updateSprite(unsigned int num) {
-    byte num2str[6];
-    utoa(num, num2str, 10);
+    byte str[3];
+    sprintf(str, "%0d", num)
     // need to max it at 100 or something, food storage is a char
-    if(num > 9) {
-        copyCharToSprite(num2str[0], 0, 0);
-        copyCharToSprite(num2str[1], 1, 0);
-        copyCharToSprite(num2str[2], 2, 0);
-
-    } else {
-        copyCharToSprite(s' ', 0, 0);
-        copyCharToSprite(num2str[0], 1, 0);
-        copyCharToSprite(num2str[1], 2, 0);
-    }
+    textToSprite(num2str, 0, sprBankPointer);
 }
 
 static void _updateView(){
