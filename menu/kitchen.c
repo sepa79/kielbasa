@@ -80,7 +80,7 @@ __interrupt static void _menuShowSprites(){
 
 static void _updateSprite(unsigned int num) {
     byte str[3];
-    sprintf(str, "%0d", num)
+    sprintf(str, "%0d", num);
     // need to max it at 100 or something, food storage is a char
     textToSprite(num2str, 0, sprBankPointer);
 }

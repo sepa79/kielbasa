@@ -34,7 +34,6 @@ void updateDay(byte newDay);
 void updateMonth(byte newMonth);
 void drawYearH();
 void drawYearL();
-void copyCharToSprite(byte c, byte col, byte row);
 
 // global CharWin
 extern CharWin cw;

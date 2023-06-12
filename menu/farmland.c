@@ -113,34 +113,34 @@ static void _updateSprite(unsigned int num) {
     byte num2str[6];
     utoa(num, num2str, 10);
     if(num > 9999) {
-        copyCharToSprite(num2str[0], 0, 0);
-        copyCharToSprite(num2str[1]-10, 1, 0);
-        copyCharToSprite(num2str[2], 2, 0);
-        copyCharToSprite(s' ', 0, 1);
-        copyCharToSprite(s' ', 1, 1);
-        copyCharToSprite(s't', 2, 1);
+        copyCharToSprite(num2str[0], 0, 0, sprBankPointer);
+        copyCharToSprite(num2str[1]-10, 1, 0, sprBankPointer);
+        copyCharToSprite(num2str[2], 2, 0, sprBankPointer);
+        copyCharToSprite(s' ', 0, 1, sprBankPointer);
+        copyCharToSprite(s' ', 1, 1, sprBankPointer);
+        copyCharToSprite(s't', 2, 1, sprBankPointer);
 
     } else if(num > 999) {
-        copyCharToSprite(num2str[0]-10, 0, 0);
-        copyCharToSprite(num2str[1], 1, 0);
-        copyCharToSprite(num2str[2], 2, 0);
-        copyCharToSprite(s' ', 0, 1);
-        copyCharToSprite(s' ', 1, 1);
-        copyCharToSprite(s't', 2, 1);
+        copyCharToSprite(num2str[0]-10, 0, 0, sprBankPointer);
+        copyCharToSprite(num2str[1], 1, 0, sprBankPointer);
+        copyCharToSprite(num2str[2], 2, 0, sprBankPointer);
+        copyCharToSprite(s' ', 0, 1, sprBankPointer);
+        copyCharToSprite(s' ', 1, 1, sprBankPointer);
+        copyCharToSprite(s't', 2, 1, sprBankPointer);
     } else if(num > 99) {
-        copyCharToSprite(num2str[0], 0, 0);
-        copyCharToSprite(num2str[1], 1, 0);
-        copyCharToSprite(num2str[2], 2, 0);
-        copyCharToSprite(s' ', 0, 1);
-        copyCharToSprite(s'k', 1, 1);
-        copyCharToSprite(s'g', 2, 1);
+        copyCharToSprite(num2str[0], 0, 0, sprBankPointer);
+        copyCharToSprite(num2str[1], 1, 0, sprBankPointer);
+        copyCharToSprite(num2str[2], 2, 0, sprBankPointer);
+        copyCharToSprite(s' ', 0, 1, sprBankPointer);
+        copyCharToSprite(s'k', 1, 1, sprBankPointer);
+        copyCharToSprite(s'g', 2, 1, sprBankPointer);
     } else {
-        copyCharToSprite(s' ', 0, 0);
-        copyCharToSprite(num2str[0], 1, 0);
-        copyCharToSprite(num2str[1], 2, 0);
-        copyCharToSprite(s' ', 0, 1);
-        copyCharToSprite(s'k', 1, 1);
-        copyCharToSprite(s'g', 2, 1);
+        copyCharToSprite(s' ', 0, 0, sprBankPointer);
+        copyCharToSprite(num2str[0], 1, 0, sprBankPointer);
+        copyCharToSprite(num2str[1], 2, 0, sprBankPointer);
+        copyCharToSprite(s' ', 0, 1, sprBankPointer);
+        copyCharToSprite(s'k', 1, 1, sprBankPointer);
+        copyCharToSprite(s'g', 2, 1, sprBankPointer);
     }
 }
 

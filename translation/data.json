@@ -196,8 +196,9 @@
       },
       {
         "id": "MENU_EXIT",
-        "pl": "÷øùü Wyjdź",
-        "en": "÷øùü Exit "
+        "menu_opt": "<",
+        "pl": "ü Wyjdź",
+        "en": "ü Exit "
       },
       {
         "comment": "// fixed width - 8",
@@ -236,8 +237,9 @@
       },
       {
         "id": "EXIT_TO_MAP",
-        "pl": "÷øùü Mapa",
-        "en": "÷øùü Map"
+        "menu_opt": "<",
+        "pl": "ü Mapa",
+        "en": "ü Map"
       },
       {
         "id": "MENU_OPTIONS_LANG",

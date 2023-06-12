@@ -169,9 +169,8 @@ void initGameStartScreen(){
     // vic.spr_color[7] = VCOL_MED_GREY;
 
 
-    textToSpriteBankPt = (char *)0xc400;
-    memset(textToSpriteBankPt, 0, 64*6);
-    textToSprite((char *)s"  Press   any key to start     a       new     game.", 3);
+    memset((char *)0xc400, 0, 64*6);
+    textToSprite((char *)s"  Press   any key to start     a       new     game.", 3, (char *)0xc400);
     vic.spr_enable = 0b00111111;
 
     // ready steady GO

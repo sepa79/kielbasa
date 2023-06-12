@@ -90,8 +90,8 @@ static void _menuHandler(void){
     loadMenuSprites();
 
     sprBankPointer = ((char *)GFX_1_BASE + 64*(SPR_BANK_PIG_ANIM1+1));
-    copyCharToSprite('0', 0, 0);
-    copyCharToSprite('0', 1, 0);
+    copyCharToSprite('0', 0, 0, sprBankPointer);
+    copyCharToSprite('0', 1, 0, sprBankPointer);
 
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);

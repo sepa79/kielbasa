@@ -29,10 +29,12 @@
 
 static void _showNormalMenu(){
     switchScreenTo(SCREEN_TRANSITION);
-    playSong(MAIN_MENU_SONG);
     // clean sprites
     memset(SPR_CHARACTER_PORTRAIT2, 0, 64*4);
+    // show menu is sensitive to timing, as it load GFXs and needs to wait for middle screen
+    // trying to play music before it shows can lead to issues, something to solve a bit better one day
     showMenu();
+    playSong(MAIN_MENU_SONG);
     switchScreenTo(SCREEN_SPLIT_MC_TXT);
     gms_disableTimeControls = false;
     joyCursor.enabled = true;
@@ -77,7 +79,8 @@ void mainLoop(){
     rirq_stop();
     // msx off
     ((byte *)0xd418)[0] &= ~0xf;
-    vic.spr_enable   = 0b00000000;
+    vic.spr_enable = 0b00000000;
+    playSong(MAIN_MENU_SONG);
 
     // get the main sprites, fonts etc
     loadMainFont();

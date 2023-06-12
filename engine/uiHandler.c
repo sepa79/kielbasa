@@ -352,30 +352,11 @@ void updateGameSpeed(){
 void updateStatusBar(const byte * text){
     // reset flash for text
     isc_statusTextColorIdx = 0;
-    textToSpriteBankPt = SPR_TXT_UP_1;
-    textToSprite((char *)text, 4);
+    textToSprite((char *)text, 4, SPR_TXT_UP_1);
 }
 void updateStatusBarError(const byte * text){
     setErrorCursor();
-    textToSpriteBankPt = SPR_TXT_UP_1;
-    textToSprite((char *)text, 4);
-}
-
-// set sprBankPointer first - this routine will be writing into it
-void copyCharToSprite(byte c, byte col, byte row){
-    byte i = 0;
-    byte si = colOffset[col] + rowOffset[row];
-    unsigned int pos = c;
-    pos = pos * 7;
-    char pbank = setBank(MAIN_GFX_BANK);
-    do{
-        sprBankPointer[si] = AuxResources.SPRITE_FONTS[pos+i];
-        i++;
-        si++;
-        si++;
-        si++;
-    } while (i<7);
-    setBank(pbank);
+    textToSprite((char *)text, 4, SPR_TXT_UP_1);
 }
 
 // Does not need to be called more than once - at new game
@@ -392,33 +373,33 @@ void initUI(){
     sprBankPointer = SPR_DATE_TXT1;
     // draw hour
     sprintf(str, "%02u", GS.calendar.dateHour);
-    copyCharToSprite(str[0], 0, 0);
-    copyCharToSprite(str[1], 1, 0);
+    copyCharToSprite(str[0], 0, 0, sprBankPointer);
+    copyCharToSprite(str[1], 1, 0, sprBankPointer);
     // 58 is :
-    copyCharToSprite(':', 2, 0);
-    copyCharToSprite('0', 3, 0);
-    copyCharToSprite('0', 4, 0);
+    copyCharToSprite(':', 2, 0, sprBankPointer);
+    copyCharToSprite('0', 3, 0, sprBankPointer);
+    copyCharToSprite('0', 4, 0, sprBankPointer);
 
     // day, month
-    sprintf(str, "%02u", GS.calendar.dateDay);
-    copyCharToSprite(str[0], 0, 1);
-    copyCharToSprite(str[1]-10, 1, 1);
+    sprintf(str, "%02u", GS.calendar.dateDay, sprBankPointer);
+    copyCharToSprite(str[0], 0, 1, sprBankPointer);
+    copyCharToSprite(str[1]+0x40, 1, 1, sprBankPointer);
 
-    sprintf(str, "%02u", GS.calendar.dateMonth);
-    copyCharToSprite(str[0], 2, 1);
-    copyCharToSprite(str[1]-10, 3, 1);
+    sprintf(str, "%02u", GS.calendar.dateMonth, sprBankPointer);
+    copyCharToSprite(str[0], 2, 1, sprBankPointer);
+    copyCharToSprite(str[1]+0x40, 3, 1, sprBankPointer);
 
     // year
     drawYearL();
     drawYearH();
 
     // Cash
-    copyCharToSprite('2', 0, 2);
-    copyCharToSprite('4', 1, 2);
-    copyCharToSprite('5', 2, 2);
-    copyCharToSprite('0', 3, 2);
-    copyCharToSprite('0', 4, 2);
-    copyCharToSprite(28, 5, 2); //28 is 'zl'
+    copyCharToSprite('2', 0, 2, sprBankPointer);
+    copyCharToSprite('4', 1, 2, sprBankPointer);
+    copyCharToSprite('5', 2, 2, sprBankPointer);
+    copyCharToSprite('0', 3, 2, sprBankPointer);
+    copyCharToSprite('0', 4, 2, sprBankPointer);
+    copyCharToSprite(28, 5, 2, sprBankPointer); //28 is 'zl'
 
     // vic.color_border++;
 }
@@ -431,16 +412,16 @@ void updateHour(byte newHour){
     if(newHour > 19) {
         d = newHour - 20;
         if(GS.calendar.dateHour < 20)
-            copyCharToSprite('2', 0, 0);
+            copyCharToSprite('2', 0, 0, sprBankPointer);
     } else if(newHour > 9){
         d = newHour - 10;
         if(GS.calendar.dateHour < 10)
-            copyCharToSprite('1', 0, 0);
+            copyCharToSprite('1', 0, 0, sprBankPointer);
     } else {
         if(GS.calendar.dateHour > 9)
-            copyCharToSprite('0', 0, 0);
+            copyCharToSprite('0', 0, 0, sprBankPointer);
     }
-    copyCharToSprite(d+48, 1, 0);
+    copyCharToSprite(d+48, 1, 0, sprBankPointer);
 }
 
 void updateDay(byte newDay){
@@ -451,20 +432,20 @@ void updateDay(byte newDay){
     if(newDay > 29) {
         d = newDay - 30;
         if(GS.calendar.dateDay < 30)
-            copyCharToSprite('3', 0, 1);
+            copyCharToSprite('3', 0, 1, sprBankPointer);
     } else if(newDay > 19) {
         d = newDay - 20;
         if(GS.calendar.dateDay < 20)
-            copyCharToSprite('2', 0, 1);
+            copyCharToSprite('2', 0, 1, sprBankPointer);
     } else if(newDay > 9){
         d = newDay - 10;
         if(GS.calendar.dateDay < 10)
-            copyCharToSprite('1', 0, 1);
+            copyCharToSprite('1', 0, 1, sprBankPointer);
     } else {
         if(GS.calendar.dateDay > 9)
-            copyCharToSprite('0', 0, 1);
+            copyCharToSprite('0', 0, 1, sprBankPointer);
     }
-    copyCharToSprite(d+38, 1, 1);
+    copyCharToSprite(d+38, 1, 1, sprBankPointer);
 }
 
 void updateMonth(byte newMonth){
@@ -475,20 +456,20 @@ void updateMonth(byte newMonth){
     if(newMonth > 9){
         d = newMonth - 10;
         if(GS.calendar.dateMonth < 10)
-            copyCharToSprite('1', 2, 1);
+            copyCharToSprite('1', 2, 1, sprBankPointer);
     } else {
         if(GS.calendar.dateMonth > 9)
-            copyCharToSprite('0', 2, 1);
+            copyCharToSprite('0', 2, 1, sprBankPointer);
     }
-    copyCharToSprite(d+38, 3, 1);
+    copyCharToSprite(d+38, 3, 1, sprBankPointer);
 }
 
 void drawYearH(){
     sprBankPointer = SPR_DATE_TXT1;
-    copyCharToSprite(GS.calendar.dateYearH + 48, 4, 1);
+    copyCharToSprite(GS.calendar.dateYearH + 48, 4, 1, sprBankPointer);
 }
 
 void drawYearL(){
     sprBankPointer = SPR_DATE_TXT1;
-    copyCharToSprite(GS.calendar.dateYearL + 48, 5, 1);
+    copyCharToSprite(GS.calendar.dateYearL + 48, 5, 1, sprBankPointer);
 }

@@ -1,10 +1,8 @@
 #ifndef SPRITE_TEXT_H
 #define SPRITE_TEXT_H
 
-// set it to sprite bank that you wish to use textToSprite() on
-extern char * textToSpriteBankPt;
-
-void textToSprite(char * str, char width);
+void copyCharToSprite(char c, char col, char row, char * sprBankPtr);
+void textToSprite(char * str, char width, char * textToSpriteBankPt);
 
 #pragma compile("spriteText.c")
 

@@ -318,14 +318,12 @@ void villiageMapDraw(char dir){
     setBank(pbank);
     if(vMapLocation != locId){
         vMapLocation = locId;
-        textToSpriteBankPt = SPR_CHARACTER_PORTRAIT2;
         // char str[12*3+1];
         // char framesUsed = gms_frameCount - frameStart;
         // sprintf(str, "%03d", framesUsed);
         // textToSprite(str, 4);
-        textToSprite((char *)LOCATION_NAMES[locId], 4);
+        textToSprite((char *)LOCATION_NAMES[locId], 4, SPR_CHARACTER_PORTRAIT2);
     }
-
 
     joyCursor.moveDelayCurrent = 0;
 }

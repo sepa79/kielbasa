@@ -176,7 +176,7 @@ __interrupt static void IRQ_topNoScreen() {
     if(!fontCopyDone) {
         // vic.color_border++;
         // ROM on, I/O off - as we will copy to RAM under I/O ports
-        char pport = setPortIrq(MMAP_ALL_ROM);
+        char pport = setPort(MMAP_ALL_ROM);
 
         char i = 0;
         do {
@@ -196,7 +196,7 @@ __interrupt static void IRQ_topNoScreen() {
             fontCopyDst = GFX_1_FNT2;
         }
         // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
-        setPortIrq(pport);
+        setPort(pport);
         // vic.color_border--;
     }
     // vic.color_back--;
@@ -417,19 +417,11 @@ void initRasterIRQ(){
     ((byte *)0xd418)[0] &= ~0xf;
     // screen off, sprites off
     // vic.ctrl1 = VIC_CTRL1_BMM | VIC_CTRL1_RSEL | 3;
-    vic.spr_enable   = 0b00000000;
-
-    __asm {
-        // init music
-        lda #MSX_ROM
-        sta $01
-        lda #$01
-        jsr MSX_INIT
-    }
+    vic.spr_enable = 0b00000000;
 
     // if you use the mmap_trampoline() you have to call the mmap_set() at least once to init the shadow variable
     // set ALL_ROM as default
-    setPortIrq(MMAP_ROM);
+    setPort(MMAP_ROM);
     // Activate trampoline
     mmap_trampoline();
     // Disable CIA interrupts, we do not want interference
