@@ -109,41 +109,6 @@ __export const char farmlandWaterSprites[] = {
 #pragma code ( farmlandCode )
 #pragma data ( data )
 
-static void _updateSprite(unsigned int num) {
-    byte num2str[6];
-    utoa(num, num2str, 10);
-    if(num > 9999) {
-        copyCharToSprite(num2str[0], 0, 0, sprBankPointer);
-        copyCharToSprite(num2str[1]-10, 1, 0, sprBankPointer);
-        copyCharToSprite(num2str[2], 2, 0, sprBankPointer);
-        copyCharToSprite(s' ', 0, 1, sprBankPointer);
-        copyCharToSprite(s' ', 1, 1, sprBankPointer);
-        copyCharToSprite(s't', 2, 1, sprBankPointer);
-
-    } else if(num > 999) {
-        copyCharToSprite(num2str[0]-10, 0, 0, sprBankPointer);
-        copyCharToSprite(num2str[1], 1, 0, sprBankPointer);
-        copyCharToSprite(num2str[2], 2, 0, sprBankPointer);
-        copyCharToSprite(s' ', 0, 1, sprBankPointer);
-        copyCharToSprite(s' ', 1, 1, sprBankPointer);
-        copyCharToSprite(s't', 2, 1, sprBankPointer);
-    } else if(num > 99) {
-        copyCharToSprite(num2str[0], 0, 0, sprBankPointer);
-        copyCharToSprite(num2str[1], 1, 0, sprBankPointer);
-        copyCharToSprite(num2str[2], 2, 0, sprBankPointer);
-        copyCharToSprite(s' ', 0, 1, sprBankPointer);
-        copyCharToSprite(s'k', 1, 1, sprBankPointer);
-        copyCharToSprite(s'g', 2, 1, sprBankPointer);
-    } else {
-        copyCharToSprite(s' ', 0, 0, sprBankPointer);
-        copyCharToSprite(num2str[0], 1, 0, sprBankPointer);
-        copyCharToSprite(num2str[1], 2, 0, sprBankPointer);
-        copyCharToSprite(s' ', 0, 1, sprBankPointer);
-        copyCharToSprite(s'k', 1, 1, sprBankPointer);
-        copyCharToSprite(s'g', 2, 1, sprBankPointer);
-    }
-}
-
 // min 'normal' temp is -23, so temp shall start at '0' which is -23
 static void _drawThermometer(byte temp){
     // vic.color_border++;
@@ -341,14 +306,10 @@ static void _updateFieldView(){
     // copyCharToSprite(num2str[1], 2, 0);
     _showWaterLevel();
 
-    sprBankPointer = SPR_POTATO_UI;
-    _updateSprite(GS.farm.storage[PLANT_POTATO]);
-    sprBankPointer = SPR_LUPINE_UI;
-    _updateSprite(GS.farm.storage[PLANT_LUPINE]);
-    sprBankPointer = SPR_WHEAT_UI;
-    _updateSprite(GS.farm.storage[PLANT_WHEAT]);
-    sprBankPointer = SPR_CORN_UI;
-    _updateSprite(GS.farm.storage[PLANT_CORN]);
+    intToWeightToSprite(GS.farm.storage[PLANT_POTATO], SPR_POTATO_UI);
+    intToWeightToSprite(GS.farm.storage[PLANT_LUPINE], SPR_LUPINE_UI);
+    intToWeightToSprite(GS.farm.storage[PLANT_WHEAT], SPR_WHEAT_UI);
+    intToWeightToSprite(GS.farm.storage[PLANT_CORN], SPR_CORN_UI);
 
     _displayFieldList();
 }
@@ -407,22 +368,20 @@ static void _sowPlant(){
     fields[_currentField].ready   = 0;
     _displayFieldList();
 
-    // create Task
-    struct Task task;
     byte idx = plants[_currentPlant].taskDscIdx;
     // "Field 2, Potatoes"
-    sprintf(task.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
-    task.codeRef   = &sowFieldTask;
-    task.nameIdx   = TXT_IDX_TASK_FARMLAND_FARM;
-    task.params[0] = _currentPlant;
-    task.params[1] = _currentField;
-    task.params[2] = 0;
-    task.params[3] = 0;
-    task.params[4] = 0;
-    task.reqType   = SKILL_FARMING;
-    task.icon      = SPR_TASK_FARM2;
-    task.status    = TASK_STATUS_NEW;
-    addTask(&task);
+    sprintf(newTask.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
+    newTask.codeRef   = &sowFieldTask;
+    newTask.nameIdx   = TXT_IDX_TASK_FARMLAND_FARM;
+    newTask.params[0] = _currentPlant;
+    newTask.params[1] = _currentField;
+    newTask.params[2] = 0;
+    newTask.params[3] = 0;
+    newTask.params[4] = 0;
+    newTask.reqType   = SKILL_FARMING;
+    newTask.icon      = SPR_TASK_FARM2;
+    newTask.status    = TASK_STATUS_NEW;
+    addTask();
 }
 
 static void _maintainPlant(){
@@ -439,22 +398,20 @@ static void _reapPlant(){
     fields[_currentField].stage = PLANT_STAGE_REAP_TASK_ASSIGNED;
     _displayFieldList();
 
-    // create Task
-    struct Task task;
     byte idx = plants[fields[_currentField].plantId].taskDscIdx;
     // "Field 2, Potatoes"
-    sprintf(task.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
-    task.codeRef   = &reapFieldTask;
-    task.nameIdx   = TXT_IDX_TASK_FARMLAND_REAP;
-    task.params[0] = _currentField;
-    task.params[1] = 0;
-    task.params[2] = 0;
-    task.params[3] = 0;
-    task.params[4] = 0;
-    task.reqType   = SKILL_FARMING;
-    task.icon      = SPR_TASK_FARM2;
-    task.status    = TASK_STATUS_NEW;
-    addTask(&task);
+    sprintf(newTask.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
+    newTask.codeRef   = &reapFieldTask;
+    newTask.nameIdx   = TXT_IDX_TASK_FARMLAND_REAP;
+    newTask.params[0] = _currentField;
+    newTask.params[1] = 0;
+    newTask.params[2] = 0;
+    newTask.params[3] = 0;
+    newTask.params[4] = 0;
+    newTask.reqType   = SKILL_FARMING;
+    newTask.icon      = SPR_TASK_FARM2;
+    newTask.status    = TASK_STATUS_NEW;
+    addTask();
 }
 
 static void _nextPlant(){
@@ -503,7 +460,7 @@ static void _menuHandler(void){
     displayMenu(FARMLAND_MENU);
 
     // print arrows up/down
-    char str[4] = {0x1e, 0x20, 0x75, 0x00};
+    char str[4] = {0x1e, 0x20, 0x23, 0x00};
     cwin_putat_string_raw(&cw, 7, 2, str, VCOL_MED_GREY);
 
     _showMenuDetails();

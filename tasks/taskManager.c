@@ -63,6 +63,7 @@ void initTaskList() {
 #pragma code ( tasksCode )
 #pragma data ( data )
 //-----------------------------------------------------------------------------------------
+Task newTask = {0};
 
 // definitons in logger.h
 void setTaskLogMsg(char taskId){
@@ -77,7 +78,7 @@ void setTaskLogMsg(char taskId){
     LOG_MSG.LOG_DATA_TASK_PARAMS5 = task_params[taskId][4];
 }
 
-static bool _addTask(struct Task * task){
+static bool _addTask(){
     // find entry in the task arrays
     if(_nextFreeTaskRef == TASK_ARRAY_SIZE){
         memcpy(LOG_DATA, p"Tasks full", 10);
@@ -92,17 +93,17 @@ static bool _addTask(struct Task * task){
     _nextFreeTaskRef++;
 
     // set new task details
-    task_codeRef[nextFreeTask]   = task->codeRef;
-    task_nameIdx[nextFreeTask]   = task->nameIdx;
-    task_params[nextFreeTask][0] = task->params[0];
-    task_params[nextFreeTask][1] = task->params[1];
-    task_params[nextFreeTask][2] = task->params[2];
-    task_params[nextFreeTask][3] = task->params[3];
-    task_params[nextFreeTask][4] = task->params[4];
-    task_reqType[nextFreeTask]   = task->reqType;
-    strcpy(task_desc[nextFreeTask], task->desc);
-    task_icon[nextFreeTask]      = task->icon;
-    task_status[nextFreeTask]    = task->status;
+    task_codeRef[nextFreeTask]   = newTask.codeRef;
+    task_nameIdx[nextFreeTask]   = newTask.nameIdx;
+    task_params[nextFreeTask][0] = newTask.params[0];
+    task_params[nextFreeTask][1] = newTask.params[1];
+    task_params[nextFreeTask][2] = newTask.params[2];
+    task_params[nextFreeTask][3] = newTask.params[3];
+    task_params[nextFreeTask][4] = newTask.params[4];
+    task_reqType[nextFreeTask]   = newTask.reqType;
+    strcpy(task_desc[nextFreeTask], newTask.desc);
+    task_icon[nextFreeTask]      = newTask.icon;
+    task_status[nextFreeTask]    = newTask.status;
     // assigned later during ticks
     task_worker[nextFreeTask]    = NO_SLOT;
 
@@ -390,9 +391,9 @@ void removeTaskByRef(char taskRefId){
     setBank(pbank);
 }
 
-bool addTask(struct Task * task){
+bool addTask(){
     char pbank = setBank(TASKS_BANK);
-    bool result = _addTask(task);
+    bool result = _addTask();
     setBank(pbank);
     return result;
 }

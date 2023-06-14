@@ -6,27 +6,46 @@
 #pragma data ( data )
 //-----------------------------------------------------------------------------------------
 
-#define FOOD_ITEMS_COUNT 4
-#define FOOD_SHOP_BREAD 0
-#define FOOD_HOME_BREAD 1
-#define FOOD_CANNED_MEAT 2
-#define FOOD_SOUSAGE 3
+#define FOOD_ITEMS_COUNT 6
+enum FOOD_ITEMS {
+    FOOD_SHOP_BREAD,
+    FOOD_HOME_BREAD,
+    FOOD_CANNED_MEAT,
+    FOOD_SOUSAGE,
+    FOOD_POTATOES,
+    FOOD_CORN,
+};
 
-
-struct FOOD_ITEM {
-    char * nameIdx;
-    char food;
-    char energy;
-    char health;
+struct FoodItem {
+    // char * nameIdx;
+    char regenAmount;
+    char regenTime;
+    char bonusAmount;
+    char bonusTime;
+    bool isHealing;
     char weight;
     char price;
+};
+
+extern __striped const struct FoodItem foodItems[FOOD_ITEMS_COUNT];
+
+enum MEAL_TYPE {
+    MEAL_TYPE_LIGHT = 0,
+    MEAL_TYPE_MEDIUM,
+    MEAL_TYPE_FULL,
 };
 
 struct Kitchen {
     char storage[FOOD_ITEMS_COUNT];
 // maybe later some fridge upgrades?
     char maxStorage;
+    bool bakeBreadDaily;
+    MEAL_TYPE breakfastType;
+    MEAL_TYPE supperType;
+    bool preferHomeFood;
+    bool preferCorn;
 };
+
 
 //-----------------------------------------------------------------------------------------
 #pragma code ( gameInitRAMCode )
@@ -40,6 +59,8 @@ void initKitchen(Kitchen * kit);
 //-----------------------------------------------------------------------------------------
 
 void kitchenTick();
+void breakfastTick();
+void supperTick();
 
 //-----------------------------------------------------------------------------------------
 #pragma code ( code )

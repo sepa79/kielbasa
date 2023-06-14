@@ -102,8 +102,6 @@ const struct AUX_GFX {
     char TIME_ICONS[64*8];
     // weather icons
     char WEATHER_ICONS[64*10];
-    // sprite fonts
-    char SPRITE_FONTS[59*7];
 };
 
 // #define TASK_ICONS  ((char *)GFX_1_AUX_DST_ADR)

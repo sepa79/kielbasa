@@ -34,7 +34,7 @@ void incEnergyLevel(char charIdx, char amount){
         energy = 100;
     }
     allCharacters[charIdx].energy = energy;
-    drawBattery(charIdx);
+    // drawBattery(charIdx);
 }
 
 // call only on populated slots
@@ -47,7 +47,7 @@ void decEnergyLevel(char charIdx, char amount){
     }
 
     allCharacters[charIdx].energy = energy;
-    drawBattery(charIdx);
+    // drawBattery(charIdx);
 }
 
 //-----------------------------------------------------------------------------------------
@@ -58,19 +58,18 @@ void decEnergyLevel(char charIdx, char amount){
 
 void initCharacterList(){
     __striped static const struct Character initialChars[CHARACTER_COUNT] = {
-        {TXT_IDX_CHAR_1_STORY, TXT_IDX_CHAR_1_NAME, 100, 100, 100, SPR_PORTRAIT01, {3,3,3}, {3,3,4,3}, {1,2,3,4}, NO_SLOT, false},
-        {TXT_IDX_CHAR_2_STORY, TXT_IDX_CHAR_2_NAME, 100, 100, 100, SPR_PORTRAIT02, {2,3,2}, {2,6,1,1}, {3,3,3,3}, NO_SLOT, false},
-        {TXT_IDX_CHAR_3_STORY, TXT_IDX_CHAR_3_NAME, 100, 100, 100, SPR_PORTRAIT03, {4,3,4}, {1,1,1,7}, {3,3,3,3}, NO_SLOT, false},
-        {TXT_IDX_CHAR_4_STORY, TXT_IDX_CHAR_4_NAME, 100, 100, 100, SPR_PORTRAIT04, {3,3,4}, {6,2,1,1}, {3,3,3,3}, NO_SLOT, false}
+        {TXT_IDX_CHAR_1_STORY, TXT_IDX_CHAR_1_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT01, {3,3,3}, {3,3,4,3}, {1,2,3,4}, NO_SLOT, false},
+        {TXT_IDX_CHAR_2_STORY, TXT_IDX_CHAR_2_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT02, {2,3,2}, {2,6,1,1}, {3,3,3,3}, NO_SLOT, false},
+        {TXT_IDX_CHAR_3_STORY, TXT_IDX_CHAR_3_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT03, {4,3,4}, {1,1,1,7}, {3,3,3,3}, NO_SLOT, false},
+        {TXT_IDX_CHAR_4_STORY, TXT_IDX_CHAR_4_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT04, {3,3,4}, {6,2,1,1}, {3,3,3,3}, NO_SLOT, false}
     };
-    for(char i=0; i<CHARACTER_COUNT; i++){
-        allCharacters[i] = initialChars[i];
-    }
+
+    memcpy(allCharacters, initialChars, sizeof(initialChars));
 
     _setCharacterToSlot(0, 0);
-    _setCharacterToSlot(1, 1);
-    _setCharacterToSlot(2, 2);
-    _setCharacterToSlot(3, 3);
+    _setCharacterToSlot(1, NO_CHARACTER);
+    _setCharacterToSlot(2, NO_CHARACTER);
+    _setCharacterToSlot(3, NO_CHARACTER);
 }
 
 //-----------------------------------------------------------------------------------------

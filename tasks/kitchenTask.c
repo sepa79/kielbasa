@@ -104,6 +104,22 @@ static void _bakeBreadTask(char taskId){
     updateMenuIfIn(MENU_BANK_KITCHEN);
 }
 
+void _addBakeBreadTask(){
+    // 'Bake bread' string
+    sprintf(newTask.desc, "%s",TXT[TXT_IDX_TASK_DSC_KITCHEN_BAKE_BREAD]);
+    newTask.codeRef   = &bakeBreadTask;
+    newTask.nameIdx   = TXT_IDX_TASK_KITCHEN;
+    newTask.params[0] = 0;
+    newTask.params[1] = 0;
+    newTask.params[2] = 0;
+    newTask.params[3] = 0;
+    newTask.params[4] = 0;
+    newTask.reqType   = SKILL_COOKING;
+    newTask.icon      = SPR_TASK_COOK;
+    newTask.status    = TASK_STATUS_NEW;
+    addTask();
+}
+
 #pragma code ( code )
 #pragma data ( data )
 //-----------------------------------------------------------------------------------------
@@ -112,5 +128,12 @@ static void _bakeBreadTask(char taskId){
 void bakeBreadTask(char taskId){
     char pbank = setBank(TASKS_BANK);
     _bakeBreadTask(taskId);
+    setBank(pbank);
+}
+
+// used in tick as well as in menu, so kept here
+void addBakeBreadTask(){
+    char pbank = setBank(TASKS_BANK);
+    _addBakeBreadTask();
     setBank(pbank);
 }

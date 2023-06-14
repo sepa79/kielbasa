@@ -71,7 +71,11 @@ void tasksTick();
 //-----------------------------------------------------------------------------------------
 // Visible in RAM, but will switch banks and call the 'body' in ROM
 
-bool addTask(struct Task * task);
+// new task is wiped by addTask after the adding is finished
+extern Task newTask;
+// set newTask first
+bool addTask();
+
 void removeTaskByRef(byte taskRefId);
 void removeTask(byte taskId);
 void unassignTask(byte taskId);

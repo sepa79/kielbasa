@@ -169,25 +169,13 @@ static void _dayTick(){
     }
 
     _weatherTick();
-    // that might need to go to ROM
+    kitchenTick();
     farmlandTick();
     sunRaiseHour = WEEKLY_SUNRISE[GS.calendar.dateWeek];
     sunSetHour = WEEKLY_SUNSET[GS.calendar.dateWeek];
 
     // Handle any installed callback - so that we can get 'refresh' on a screen the game is on
     updateMenu();
-}
-
-static void _handleFoodConsumption(){
-    for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
-        // only check active chars
-        if(characterSlots[charSlot] != NO_CHARACTER){
-            allCharacters[characterSlots[charSlot]].food -= 1;
-            if(allCharacters[characterSlots[charSlot]].food == 0){
-                // game over, character died
-            }
-        }
-    }
 }
 
 // used by timeTick and by init
@@ -206,8 +194,6 @@ static void _setNight() {
 }
 
 void timeTick(){
-    _handleFoodConsumption();
-
     if(GS.calendar.dateHour < 23){
         updateHour(GS.calendar.dateHour+1);
         GS.calendar.dateHour++;
@@ -226,15 +212,19 @@ void timeTick(){
         loadMenuGfx(GS.calendar.isDay);
     }
 
-    // sleep cycle
-    if(GS.calendar.dateHour > 20 || GS.calendar.dateHour < 5) {
-        // eat, then sleep well my little redneck - change task sprite once only
-        if(GS.calendar.dateHour == 21){
-            setCharacterSlotIcon(0, SPR_TASK_EAT);
-            setCharacterSlotIcon(1, SPR_TASK_EAT);
-            setCharacterSlotIcon(2, SPR_TASK_EAT);
-            setCharacterSlotIcon(3, SPR_TASK_EAT);
+    // sleep & food cycle
+    // run the regen routine - depending on levels of food some energy comes back
+    // run before sleep, as sleep looks at regen timers
+    regenTick();
+    if(GS.calendar.dateHour > 20 || GS.calendar.dateHour < 6) {
+        if(GS.calendar.dateHour == 5){
+            breakfastTick();
         }
+        if(GS.calendar.dateHour == 21){
+            supperTick();
+        }
+
+        // eat, then sleep well my little redneck - change task sprite once only
         if(GS.calendar.dateHour == 22){
             setCharacterSlotIcon(0, SPR_TASK_SLEEP);
             setCharacterSlotIcon(1, SPR_TASK_SLEEP);
@@ -249,10 +239,11 @@ void timeTick(){
                 }
             }
         }
+        // runs during breakfast and supper, too, considering it a 'rest' time
         sleepTick();
     } else {
         // temp - tasksTick should do it later
-        if(GS.calendar.dateHour == 5){
+        if(GS.calendar.dateHour == 6){
             setCharacterSlotIcon(0, SPR_TASK_MIA);
             setCharacterSlotIcon(1, SPR_TASK_MIA);
             setCharacterSlotIcon(2, SPR_TASK_MIA);
@@ -262,6 +253,14 @@ void timeTick(){
         tasksTick();
         // now process guys that are MIA - their energy is also spent
         miaTick();
+    }
+
+    // redraw batteries
+    for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
+        // only check active chars
+        if(characterSlots[charSlot] != NO_CHARACTER){
+            drawBattery(characterSlots[charSlot]);
+        }
     }
 
 }

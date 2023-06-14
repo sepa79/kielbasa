@@ -380,11 +380,11 @@
       },
       {
         "id": "MENU_FARMLAND1",
-        "common": "À"
+        "common": "w"
       },
       {
         "id": "MENU_FARMLAND2",
-        "common": "÷"
+        "common": "s"
       },
       {
         "id": "MENU_FARMLAND3",
@@ -534,18 +534,97 @@
       {
         "id": "MENU_KITCHEN2",
         "menu_opt": "2",
-        "pl": "Piecz chleb codziennie",
+        "pl": "Piecz codziennie",
         "en": "Bake bread daily"
       },
       {
-        "id": "MENU_KITCHEN2_ON",
-        "pl": "Włączone",
-        "en": "On"
+        "id": "MENU_KITCHEN3",
+        "menu_opt": "3",
+        "pl": "Na śniadanie",
+        "en": "For breakfast"
       },
       {
-        "id": "MENU_KITCHEN2_OFF",
-        "pl": "Wyłączone",
-        "en": "Off"
+        "id": "MENU_KITCHEN4",
+        "menu_opt": "4",
+        "pl": "Na kolację jedz",
+        "en": "For supper have"
+      },
+      {
+        "id": "MENU_KITCHEN5",
+        "menu_opt": "5",
+        "pl": "Preferuj żarcie",
+        "en": "Food preferences"
+      },
+      {
+        "id": "MENU_KITCHEN6",
+        "menu_opt": "6",
+        "pl": "Ulubione warzywo",
+        "en": "Favourite veggie"
+      },
+      {
+        "id": "KITCHEN_TASK_OFF",
+        "pl": "Nie                  ",
+        "en": "No                   "
+      },
+      {
+        "id": "KITCHEN_TASK_ON",
+        "pl": "Tak                  ",
+        "en": "Yes                  "
+      },
+      {
+        "id": "KITCHEN_EATING_STYLE_LIGHT",
+        "pl": "Chleb                ",
+        "en": "Bread                "
+      },
+      {
+        "id": "KITCHEN_EATING_STYLE_MEDIUM",
+        "pl": "Chleb, mięso         ",
+        "en": "Bread, meat          "
+      },
+      {
+        "id": "KITCHEN_EATING_STYLE_FULL",
+        "pl": "Chleb, mięso, warzywa",
+        "en": "Bread, meat, veggies "
+      },
+      {
+        "id": "KITCHEN_PREFER_SHOP",
+        "pl": "Sklepowe             ",
+        "en": "Shop food            "
+      },
+      {
+        "id": "KITCHEN_PREFER_HOME",
+        "pl": "Domowe               ",
+        "en": "Home made            "
+      },
+      {
+        "id": "KITCHEN_PREFER_POTATO",
+        "pl": "Ziemniak             ",
+        "en": "Potato               "
+      },
+      {
+        "id": "KITCHEN_PREFER_CORN",
+        "pl": "Kukurydza            ",
+        "en": "Corn                 "
+      },
+      {
+        "id": "KITCHEN_MISSING",
+        "pl": "Brak:       ",
+        "en": "Missing:    "
+      },
+      {
+        "id": "KITCHEN_MISSING_BREAD",
+        "pl": "chleba",
+        "en": "bread"
+      },
+      {
+        "id": "KITCHEN_MISSING_MEAT",
+        "pl": "mięsa",
+        "en": "meat"
+      },
+      {
+        "id": "KITCHEN_MISSING_VEG",
+        "pl": "warzyw",
+        "en": "veggies"
       },
       {
         "id": "MENU_SHOPOUT1",

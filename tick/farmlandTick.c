@@ -1,4 +1,5 @@
 #include <c64/types.h>
+#include <string.h>
 #include <fixmath.h>
 
 #include <engine/gameState.h>
@@ -228,10 +229,10 @@ void farmlandTick(){
 //-----------------------------------------------------------------------------------------
 void initFarmland(Farm* farm){
     farm->waterLevel = 25;
-    farm->storage[PLANT_POTATO] = 900;
+    farm->storage[PLANT_POTATO] = 50;
     farm->storage[PLANT_LUPINE] = 50;
     farm->storage[PLANT_WHEAT]  = 50;
-    farm->storage[PLANT_CORN]   = 50;
+    farm->storage[PLANT_CORN]   = 5;
 
     __striped static const struct FieldStruct initialFields[FIELDS_COUNT] = {
         {1, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -240,8 +241,9 @@ void initFarmland(Farm* farm){
         {4, 4, 6, 0, 0, 0, 0, 0, 0, 0, 0},
     };
 
+    memcpy(fields, initialFields, sizeof(initialFields));
+
     for(char i=0; i<FIELDS_COUNT; i++){
-        fields[i] = initialFields[i];
         fields[i].rseed = rand();
     }
 }

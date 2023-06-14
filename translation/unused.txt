@@ -1,0 +1,13 @@
+      {
+        "id": "KITCHEN_SIZE",
+        "pl": ["Pojemność       ",
+               " Spiżarni  |    ",
+               " Lodówki   |    ",
+               " Zamrażarki|    "],
+        "pl_m": "----------------                                                ",
+        "en": ["Size of         ",
+               " Pantry    |    ",
+               " Fridge    |    ",
+               " Freezer   |    "],
+        "en_m": "----------------                                                "
+      },

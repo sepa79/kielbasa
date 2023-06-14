@@ -29,6 +29,7 @@ const byte rowOffset[3] = {0,21,42};
 byte * sprBankPointer;
 
 volatile struct JOY_CURSOR joyCursor = {true, false, 0, 0, 0, 0, 0};
+// used by all menus
 CharWin cw;
 
 // static bool _fullScreenMenuOpen = false;
@@ -445,7 +446,7 @@ void updateDay(byte newDay){
         if(GS.calendar.dateDay > 9)
             copyCharToSprite('0', 0, 1, sprBankPointer);
     }
-    copyCharToSprite(d+38, 1, 1, sprBankPointer);
+    copyCharToSprite(d+112, 1, 1, sprBankPointer);
 }
 
 void updateMonth(byte newMonth){
@@ -461,7 +462,7 @@ void updateMonth(byte newMonth){
         if(GS.calendar.dateMonth > 9)
             copyCharToSprite('0', 2, 1, sprBankPointer);
     }
-    copyCharToSprite(d+38, 3, 1, sprBankPointer);
+    copyCharToSprite(d+112, 3, 1, sprBankPointer);
 }
 
 void drawYearH(){

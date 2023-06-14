@@ -5,6 +5,7 @@
 #include <menu/menuSystem.h>
 #include <translation/common.h>
 #include <engine/easyFlashBanks.h>
+#include <engine/spriteText.h>
 #include <assets/assetsSettings.h>
 #include <engine/uiHandler.h>
 #include <tasks/taskManager.h>
@@ -40,6 +41,7 @@ __export const char kitchenGfx1[] = {
     #embed 0x01e0 0x1f42 "assets/multicolorGfx/kuchnia_26.01.23.kla"
     #embed 0x01e0 0x232a "assets/multicolorGfx/kuchnia_26.01.23.kla"
 };
+
 #pragma data ( kitchenSprites )
 __export static char SPR_DATA_UI[64*4] = {0};
 
@@ -77,51 +79,68 @@ __interrupt static void _menuShowSprites(){
 
 }
 
-
-static void _updateSprite(unsigned int num) {
-    byte str[3];
-    sprintf(str, "%0d", num);
-    // need to max it at 100 or something, food storage is a char
-    textToSprite(num2str, 0, sprBankPointer);
-}
-
 static void _updateView(){
-    sprBankPointer = SPR_FOOD_1;
-    _updateSprite(GS.kitchen.storage[FOOD_SHOP_BREAD]);
-    sprBankPointer = SPR_FOOD_2;
-    _updateSprite(GS.kitchen.storage[FOOD_HOME_BREAD]);
-    sprBankPointer = SPR_FOOD_3;
-    _updateSprite(GS.kitchen.storage[FOOD_CANNED_MEAT]);
-    sprBankPointer = SPR_FOOD_4;
-    _updateSprite(GS.kitchen.storage[FOOD_SOUSAGE]);
+    byteToSprite(GS.kitchen.storage[FOOD_SHOP_BREAD], SPR_FOOD_1);
+    byteToSprite(GS.kitchen.storage[FOOD_HOME_BREAD], SPR_FOOD_2);
+    byteToSprite(GS.kitchen.storage[FOOD_CANNED_MEAT], SPR_FOOD_3);
+    byteToSprite(GS.kitchen.storage[FOOD_SOUSAGE], SPR_FOOD_4);
+
+    if(GS.kitchen.bakeBreadDaily){
+        cwin_putat_string_raw(&cw, 19, 2, TXT[TXT_IDX_KITCHEN_TASK_ON], VCOL_GREEN);
+    } else {
+        cwin_putat_string_raw(&cw, 19, 2, TXT[TXT_IDX_KITCHEN_TASK_OFF], VCOL_DARK_GREY);
+    }
+    cwin_putat_string_raw(&cw, 19, 3, TXT[TXT_IDX_KITCHEN_EATING_STYLE_LIGHT + GS.kitchen.breakfastType], VCOL_DARK_GREY);
+    cwin_putat_string_raw(&cw, 19, 4, TXT[TXT_IDX_KITCHEN_EATING_STYLE_LIGHT + GS.kitchen.supperType], VCOL_DARK_GREY);
+    cwin_putat_string_raw(&cw, 19, 5, TXT[TXT_IDX_KITCHEN_PREFER_SHOP + GS.kitchen.preferHomeFood], VCOL_DARK_GREY);
+    cwin_putat_string_raw(&cw, 19, 6, TXT[TXT_IDX_KITCHEN_PREFER_POTATO + GS.kitchen.preferCorn], VCOL_DARK_GREY);
+
 }
 
 static void _kitchenBakeBread(){
-    // create Task
-    struct Task task;
-    // "Bake Bread"
-    sprintf(task.desc, "%s",TXT[TXT_IDX_TASK_DSC_KITCHEN_BAKE_BREAD]);
-    task.codeRef   = &bakeBreadTask;
-    task.nameIdx   = TXT_IDX_TASK_KITCHEN;
-    task.params[0] = 0;
-    task.params[1] = 0;
-    task.params[2] = 0;
-    task.params[3] = 0;
-    task.params[4] = 0;
-    task.reqType   = SKILL_COOKING;
-    task.icon      = SPR_TASK_COOK;
-    task.status    = TASK_STATUS_NEW;
-    addTask(&task);
+    addBakeBreadTask();
 }
 
-static void _shMenu2(){
-    updateStatusBar(p"kitchen menu, opcja 2");
+static void _kitchenBakeBreadDaily(){
+    GS.kitchen.bakeBreadDaily = !GS.kitchen.bakeBreadDaily;
+    _updateView();
+}
+
+static void _kitchenBreakfastType(){
+    if(GS.kitchen.breakfastType < MEAL_TYPE_FULL){
+        GS.kitchen.breakfastType ++;
+    } else {
+        GS.kitchen.breakfastType = MEAL_TYPE_LIGHT;
+    }
+    _updateView();
+}
+
+static void _kitchenSupperType(){
+    if(GS.kitchen.supperType < MEAL_TYPE_FULL){
+        GS.kitchen.supperType ++;
+    } else {
+        GS.kitchen.supperType = MEAL_TYPE_LIGHT;
+    }
+    _updateView();
+}
+
+static void _kitchenFoodPreferrence(){
+    GS.kitchen.preferHomeFood = !GS.kitchen.preferHomeFood;
+    _updateView();
+}
+static void _kitchenVegPreferrence(){
+    GS.kitchen.preferCorn = !GS.kitchen.preferCorn;
+    _updateView();
 }
 
 const struct MenuOption KITCHEN_MENU[] = {
     { TXT_IDX_MENU_KITCHEN1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenBakeBread, 0, 1, 1},
-    { TXT_IDX_MENU_KITCHEN2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_shMenu2, 0, 1, 2},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
+    { TXT_IDX_MENU_KITCHEN2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenBakeBreadDaily, 0, 1, 2},
+    { TXT_IDX_MENU_KITCHEN3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenBreakfastType, 0, 1, 3},
+    { TXT_IDX_MENU_KITCHEN4, '4', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenSupperType, 0, 1, 4},
+    { TXT_IDX_MENU_KITCHEN5, '5', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenFoodPreferrence, 0, 1, 5},
+    { TXT_IDX_MENU_KITCHEN6, '6', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenVegPreferrence, 0, 1, 6},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 11},
     END_MENU_CHOICES
 };
 
@@ -133,7 +152,7 @@ static void _menuHandler(void){
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);
     cwin_clear(&cw);
-    
+
     displayMenu(KITCHEN_MENU);
     _updateView();
 }

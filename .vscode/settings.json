@@ -54,7 +54,10 @@
         "farmlandtask.h": "c",
         "villiagemap.h": "c",
         "gamestate.h": "c",
-        "kitchentick.h": "c"
+        "kitchentick.h": "c",
+        "spritetext.h": "c",
+        "taskmanagermenu.h": "c",
+        "kitchentask.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }

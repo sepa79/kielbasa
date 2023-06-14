@@ -35,11 +35,15 @@ struct Character {
     char nameIdx;
     /* How much energy char has, starts with 100, max 100, min 0 */
     char energy;
-    /* How much food char has, starts with 100, max 100, min 0 */
-    char food;
+    // /* How much food char has, starts with 100, max 100, min 0 */
+    // char food;
     /* How much health char has, starts with 100, max 100, min 0 */
     char health;
-
+    /* Amount and time of regen, gained after eating */
+    char regenAmount;
+    char regenTime;
+    char bonusAmount;
+    char bonusTime;
     /* CHARACTER_PORTRAITS index (0 based) */
     char * picture;
 

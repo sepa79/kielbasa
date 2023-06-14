@@ -8,7 +8,7 @@
 
 void sleepTick();
 void miaTick();
-void eatTick();
+void regenTick();
 
 //-----------------------------------------------------------------------------------------
 #pragma code ( code )
