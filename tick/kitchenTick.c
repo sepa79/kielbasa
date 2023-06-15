@@ -113,10 +113,10 @@ static void _mealTick(MEAL_TYPE mealType){
     for(byte charSlot = 1; charSlot < CHARACTER_SLOTS; charSlot++){
         if(characterSlots[charSlot] != NO_CHARACTER){
             char charIdx = characterSlots[charSlot];
-            // allCharacters[charIdx].regenAmount = rand() & 7 +8;
-            // allCharacters[charIdx].regenTime   = rand() & 7 +5;
-            // allCharacters[charIdx].bonusAmount = rand() & 7 +1;
-            // allCharacters[charIdx].bonusTime   = rand() & 3 +1;
+            allCharacters[charIdx].regenAmount = (rand() & 7) + 8;
+            allCharacters[charIdx].regenTime   = (rand() & 7) + 5;
+            allCharacters[charIdx].bonusAmount = (rand() & 7) + 1;
+            allCharacters[charIdx].bonusTime   = (rand() & 3) + 1;
         }
     }
 
@@ -164,9 +164,9 @@ static void _mealTick(MEAL_TYPE mealType){
         updateStatusBarError(str);
     }
     // debug
-    char str[12*3+1];
-    sprintf(str, "%3d   %3d   %3d   %3d   ", allCharacters[0].regenAmount, allCharacters[0].regenTime, allCharacters[0].bonusAmount, allCharacters[0].bonusTime);
-    updateStatusBar(str);
+    // char str[12*3+1];
+    // sprintf(str, "%3d   %3d   %3d   %3d   ", allCharacters[0].regenAmount, allCharacters[0].regenTime, allCharacters[0].bonusAmount, allCharacters[0].bonusTime);
+    // updateStatusBar(str);
     updateMenu();
 }
 

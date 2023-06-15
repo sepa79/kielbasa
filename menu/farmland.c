@@ -59,9 +59,9 @@ enum FARMLAND_SPRITE_VIC_BANKS {
 
 #pragma data ( farmlandGfxDay )
 __export const byte farmlandGfx1[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/pole_28.12.221.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/pole_28.12.221.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/pole_28.12.221.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/pole140623.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/pole140623.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/pole140623.kla"
 };
 #pragma data ( farmlandGfxNight )
 __export const byte farmlandGfx2[] = {
@@ -297,13 +297,8 @@ static void _updateFieldView(){
     byte temp = (char) (GS.calendar.currentTemp + 23);
     _drawThermometer(temp);
 
-    sprBankPointer = SPR_THERMO_BAR_3;
-
     // water debug
-    // byte num2str[4];
-    // utoa(GS.farm.waterLevel, num2str, 10);
-    // copyCharToSprite(num2str[0], 1, 0);
-    // copyCharToSprite(num2str[1], 2, 0);
+    byteToSprite(GS.farm.waterLevel, SPR_THERMO_BAR_3);
     _showWaterLevel();
 
     intToWeightToSprite(GS.farm.storage[PLANT_POTATO], SPR_POTATO_UI);

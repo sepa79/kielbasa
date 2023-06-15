@@ -72,7 +72,7 @@ void _sowFieldTask(char taskId){
         if(GS.farm.storage[plantId] >= partDone) {
 
             // check if we got enough energy
-            energyNeeded = partDone > 10 ? 10 : partDone;
+            energyNeeded = partDone;
             if(checkEnergyLevel(charIdx, energyNeeded)){
                 GS.farm.storage[plantId] -= partDone;
 
@@ -169,7 +169,7 @@ void _reapFieldTask(char taskId){
         }
         
         // check if we got enough energy
-        char energyNeeded = partDone > 10 ? 10 : partDone;
+        char energyNeeded = partDone;
         if(checkEnergyLevel(charIdx, energyNeeded)){
             GS.farm.storage[plantId] += partDone;
             // decrease energy

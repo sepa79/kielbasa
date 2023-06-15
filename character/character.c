@@ -5,7 +5,7 @@
 
 char characterSlots[CHARACTER_SLOTS];
 
-static void _setCharacterToSlot(char charIdx, char charSlot){
+static void _setCharacterToSlot(char charSlot, char charIdx){
     characterSlots[charSlot] = charIdx;
 
     if(charIdx != NO_CHARACTER){
@@ -67,9 +67,9 @@ void initCharacterList(){
     memcpy(allCharacters, initialChars, sizeof(initialChars));
 
     _setCharacterToSlot(0, 0);
-    _setCharacterToSlot(1, NO_CHARACTER);
-    _setCharacterToSlot(2, NO_CHARACTER);
-    _setCharacterToSlot(3, NO_CHARACTER);
+    _setCharacterToSlot(1, 1);
+    _setCharacterToSlot(2, 2);
+    _setCharacterToSlot(3, 3);
 }
 
 //-----------------------------------------------------------------------------------------

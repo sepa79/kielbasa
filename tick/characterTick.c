@@ -32,7 +32,7 @@ void miaTick(){
             // check if character is not busy
             if(allCharacters[characterSlots[charSlot]].busy == false){
                 word rnd = rand();
-                byte rnd0 = (rnd & 3) + 1;
+                byte rnd0 = (rnd & 3) + 2;
                 decEnergyLevel(characterSlots[charSlot], rnd0);
             }
         }

@@ -72,22 +72,23 @@ void _fieldStateSprout(byte fieldId){
             fields[fieldId].alive = alive - diff;
         } else {
             fields[fieldId].alive = 0;
+            // end it if all died
+            fields[fieldId].stage = PLANT_STAGE_NONE;
         }
     }
 
     fields[fieldId].timer--;
     if(fields[fieldId].timer == 0){
-        if(fields[fieldId].alive == 0){
-            // everything died, end growing cycle
-            fields[fieldId].stage = PLANT_STAGE_NONE;
-        } else {
-            fields[fieldId].stage = PLANT_STAGE_GROWTH;
-            fields[fieldId].grown = fields[fieldId].alive;
-            fields[fieldId].timer = plants[plantId].stage2timer;
+        fields[fieldId].stage = PLANT_STAGE_GROWTH;
+        fields[fieldId].grown = fields[fieldId].alive;
+        fields[fieldId].timer = plants[plantId].stage2timer;
 
-            // calculate growth factor
-            fields[fieldId].gFactor = lmuldiv16u(fields[fieldId].alive, plants[plantId].maxYeldFactor, plants[plantId].stage2timer);
+        // calculate growth factor
+        unsigned int gFactor = lmuldiv16u(fields[fieldId].alive, plants[plantId].maxYeldFactor, plants[plantId].stage2timer);
+        if(!gFactor){
+            gFactor++;
         }
+        fields[fieldId].gFactor = gFactor;
     }
 }
 
@@ -141,8 +142,11 @@ void _fieldStateRipen(byte fieldId){
 
     fields[fieldId].ready += 10 - diff;
 
-    if(fields[fieldId].ready > 100)
+    if(fields[fieldId].ready > 100){
         fields[fieldId].ready = 100;
+        // all rippened? It's ready
+        fields[fieldId].stage = PLANT_STAGE_READY;
+    }
 
     fields[fieldId].timer--;
     if(fields[fieldId].timer == 0){

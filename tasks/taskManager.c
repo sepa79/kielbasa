@@ -287,90 +287,93 @@ static void _assignTaskToWorker(char taskId, char charIdx) {
 
 // Minimum energy needed by character to undertake any tasks
 #define MIN_ENERGY_TO_CONTINUE 10
-// Called by callendar.c
-void tasksTick(){
-    // no point going through the loop if there are no tasks
-    if(_nextFreeTaskRef == 0 && !_pendingIconResets) {
-        return;
-    }
 
-    // assign tasks again, in case new tasks came or new workers are available
-    // any free workers?
-    char freeWorkersCount = 0;
-    for(char it = 0; it < CHARACTER_SLOTS; it++){
+
+// Reset character icons if they are not busy
+void _resetCharacterIcons() {
+    for (char it = 0; it < CHARACTER_SLOTS; it++) {
         char charIdx = characterSlots[it];
-        if(charIdx != NO_CHARACTER){
-            if(!allCharacters[charIdx].busy){
-                // reset icon
-                setCharacterSlotIcon(charIdx, SPR_TASK_MIA);
-                if(_pendingIconResets) {
-                    _pendingIconResets--;
-                }
-                //check if he is not exhausted
-                if(allCharacters[charIdx].energy >= MIN_ENERGY_TO_CONTINUE)
-                    freeWorkersCount++;
+        if (charIdx != NO_CHARACTER && !allCharacters[charIdx].busy) {
+            // reset icon
+            setCharacterSlotIcon(charIdx, SPR_TASK_MIA);
+            if (_pendingIconResets) {
+                _pendingIconResets--;
             }
         }
     }
-    // debug
-    // char str[4];
-    // sprintf(str, "FWC: %3u", freeWorkersCount);
-    // cwin_putat_string_raw(&cw, 0, 10, str, VCOL_GREEN);
+}
 
-    // find a task for free workers
-    if(freeWorkersCount > 0 && _nextFreeTaskRef){
-        // iterate through prios starting at 1
+// Count the number of available free workers
+char _countFreeWorkers() {
+    char freeWorkersCount = 0;
+    for (char it = 0; it < CHARACTER_SLOTS; it++) {
+        char charIdx = characterSlots[it];
+        if (charIdx != NO_CHARACTER && !allCharacters[charIdx].busy && allCharacters[charIdx].energy >= MIN_ENERGY_TO_CONTINUE) {
+            freeWorkersCount++;
+        }
+    }
+    return freeWorkersCount;
+}
+
+// Assign tasks to available free workers
+void _assignTasksToWorkers(char freeWorkersCount) {
+    if (freeWorkersCount > 0 && _nextFreeTaskRef) {
         char prioIt = 1;
         do {
-
-            // foreach skill Y
-            for(char skillIt = 0; skillIt < SKILL_COUNT; skillIt++){
-                // find worker with prio X for skill Y (starting at 1)
+            for (char skillIt = 0; skillIt < SKILL_COUNT; skillIt++) {
+                // find worker with priority X for skill Y (starting at 1)
                 char charIdx = _findFreeWorkerWithPrioXForSkillY(prioIt, skillIt);
-                    // char str[4];
-                    // sprintf(str, "%3u", charSlot);
-                    // cwin_putat_string_raw(&cw, prioIt*6, skillIt, str, VCOL_GREEN);
-                if(charIdx != NO_CHARACTER){
-                    // see if there is any task for this max prio skill
+
+                if (charIdx != NO_CHARACTER) {
+                    // see if there is any task for this max priority skill
                     char taskId = _findUnassignedTaskForSkill(skillIt);
 
-                    // char str[5];
-                    // sprintf(str, "%3u", taskId);
-                    // cwin_putat_string_raw(&cw, prioIt*6, skillIt, str, VCOL_GREEN);
-
-                    // asign it if there is
-                    if(taskId != NO_TASK){
+                    // assign it if there is
+                    if (taskId != NO_TASK) {
                         _assignTaskToWorker(taskId, charIdx);
                         freeWorkersCount--;
-                        if(freeWorkersCount == 0){
+                        if (freeWorkersCount == 0) {
                             break;
                         }
                     }
                 }
                 // get these tasks out to everybody
 
-                // nope? ok, next X (find next highest prio)
+                // nope? ok, next X (find next highest priority)
             }
-            // no more skills, but we still got free workers? increase Prio and repeat
+            // no more skills, but we still have free workers? Increase priority and repeat
             prioIt++;
         } while (prioIt <= MAX_PRIO && freeWorkersCount > 0);
     }
+}
 
-    // process tasks in progress
+// Process tasks that are in progress
+void _processTasksInProgress() {
     char i = 0;
     char taskId = 0;
     do {
         taskId = taskRef[i];
-        if(task_worker[taskId] != NO_SLOT){
-            // updateStatusBar(s"  Exec  ");
+        if (task_worker[taskId] != NO_SLOT) {
             // got a worker? tick that task
             (*task_codeRef[taskId])(taskId);
         }
-        // neeeeext
+        // next task
         i++;
-    // NO_TASK found - no more tasks to process
     } while (i < TASK_ARRAY_SIZE && task_reqType[taskId] != NO_TASK);
+}
 
+// Called by callendar.c
+void tasksTick() {
+    // No point going through the loop if there are no tasks
+    if (_nextFreeTaskRef == 0 && !_pendingIconResets) {
+        return;
+    }
+
+    _resetCharacterIcons();
+    char freeWorkersCount = _countFreeWorkers();
+    _assignTasksToWorkers(freeWorkersCount);
+
+    _processTasksInProgress();
 }
 
 #pragma code ( code )
