@@ -12,10 +12,11 @@
 __export const struct SPRITES SpriteResources = {{
     #embed 0x40 3 "assets/sprites/joyCursor.spd"
 },{
-    #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
+    0
     // #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
     // #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
     // #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
+    // #embed 0xffff 3 "assets/sprites/emptyBattery.spd"
 },{
     0
 },{
@@ -28,6 +29,8 @@ __export const struct SPRITES SpriteResources = {{
     0
 },{
     0
+},{
+    #embed 0xffff 20 "assets/sprites/player1.spd"
 }};
 
 // ===========================================================================================
@@ -69,7 +72,9 @@ static void _loadMainGfx(){
 
     // sprites - cursor, to GFX1
     memcpy((char *)GFX_1_SPR_DST_ADR, GFX_1_SPR_SRC, 0x40);
-    // sprites - UI - skip 2 UI sprites
+    // memset((char *)UI_SPR_ADR, 0, 0x800);
+    // sprites - UI - skip first UI sprite as its copied elsewhere already
+    // These sprites might be empty - that's fine, banks will be used later and data will be copied in
     memcpy((char *)UI_SPR_ADR, GFX_1_SPR_SRC+0x80, 0x800);
     // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
     // mmap_set(MMAP_ROM);

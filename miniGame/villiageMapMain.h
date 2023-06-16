@@ -4,7 +4,7 @@
 #define V_MAP_SIZE_X 64
 #define V_MAP_SIZE_Y 64
 // first 0xXX tiles are fields, remap them to point to memory location where we got visualised fields
-#define RAM_TILES_COUNT 0x30
+#define RAM_TILES_COUNT 0x2f
 // player character codes
 #define PLAYER_CHAR_0 0
 #define PLAYER_CHAR_1 1
@@ -53,7 +53,7 @@ void villiageMapScreenInit();
 void villiageMapSpriteLoader();
 void villiageMapInit();
 // display routine, from MENU_BANK_MAP_VILLIAGE_2
-void villiageMapDraw(char dir);
+void villiageMapDraw(WalkDir dir);
 
 #pragma code ( villiageMapCode )
 void villiageMapGameLoop();

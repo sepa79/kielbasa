@@ -48,12 +48,13 @@ static const char _chars[] = {
 #pragma data ( villiageMapData )
 
 static const char _map[] = {
-    #embed ctm_map8     "assets/charGfx/VilliageMapHiresMain16xWood.ctm"
+    #embed ctm_map8     "assets/charGfx/VilliageMapZelda.ctm"
+    // #embed ctm_map8     "assets/charGfx/VilliageMapHiresMain16xWood.ctm"
     // #embed "assets/charGfx/VilliageMapHiresMain16xWood_-_8bpc_64x64_Map_-_grass_16_pion_poziom_slash_backslash.bin"
 };
 
 const char romTiles[] = {
-    #embed ctm_tiles8   "assets/charGfx/VilliageMapHiresMain16xWood.ctm"
+    #embed ctm_tiles8   "assets/charGfx/VilliageMapZelda.ctm"
 };
 
 typedef char char1024[1024];
@@ -111,10 +112,12 @@ static void _mapInit(){
 #pragma code ( villiageMapCode )
 #pragma data ( villiageMapRAMData )
 
+char * ramTiles = (char *)0xc480;
+
 #define GROUND_CHAR 0xbc
-#define CROPS_CHAR 0x20
-// 1st tile is empty
-#define FIELD_START ramTiles+0x10
+#define CROPS_CHAR 0x70
+
+#define FIELD_START ramTiles
 
 static unsigned int fLayout[96*4] = {0xffff};
 
@@ -288,8 +291,9 @@ void drawPlayer(){
     setBank(pbank);
 }
 
-void villiageMapDraw(char dir){
+void villiageMapDraw(WalkDir dir){
     char frameStart = gms_frameCount;
+    byteToSprite(dir,SPR_CHARACTER_PORTRAIT1);
 
 
     // draw map
@@ -322,7 +326,7 @@ void villiageMapDraw(char dir){
         // char framesUsed = gms_frameCount - frameStart;
         // sprintf(str, "%03d", framesUsed);
         // textToSprite(str, 4);
-        textToSprite((char *)LOCATION_NAMES[locId], 4, SPR_CHARACTER_PORTRAIT2);
+        textToSprite((char *)LOCATION_NAMES[locId], 4, SPR_TXT_BOTTOM_1);
     }
 
     joyCursor.moveDelayCurrent = 0;

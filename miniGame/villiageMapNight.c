@@ -44,9 +44,6 @@
             }\
         }
 
-
-char * ramTiles = (char *)0xc480;
-
 void tiles_put4x4row0(char * dp, char * cp, const char * lmp, const char * mp, const char * tp, const char * rtp){
     for(char tx=0; tx<10; tx++){
         const char * tileP = tp;
@@ -202,7 +199,7 @@ LIGHTMAP_DRAW_ROUTINE
 #until cx == 3
 }
 
-void villiageMapDrawNight(const char * mp, char ox, char oy, char dir){
+void villiageMapDrawNight(const char * mp, char ox, char oy, WalkDir dir){
     char * dp;
     if(map_2ndScreen){
         dp = GFX_1_SCR2;

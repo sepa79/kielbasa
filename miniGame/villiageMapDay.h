@@ -2,7 +2,7 @@
 #define VILLIAGE_MAP_DAY_H
 
 // display routine, from MENU_BANK_MAP_VILLIAGE_2
-void villiageMapDrawDay(const char * mp, char ox, char oy, char dir);
+void villiageMapDrawDay(const char * mp, char ox, char oy, WalkDir dir);
 
 #pragma compile("villiageMapDay.c")
 

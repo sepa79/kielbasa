@@ -10,7 +10,7 @@
 
 enum SPRITE_VIC_BANKS {
     SPR_BANK_JOY_CURSOR1=0x10,
-    SPR_BANK_JOY_CURSOR2,
+    // SPR_BANK_JOY_CURSOR2,
     SPR_BANK_CHARACTER_PORTRAIT1=UI_SPRITE_BANKS_START_VALUE,
     SPR_BANK_CHARACTER_BAR1,
     SPR_BANK_CHARACTER_PORTRAIT2,
@@ -31,6 +31,8 @@ enum SPRITE_VIC_BANKS {
     SPR_BANK_TXT_BOTTOM_2,
     SPR_BANK_TXT_BOTTOM_3,
     SPR_BANK_TXT_BOTTOM_4,
+    SPR_BANK_PLAYER_S1,
+    SPR_BANK_PLAYER_S2,
 };
 
 // #define SPR_JOY_CURSOR1         ((char *)GFX_1_BASE + 64*SPR_BANK_JOY_CURSOR1)
@@ -55,6 +57,8 @@ enum SPRITE_VIC_BANKS {
 #define SPR_TXT_BOTTOM_2        ((char *)UI_BMP_ADR + 64*SPR_BANK_TXT_BOTTOM_2)
 #define SPR_TXT_BOTTOM_3        ((char *)UI_BMP_ADR + 64*SPR_BANK_TXT_BOTTOM_3)
 #define SPR_TXT_BOTTOM_4        ((char *)UI_BMP_ADR + 64*SPR_BANK_TXT_BOTTOM_4)
+#define SPR_PLAYER_S1           ((char *)UI_BMP_ADR + 64*SPR_BANK_PLAYER_S1)
+#define SPR_PLAYER_S2           ((char *)UI_BMP_ADR + 64*SPR_BANK_PLAYER_S2)
 
 // these are just copied into SPR_CHARACTER_BARX as needed
 #define SPR_TASK_FARM1   (AuxResources.TASK_ICONS)
@@ -91,6 +95,7 @@ struct SPRITES {
     char WEATHER_ICON[64];
     char UI_TXT_UP[64*4];
     char UI_TXT_BOTTOM[64*4];
+    char PLAYER[64*2];
 };
 
 const struct AUX_GFX {
