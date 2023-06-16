@@ -57,7 +57,7 @@ struct Character {
 };
 
 // Player character is the 1st one.
-extern __striped struct Character allCharacters[CHARACTER_COUNT];
+extern struct Character allCharacters[CHARACTER_COUNT];
 // Each entry is an index to ALL_CHARACTERS arrays.
 extern char characterSlots[CHARACTER_SLOTS];
 

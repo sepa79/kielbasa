@@ -18,17 +18,17 @@
 
 __striped const struct FoodItem foodItems[FOOD_ITEMS_COUNT] = {
     // FOOD_SHOP_BREAD
-    {5, 10, 0, 0, false, 0, 0},
+    {10, 10, 0, 0, false, 0, 0},
     // FOOD_HOME_BREAD
-    {6, 11, 1, 2, false, 0, 0},
+    {11, 11, 5, 4, false, 0, 0},
     // FOOD_CANNED_MEAT
-    {10, 5, 0, 0, true, 0, 0},
+    {15, 5, 0, 0, true, 0, 0},
     // FOOD_SOUSAGE
-    {12, 7, 2, 3, true, 0, 0},
+    {16, 6, 10, 3, true, 0, 0},
     // FOOD_POTATOES
     {2, 5, 5, 7, false, 0, 0},
     // FOOD_CORN
-    {3, 4, 8, 5, false, 0, 0}
+    {3, 4, 9, 5, false, 0, 0}
 };
 
 void kitchenTick(){

@@ -11,7 +11,7 @@
 struct GameState GS;
 
 #pragma bss ( allCharactersData )
-__striped struct Character allCharacters[CHARACTER_COUNT];
+struct Character allCharacters[CHARACTER_COUNT];
 
 // Switching code generation back to shared section
 #pragma bss ( data )

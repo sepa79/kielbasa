@@ -21,7 +21,7 @@ __striped const struct PlantStruct plants[PLANTS_COUNT+1] = {
     {TXT_IDX_TASK_DSC_FARMLAND_POTATO, 10,  8,20,20,40, 15,  18,23,10,30,60, 15,22, 5,20,25 }, // Plant 1st May, high yeld, but fragile, 100 days to mature
     {TXT_IDX_TASK_DSC_FARMLAND_LUPINE,  8,  1,15,20,40, 20,  13,18,15,40,70, 15,20,15,40,20 }, // Plant end of April, high yeld, fragile, 110 days to mature
     {TXT_IDX_TASK_DSC_FARMLAND_WHEAT,   7, -5,15, 5,60,180,   8,25,10,40,90, 20,30, 5,20,45 }, // Plant September, medium yeld, long growth, robust, 315 days to mature
-    {TXT_IDX_TASK_DSC_FARMLAND_CORN,    4, -5,30, 5,40, 30,   5,30,10,40,40, 10,30,10,50,20 }, // Plant end of winter, low yeld, very robust, 90 days to mature
+    {TXT_IDX_TASK_DSC_FARMLAND_CORN,    4, -5,30, 5,40, 30,   5,30,10,40,40, 20,30,10,50,30 }, // Plant end of winter, low yeld, very robust, 100 days to mature
 };
 
 // =============================================================================
@@ -233,16 +233,16 @@ void farmlandTick(){
 //-----------------------------------------------------------------------------------------
 void initFarmland(Farm* farm){
     farm->waterLevel = 25;
-    farm->storage[PLANT_POTATO] = 50;
+    farm->storage[PLANT_POTATO] = 150;
     farm->storage[PLANT_LUPINE] = 50;
-    farm->storage[PLANT_WHEAT]  = 50;
-    farm->storage[PLANT_CORN]   = 5;
+    farm->storage[PLANT_WHEAT]  = 500;
+    farm->storage[PLANT_CORN]   = 50;
 
     __striped static const struct FieldStruct initialFields[FIELDS_COUNT] = {
-        {1, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-        {1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0},
-        {2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0},
-        {4, 4, 6, 0, 0, 0, 0, 0, 0, 0, 0},
+        {1, 3, 2, PLANT_WHEAT , PLANT_STAGE_GROWTH, 666, 96, 90, 448, 15, 0, 0, 60},
+        {1, 3, 2, PLANT_NONE  , 0, 0, 0, 0, 0, 0, 0, 0},
+        {2, 3, 4, PLANT_CORN  , PLANT_STAGE_GROWTH, 666, 96, 80, 240, 8, 0, 0, 10},
+        {4, 4, 6, PLANT_NONE  , 0, 0, 0, 0, 0, 0, 0, 0},
     };
 
     memcpy(fields, initialFields, sizeof(initialFields));

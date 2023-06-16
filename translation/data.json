@@ -696,23 +696,23 @@
       },
       {
         "id": "SKILL_ANI",
-        "pl": "Hodowla",
-        "en": "Breeding"
+        "pl": "Hodowla   ",
+        "en": "Animal C. "
       },
       {
         "id": "SKILL_FRM",
-        "pl": "Rolnictwo",
-        "en": "Farming"
+        "pl": "Rolnictwo ",
+        "en": "Farming   "
       },
       {
         "id": "SKILL_BTH",
-        "pl": "Masarstwo",
-        "en": "Butchery"
+        "pl": "Gotowanie ",
+        "en": "Cooking   "
       },
       {
         "id": "SKILL_TRD",
-        "pl": "Handel",
-        "en": "Trade"
+        "pl": "Handel    ",
+        "en": "Trade     "
       },
       {
         "id": "CHAR_1_NAME",
@@ -747,8 +747,8 @@
       },
       {
         "id": "CHAR_4_STORY",
-        "pl": "Historia Józka",
-        "en": "Józek's story will be here."
+        "pl": "Józek jest wujkiem Janusza. Tak właściwie to jego gospodarstwo. Jak Janusz da radę, to może je odziedziczy.",
+        "en": "Józek is Janusz's uncle. It is his farm, really. One day it might belong to Janusz, though, if he is worthy."
       },
       {
         "id": "TASK_ADDED",

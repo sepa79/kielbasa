@@ -29,17 +29,25 @@ struct Calendar {
 extern const byte MONTH_DAYS[12];
 
 // ranges are done using AND, so we want %111 or similar here
-#define TEMP_RND_RANGE 7
-#define TEMP_RND_SHIFT 3
-#define TEMP_RND_RANGE_WEEKLY 3
-#define TEMP_RND_SHIFT_WEEKLY 1
+// #define TEMP_RND_RANGE 7
+// #define TEMP_RND_SHIFT 3
+// #define TEMP_RND_RANGE_WEEKLY 3
+// #define TEMP_RND_SHIFT_WEEKLY 1
+#define TEMP_RND_RANGE 0
+#define TEMP_RND_SHIFT 0
+#define TEMP_RND_RANGE_WEEKLY 0
+#define TEMP_RND_SHIFT_WEEKLY 0
 extern const signed char WEEKLY_AVG_TEMP[53];
 extern const byte WEEKLY_AVG_RAIN[53];
 
-#define RAIN_RND_RANGE 3
-#define RAIN_RND_SHIFT 2
-#define RAIN_RND_RANGE_WEEKLY 3
-#define RAIN_RND_SHIFT_WEEKLY 1
+// #define RAIN_RND_RANGE 3
+// #define RAIN_RND_SHIFT 2
+// #define RAIN_RND_RANGE_WEEKLY 3
+// #define RAIN_RND_SHIFT_WEEKLY 1
+#define RAIN_RND_RANGE 0
+#define RAIN_RND_SHIFT 0
+#define RAIN_RND_RANGE_WEEKLY 0
+#define RAIN_RND_SHIFT_WEEKLY 0
 extern const byte WEEKLY_SUNRISE[53];
 extern const byte WEEKLY_SUNSET[53];
 

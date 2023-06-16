@@ -57,18 +57,18 @@ void decEnergyLevel(char charIdx, char amount){
 //-----------------------------------------------------------------------------------------
 
 void initCharacterList(){
-    __striped static const struct Character initialChars[CHARACTER_COUNT] = {
-        {TXT_IDX_CHAR_1_STORY, TXT_IDX_CHAR_1_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT01, {3,3,3}, {3,3,4,3}, {1,2,3,4}, NO_SLOT, false},
-        {TXT_IDX_CHAR_2_STORY, TXT_IDX_CHAR_2_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT02, {2,3,2}, {2,6,1,1}, {3,3,3,3}, NO_SLOT, false},
-        {TXT_IDX_CHAR_3_STORY, TXT_IDX_CHAR_3_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT03, {4,3,4}, {1,1,1,7}, {3,3,3,3}, NO_SLOT, false},
-        {TXT_IDX_CHAR_4_STORY, TXT_IDX_CHAR_4_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT04, {3,3,4}, {6,2,1,1}, {3,3,3,3}, NO_SLOT, false}
+    static const struct Character initialChars[CHARACTER_COUNT] = {
+        {TXT_IDX_CHAR_1_STORY, TXT_IDX_CHAR_1_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT01, {3,3,3}, {1,1,1,3}, {1,2,3,4}, NO_SLOT, false},
+        {TXT_IDX_CHAR_2_STORY, TXT_IDX_CHAR_2_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT02, {2,3,2}, {4,6,8,5}, {2,3,1,0}, NO_SLOT, false},
+        {TXT_IDX_CHAR_3_STORY, TXT_IDX_CHAR_3_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT03, {4,3,4}, {1,1,1,7}, {0,0,0,0}, NO_SLOT, false},
+        {TXT_IDX_CHAR_4_STORY, TXT_IDX_CHAR_4_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT04, {6,1,7}, {6,7,5,3}, {0,0,2,0}, NO_SLOT, false}
     };
 
     memcpy(allCharacters, initialChars, sizeof(initialChars));
 
     _setCharacterToSlot(0, 0);
-    _setCharacterToSlot(1, 1);
-    _setCharacterToSlot(2, 2);
+    _setCharacterToSlot(1, NO_CHARACTER);
+    _setCharacterToSlot(2, NO_CHARACTER);
     _setCharacterToSlot(3, 3);
 }
 
