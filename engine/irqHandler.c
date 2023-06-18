@@ -207,10 +207,12 @@ __interrupt static void IRQ_topNoScreen() {
 Middle raster/split
 ================================================================================ */
 __interrupt static void IRQ_middleNoScreen() {
+    // vic.color_border++;
     playMsx();
 
     // indicate frame position
     gms_framePos = FRAME_MIDDLE;
+    // vic.color_border--;
 }
 
 __interrupt static void IRQ_middleScreenMsx() {
@@ -258,7 +260,7 @@ static void IRQ_bottomMsxEtc() {
     playMsx();
     if(!gms_enableMusic){
         // wait a few lines as msx is off, we don't want to desync the screen.
-        while (vic.raster != 0x1){}
+        while (vic.raster != 0x10){}
     }
 
     _timeControl();

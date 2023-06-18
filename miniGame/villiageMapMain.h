@@ -38,8 +38,12 @@ enum WalkDir {
 };
 
 typedef char char256[256];
+typedef char char1024[1024];
+
 // clolor map + main char attribs, day light and materials (walkable, water etc) - defined as colorMap[CHAR_ATTRIBS]
 extern char256 * const colorMap;
+// lightmap for night maps
+extern char * lightMap;
 // which map file holds main attribs, use like colorMap[CHAR_ATTRIBS]
 #define CHAR_ATTRIBS 2
 typedef char mapTile[16];

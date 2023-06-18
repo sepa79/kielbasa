@@ -656,6 +656,18 @@
         "en": "Chat"
       },
       {
+        "id": "MENU_SHOPIN3",
+        "menu_opt": "3",
+        "pl": "Kup chleb",
+        "en": "Buy bread"
+      },
+      {
+        "id": "MENU_SHOPIN4",
+        "menu_opt": "4",
+        "pl": "Kup Turystyczną",
+        "en": "Buy canned meat"
+      },
+      {
         "id": "MENU_CREW1",
         "menu_opt": "1",
         "pl": "Slot 1",
@@ -805,8 +817,8 @@
       {
         "id": "SHOP_CLOSED",
         "prefix": "SB",
-        "pl": "   Sklep jest zamknięty   ",
-        "en": "   Shop is closed   "
+        "pl": "Sklep jest zamknięty",
+        "en": "Shop is closed"
       }
     ]
   }

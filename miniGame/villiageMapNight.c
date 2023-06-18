@@ -22,10 +22,10 @@
 #define LIGHTMAP_DRAW_ROUTINE \
         {\
             char ci = ti[cx];\
-            char lightMap = lm[cx];\
-            if(lightMap){\
-                char lMapDetail = lightMap & 0b00001111;\
-                char color = lightMap >> 4;\
+            char lmC = lm[cx];\
+            if(lmC){\
+                char lMapDetail = lmC & 0b00001111;\
+                char color = lmC >> 4;\
                 if(color){\
                     cp[cx] = colorMap[color][ci];\
                     if(ci >= 0xa0){\
@@ -209,7 +209,7 @@ void villiageMapDrawNight(const char * mp, char ox, char oy, WalkDir dir){
     
     // char * cp = COLOR_RAM;
     char * cp = GFX_1_SCR;
-    char * lmp = _lightMap[dir];
+    char * lmp = lightMap;
 
     mp += V_MAP_SIZE_X * (oy >> 2) + (ox >> 2);
     oy &= 3;

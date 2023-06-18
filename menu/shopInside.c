@@ -81,16 +81,26 @@ void _goBackToPrvMenu(){
 #pragma data ( data )
 
 static void _siMenu1(){
-    updateStatusBar("   Sklep menu, opcja 1");
+    updateStatusBar("Sklep menu, opcja 1");
 }
 static void _siMenu2(){
-    updateStatusBar("   Sklep menu, opcja 2");
+    updateStatusBar("Sklep menu, opcja 2");
+}
+// buy bread
+static void _siMenu3(){
+    addKitchenItem(FOOD_SHOP_BREAD);
+}
+// buy canned meats
+static void _siMenu4(){
+    addKitchenItem(FOOD_CANNED_MEAT);
 }
 
 const struct MenuOption SHOP_INSIDE_MENU[] = {
     { TXT_IDX_MENU_SHOPIN1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_siMenu1, 0, 1, 1},
     { TXT_IDX_MENU_SHOPIN2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_siMenu2, 0, 1, 2},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &_goBackToPrvMenu, 0, 2, 3},
+    { TXT_IDX_MENU_SHOPIN3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_siMenu3, 0, 1, 3},
+    { TXT_IDX_MENU_SHOPIN4, '4', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_siMenu4, 0, 1, 4},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &_goBackToPrvMenu, 0, 2, 6},
     END_MENU_CHOICES
 };
 

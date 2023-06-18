@@ -29,6 +29,8 @@ __export const char retroMsx01[] = {
 #pragma code ( musicCode )
 #pragma data ( musicData )
 
+// this better be called when music IRQs are not trying to use the player...
+// TODO: could be moved to ROM and unpacked
 void loadMusic(char sidIdx){
     // vic.color_back++;
     if(sidIdx == 0){

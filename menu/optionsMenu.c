@@ -134,12 +134,12 @@ static void _downRow(){
 static void _playMsx(struct Song * song){
     joyCursor.enabled = false;
     if(gms_enableMusic) {
-        // set Radio bank
-        char pbank = setBank(song->bank);
-
         // stop music
         gms_enableMusic = false;
         ((byte *)0xd418)[0] &= ~0xf;
+
+        // set Radio bank
+        char pbank = setBank(song->bank);
 
         // load different MSX file
         loadMusic(song->sidIdx);
@@ -155,11 +155,11 @@ static void _playMsx(struct Song * song){
         // set ROM back
         setPort(pport);
 
-        // reenable music
-        gms_enableMusic = true;
-
         // revert menu bank
         setBank(pbank);
+
+        // reenable music
+        gms_enableMusic = true;
     }
     joyCursor.enabled = true;
     // vic.color_back--;

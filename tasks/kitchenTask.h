@@ -1,8 +1,9 @@
 #ifndef KITCHEN_TASK_H
 #define KITCHEN_TASK_H
 
-void bakeBreadTask(char taskId);
+void execBakeBreadTask(char taskId);
 void addBakeBreadTask();
+bool addKitchenItem(FOOD_ITEMS item);
 
 #pragma compile("kitchenTask.c")
 #endif

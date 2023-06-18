@@ -57,7 +57,7 @@ const char romTiles[] = {
     #embed ctm_tiles8   "assets/charGfx/VilliageMapZelda.ctm"
 };
 
-typedef char char1024[1024];
+#pragma data ( villiageMapData2 )
 
 const char1024 _lightMap[4] = { { 
     #embed ctm_map8     "assets/charGfx/lightMap_up.ctm"
@@ -68,8 +68,6 @@ const char1024 _lightMap[4] = { {
 },{
     #embed ctm_map8     "assets/charGfx/lightMap_right.ctm"
 }};
-
-#pragma data ( villiageMapData2 )
 
 static const char _mapLocations[] = {
     #embed "assets/charGfx/VilliageMapHiresMain16xWood.ctm.ids.bin"
@@ -85,6 +83,8 @@ static char _previousDir = WALK_UP;
 
 // 4 colorsets for 4 light levels
 char256 * const colorMap = (char256 *)0xcc00;
+// lightmap for night
+char * lightMap = (char *)0xc800;
 
 // TODO: a bit obsolete as almost nothing is here
 // Copy chars and lightmaps, any sprites etc
@@ -98,6 +98,9 @@ static void _mapInit(){
     memcpy(colorMap[1], _charAttribsL2, 0x100);
     memcpy(colorMap[2], _charAttribsL3, 0x100);
     memcpy(colorMap[3], _charAttribsL4, 0x100);
+
+    memset(COLOR_RAM, VCOL_BLACK, 1000);
+    memset(GFX_1_SCR, VCOL_BLACK, 1000);
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -265,10 +268,19 @@ void villiageMapScreenInit(void){
     fontCopyDone = false;
 
     _mapInit();
-    isMapDay = GS.calendar.isDay;
+
+    // wait for IRQ to finish copying fonts - can't change bank before its done
+    while(!fontCopyDone){
+        // vic.color_border--;
+    }
+
+    // copy lightmap
     setBank(pbank);
-    memset(COLOR_RAM, VCOL_BLACK, 1000);
-    memset(GFX_1_SCR, VCOL_BLACK, 1000);
+    pbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
+    memcpy(lightMap, _lightMap[0], 960);
+    setBank(pbank);
+
+    isMapDay = GS.calendar.isDay;
     if(!isMapDay){
         // fill screen with moonlight
         switch(GS.calendar.moonPhase){
@@ -293,8 +305,6 @@ void drawPlayer(){
 
 void villiageMapDraw(WalkDir dir){
     char frameStart = gms_frameCount;
-    byteToSprite(dir,SPR_CHARACTER_PORTRAIT1);
-
 
     // draw map
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_2);
@@ -303,6 +313,9 @@ void villiageMapDraw(WalkDir dir){
     } else {
         if(_previousDir != dir){
             memset(GFX_1_SCR, VCOL_BLACK, 960);
+            char pbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
+            memcpy(lightMap, _lightMap[dir], 960);
+            setBank(pbank);
         }
         _previousDir = dir;
         villiageMapDrawNight(_map, vMapX, vMapY, dir);
@@ -334,10 +347,6 @@ void villiageMapDraw(WalkDir dir){
 
 void villiageMapInit(){
     // SCREEN_TRANSITION mode is on, so screen is black
-    // vic.color_border++;
-    playSong(VILLIAGE_MAP_SONG);
-    // vic.color_border--;
-
     // clean 0xffff - so we don't have artefacts when we open borders
     ((char *)0xffff)[0] = 0;
     // Load GFX
@@ -348,6 +357,10 @@ void villiageMapInit(){
 
     // draw map
     villiageMapDraw(WALK_UP);
+
+    // vic.color_border++;
+    playSong(VILLIAGE_MAP_SONG);
+    // vic.color_border--;
 
     // make screen visible
     switchScreenTo(SCREEN_HIRES_TXT);

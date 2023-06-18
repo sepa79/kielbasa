@@ -11,7 +11,9 @@
 enum SPRITE_VIC_BANKS {
     SPR_BANK_JOY_CURSOR1=0x10,
     // SPR_BANK_JOY_CURSOR2,
-    SPR_BANK_CHARACTER_PORTRAIT1=UI_SPRITE_BANKS_START_VALUE,
+    SPR_BANK_PLAYER_S1=UI_SPRITE_BANKS_START_VALUE,
+    SPR_BANK_PLAYER_S2,
+    SPR_BANK_CHARACTER_PORTRAIT1,
     SPR_BANK_CHARACTER_BAR1,
     SPR_BANK_CHARACTER_PORTRAIT2,
     SPR_BANK_CHARACTER_BAR2,
@@ -31,8 +33,6 @@ enum SPRITE_VIC_BANKS {
     SPR_BANK_TXT_BOTTOM_2,
     SPR_BANK_TXT_BOTTOM_3,
     SPR_BANK_TXT_BOTTOM_4,
-    SPR_BANK_PLAYER_S1,
-    SPR_BANK_PLAYER_S2,
 };
 
 // #define SPR_JOY_CURSOR1         ((char *)GFX_1_BASE + 64*SPR_BANK_JOY_CURSOR1)
@@ -84,17 +84,6 @@ enum SPRITE_VIC_BANKS {
 struct SPRITES {
     // sprite cursor
     char JOY_CURSOR[64];
-    // empty battery 4x
-    char CHARACTER_BARS[64*4];
-    // char pictures
-    char CHARACTER_PORTRAITS[64*4];
-    // Date icons - empty, as game draws over these sprites
-    char DATE_TXT[64*2];
-    // time icons
-    char TIME_ICON[64];
-    char WEATHER_ICON[64];
-    char UI_TXT_UP[64*4];
-    char UI_TXT_BOTTOM[64*4];
     char PLAYER[64*2];
 };
 

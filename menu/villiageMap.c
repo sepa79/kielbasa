@@ -69,8 +69,6 @@ static void _mapDown(){
             vMapY++;
         villiageMapDraw(WALK_DOWN);
     }
-        byteToSprite(WALK_DOWN,SPR_CHARACTER_PORTRAIT4);
-
 }
 static void _mapLeft(){
     // check if tile to the left is walkable

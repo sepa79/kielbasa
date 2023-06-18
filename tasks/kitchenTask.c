@@ -21,7 +21,7 @@
 #define WHEAT_NEEDED_FOR_BREAD 1
 
 // simplistic atm - takes jus an hour, no bonuses yet
-static void _bakeBreadTask(char taskId){
+static void _execBakeBreadTask(char taskId){
     LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_KITCHEN_BAKE_BREAD;
     setTaskLogMsg(taskId);
     logger(LOG_DEBUG | LOG_MSG_TASK);
@@ -65,10 +65,11 @@ static void _bakeBreadTask(char taskId){
                 unassignTask(taskId);
             }
         } else {
-            // task done - not enough wheat, set status & remove
             task_status[taskId] = TASK_STATUS_DONE;
+            // task done - not enough space for bread, set status & remove
             if(GS.kitchen.storage[FOOD_HOME_BREAD] >= GS.kitchen.maxStorage){
                 updateStatusBarError(TXT[SB_IDX_TASK_KITCHEN_BAKE_BREAD_STORAGE_FULL]);
+            // task done - not enough wheat, set status & remove
             } else {
                 updateStatusBarError(TXT[SB_IDX_TASK_KITCHEN_BAKE_BREAD_NO_WHEAT]);
             }
@@ -107,7 +108,7 @@ static void _bakeBreadTask(char taskId){
 void _addBakeBreadTask(){
     // 'Bake bread' string
     sprintf(newTask.desc, "%s",TXT[TXT_IDX_TASK_DSC_KITCHEN_BAKE_BREAD]);
-    newTask.codeRef   = &bakeBreadTask;
+    newTask.codeRef   = &execBakeBreadTask;
     newTask.nameIdx   = TXT_IDX_TASK_KITCHEN;
     newTask.params[0] = 0;
     newTask.params[1] = 0;
@@ -125,9 +126,9 @@ void _addBakeBreadTask(){
 //-----------------------------------------------------------------------------------------
 // Wrappers in RAM
 
-void bakeBreadTask(char taskId){
+void execBakeBreadTask(char taskId){
     char pbank = setBank(TASKS_BANK);
-    _bakeBreadTask(taskId);
+    _execBakeBreadTask(taskId);
     setBank(pbank);
 }
 
@@ -136,4 +137,14 @@ void addBakeBreadTask(){
     char pbank = setBank(TASKS_BANK);
     _addBakeBreadTask();
     setBank(pbank);
+}
+
+bool addKitchenItem(FOOD_ITEMS item){
+    if(GS.kitchen.storage[item] < GS.kitchen.maxStorage){
+        GS.kitchen.storage[item]++;
+        updateStatusBar(s"Food added");
+        return true;
+    }
+    updateStatusBarError(TXT[SB_IDX_TASK_KITCHEN_BAKE_BREAD_STORAGE_FULL]);
+    return false;
 }
