@@ -320,13 +320,9 @@ void checkKeys(){
 
     if(selected){
         // vic.color_border = VCOL_BLUE;
-        // remember where we came from, in case we need to go back to previous screenMode
-        // whatever it is, its not an options menu, as its handled above
-        // _fullScreenMenuOpen = false;
         // block any accidental key presses during transition
         joyCursor.enabled = false;
         // open new menu
-        // TODO: hidden loader, so that artefacts are gone
         // switch IRQs if needed
         switchScreenTo(currentMenu[i].screenMode);
 

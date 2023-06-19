@@ -40,6 +40,7 @@ const struct MenuOption PIGSLE_COMMAND_MENU[] = {
 };
 
 static void _pigsleCmdInit(void){
+    displayMenu(PIGSLE_COMMAND_MENU);
     pigsleCmdInit();
     // TODO: return to main menu
 }
@@ -53,6 +54,7 @@ __export static const Loaders menuLoaders = {
     .showMenu        = &_pigsleCmdInit,
     .showSprites     = &_pigsleSpriteCmdNoop,
     .updateMenu      = &_pigsleCmdNoop,
+    .runMenuLoop     = &menuNoop,
 };
 
 // Switching code generation back to shared section

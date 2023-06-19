@@ -34,8 +34,40 @@ static void _villiageMapCodeLoader(){
 static void _villiageMapNoop(){
     return;
 }
-__interrupt static void _villiageMapSpriteNoop(){
-    return;
+
+__interrupt void _showVilliageMapSprites(){
+    // vic.color_border--;
+    vic.spr_expand_x = 0b00000000;
+    vic.spr_expand_y = 0b00000000;
+    vic.spr_priority = 0b00000000;
+    vic.spr_multi    = 0b00000010;
+    
+    vic.spr_mcolor0  = 12;
+    vic.spr_mcolor1  = 6;
+
+    vic.spr_msbx = 0b00000000;
+
+    // set on both screens
+    GFX_1_SCR2[OFFSET_SPRITE_PTRS+0] = SPR_BANK_PLAYER_S2;
+    GFX_1_SCR2[OFFSET_SPRITE_PTRS+1] = SPR_BANK_PLAYER_S1;
+    GFX_1_SCR3[OFFSET_SPRITE_PTRS+0] = SPR_BANK_PLAYER_S2;
+    GFX_1_SCR3[OFFSET_SPRITE_PTRS+1] = SPR_BANK_PLAYER_S1;
+
+    // char
+    vic.spr_pos[0].x = 12 + 160;
+    // char bar
+    vic.spr_pos[1].x = 12 + 160;
+
+    vic.spr_pos[0].y = 34 + 100;
+    vic.spr_pos[1].y = 34 + 100;
+
+    // char pport = setPort(MMAP_NO_ROM);
+    vic.spr_color[0] = 0;
+    vic.spr_color[1] = 7;
+    // setPort(pport);
+
+    vic.spr_enable = 0b00000011;
+    // vic.color_border++;
 }
 
 #pragma code ( villiageMapRAMCode )
@@ -127,8 +159,9 @@ __export static const Loaders menuLoaders = {
     .loadMenuGfx     = nullptr,
     .loadMenuSprites = &_villiageMapNoop,
     .showMenu        = &_villiageMapInit,
-    .showSprites     = &_villiageMapSpriteNoop,
+    .showSprites     = &_showVilliageMapSprites,
     .updateMenu      = &_villiageMapNoop,
+    .runMenuLoop     = &_villiageMapNoop,
 };
 
 // Switching code generation back to shared section

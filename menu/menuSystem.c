@@ -71,6 +71,13 @@ void updateMenuIfIn(char bank){
         updateMenu();
 }
 
+// map and other game menus have their own loops, this allows to call them from the main loop
+void runMenuLoop(){
+    char pbank = setBank(mnu_menuBank);
+    ((Loaders *)0x8000)->runMenuLoop();
+    setBank(pbank);
+}
+
 #pragma section( sharedMenuCode, 0 )
 #pragma region( sharedMenuCodeBank, 0xbc00, 0xc000, , {
     MENU_BANK_MAIN_MENU,

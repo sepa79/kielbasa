@@ -166,6 +166,7 @@ __export static const Loaders menuLoaders = {
     .showMenu        = &_menuHandler,
     .showSprites     = &_menuShowSprites,
     .updateMenu      = &_updateView,
+    .runMenuLoop     = &menuNoop,
 };
 
 // Switching code generation back to shared section

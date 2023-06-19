@@ -11,8 +11,6 @@
 // TODO: Proper init of the sprites
 __export const struct SPRITES SpriteResources = {{
     #embed 0x40 3 "assets/sprites/joyCursor.spd"
-},{
-    #embed 0xffff 20 "assets/sprites/player1.spd"
 }};
 
 // ===========================================================================================
@@ -54,10 +52,10 @@ static void _loadMainGfx(){
 
     // sprites - cursor, to GFX1
     memcpy((char *)GFX_1_SPR_DST_ADR, GFX_1_SPR_SRC, 0x40);
-    // memset((char *)UI_SPR_ADR, 0, 0x800);
     // sprites - UI - skip first UI sprite as its copied elsewhere already
+    memset((char *)UI_SPR_ADR, 0, 0x800);
     // These sprites might be empty - that's fine, banks will be used later and data will be copied in
-    memcpy((char *)UI_SPR_ADR, GFX_1_SPR_SRC+0x40, 0x800);
+    // memcpy((char *)UI_SPR_ADR, GFX_1_SPR_SRC+0x40, 0x800);
     // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
     // mmap_set(MMAP_ROM);
 }

@@ -128,11 +128,11 @@ void mainLoop(){
             checkKeys();
             oncePerFrameFinished = true;
         }
-        // reset the tasks once the 'middle' part has been drawn
+        // reset the flags once the 'middle' part has been drawn
         if(gms_framePos == FRAME_TOP_BORDER){
             oncePerFrameFinished = false;
         }
         // process special tasks
-        
+        runMenuLoop();
     }
 }

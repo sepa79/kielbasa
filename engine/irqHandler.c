@@ -135,6 +135,9 @@ __interrupt static void IRQ_topHiresTxtScreen() {
         mapScreen = GFX_1_SCR2;
     }
 
+    // set map sprites
+    setSpritesTopScr();
+    
     // tick the game
     _timeControl();
 

@@ -66,6 +66,7 @@ struct Loaders {
     void (*showMenu)(void);
     __interrupt void (*showSprites)(void);
     void (*updateMenu)(void);
+    void (*runMenuLoop)(void);
 };
 
 extern bool mnu_isGfxLoaded;
@@ -78,6 +79,7 @@ void showMenu();
 __interrupt void showSprites();
 void updateMenu();
 void updateMenuIfIn(char bank);
+void runMenuLoop();
 
 #pragma compile("menuSystem.c")
 

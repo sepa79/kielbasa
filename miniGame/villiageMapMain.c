@@ -45,6 +45,11 @@ static const char _chars[] = {
     #embed ctm_chars    "assets/charGfx/HiresVilliage_L3.ctm"
 };
 
+static const char _mapSprites[] = {
+    #embed 0xffff 20 "assets/sprites/player1.spd"
+};
+
+
 #pragma data ( villiageMapData )
 
 static const char _map[] = {
@@ -227,24 +232,11 @@ static void _drawPlayerAndColors(){
     while(gms_framePos != FRAME_MIDDLE){};
     // change buffer - it will be visible at next frame
     if(map_2ndScreen){
-        GFX_1_SCR2[40*11+19] = PLAYER_CHAR_0;
-        GFX_1_SCR2[40*11+20] = PLAYER_CHAR_1;
-        GFX_1_SCR2[40*12+19] = PLAYER_CHAR_2;
-        GFX_1_SCR2[40*12+20] = PLAYER_CHAR_3;
         map_2ndScreen = false;
     } else {
-        GFX_1_SCR3[40*11+19] = PLAYER_CHAR_0;
-        GFX_1_SCR3[40*11+20] = PLAYER_CHAR_1;
-        GFX_1_SCR3[40*12+19] = PLAYER_CHAR_2;
-        GFX_1_SCR3[40*12+20] = PLAYER_CHAR_3;
         map_2ndScreen = true;
     }
     _drawColors();
-    // player color
-    COLOR_RAM[40*11+19] = colorMap[2][PLAYER_CHAR_0];
-    COLOR_RAM[40*11+20] = colorMap[2][PLAYER_CHAR_1];
-    COLOR_RAM[40*12+19] = colorMap[2][PLAYER_CHAR_2];
-    COLOR_RAM[40*12+20] = colorMap[2][PLAYER_CHAR_3];
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -268,12 +260,13 @@ void villiageMapScreenInit(void){
     fontCopyDone = false;
 
     _mapInit();
+    
+    memcpy((char *)0xc780, _mapSprites, 0x80);
 
     // wait for IRQ to finish copying fonts - can't change bank before its done
     while(!fontCopyDone){
         // vic.color_border--;
     }
-
     // copy lightmap
     setBank(pbank);
     pbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
@@ -345,6 +338,10 @@ void villiageMapDraw(WalkDir dir){
     joyCursor.moveDelayCurrent = 0;
 }
 
+void villiageMapGameLoop(){
+    villiageMapDraw(WALK_DOWN);
+}
+
 void villiageMapInit(){
     // SCREEN_TRANSITION mode is on, so screen is black
     // clean 0xffff - so we don't have artefacts when we open borders
@@ -365,3 +362,4 @@ void villiageMapInit(){
     // make screen visible
     switchScreenTo(SCREEN_HIRES_TXT);
 }
+
