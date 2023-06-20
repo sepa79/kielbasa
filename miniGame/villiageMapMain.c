@@ -46,7 +46,7 @@ static const char _chars[] = {
 };
 
 static const char _mapSprites[] = {
-    #embed 0xffff 20 "assets/sprites/player1.spd"
+    #embed 0xffff 20 "assets/sprites/Player1.spd"
 };
 
 

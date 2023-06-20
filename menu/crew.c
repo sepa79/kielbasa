@@ -55,12 +55,17 @@ static void _drawByteK(int x, int y, char b) {
 }
 
 // bars height table
-static const char bar_height[] =   {
-    BARS_Y_POSITION_MAX-0*BAR_PART_HEIGHT, BARS_Y_POSITION_MAX-1*BAR_PART_HEIGHT,
-    BARS_Y_POSITION_MAX-2*BAR_PART_HEIGHT, BARS_Y_POSITION_MAX-3*BAR_PART_HEIGHT,
-    BARS_Y_POSITION_MAX-4*BAR_PART_HEIGHT, BARS_Y_POSITION_MAX-5*BAR_PART_HEIGHT,
-    BARS_Y_POSITION_MAX-6*BAR_PART_HEIGHT, BARS_Y_POSITION_MAX-7*BAR_PART_HEIGHT,
-    BARS_Y_POSITION_MAX-8*BAR_PART_HEIGHT, BARS_Y_POSITION_MAX-9*BAR_PART_HEIGHT
+static const char bar_height[101] =   {
+    BARS_Y_POSITION_MAX - 0,
+    BARS_Y_POSITION_MAX - 1,
+    BARS_Y_POSITION_MAX - 1,
+    BARS_Y_POSITION_MAX - 1,
+    #assign ry 4
+    #repeat
+        BARS_Y_POSITION_MAX - ((ry * BAR_PART_HEIGHT) / 2),
+    #assign ry ry + 1
+    #until ry == 101
+    #undef ry
 };
 
 static void _drawBarsFor(char character_new) {

@@ -21,8 +21,8 @@
 #define BARS_X_POSITION     120     // align to 8
 #define BARS_Y_POSITION_MAX 82
 #define BARS_X_COORDS_GAP   16      // draw new bar every 16 bits ( 2 bytes )
-#define BAR_PART_HEIGHT     6
-#define BAR_MAX_HEIGHT      ( 9 * BAR_PART_HEIGHT )
+#define BAR_PART_HEIGHT     1
+#define BAR_MAX_HEIGHT      ( 50 * BAR_PART_HEIGHT )
 #define BAR_PATTERN         0x2a    // 0x2a = 0b00101010
 #define BAR_PATTERN_CLEAR   0x00    // delete bar pattern
 
