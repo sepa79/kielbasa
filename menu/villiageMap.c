@@ -28,6 +28,7 @@
 static void _villiageMapCodeLoader(){
     // source is where the regionVilliageMapRam section starts in real mem
     memcpy(MENU_CODE_DST, (char *)0xb000, 0x1000);
+    villiageMapInit();
 }
 
 // Noop - just return - to satisfy menu handlers
@@ -169,17 +170,28 @@ static void _villiageMapLoadGfx(){
                 moonDetailLevel = 2;
         }
         // copy lightmap and init screen colors
+        // this is 2nd buffer's Color mem
         memset(GFX_1_SCR, VCOL_BLACK, 960);
         char pbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
         memcpy(lightMap, allLightMaps[GS.vMap.direction], 960);
         setBank(pbank);
     }
+    // clean last row in case we came back from options menu
+    memset(COLOR_RAM+960, VCOL_BLACK, 40);
     // force map redraw
     villiageMapDraw();
 }
 
+static void _villiageMapShowMenu(void){
+    // make screen visible
+    _villiageMapLoadGfx();
+    switchScreenTo(SCREEN_HIRES_TXT);
+    displayMenu(VILLIAGE_MAP_MENU);
+}
+
 // load and init routines, from MENU_BANK_MAP_VILLIAGE_1
-static void _villiageMapInit(void){
+// called from _villiageMapCodeLoader on menu load only
+void villiageMapInit(void){
     // SCREEN_TRANSITION mode is on, so screen is black
     // clean 0xffff - so we don't have artefacts when we open borders
     gms_disableTimeControls = true;
@@ -190,7 +202,6 @@ static void _villiageMapInit(void){
     villiageMapScreenInit();
     // villiageMapSpriteLoader();
     buildRamTiles();
-
     // init and draw map
     _villiageMapLoadGfx();
 
@@ -198,10 +209,7 @@ static void _villiageMapInit(void){
     playSong(VILLIAGE_MAP_SONG);
     // vic.color_border--;
 
-    // make screen visible
-    switchScreenTo(SCREEN_HIRES_TXT);
-    _villiageMapLoadGfx();
-    displayMenu(VILLIAGE_MAP_MENU);
+    _villiageMapShowMenu();
 }
 
 #pragma data ( villiageMapLoaderData )
@@ -210,7 +218,7 @@ __export static const Loaders menuLoaders = {
     .loadMenuCode    = &_villiageMapCodeLoader,
     .loadMenuGfx     = &_villiageMapLoadGfx,
     .loadMenuSprites = &_villiageMapNoop,
-    .showMenu        = &_villiageMapInit,
+    .showMenu        = &_villiageMapShowMenu,
     .showSprites     = &_showVilliageMapSprites,
     .updateMenu      = &_villiageMapNoop,
     .runMenuLoop     = &villiageMapGameLoop, // in villiageMapMain

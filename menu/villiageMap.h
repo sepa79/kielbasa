@@ -42,5 +42,7 @@ struct VilliageMap {
     WalkDir direction;
 };
 
+void villiageMapInit(void);
+
 #pragma compile("villiageMap.c")
 #endif
