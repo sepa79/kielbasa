@@ -29,6 +29,7 @@ void checkKeys();
 void updateStatusBar(const byte * text);
 void updateStatusBarError(const byte * text);
 void updateGameSpeed();
+void updateMinute(byte newMinute);
 void updateHour(byte newHour);
 void updateDay(byte newDay);
 void updateMonth(byte newMonth);

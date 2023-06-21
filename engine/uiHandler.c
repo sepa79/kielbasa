@@ -401,6 +401,15 @@ void initUI(){
     // vic.color_border++;
 }
 
+void updateMinute(byte newMinute){
+    sprBankPointer = SPR_DATE_TXT1;
+
+    char num2str[3];
+    sprintf(num2str, "%02d", newMinute);
+    copyCharToSprite(num2str[0], 3, 0, sprBankPointer);
+    copyCharToSprite(num2str[1], 4, 0, sprBankPointer);
+}
+
 void updateHour(byte newHour){
     sprBankPointer = SPR_DATE_TXT1;
 

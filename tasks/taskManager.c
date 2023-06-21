@@ -225,6 +225,20 @@ static void _unassignTask(char taskId, bool resetIcon){
     }
 }
 
+// Unasign all tasks, leave icons - next process will reset them
+static void _unassignAllTasks(){
+    char i = 0;
+    char taskId = 0;
+    do {
+        taskId = taskRef[i];
+        if (task_worker[taskId] != NO_SLOT) {
+            _unassignTask(taskId, false);
+        }
+        // next task
+        i++;
+    } while (i < TASK_ARRAY_SIZE && task_reqType[taskId] != NO_TASK);
+}
+
 //-----------------------------------------------------------------------------------------
 // In Ticks bank
 //-----------------------------------------------------------------------------------------
@@ -349,17 +363,16 @@ void _assignTasksToWorkers(char freeWorkersCount) {
 
 // Process tasks that are in progress
 void _processTasksInProgress() {
-    char i = 0;
+    // iterate through real tasks, not the ref array as it moves around on task completion
     char taskId = 0;
     do {
-        taskId = taskRef[i];
         if (task_worker[taskId] != NO_SLOT) {
             // got a worker? tick that task
             (*task_codeRef[taskId])(taskId);
         }
         // next task
-        i++;
-    } while (i < TASK_ARRAY_SIZE && task_reqType[taskId] != NO_TASK);
+        taskId++;
+    } while (taskId < TASK_ARRAY_SIZE);
 }
 
 // Called by callendar.c
@@ -410,5 +423,11 @@ void finishTask(char taskId){
 void unassignTask(char taskId){
     char pbank = setBank(TASKS_BANK);
     _unassignTask(taskId, true);
+    setBank(pbank);
+}
+// Used at end of day
+void unassignAllTasks(){
+    char pbank = setBank(TASKS_BANK);
+    _unassignAllTasks();
     setBank(pbank);
 }

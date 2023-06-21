@@ -146,7 +146,7 @@ const struct MenuOption KITCHEN_MENU[] = {
 
 static void _menuHandler(void){
     mnu_isGfxLoaded = false;
-    loadMenuGfx(true);
+    loadMenuGfx();
     loadMenuSprites();
 
     // Prepare output window

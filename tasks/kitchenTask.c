@@ -55,6 +55,9 @@ static void _execBakeBreadTask(char taskId){
                 // setTaskLogMsg(taskId);
                 // logger(LOG_INFO | LOG_MSG_TASK);
 
+                // set it to indicate nothing else have to be done here
+                task_status[taskId] = TASK_STATUS_DONE;
+                // now we can safely remove the task
                 removeTask(taskId);
             } else {
                 // not enough energy? set character to MIA by unassigning this task
@@ -65,6 +68,7 @@ static void _execBakeBreadTask(char taskId){
                 unassignTask(taskId);
             }
         } else {
+            // not cleanly, but we have finished
             task_status[taskId] = TASK_STATUS_DONE;
             // task done - not enough space for bread, set status & remove
             if(GS.kitchen.storage[FOOD_HOME_BREAD] >= GS.kitchen.maxStorage){
@@ -81,7 +85,7 @@ static void _execBakeBreadTask(char taskId){
         }
     // handle task removal
     } else if(task_status[taskId] == TASK_STATUS_REMOVE){
-        // nothing to do atm
+        // nothing to do atm, abking bread is pretty 'clean' task, not penidng statuses anywhere to clear
     // hanlde errors - should never happen!
     } else {
         // Sum Ting Wong, We Tu Lo
@@ -92,8 +96,7 @@ static void _execBakeBreadTask(char taskId){
 
         char str[36];
         sprintf(str, "[%3u]"s"bakeBread status unknown", task_status[taskId]);
-        updateStatusBar(str);
-        setErrorCursor();
+        updateStatusBarError(str);
     }
 
     // LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_EXIT;
@@ -142,6 +145,7 @@ void addBakeBreadTask(){
 bool addKitchenItem(FOOD_ITEMS item){
     if(GS.kitchen.storage[item] < GS.kitchen.maxStorage){
         GS.kitchen.storage[item]++;
+        // TODO: proper string handling via translations, item names
         updateStatusBar(s"Food added");
         return true;
     }

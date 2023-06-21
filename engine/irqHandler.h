@@ -6,6 +6,7 @@ extern const char * SB_TEXT;
 
 // used by villiage map, for double buffering and loading fonts seamlesly
 extern volatile bool map_2ndScreen;
+extern char * mapScreen;
 extern const char * fontCopySrc;
 extern volatile bool fontCopyDone;
 

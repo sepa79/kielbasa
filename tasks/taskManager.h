@@ -79,6 +79,7 @@ bool addTask();
 void removeTaskByRef(byte taskRefId);
 void removeTask(byte taskId);
 void unassignTask(byte taskId);
+void unassignAllTasks();
 void finishTask(byte taskId);
 
 // log helper

@@ -61,7 +61,7 @@ struct MenuOption {
 // Loaders vector table used in each menu
 struct Loaders {
     void (*loadMenuCode)(void);
-    void (*loadMenuGfx)(bool isDay);
+    void (*loadMenuGfx)(void);
     void (*loadMenuSprites)();
     void (*showMenu)(void);
     __interrupt void (*showSprites)(void);
@@ -73,7 +73,7 @@ extern bool mnu_isGfxLoaded;
 extern volatile char mnu_menuBank;
 
 void loadMenu(byte bank);
-void loadMenuGfx(bool isDay);
+void loadMenuGfx();
 void loadMenuSprites();
 void showMenu();
 __interrupt void showSprites();

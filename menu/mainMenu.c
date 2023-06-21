@@ -355,7 +355,7 @@ static void _menuHandler(){
     animBusFrame = 0;
     animBusDelay = BUS_ANIM_DELAY;
 
-    loadMenuGfx(GS.calendar.isDay);
+    loadMenuGfx();
     loadMenuSprites();
 
     // zero fill sprites

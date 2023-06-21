@@ -40,7 +40,7 @@ static void _showNormalMenu(){
     joyCursor.enabled = true;
 }
 void gotoLocation(){
-    switch(vMapLocation){
+    switch(GS.vMap.location){
         case LOCATION_FARM_HOUSE:
             loadMenu(MENU_BANK_MAIN_MENU);
             _showNormalMenu();
@@ -59,7 +59,7 @@ void gotoLocation(){
             break;
     }
     // reset location so when we are back to map it gets re-set and sprites are drawn
-    vMapLocation = LOCATION_RESET;
+    GS.vMap.location = LOCATION_RESET;
 }
 
 void mainLoop(){
@@ -127,12 +127,12 @@ void mainLoop(){
             // keep that in RAM as it changes banks a lot to display menus and their code
             checkKeys();
             oncePerFrameFinished = true;
+            // process special tasks
+            runMenuLoop();
         }
         // reset the flags once the 'middle' part has been drawn
         if(gms_framePos == FRAME_TOP_BORDER){
             oncePerFrameFinished = false;
         }
-        // process special tasks
-        runMenuLoop();
     }
 }

@@ -86,7 +86,7 @@ const struct MenuOption PIG_PEN_MENU[] = {
 
 static void _menuHandler(void){
     mnu_isGfxLoaded = false;
-    loadMenuGfx(true);
+    loadMenuGfx();
     loadMenuSprites();
 
     sprBankPointer = ((char *)GFX_1_BASE + 64*(SPR_BANK_PIG_ANIM1+1));

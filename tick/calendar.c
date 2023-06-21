@@ -193,7 +193,7 @@ static void _setNight() {
     GS.calendar.isDay = false;
 }
 
-void timeTick(){
+void hourTick(){
     if(GS.calendar.dateHour < 23){
         updateHour(GS.calendar.dateHour+1);
         GS.calendar.dateHour++;
@@ -206,12 +206,15 @@ void timeTick(){
     if(GS.calendar.dateHour == sunRaiseHour){
         _setDay();
         // has to be separated from _setDay as it must not be called in init
-        loadMenuGfx(GS.calendar.isDay);
+        loadMenuGfx();
     } else if (GS.calendar.dateHour == sunSetHour){
         _setNight();
-        loadMenuGfx(GS.calendar.isDay);
+        loadMenuGfx();
     }
+}
 
+void timeTick(){
+    hourTick();
     // sleep & food cycle
     // run the regen routine - depending on levels of food some energy comes back
     // run before sleep, as sleep looks at regen timers
@@ -232,12 +235,7 @@ void timeTick(){
             setCharacterSlotIcon(3, SPR_TASK_SLEEP);
 
             // reset busy stats
-            for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
-                // only check active chars
-                if(characterSlots[charSlot] != NO_CHARACTER){
-                    allCharacters[characterSlots[charSlot]].busy = false;
-                }
-            }
+            unassignAllTasks();
         }
         // runs during breakfast and supper, too, considering it a 'rest' time
         sleepTick();

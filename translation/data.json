@@ -793,8 +793,14 @@
       {
         "id": "WELCOME",
         "prefix": "SB",
-        "pl": "+/-/Space - kontrola czasu",
-        "en": "+/-/Space - time control"
+        "pl": [" +/-/Space: ",
+               "prędkość gry",
+               "  F1: Pomoc "
+              ],
+        "en": [" +/-/Space: ",
+               "time control",
+               "  F1: Help  "
+              ]
       },
       {
         "id": "ABOUT",

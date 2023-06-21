@@ -25,18 +25,13 @@
 #pragma data ( villiageMapRAMData )
 #pragma code ( villiageMapRAMCode )
 
-enum WalkDir {
-    WALK_UP,
-    WALK_DOWN,
-    WALK_LEFT,
-    WALK_RIGHT
-};
-
 typedef char char256[256];
 typedef char char1024[1024];
 
 // clolor map + main char attribs, day light and materials (walkable, water etc) - defined as colorMap[CHAR_ATTRIBS]
 extern char256 * const colorMap;
+extern const char1024 allLightMaps[4];
+
 // lightmap for night maps
 extern char * lightMap;
 // which map file holds main attribs, use like colorMap[CHAR_ATTRIBS]
@@ -44,15 +39,13 @@ extern char * lightMap;
 typedef char mapTile[16];
 extern char * ramTiles;
 extern const char * romTiles;
-extern bool isMapDay;
 extern char moonDetailLevel;
 
 // load and init routines, from MENU_BANK_MAP_VILLIAGE_1
+void buildRamTiles();
 void villiageMapScreenInit();
-void villiageMapSpriteLoader();
-void villiageMapInit();
 // display routine, from MENU_BANK_MAP_VILLIAGE_2
-void villiageMapDraw(WalkDir dir);
+void villiageMapDraw();
 
 #pragma code ( villiageMapCode )
 void villiageMapGameLoop();

@@ -64,7 +64,7 @@ const char romTiles[] = {
 
 #pragma data ( villiageMapData2 )
 
-const char1024 _lightMap[4] = { { 
+const char1024 allLightMaps[4] = { { 
     #embed ctm_map8     "assets/charGfx/lightMap_up.ctm"
 },{
     #embed ctm_map8     "assets/charGfx/lightMap_down.ctm"
@@ -249,9 +249,8 @@ static void _drawPlayerAndColors(){
 // dark moon
 // char moonLightColor = VCOL_BLACK;
 char moonDetailLevel = 0;
-bool isMapDay = true;
-#define MOON_PHASE_FULL 1
-#define MOON_PHASE_NONE 3
+// timer used on map for time ticks
+static char timer = 0;
 
 void villiageMapScreenInit(void){
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
@@ -267,67 +266,53 @@ void villiageMapScreenInit(void){
     while(!fontCopyDone){
         // vic.color_border--;
     }
-    // copy lightmap
-    setBank(pbank);
-    pbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
-    memcpy(lightMap, _lightMap[0], 960);
-    setBank(pbank);
-
-    isMapDay = GS.calendar.isDay;
-    if(!isMapDay){
-        // fill screen with moonlight
-        switch(GS.calendar.moonPhase){
-            case MOON_PHASE_FULL:
-                moonDetailLevel = 1;
-                break;
-            case MOON_PHASE_NONE:
-                moonDetailLevel = 3;
-                break;
-            default:
-                moonDetailLevel = 2;
-
-        }
-    }
+    // reset timer
+    timer = 50;
 }
 
-void drawPlayer(){
+static void _drawPlayer(){
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
     _drawPlayerAndColors();
     setBank(pbank);
 }
 
-void villiageMapDraw(WalkDir dir){
+void villiageMapDraw(){
+    // performance metrics
     char frameStart = gms_frameCount;
+
+    // reset timer - each move is counted as a time tick
+    timer = 1;
+    
 
     // draw map
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_2);
-    if(isMapDay){
-        villiageMapDrawDay(_map, vMapX, vMapY, dir);
+    if(GS.calendar.isDay){
+        villiageMapDrawDay(_map, GS.vMap.x, GS.vMap.y);
     } else {
-        if(_previousDir != dir){
+        if(_previousDir != GS.vMap.direction){
             memset(GFX_1_SCR, VCOL_BLACK, 960);
             char pbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
-            memcpy(lightMap, _lightMap[dir], 960);
+            memcpy(lightMap, allLightMaps[GS.vMap.direction], 960);
             setBank(pbank);
         }
-        _previousDir = dir;
-        villiageMapDrawNight(_map, vMapX, vMapY, dir);
+        _previousDir = GS.vMap.direction;
+        villiageMapDrawNight(_map, GS.vMap.x, GS.vMap.y);
     }
     
     setBank(pbank);
 
     // draw player
-    drawPlayer();
+    _drawPlayer();
 
 
     // text window
     pbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
-    char vx = (vMapX+19) >> 2;
-    char vy = (vMapY+12) >> 2;
+    char vx = (GS.vMap.x+19) >> 2;
+    char vy = (GS.vMap.y+12) >> 2;
     char locId = _mapLocations[vx + vy*64];
     setBank(pbank);
-    if(vMapLocation != locId){
-        vMapLocation = locId;
+    if(GS.vMap.location != locId){
+        GS.vMap.location = locId;
         // char str[12*3+1];
         // char framesUsed = gms_frameCount - frameStart;
         // sprintf(str, "%03d", framesUsed);
@@ -338,28 +323,22 @@ void villiageMapDraw(WalkDir dir){
     joyCursor.moveDelayCurrent = 0;
 }
 
+static void _mapTimeTick(){
+    if(!--timer){
+        timer = 50;
+        if(GS.calendar.dateMinute < 59){
+            GS.calendar.dateMinute++;
+        } else {
+            GS.calendar.dateMinute = 0;
+            char pbank = setBank(TICKS_BANK);
+            hourTick();
+            setBank(pbank);
+        }
+        updateMinute(GS.calendar.dateMinute);
+    }
+    
+}
+
 void villiageMapGameLoop(){
-    villiageMapDraw(WALK_DOWN);
+    _mapTimeTick();
 }
-
-void villiageMapInit(){
-    // SCREEN_TRANSITION mode is on, so screen is black
-    // clean 0xffff - so we don't have artefacts when we open borders
-    ((char *)0xffff)[0] = 0;
-    // Load GFX
-    villiageMapScreenInit();
-
-    // villiageMapSpriteLoader();
-    buildRamTiles();
-
-    // draw map
-    villiageMapDraw(WALK_UP);
-
-    // vic.color_border++;
-    playSong(VILLIAGE_MAP_SONG);
-    // vic.color_border--;
-
-    // make screen visible
-    switchScreenTo(SCREEN_HIRES_TXT);
-}
-

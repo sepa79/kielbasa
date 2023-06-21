@@ -140,7 +140,7 @@ static void _menuHandler(void){
     animGherkinDelay = SHOP_INSIDE_ANIM_1_DELAY;
     
     mnu_isGfxLoaded = false;
-    loadMenuGfx(GS.calendar.isDay);
+    loadMenuGfx();
     loadMenuSprites();
 
     // play radio music

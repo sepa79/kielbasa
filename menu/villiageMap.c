@@ -21,9 +21,9 @@
 // Menu code
 // ---------------------------------------------------------------------------------------------
 #pragma code ( villiageMapCode )
-// initial map position, need to be reset on new game. This is top left corner, not player pos.
-char vMapX = 114, vMapY = 129;
-char vMapLocation = 0;
+
+#define MOON_PHASE_FULL 1
+#define MOON_PHASE_NONE 3
 
 static void _villiageMapCodeLoader(){
     // source is where the regionVilliageMapRam section starts in real mem
@@ -77,15 +77,17 @@ __interrupt void _showVilliageMapSprites(){
 static void _mapUp(){
     // check if tiles above us are walkable
     char pport = setPort(MMAP_RAM);
-    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*10+19]];
-    char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*10+20]];
+    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*11+19]];
+    char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*11+20]];
     bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
     setPort(pport);
     
     if(canWalk){
-        if (vMapY > 0)
-            vMapY--;
-        villiageMapDraw(WALK_UP);
+        if (GS.vMap.y > 0){
+            GS.vMap.y--;
+            GS.vMap.direction = WALK_UP;
+            villiageMapDraw();
+        }
     }
 }
 static void _mapDown(){
@@ -97,37 +99,45 @@ static void _mapDown(){
     setPort(pport);
 
     if(canWalk){
-        if (vMapY < V_MAP_SIZE_Y*3-1)
-            vMapY++;
-        villiageMapDraw(WALK_DOWN);
+        if (GS.vMap.y < V_MAP_SIZE_Y*4-6*4){
+            GS.vMap.y++;
+            GS.vMap.direction = WALK_DOWN;
+            villiageMapDraw();
+            // byteToSprite(GS.vMap.y, SPR_TXT_BOTTOM_1);
+        }
     }
 }
 static void _mapLeft(){
     // check if tile to the left is walkable
     char pport = setPort(MMAP_RAM);
-    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*11+18]];
+    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*12+18]];
     char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*12+18]];
     bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
     setPort(pport);
 
     if(canWalk){
-        if (vMapX > 0)
-            vMapX--;
-        villiageMapDraw(WALK_LEFT);
+        if (GS.vMap.x > 0){
+            GS.vMap.x--;
+            GS.vMap.direction = WALK_LEFT;
+            villiageMapDraw();
+        }
     }
 }
 static void _mapRight(){
     // check if tile to the right is walkable
     char pport = setPort(MMAP_RAM);
-    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*11+21]];
+    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*12+21]];
     char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*12+21]];
     bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
     setPort(pport);
 
     if(canWalk){
-        if (vMapX < V_MAP_SIZE_X*3-2*4)
-            vMapX++;
-        villiageMapDraw(WALK_RIGHT);
+        if (GS.vMap.x < V_MAP_SIZE_X*4-10*4){
+            GS.vMap.x++;
+            GS.vMap.direction = WALK_RIGHT;
+            villiageMapDraw();
+            // byteToSprite(GS.vMap.x, SPR_TXT_BOTTOM_1);
+        }
     }
 }
 // static void _mapFire(){
@@ -145,10 +155,51 @@ const struct MenuOption VILLIAGE_MAP_MENU[] = {
     END_MENU_CHOICES
 };
 
+static void _villiageMapLoadGfx(){
+    if(!GS.calendar.isDay){
+        // fill screen with moonlight
+        switch(GS.calendar.moonPhase){
+            case MOON_PHASE_FULL:
+                moonDetailLevel = 1;
+                break;
+            case MOON_PHASE_NONE:
+                moonDetailLevel = 3;
+                break;
+            default:
+                moonDetailLevel = 2;
+        }
+        // copy lightmap and init screen colors
+        memset(GFX_1_SCR, VCOL_BLACK, 960);
+        char pbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
+        memcpy(lightMap, allLightMaps[GS.vMap.direction], 960);
+        setBank(pbank);
+    }
+    // force map redraw
+    villiageMapDraw();
+}
+
+// load and init routines, from MENU_BANK_MAP_VILLIAGE_1
 static void _villiageMapInit(void){
+    // SCREEN_TRANSITION mode is on, so screen is black
+    // clean 0xffff - so we don't have artefacts when we open borders
     gms_disableTimeControls = true;
     gms_gameSpeed = SPEED_PAUSED;
-    villiageMapInit();
+
+    ((char *)0xffff)[0] = 0;
+    // Load GFX
+    villiageMapScreenInit();
+    // villiageMapSpriteLoader();
+    buildRamTiles();
+
+    // init and draw map
+    _villiageMapLoadGfx();
+
+    // vic.color_border++;
+    playSong(VILLIAGE_MAP_SONG);
+    // vic.color_border--;
+
+    // make screen visible
+    switchScreenTo(SCREEN_HIRES_TXT);    _villiageMapLoadGfx();
     displayMenu(VILLIAGE_MAP_MENU);
 }
 
@@ -156,12 +207,12 @@ static void _villiageMapInit(void){
 
 __export static const Loaders menuLoaders = {
     .loadMenuCode    = &_villiageMapCodeLoader,
-    .loadMenuGfx     = nullptr,
+    .loadMenuGfx     = &_villiageMapLoadGfx,
     .loadMenuSprites = &_villiageMapNoop,
     .showMenu        = &_villiageMapInit,
     .showSprites     = &_showVilliageMapSprites,
     .updateMenu      = &_villiageMapNoop,
-    .runMenuLoop     = &_villiageMapNoop,
+    .runMenuLoop     = &villiageMapGameLoop, // in villiageMapMain
 };
 
 // Switching code generation back to shared section

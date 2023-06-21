@@ -94,6 +94,13 @@ void _sowFieldTask(char taskId){
                     logger(LOG_INFO | LOG_MSG_TASK);
 
                     removeTask(taskId);
+                } else {
+                    // not done yet, so just leave trace in logs
+                    LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_EXIT;
+                    setTaskLogMsg(taskId);
+                    LOG_MSG.LOG_DATA_TASK_PARAMS3 = energyNeeded;
+                    LOG_MSG.LOG_DATA_TASK_PARAMS4 = partDone;
+                    logger(LOG_DEBUG | LOG_MSG_TASK);
                 }
             } else {
                 // not enough energy? set character to MIA by unassigning this task
@@ -130,12 +137,6 @@ void _sowFieldTask(char taskId){
         updateStatusBar(str);
         setErrorCursor();
     }
-
-    LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_EXIT;
-    setTaskLogMsg(taskId);
-    LOG_MSG.LOG_DATA_TASK_PARAMS3 = energyNeeded;
-    LOG_MSG.LOG_DATA_TASK_PARAMS4 = partDone;
-    logger(LOG_DEBUG | LOG_MSG_TASK);
 
     updateMenuIfIn(MENU_BANK_FARMLAND);
 }

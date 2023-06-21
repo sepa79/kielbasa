@@ -8,6 +8,7 @@ struct Calendar {
     volatile signed char currentTemp;
     volatile byte currentRain;
 
+    volatile byte dateMinute;
     volatile byte dateHour;
     volatile byte dateDay;
     volatile byte dateMonth;
@@ -57,6 +58,7 @@ extern const byte WEEKLY_SUNSET[53];
 #pragma region( ticksCodeRegion, 0x8000, 0xbfff, , TICKS_BANK, { ticksCode, ticksData } )
 
 #pragma code ( ticksCode )
+void hourTick();
 void timeTick();
 #pragma code ( code )
 void initCalendar(Calendar * cal);

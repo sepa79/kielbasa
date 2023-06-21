@@ -23,6 +23,7 @@ volatile char * fontCopyDst = GFX_1_FNT2;
 volatile bool fontCopyDone = true;
 
 // used to check if move to given tile is possible
+// irqs update it to point to current screen (as we do double buffer)
 char * mapScreen;
 
 // init joysticks to neutral pos

@@ -89,9 +89,25 @@ void setCharacterSlotPic(char charIdx){
 void setCharacterSlotIcon(char charIdx, char * taskIconPtr){
     char charSlot = allCharacters[charIdx].slot;
     if(charSlot != NO_SLOT){
-        _copySpriteToBank(taskIconPtr, characterSlotSpriteBarPtr[charSlot]);
+        char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
+        char i = 1;
+        char pbank = setBank(MAIN_GFX_BANK);
+        charBarPtr[0]  = taskIconPtr[0];
+        charBarPtr[3]  = taskIconPtr[3];
+        charBarPtr[6]  = taskIconPtr[6];
+        charBarPtr[60] = taskIconPtr[60];
+        do{
+            charBarPtr[i]   = taskIconPtr[i];
+            charBarPtr[i+1] = taskIconPtr[i+1];
+            i++;
+            i++;
+            i++;
+        } while (i<63);
+        // mmap_set(MMAP_ROM);
+        setBank(pbank);
     }
 }
+
 
 void drawBattery(char charIdx){
     char charSlot = allCharacters[charIdx].slot;

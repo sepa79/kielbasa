@@ -32,10 +32,7 @@ enum FARMLAND_SPRITE_VIC_BANKS {
     SPR_BANK_LUPINE_UI,
     SPR_BANK_WHEAT_UI,
     SPR_BANK_CORN_UI,
-    SPR_BANK_WATER_UI1,
-    SPR_BANK_WATER_UI2,
-    SPR_BANK_WATER_UI3,
-    SPR_BANK_WATER_UI4
+    SPR_BANK_WATER_UI,
 };
 
 #define SPR_THERMO_BAR_1 ((char *)GFX_1_BASE + 64*SPR_BANK_THERMO_BAR_1)
@@ -45,6 +42,7 @@ enum FARMLAND_SPRITE_VIC_BANKS {
 #define SPR_LUPINE_UI    ((char *)GFX_1_BASE + 64*SPR_BANK_LUPINE_UI)
 #define SPR_WHEAT_UI     ((char *)GFX_1_BASE + 64*SPR_BANK_WHEAT_UI)
 #define SPR_CORN_UI      ((char *)GFX_1_BASE + 64*SPR_BANK_CORN_UI)
+#define SPR_WATER_UI     ((char *)GFX_1_BASE + 64*SPR_BANK_WATER_UI)
 
 // Sections and regions
 #pragma section( farmlandLoaderData, 0 )
@@ -59,9 +57,9 @@ enum FARMLAND_SPRITE_VIC_BANKS {
 
 #pragma data ( farmlandGfxDay )
 __export const byte farmlandGfx1[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/pole140623.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/pole140623.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/pole140623.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/pole200623fix.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/pole200623fix.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/pole200623fix.kla"
 };
 #pragma data ( farmlandGfxNight )
 __export const byte farmlandGfx2[] = {
@@ -102,7 +100,7 @@ __export char SPR_DATA_THERMO_BAR_3[64*1] = {
 __export char SPR_DATA_PLANTS_[64*4] = {0};
 
 __export const char farmlandWaterSprites[] = {
-    #embed 0x0400 20 "assets/sprites/waterLvls.spd"
+    #embed 0x0400 20 "assets/sprites/waterMarker.spd"
 };
 
 // menu code is in ROM - data in RAM
@@ -172,23 +170,33 @@ static void _drawThermometer(byte temp){
 }
 
 static void _showWaterLevel(){
-    if(GS.farm.waterLevel > 40){
-        _waterSpriteBank = SPR_BANK_WATER_UI4;
-    } else if(GS.farm.waterLevel > 25){
-        _waterSpriteBank = SPR_BANK_WATER_UI3;
-    } else if(GS.farm.waterLevel > 10){
-        _waterSpriteBank = SPR_BANK_WATER_UI2;
-    } else {
-        _waterSpriteBank = SPR_BANK_WATER_UI1;
+    char wLevel = GS.farm.waterLevel > 42 ? 42 : GS.farm.waterLevel;
+    wLevel = wLevel / 2;
+    // byteToSprite(wLevel, SPR_TXT_UP_1);
+    char i = 0;
+    char c = 21 - wLevel;
+    while (c){
+        SPR_WATER_UI[i] = 0b00000000;
+        i++;
+        i++;
+        i++;
+        c--;
     }
+    while (i<64){
+        SPR_WATER_UI[i] = 0b11111111;
+        i++;
+        i++;
+        i++;
+    } ;
 }
+
 
 __interrupt static void _menuShowSprites(){
     vic.spr_enable   = 0b11111111;
-    vic.spr_expand_x = 0b10000000;
+    vic.spr_expand_x = 0b00000000;
     vic.spr_expand_y = 0b00000000;
-    vic.spr_priority = 0b00000000;
-    vic.spr_multi    = 0b10000000;
+    vic.spr_priority = 0b10000000;
+    vic.spr_multi    = 0b00000000;
     vic.spr_msbx     = 0b01100000;
 
     // thermometer sprites
@@ -231,19 +239,16 @@ __interrupt static void _menuShowSprites(){
     GFX_1_SCR[OFFSET_SPRITE_PTRS+4] = SPR_BANK_LUPINE_UI;
     GFX_1_SCR[OFFSET_SPRITE_PTRS+5] = SPR_BANK_WHEAT_UI;
     GFX_1_SCR[OFFSET_SPRITE_PTRS+6] = SPR_BANK_CORN_UI;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+7] = SPR_BANK_WATER_UI;
+    
     // water sprite
-    vic.spr_pos[7].x = 73;
-    vic.spr_pos[7].y = 120;
+    vic.spr_pos[7].x = 116+24;
+    vic.spr_pos[7].y = 65+50;
     if(GS.calendar.currentTemp < 1){
         vic.spr_color[7] = VCOL_LT_BLUE;
-        vic.spr_mcolor0  = VCOL_LT_GREY;
-        vic.spr_mcolor1  = VCOL_WHITE;
     } else {
         vic.spr_color[7] = VCOL_BLUE;
-        vic.spr_mcolor0  = VCOL_LT_BLUE;
-        vic.spr_mcolor1  = VCOL_LT_GREY;
     }
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+7] = _waterSpriteBank;
 }
 
 static void _displayFieldList(){
@@ -297,8 +302,8 @@ static void _updateFieldView(){
     byte temp = (char) (GS.calendar.currentTemp + 23);
     _drawThermometer(temp);
 
-    // water debug
-    byteToSprite(GS.farm.waterLevel, SPR_THERMO_BAR_3);
+    // // water debug
+    // byteToSprite(GS.farm.waterLevel, SPR_THERMO_BAR_3);
     _showWaterLevel();
 
     intToWeightToSprite(GS.farm.storage[PLANT_POTATO], SPR_POTATO_UI);
@@ -335,10 +340,6 @@ static void _previousField(){
     }
     _showMenuDetails();
     _displayFieldList();
-}
-
-static void _reorganise(){
-    updateStatusBar(p"   reorganise");
 }
 
 // Set the plant task
@@ -445,7 +446,7 @@ const struct MenuOption FARMLAND_MENU[] = {
 static void _menuHandler(void){
     _currentPlant = fields[_currentField].plantId;
     mnu_isGfxLoaded = false;
-    loadMenuGfx(GS.calendar.isDay);
+    loadMenuGfx();
     loadMenuSprites();
 
     // Prepare output window

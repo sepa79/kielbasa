@@ -90,7 +90,7 @@ const struct MenuOption SHOP_OUTSIDE_MENU[] = {
 };
 
 static void _menuHandler(void){
-    loadMenuGfx(GS.calendar.isDay);
+    loadMenuGfx();
 
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);

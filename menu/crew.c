@@ -237,7 +237,7 @@ const struct MenuOption CREW_MENU[] = {
 
 static void _menuHandler(void){
     mnu_isGfxLoaded = false;
-    loadMenuGfx(GS.calendar.isDay);
+    loadMenuGfx();
 
     // Bars and portrait
     _prepareBars();

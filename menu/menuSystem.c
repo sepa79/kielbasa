@@ -9,7 +9,7 @@
 #pragma code ( code )
 #pragma data ( data )
 
-// Global var used with menuGfxLoaderSingleBitmap(isDay)
+// Global var used with menuGfxLoaderSingleBitmap()
 bool mnu_isGfxLoaded = false;
 volatile char mnu_menuBank = 0;
 
@@ -21,12 +21,12 @@ void loadMenu(char bank){
     ((Loaders *)0x8000)->loadMenuCode();
 }
 
-// Call currently mounted CRT bank's loadMenuGfx(isDay) function.
-// Default loader is _menuGfxLoader(bool isDay).
+// Call currently mounted CRT bank's loadMenuGfx() function.
+// Default loader is _menuGfxLoader().
 // Default noop loader is _menuNoop().
-void loadMenuGfx(bool isDay){
+void loadMenuGfx(){
     char pbank = setBank(mnu_menuBank);
-    ((Loaders *)0x8000)->loadMenuGfx(isDay);
+    ((Loaders *)0x8000)->loadMenuGfx();
     setBank(pbank);
 }
 
@@ -193,8 +193,8 @@ static void _loadNightGfx(){
 }
 
 // Switches graphic according to day/night cycle
-void menuGfxLoader(bool isDay){
-    if(isDay){
+void menuGfxLoader(){
+    if(GS.calendar.isDay){
         _loadDayGfx();
     } else {
         _loadNightGfx();
@@ -203,8 +203,8 @@ void menuGfxLoader(bool isDay){
 
 // Loads single file and never changes it.
 // Parameter is ignored, kept for compatibility.
-// Menu should set the variable 'isGfxLoaded = false' in the menuHandler code, before calling 'loadMenuGfx(cal_isDay)'
-void menuGfxLoaderSingleBitmap(bool isDay){
+// Menu should set the variable 'isGfxLoaded = false' in the menuHandler code, before calling 'loadMenuGfx()'
+void menuGfxLoaderSingleBitmap(){
     if(!mnu_isGfxLoaded){
         _loadDayGfx();
         mnu_isGfxLoaded = true;

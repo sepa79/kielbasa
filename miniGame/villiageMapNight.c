@@ -199,7 +199,7 @@ LIGHTMAP_DRAW_ROUTINE
 #until cx == 3
 }
 
-void villiageMapDrawNight(const char * mp, char ox, char oy, WalkDir dir){
+void villiageMapDrawNight(const char * mp, char ox, char oy){
     char * dp;
     if(map_2ndScreen){
         dp = GFX_1_SCR2;

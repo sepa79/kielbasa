@@ -1,13 +1,17 @@
 #ifndef VILLIAGE_MAP_MENU_H
 #define VILLIAGE_MAP_MENU_H
 
-extern const struct MenuOption VILLIAGE_MAP_MENU[];
+// extern const struct MenuOption VILLIAGE_MAP_MENU[];
 // these will need to be defined in a more global space, as they will be used with all maps probably
-extern char vMapX;
-extern char vMapY;
-extern char vMapLocation;
 
-enum LOCATION {
+enum WalkDir {
+    WALK_UP,
+    WALK_DOWN,
+    WALK_LEFT,
+    WALK_RIGHT
+};
+
+enum Location {
     LOCATION_NOTHING,
     LOCATION_FARM_HOUSE,
     LOCATION_FARM_BARN,
@@ -26,9 +30,17 @@ enum LOCATION {
     LOCATION_HOUSE_2,
     LOCATION_MAIN_ROAD,
     LOCATION_VILLIAGE_ROAD,
-    LOCATION_DIRT_ROAD
+    LOCATION_DIRT_ROAD,
+    LOCATION_RESET = 0xff
 };
-#define LOCATION_RESET 0xff
+
+// defined in GameState
+struct VilliageMap {
+    char x;
+    char y;
+    Location location;
+    WalkDir direction;
+};
 
 #pragma compile("villiageMap.c")
 #endif
