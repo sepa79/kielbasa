@@ -199,7 +199,8 @@ static void _villiageMapInit(void){
     // vic.color_border--;
 
     // make screen visible
-    switchScreenTo(SCREEN_HIRES_TXT);    _villiageMapLoadGfx();
+    switchScreenTo(SCREEN_HIRES_TXT);
+    _villiageMapLoadGfx();
     displayMenu(VILLIAGE_MAP_MENU);
 }
 

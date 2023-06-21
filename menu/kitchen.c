@@ -37,9 +37,9 @@ enum FARMLAND_SPRITE_VIC_BANKS {
 
 #pragma data ( kitchenGfxDay )
 __export const char kitchenGfx1[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/kuchnia_26.01.23.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/kuchnia_26.01.23.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/kuchnia_26.01.23.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/kuchnia_210623.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/kuchnia_210623.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/kuchnia_210623.kla"
 };
 
 #pragma data ( kitchenSprites )

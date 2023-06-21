@@ -97,6 +97,7 @@ void mainLoop(){
     gms_gameSpeed = SPEED_PAUSED;
     gms_gameSpeedWait = WAIT_TIME_PAUSED;
     gms_disableTimeControls = false;
+    gms_inSpecialMenu = false;
     updateGameSpeed();
 
     updateStatusBar(TXT[SB_IDX_WELCOME]);
@@ -128,7 +129,9 @@ void mainLoop(){
             checkKeys();
             oncePerFrameFinished = true;
             // process special tasks
-            runMenuLoop();
+            if(!gms_inSpecialMenu){
+                runMenuLoop();
+            }
         }
         // reset the flags once the 'middle' part has been drawn
         if(gms_framePos == FRAME_TOP_BORDER){

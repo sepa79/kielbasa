@@ -274,6 +274,7 @@ void initCalendar(Calendar * cal) {
     byte pbank = setBank(TICKS_BANK);
     setWeatherIcon(weatherSprite);
 
+    cal->dateMinute  = 0;
     cal->dateHour    = 13;
     cal->dateDay     = 1;
     cal->dateMonth   = 5;

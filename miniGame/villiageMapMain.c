@@ -75,7 +75,7 @@ const char1024 allLightMaps[4] = { {
 }};
 
 static const char _mapLocations[] = {
-    #embed "assets/charGfx/VilliageMapHiresMain16xWood.ctm.ids.bin"
+    #embed "assets/charGfx/VilliageMapZelda.ctm.ids.bin"
 };
 
 // ---------------------------------------------------------------------------------------------

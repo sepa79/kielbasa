@@ -17,6 +17,7 @@ struct Character allCharacters[CHARACTER_COUNT];
 #pragma bss ( data )
 
 void initGame() {
+    GS.cash = 25000;
     initCharacterList(); // data kept in allCharacters
     initCalendar(&GS.calendar);
     initKitchen(&GS.kitchen);

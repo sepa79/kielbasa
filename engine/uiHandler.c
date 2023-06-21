@@ -216,13 +216,13 @@ static void _moveJoyThroughMenuAndAssignKeys(){
     }
 }
 
-static bool _inFXMenu = false;
 static byte previousScreenMode = 0;
+
 static void _prepareFullScreenMenu() {
     // if we are in menu already, don't store previous screen
-    if(!_inFXMenu){
+    if(!gms_inSpecialMenu){
         previousScreenMode = currentScreenMode;
-        _inFXMenu = true;
+        gms_inSpecialMenu = true;
     }
     switchScreenTo(SCREEN_FULL_TXT);
     gms_disableTimeControls = true;
@@ -236,7 +236,7 @@ void backToPreviousMenu(){
     // This will simply call currently mounted menu again
     switchScreenTo(previousScreenMode);
     showMenu();
-    _inFXMenu = false;
+    gms_inSpecialMenu = false;
 }
 
 // check keys that were pressed, including joystick, and load appropriate menu option
@@ -349,6 +349,7 @@ void updateGameSpeed(){
 void updateStatusBar(const byte * text){
     // reset flash for text
     isc_statusTextColorIdx = 0;
+    setNormalCursor();
     textToSprite((char *)text, 4, SPR_TXT_UP_1);
 }
 void updateStatusBarError(const byte * text){
@@ -360,44 +361,23 @@ void updateStatusBarError(const byte * text){
 void initUI(){
     // vic.color_border--;
 
-    // GS.calendar.dateHour  = 13;
-    // GS.calendar.dateDay   = 1;
-    // GS.calendar.dateMonth = 5;
-    // GS.calendar.dateYearH = 8;
-    // GS.calendar.dateYearL = 9;
-
-    byte str[3];
+    byte str[6*3+1];
+    byte tmp[3];
     sprBankPointer = SPR_DATE_TXT1;
     // draw hour
-    sprintf(str, "%02u", GS.calendar.dateHour);
-    copyCharToSprite(str[0], 0, 0, sprBankPointer);
-    copyCharToSprite(str[1], 1, 0, sprBankPointer);
-    // 58 is :
-    copyCharToSprite(':', 2, 0, sprBankPointer);
-    copyCharToSprite('0', 3, 0, sprBankPointer);
-    copyCharToSprite('0', 4, 0, sprBankPointer);
+    sprintf(str, "%02u:%02u     %d%d%5u", GS.calendar.dateHour, GS.calendar.dateMinute, GS.calendar.dateYearH, GS.calendar.dateYearL, GS.cash);
 
     // day, month
-    sprintf(str, "%02u", GS.calendar.dateDay, sprBankPointer);
-    copyCharToSprite(str[0], 0, 1, sprBankPointer);
-    copyCharToSprite(str[1]+0x40, 1, 1, sprBankPointer);
+    sprintf(tmp, "%02u", GS.calendar.dateDay, sprBankPointer);
+    str[6] = tmp[0];
+    str[7] = tmp[1]+0x40;
 
-    sprintf(str, "%02u", GS.calendar.dateMonth, sprBankPointer);
-    copyCharToSprite(str[0], 2, 1, sprBankPointer);
-    copyCharToSprite(str[1]+0x40, 3, 1, sprBankPointer);
+    sprintf(tmp, "%02u", GS.calendar.dateMonth, sprBankPointer);
+    str[8] = tmp[0];
+    str[9] = tmp[1]+0x40;
 
-    // year
-    drawYearL();
-    drawYearH();
-
-    // Cash
-    copyCharToSprite('2', 0, 2, sprBankPointer);
-    copyCharToSprite('4', 1, 2, sprBankPointer);
-    copyCharToSprite('5', 2, 2, sprBankPointer);
-    copyCharToSprite('0', 3, 2, sprBankPointer);
-    copyCharToSprite('0', 4, 2, sprBankPointer);
-    copyCharToSprite(28, 5, 2, sprBankPointer); //28 is 'zl'
-
+    str[17] = 28; // zl
+    textToSprite(str, 2, SPR_DATE_TXT1);
     // vic.color_border++;
 }
 

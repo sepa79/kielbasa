@@ -15,6 +15,7 @@ volatile byte gms_framePos = FRAME_UNKNOWN;
 // volatile bool gms_textMode = false;
 
 volatile bool gms_disableTimeControls = false;
+volatile bool gms_inSpecialMenu = false;
 volatile bool gms_enableMenuSprites = true;
 volatile bool gms_enableMusic = true;
 volatile char gms_frameCount = 0;
