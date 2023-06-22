@@ -158,6 +158,7 @@ const struct MenuOption VILLIAGE_MAP_MENU[] = {
 
 static void _villiageMapLoadGfx(){
     if(!GS.calendar.isDay){
+        playSong(VILLIAGE_MAP_SONG_NIGHT);
         // fill screen with moonlight
         switch(GS.calendar.moonPhase){
             case MOON_PHASE_FULL:
@@ -175,7 +176,10 @@ static void _villiageMapLoadGfx(){
         char pbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
         memcpy(lightMap, allLightMaps[GS.vMap.direction], 960);
         setBank(pbank);
+    } else {
+        playSong(VILLIAGE_MAP_SONG_DAY);
     }
+
     // clean last row in case we came back from options menu
     memset(COLOR_RAM+960, VCOL_BLACK, 40);
     // force map redraw
@@ -204,10 +208,6 @@ void villiageMapInit(void){
     buildRamTiles();
     // init and draw map
     _villiageMapLoadGfx();
-
-    // vic.color_border++;
-    playSong(VILLIAGE_MAP_SONG);
-    // vic.color_border--;
 
     _villiageMapShowMenu();
 }

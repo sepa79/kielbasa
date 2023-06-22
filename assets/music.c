@@ -31,7 +31,7 @@ __export const char msxFightIntro[] = {
 __export const char msxAirDef[] = {
     #embed 0xffff 136 "assets/music/FarmGame-3.sid"
 };
-__export const char radioVMap[] = {
+__export const char msxVMap[] = {
     #embed 0xffff 136 "assets/music/FarmGame-4.sid"
 };
 
@@ -64,7 +64,7 @@ __export const char* sidIndex[] ={
     msxMain,
     msxFightIntro,
     msxAirDef,
-    radioVMap,
+    msxVMap,
 
     radioMsx01,
     radioMsx02,
@@ -112,8 +112,8 @@ const struct Song PLAYLIST[PLAYLIST_SIZE] = {
     { TXT_PLAYLIST_GM_S2, MUSIC_BANK, 1, 0, sizeof(msxMain) },
     { TXT_PLAYLIST_GM_S3, MUSIC_BANK, 0, 2, sizeof(msxAirDef) },
     { TXT_PLAYLIST_GM_S4, MUSIC_BANK, 0, 1, sizeof(msxFightIntro) },
-    { TXT_PLAYLIST_GM_S5, MUSIC_BANK, 0, 3, sizeof(radioVMap) },
-    { TXT_PLAYLIST_GM_S6, MUSIC_BANK, 1, 3, sizeof(radioVMap) },
+    { TXT_PLAYLIST_GM_S5, MUSIC_BANK, 0, 3, sizeof(msxVMap) },
+    { TXT_PLAYLIST_GM_S6, MUSIC_BANK, 1, 3, sizeof(msxVMap) },
     { TXT_PLAYLIST_RETRO_NAME, TITLE_ONLY, TITLE_ONLY, TITLE_ONLY, 0 },
     { TXT_PLAYLIST_RETRO_S1, MUSIC_BANK_RETRO_1, 0, 6, sizeof(retroMsx01) },
     { TXT_PLAYLIST_RETRO_S2, MUSIC_BANK_RETRO_1, 1, 6, sizeof(retroMsx01) },

@@ -87,7 +87,7 @@ void initGameStartScreen(){
     splashScreen(true, 3);
 
     setBank(MUSIC_BANK);
-    loadMusic(MSX_MAIN_THEME_SID_IDX);
+    loadMusic(&PLAYLIST[MSX_MAIN_THEME]);
 
     __asm {
         sei

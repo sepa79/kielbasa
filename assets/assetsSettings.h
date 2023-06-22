@@ -50,10 +50,10 @@
 // music
 // bound to PLAYLIST defined in optionsMenu.c
 #define MAIN_MENU_SONG 2
-#define VILLIAGE_MAP_SONG 5
+#define VILLIAGE_MAP_SONG_DAY 5
+#define VILLIAGE_MAP_SONG_NIGHT 6
 // used in loader only
-#define MSX_MAIN_THEME_SID_IDX 0
-#define MSX_MAIN_THEME_SNG_IDX 1
+#define MSX_MAIN_THEME 1
 #define MSX_SRC_ADR_0 0x8000
 #define MSX_SRC_ADR_1 0xa000
 #define MSX_DST_ADR 0x8000

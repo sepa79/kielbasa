@@ -250,7 +250,9 @@ static void _drawPlayerAndColors(){
 // char moonLightColor = VCOL_BLACK;
 char moonDetailLevel = 0;
 // timer used on map for time ticks
-static char timer = 0;
+#define MAP_TICK_DELAY 60;
+static volatile char timer = 0;
+static volatile char timeCost = 0;
 
 void villiageMapScreenInit(void){
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
@@ -267,7 +269,8 @@ void villiageMapScreenInit(void){
         // vic.color_border--;
     }
     // reset timer
-    timer = 50;
+    timer = MAP_TICK_DELAY;
+    timeCost = 0;
 }
 
 static void _drawPlayer(){
@@ -280,9 +283,8 @@ void villiageMapDraw(){
     // performance metrics
     char frameStart = gms_frameCount;
 
-    // reset timer - each move is counted as a time tick
-    timer = 1;
-    
+    // decrease timer - each move takes time
+    timeCost = 10;
 
     // draw map
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_2);
@@ -324,8 +326,21 @@ void villiageMapDraw(){
 }
 
 static void _mapTimeTick(){
+    // check if move happened and we need to adjust the timer
+    char str[12*3+1];
+    if(timeCost){
+        if(timer > timeCost){
+            timer -= timeCost;
+            timeCost = 0;
+        } else {
+            timeCost -= timer;
+            timer = 1;
+        }
+    }
+    // sprintf(str, "%03d %03d", timeCost, timer);
+    // textToSprite(str, 4, SPR_TXT_BOTTOM_1);
     if(!--timer){
-        timer = 50;
+        timer = MAP_TICK_DELAY;
         if(GS.calendar.dateMinute < 59){
             GS.calendar.dateMinute++;
         } else {
@@ -340,5 +355,7 @@ static void _mapTimeTick(){
 }
 
 void villiageMapGameLoop(){
+    // vic.color_border--;
     _mapTimeTick();
+    // vic.color_border++;
 }
