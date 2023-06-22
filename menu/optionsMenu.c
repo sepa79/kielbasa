@@ -5,6 +5,7 @@
 #include <c64/easyflash.h>
 #include <c64/memmap.h>
 
+#include <assets/music.h>
 #include <menu/menuSystem.h>
 #include <menu/optionsMenu.h>
 #include <translation/common.h>
@@ -16,76 +17,15 @@
 const byte LANGUAGE_BANKS[MAX_LANG+1] = {TRANSLATION_PL_BANK, TRANSLATION_EN_BANK};
 static byte _currentLang = 1;
 static byte _currentSong = 2;
-
-// TODO: toss somewhere into ROM - the main menu is in RAM so music menu might one day need its own bank
-const char TXT_PLAYLIST_GM_NAME[] = s" Kielbasa music";
-const char TXT_PLAYLIST_GM_S1[] = s"1 Take me for a dance";
-const char TXT_PLAYLIST_GM_S2[] = s"2 For Sausage and Stonka";
-const char TXT_PLAYLIST_GM_S3[] = s"3 Flack Attack";
-const char TXT_PLAYLIST_GM_S4[] = s"4 Dare to Lair";
-const char TXT_PLAYLIST_GM_S5[] = s"5 Forest Froth";
-const char TXT_PLAYLIST_GM_S6[] = s"6 War of the Crops and Worlds";
-const char TXT_PLAYLIST_RETRO_NAME[] = s" Retro Tributes";
-const char TXT_PLAYLIST_RETRO_S1[] = s"1 Robbing Mr Hubbard";
-const char TXT_PLAYLIST_RETRO_S2[] = s"2 From Bangladesh to Bankok";
-const char TXT_PLAYLIST_RETRO_S3[] = s"3 Gray walls torn down";
-const char TXT_PLAYLIST_RADIO_NAME[] = s" 90's Radio";
-const char TXT_PLAYLIST_RADIO_S1[] = s"1 Kraftwerk - The Model";
-const char TXT_PLAYLIST_RADIO_S2[] = s"2 Yazz - Don't Go";
-const char TXT_PLAYLIST_RADIO_S3[] = s"3 Human League - Don't You Want Me?";
-const char TXT_PLAYLIST_RADIO_S4[] = s"4 Depeche Mode - Everything Counts";
-const char TXT_PLAYLIST_RADIO_S5[] = s"5 Donna Summer - I Feel Love";
-const char TXT_PLAYLIST_RADIO_S6[] = s"6 OMD - Enola Gay";
-const char TXT_PLAYLIST_RADIO_S7[] = s"7 Pink Floyd - A.B.I.T.W. Part 2";
-const char TXT_PLAYLIST_RADIO_S8[] = s"8 Tom Robinson - Listen to the radio";
-const char TXT_PLAYLIST_RADIO_S9[] = s"9 Eurythmics - Sweet Dreams";
-
-#define TITLE_ONLY 0xff
-#define RADIO_PLAYLIST_SIZE 9
 static byte _currentRadioSong = RADIO_PLAYLIST_SIZE;
-
-#define PLAYLIST_SIZE 12 + RADIO_PLAYLIST_SIZE
-const struct Song RADIO_PLAYLIST[RADIO_PLAYLIST_SIZE] = {
-    { TXT_PLAYLIST_RADIO_S1, MUSIC_BANK_RADIO_1, 0, 0 },
-    { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 1, 0 },
-    { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 2, 0 },
-    { TXT_PLAYLIST_RADIO_S4, MUSIC_BANK_RADIO_1, 3, 0 },
-    { TXT_PLAYLIST_RADIO_S5, MUSIC_BANK_RADIO_1, 4, 0 },
-    { TXT_PLAYLIST_RADIO_S6, MUSIC_BANK_RADIO_1, 5, 0 },
-    { TXT_PLAYLIST_RADIO_S7, MUSIC_BANK_RADIO_1, 0, 1 },
-    { TXT_PLAYLIST_RADIO_S8, MUSIC_BANK_RADIO_1, 1, 1 },
-    { TXT_PLAYLIST_RADIO_S9, MUSIC_BANK_RADIO_1, 2, 1 }
-};
-
-const struct Song PLAYLIST[PLAYLIST_SIZE] = {
-    { TXT_PLAYLIST_GM_NAME, TITLE_ONLY, TITLE_ONLY, TITLE_ONLY },
-    { TXT_PLAYLIST_GM_S1, MUSIC_BANK, 0, 0 },
-    { TXT_PLAYLIST_GM_S2, MUSIC_BANK, 1, 0 },
-    { TXT_PLAYLIST_GM_S3, MUSIC_BANK, 2, 0 },
-    { TXT_PLAYLIST_GM_S4, MUSIC_BANK, 3, 0 },
-    { TXT_PLAYLIST_GM_S5, MUSIC_BANK, 4, 0 },
-    { TXT_PLAYLIST_GM_S6, MUSIC_BANK, 5, 0 },
-    { TXT_PLAYLIST_RETRO_NAME, TITLE_ONLY, TITLE_ONLY, TITLE_ONLY },
-    { TXT_PLAYLIST_RETRO_S1, MUSIC_BANK_RETRO_1, 0, 0 },
-    { TXT_PLAYLIST_RETRO_S2, MUSIC_BANK_RETRO_1, 1, 0 },
-    { TXT_PLAYLIST_RETRO_S3, MUSIC_BANK_RETRO_1, 2, 0 },
-    // find a way to avoid duplicating these
-    { TXT_PLAYLIST_RADIO_NAME, TITLE_ONLY, TITLE_ONLY, TITLE_ONLY },
-    { TXT_PLAYLIST_RADIO_S1, MUSIC_BANK_RADIO_1, 0, 0 },
-    { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 1, 0 },
-    { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 2, 0 },
-    { TXT_PLAYLIST_RADIO_S4, MUSIC_BANK_RADIO_1, 3, 0 },
-    { TXT_PLAYLIST_RADIO_S5, MUSIC_BANK_RADIO_1, 4, 0 },
-    { TXT_PLAYLIST_RADIO_S6, MUSIC_BANK_RADIO_1, 5, 0 },
-    { TXT_PLAYLIST_RADIO_S7, MUSIC_BANK_RADIO_1, 0, 1 },
-    { TXT_PLAYLIST_RADIO_S8, MUSIC_BANK_RADIO_1, 1, 1 },
-    { TXT_PLAYLIST_RADIO_S9, MUSIC_BANK_RADIO_1, 2, 1 }
-};
 
 #define PLAYLIST_X 2
 #define PLAYLIST_Y 3
 static void _displayPlaylist(){
     // songs list
+    char pbank = setBank(MUSIC_BANK);
+    // now songs are visible from ROM
+
     for(byte i=0;i<PLAYLIST_SIZE;i++){
         byte color = VCOL_GREEN;
         // print songs marker
@@ -100,6 +40,8 @@ static void _displayPlaylist(){
 
         cwin_putat_string_raw(&cw, PLAYLIST_X, PLAYLIST_Y+i, PLAYLIST[i].textIdx, color);
     }
+
+    setBank(pbank);
 }
 
 static void _upRowCheck(){
@@ -110,11 +52,13 @@ static void _upRowCheck(){
     }
 }
 static void _upRow(){
+    char pbank = setBank(MUSIC_BANK);
     _upRowCheck();
     if(PLAYLIST[_currentSong].bank == TITLE_ONLY){
         _upRowCheck();
     }
     _displayPlaylist();
+    setBank(pbank);
 }
 static void _downRowCheck(){
     if(_currentSong < PLAYLIST_SIZE-1){
@@ -124,11 +68,13 @@ static void _downRowCheck(){
     }
 }
 static void _downRow(){
+    char pbank = setBank(MUSIC_BANK);
     _downRowCheck();
     if(PLAYLIST[_currentSong].bank == TITLE_ONLY){
         _downRowCheck();
     }
     _displayPlaylist();
+    setBank(pbank);
 }
 
 static void _playMsx(struct Song * song){
@@ -139,10 +85,12 @@ static void _playMsx(struct Song * song){
         ((byte *)0xd418)[0] &= ~0xf;
 
         // set Radio bank
-        char pbank = setBank(song->bank);
+        char pbank = setBank(MUSIC_BANK);
+        // now songs are visible from ROM
+        setBank(song->bank);
 
         // load different MSX file
-        loadMusic(song->sidIdx);
+        loadMusic(song);
         byte songIdx = song->songIdx;
 
         char pport = setPort(MMAP_NO_BASIC);
