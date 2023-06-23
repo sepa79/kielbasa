@@ -53,9 +53,8 @@ static const char _mapSprites[] = {
 #pragma data ( villiageMapData )
 
 static const char _map[] = {
-    #embed ctm_map8     "assets/charGfx/VilliageMapZelda.ctm"
-    // #embed ctm_map8     "assets/charGfx/VilliageMapHiresMain16xWood.ctm"
-    // #embed "assets/charGfx/VilliageMapHiresMain16xWood_-_8bpc_64x64_Map_-_grass_16_pion_poziom_slash_backslash.bin"
+    // #embed ctm_map8     "assets/charGfx/VilliageMapZelda.ctm"
+    #embed "assets/charGfx/VilliageMapZelda_Map.bin"
 };
 
 const char romTiles[] = {

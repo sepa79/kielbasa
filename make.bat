@@ -2,6 +2,8 @@
 set OSCAR_HOME="c:\Program Files (x86)\oscar64\bin"
 cd .\translation\
 python3.exe .\create_translations.py
+@REM cd ..\other\
+@REM python3 replace02-remove-repeat.py VilliageMapZelda.bin 16
 cd ..
 
 @REM 
