@@ -18,7 +18,7 @@
 #pragma code ( villiageMapDisplayCode )
 #pragma data ( villiageMapRAMData )
 
-// 0xa0 - start of 'lightmapped' chars
+// 0xb0 - start of 'lightmapped' chars
 #define LIGHTMAP_DRAW_ROUTINE \
         {\
             char ci = ti[cx];\
@@ -28,13 +28,13 @@
                 char color = lmC >> 4;\
                 if(color){\
                     cp[cx] = colorMap[color][ci];\
-                    if(ci >= 0xa0){\
+                    if(ci >= 0xb0){\
                         ci += lMapDetail -1;\
                     }\
                 } else {\
                     char detailLvl = lMapDetail - moonDetailLevel;\
                     if(detailLvl < 4){\
-                        if(ci >= 0xa0){\
+                        if(ci >= 0xb0){\
                             ci += detailLvl;\
                         }\
                         cp[cx] = VCOL_DARK_GREY;\

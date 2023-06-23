@@ -53,12 +53,12 @@ static const char _mapSprites[] = {
 #pragma data ( villiageMapData )
 
 static const char _map[] = {
-    // #embed ctm_map8     "assets/charGfx/VilliageMapZelda.ctm"
-    #embed "assets/charGfx/VilliageMapZelda_Map.bin"
+    // #embed ctm_map8     "assets/charGfx/VilliageMap.ctm"
+    #embed "assets/charGfx/VilliageMap_Map.bin"
 };
 
 const char romTiles[] = {
-    #embed ctm_tiles8   "assets/charGfx/VilliageMapZelda.ctm"
+    #embed ctm_tiles8   "assets/charGfx/VilliageMap.ctm"
 };
 
 #pragma data ( villiageMapData2 )
@@ -74,7 +74,7 @@ const char1024 allLightMaps[4] = { {
 }};
 
 static const char _mapLocations[] = {
-    #embed "assets/charGfx/VilliageMapZelda.ctm.ids.bin"
+    #embed "assets/charGfx/VilliageMap.ctm.ids.bin"
 };
 
 // ---------------------------------------------------------------------------------------------
@@ -122,7 +122,7 @@ static void _mapInit(){
 char * ramTiles = (char *)0xc480;
 
 #define GROUND_CHAR 0xbc
-#define CROPS_CHAR 0x70
+#define CROPS_CHAR 0xa0
 
 #define FIELD_START ramTiles
 

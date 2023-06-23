@@ -4,8 +4,8 @@ import sys
 from inc.charpad_map_loader import CharpadMapLoader
 import random
 
-TILE_TO_REPLACE = 0x70
-# TILE_TO_REPLACE = 0x3e
+TILE_TO_REPLACE = 0x82
+TILE_COUNT = 10
 MAP_HORIZONTAL_SIZE = 64
 
 def print_info(data):
@@ -38,17 +38,17 @@ if __name__ == "__main__":
 
     # verify arguments count
     args = sys.argv
-    if len( args ) != 3:
+    if len( args ) != 2:
         print()
-        print( "application takes 2 arguments, example:" )
+        print( "application takes 1 argument, example:" )
         print()
-        print( "> %s filename.bin 5" % (args[0]) )
+        print( "> %s filename.bin" % (args[0]) )
         print()
         exit()
 
     # take file name from arguments
     fileName = args[1]
-    grassTileCount = int(args[2])
+    grassTileCount = TILE_COUNT
 
     # init charpad map loader
     loader = CharpadMapLoader()
