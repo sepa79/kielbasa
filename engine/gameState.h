@@ -10,7 +10,7 @@
 #include <character/character.h>
 
 struct GameState {
-    long cash;
+    unsigned long cash;
     struct Calendar calendar;
     struct Kitchen kitchen;
     struct Farm farm;

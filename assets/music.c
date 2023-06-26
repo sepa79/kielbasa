@@ -58,8 +58,8 @@ __export const char retroMsx01[] = {
 // store this song data in shared section, so we can safely switch banks to load SIDs and this data is always available
 #pragma code ( musicCode )
 #pragma data ( musicData )
-#pragma code ( code )
-#pragma data ( data )
+// #pragma code ( code )
+// #pragma data ( data )
 __export const char* sidIndex[] ={
     msxMain,
     msxFightIntro,
@@ -134,12 +134,12 @@ const struct Song PLAYLIST[PLAYLIST_SIZE] = {
 // this better be called when music IRQs are not trying to use the player...
 void loadMusic(struct Song * song){
     // vic.color_back++;
-    // memcpy((volatile char*)MSX_DST_ADR, sidIndex[song->sidIdx], song->size);
-    int i = 0;
-    do {
-        ((volatile char*) MSX_DST_ADR)[i] = (sidIndex[song->sidIdx])[i];
-        i++;
-    } while (i < song->size);
+    memcpy((volatile char*)MSX_DST_ADR, sidIndex[song->sidIdx], song->size);
+    // int i = 0;
+    // do {
+    //     ((volatile char*) MSX_DST_ADR)[i] = (sidIndex[song->sidIdx])[i];
+    //     i++;
+    // } while (i < song->size);
 }
 
 // Switching code generation back to shared section

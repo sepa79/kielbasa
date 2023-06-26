@@ -11,7 +11,7 @@ struct Song {
     /* SID index in the bank */
     char sidIdx;
     /* how much to copy */
-    int size;
+    unsigned int size;
 };
 
 #define TITLE_ONLY 0xff

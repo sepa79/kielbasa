@@ -174,7 +174,7 @@ static void buildRamTiles(void){
             aliveCount = aliveCount - fields[fi].reaped;
         }
         // reset fLayout index
-        int i = 0;
+        unsigned int i = 0;
         for(char fy=0; fy<fields[fi].height; fy++){
             // Tile Y
             for(char ty=0; ty<4; ty++){
