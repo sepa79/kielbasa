@@ -229,13 +229,7 @@ __interrupt static void IRQ_middleScreenMsx() {
     gms_framePos = FRAME_MIDDLE;
 }
 
-__interrupt static void IRQ_middleTxtScreen_C() {
-    // Select TEXT screen
-    setSpritesBottomScr();
-    IRQ_middleScreenMsx();
-}
-
-void IRQ_middleTxtScreen(){
+__interrupt void IRQ_middleTxtScreen(){
 
     __asm {
         ldx #$08
@@ -246,8 +240,9 @@ void IRQ_middleTxtScreen(){
     vic.ctrl2 = VIC_CTRL2_CSEL | 0;
     vic.memptr = d018_txt1;
 
-    IRQ_middleTxtScreen_C();
-    
+    // Select TEXT screen
+    setSpritesBottomScr();
+    IRQ_middleScreenMsx();
 }
 /* ================================================================================
 Bottom UI

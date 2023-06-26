@@ -13,9 +13,9 @@
 
 // modifier values, make sure stat is -1'ed so that '3' means middle value is chosen
 // substract 10 from it.
-static const char priModifierTable[5] = {0, 5, 10, 15, 20};
-static const char secModifierTable[5] = {2, 6, 10, 14, 18};
-static const char terModifierTable[5] = {4, 8, 10, 12, 16};
+static const signed char priModifierTable[5] = {-10, -5, 0, 5, 10};
+static const signed char secModifierTable[5] = { -8, -4, 0, 4,  8};
+static const signed char terModifierTable[5] = { -6, -2, 0, 2,  6};
 
 void _sowFieldTask(char taskId){
     LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_ENTRY;
@@ -31,7 +31,7 @@ void _sowFieldTask(char taskId){
     char plantId = task_params[taskId][0];
     char fieldId = task_params[taskId][1];
 
-    char energyNeeded = 0;
+    unsigned int energyNeeded = 0;
     signed int partDone = 0;
 
     if(task_status[taskId] == TASK_STATUS_NEW){
@@ -55,7 +55,7 @@ void _sowFieldTask(char taskId){
         char priModifier = allCharacters[charIdx].stat[ STAT_STR ] -1;
         char secModifier = allCharacters[charIdx].stat[ STAT_INT ] -1;
         char terModifier = allCharacters[charIdx].stat[ STAT_CUN ] -1;
-        partDone = skill * 10 + priModifierTable[priModifier]-10 + secModifierTable[secModifier]-10 + terModifierTable[terModifier]-10;
+        partDone = skill * 10 + priModifierTable[priModifier] + secModifierTable[secModifier] + terModifierTable[terModifier];
         if(partDone <= 0){
             partDone = 1;
         }
@@ -72,7 +72,7 @@ void _sowFieldTask(char taskId){
         if(GS.farm.storage[plantId] >= partDone) {
 
             // check if we got enough energy
-            energyNeeded = partDone;
+            energyNeeded = partDone*ENERGY_COST_MULTIPLIER_FIELD_TASK;
             if(checkEnergyLevel(charIdx, energyNeeded)){
                 GS.farm.storage[plantId] -= partDone;
 
@@ -89,6 +89,13 @@ void _sowFieldTask(char taskId){
                     // task done, set status & remove
                     task_status[taskId] = TASK_STATUS_DONE;
 
+                    // first log how much was processed
+                    LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_EXIT;
+                    setTaskLogMsg(taskId);
+                    LOG_MSG.LOG_DATA_TASK_PARAMS3 = energyNeeded;
+                    LOG_MSG.LOG_DATA_TASK_PARAMS4 = partDone;
+                    logger(LOG_DEBUG | LOG_MSG_TASK);
+                    // now log that its finished
                     LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_DONE;
                     setTaskLogMsg(taskId);
                     logger(LOG_INFO | LOG_MSG_TASK);
@@ -160,7 +167,7 @@ void _reapFieldTask(char taskId){
         char priModifier = allCharacters[charIdx].stat[ STAT_STR ] -1;
         char secModifier = allCharacters[charIdx].stat[ STAT_INT ] -1;
         char terModifier = allCharacters[charIdx].stat[ STAT_CUN ] -1;
-        signed int partDone = skill * 10 + priModifierTable[priModifier]-10 + secModifierTable[secModifier]-10 + terModifierTable[terModifier]-10;
+        signed int partDone = skill * 10 + priModifierTable[priModifier] + secModifierTable[secModifier] + terModifierTable[terModifier];
         if(partDone <= 0){
             partDone = 1;
         }
@@ -170,7 +177,7 @@ void _reapFieldTask(char taskId){
         }
         
         // check if we got enough energy
-        char energyNeeded = partDone;
+        unsigned int energyNeeded = partDone*ENERGY_COST_MULTIPLIER_FIELD_TASK;
         if(checkEnergyLevel(charIdx, energyNeeded)){
             GS.farm.storage[plantId] += partDone;
             // decrease energy

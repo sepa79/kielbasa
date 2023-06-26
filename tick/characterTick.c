@@ -17,9 +17,9 @@ void sleepTick(){
             byte rnd0 = 0;
             // hungry ppl do not regen much
             if(allCharacters[charIdx].regenTime){
-                rnd0 = (rnd & 7) + 5;
+                rnd0 = (rnd & 31) + 30;
             } else {
-                rnd0 = (rnd & 3) + 1;
+                rnd0 = (rnd & 15) + 5;
             }
             incEnergyLevel(characterSlots[charSlot], rnd0);
         }
@@ -31,9 +31,7 @@ void miaTick(){
         if(characterSlots[charSlot] != NO_CHARACTER){
             // check if character is not busy
             if(allCharacters[characterSlots[charSlot]].busy == false){
-                word rnd = rand();
-                byte rnd0 = (rnd & 3) + 2;
-                decEnergyLevel(characterSlots[charSlot], rnd0);
+                decEnergyLevel(characterSlots[charSlot], ENERGY_COST_MIA);
             }
         }
     }

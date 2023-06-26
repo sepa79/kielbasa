@@ -18,7 +18,7 @@ static void _setCharacterToSlot(char charSlot, char charIdx){
 }
 
 // checks if given charIdx (from allCharSlots) has at least 'amount' energy
-bool checkEnergyLevel(char charIdx, char amount){
+bool checkEnergyLevel(char charIdx, unsigned int amount){
     if(allCharacters[charIdx].energy >= amount){
         return true;
     }
@@ -26,24 +26,25 @@ bool checkEnergyLevel(char charIdx, char amount){
 }
 
 // call only on populated slots
-void incEnergyLevel(char charIdx, char amount){
-    char energy = allCharacters[charIdx].energy;
+void incEnergyLevel(char charIdx, unsigned int amount){
+    unsigned int energy = allCharacters[charIdx].energy;
     energy += amount;
 
-    if(energy > 100){
-        energy = 100;
+    if(energy > MAX_ENERGY){
+        energy = MAX_ENERGY;
     }
     allCharacters[charIdx].energy = energy;
     // drawBattery(charIdx);
 }
 
 // call only on populated slots
-void decEnergyLevel(char charIdx, char amount){
-    char energy = allCharacters[charIdx].energy;
-    energy -= amount;
+void decEnergyLevel(char charIdx, unsigned int amount){
+    unsigned int energy = allCharacters[charIdx].energy;
 
-    if(energy > 100){
+    if(energy < amount){
         energy = 0;
+    } else {
+        energy -= amount;
     }
 
     allCharacters[charIdx].energy = energy;
@@ -58,10 +59,10 @@ void decEnergyLevel(char charIdx, char amount){
 
 void initCharacterList(){
     static const struct Character initialChars[CHARACTER_COUNT] = {
-        {TXT_IDX_CHAR_1_STORY, TXT_IDX_CHAR_1_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT01, {3,3,3}, {1,1,1,3}, {1,2,3,4}, NO_SLOT, false},
+        {TXT_IDX_CHAR_1_STORY, TXT_IDX_CHAR_1_NAME, 800, 100, 10, 5, 0, 0, SPR_PORTRAIT01, {3,3,3}, {1,1,1,3}, {1,2,3,4}, NO_SLOT, false},
         {TXT_IDX_CHAR_2_STORY, TXT_IDX_CHAR_2_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT02, {2,3,2}, {4,6,8,5}, {2,3,1,0}, NO_SLOT, false},
         {TXT_IDX_CHAR_3_STORY, TXT_IDX_CHAR_3_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT03, {4,3,4}, {1,1,1,7}, {0,0,0,0}, NO_SLOT, false},
-        {TXT_IDX_CHAR_4_STORY, TXT_IDX_CHAR_4_NAME, 100, 100, 10, 5, 0, 0, SPR_PORTRAIT04, {6,1,7}, {6,7,5,3}, {0,0,2,0}, NO_SLOT, false}
+        {TXT_IDX_CHAR_4_STORY, TXT_IDX_CHAR_4_NAME, 500, 100, 10, 5, 0, 0, SPR_PORTRAIT04, {6,1,7}, {6,7,5,3}, {0,0,2,0}, NO_SLOT, false}
     };
 
     memcpy(allCharacters, initialChars, sizeof(initialChars));

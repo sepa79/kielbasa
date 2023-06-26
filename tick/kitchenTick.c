@@ -18,17 +18,18 @@
 
 __striped const struct FoodItem foodItems[FOOD_ITEMS_COUNT] = {
     // FOOD_SHOP_BREAD
-    {10, 10, 0, 0, false, 0, 0},
+    {60, 5, false, 0, 10},
     // FOOD_HOME_BREAD
-    {11, 11, 5, 4, false, 0, 0},
+    {60, 8, false, 0, 15},
     // FOOD_CANNED_MEAT
-    {15, 5, 0, 0, true, 0, 0},
+    {120, 4, true, 0, 30},
     // FOOD_SOUSAGE
-    {16, 6, 10, 3, true, 0, 0},
+    {180, 4, true, 0, 40},
+    // bonus foods
     // FOOD_POTATOES
-    {2, 5, 5, 7, false, 0, 0},
+    {60, 4, false, 0, 5},
     // FOOD_CORN
-    {3, 4, 9, 5, false, 0, 0}
+    {120, 2, false, 0, 5}
 };
 
 void kitchenTick(){
@@ -52,8 +53,6 @@ static bool _eatBread(){
         GS.kitchen.storage[foodItem]--;
         allCharacters[0].regenAmount = foodItems[foodItem].regenAmount;
         allCharacters[0].regenTime   = foodItems[foodItem].regenTime;
-        allCharacters[0].bonusAmount = foodItems[foodItem].bonusAmount;
-        allCharacters[0].bonusTime   = foodItems[foodItem].bonusTime;
         return false;
     }
     return true;
@@ -71,10 +70,8 @@ static bool _eatMeat(){
 
     if(GS.kitchen.storage[foodItem]){
         GS.kitchen.storage[foodItem]--;
-        allCharacters[0].regenAmount = allCharacters[0].regenAmount < foodItems[foodItem].regenAmount ? foodItems[foodItem].regenAmount : allCharacters[0].regenAmount;
+        allCharacters[0].regenAmount += foodItems[foodItem].regenAmount;
         allCharacters[0].regenTime   = allCharacters[0].regenTime   < foodItems[foodItem].regenTime   ? foodItems[foodItem].regenTime   : allCharacters[0].regenTime;
-        allCharacters[0].bonusAmount = allCharacters[0].bonusAmount < foodItems[foodItem].bonusAmount ? foodItems[foodItem].bonusAmount : allCharacters[0].bonusAmount;
-        allCharacters[0].bonusTime   = allCharacters[0].bonusTime   < foodItems[foodItem].bonusTime   ? foodItems[foodItem].bonusTime   : allCharacters[0].bonusTime;
         return false;
     }
     return true;
@@ -95,10 +92,8 @@ static bool _eatVeggies(){
 
     if(GS.farm.storage[farmItem]){
         GS.farm.storage[farmItem]--;
-        allCharacters[0].regenAmount = allCharacters[0].regenAmount < foodItems[foodItem].regenAmount ? foodItems[foodItem].regenAmount : allCharacters[0].regenAmount;
-        allCharacters[0].regenTime   = allCharacters[0].regenTime   < foodItems[foodItem].regenTime   ? foodItems[foodItem].regenTime   : allCharacters[0].regenTime;
-        allCharacters[0].bonusAmount = allCharacters[0].bonusAmount < foodItems[foodItem].bonusAmount ? foodItems[foodItem].bonusAmount : allCharacters[0].bonusAmount;
-        allCharacters[0].bonusTime   = allCharacters[0].bonusTime   < foodItems[foodItem].bonusTime   ? foodItems[foodItem].bonusTime   : allCharacters[0].bonusTime;
+        allCharacters[0].bonusAmount = foodItems[foodItem].regenAmount;
+        allCharacters[0].bonusTime   = foodItems[foodItem].regenTime;
         return false;
     }
     return true;
@@ -113,10 +108,10 @@ static void _mealTick(MEAL_TYPE mealType){
     for(byte charSlot = 1; charSlot < CHARACTER_SLOTS; charSlot++){
         if(characterSlots[charSlot] != NO_CHARACTER){
             char charIdx = characterSlots[charSlot];
-            allCharacters[charIdx].regenAmount = (rand() & 7) + 8;
+            allCharacters[charIdx].regenAmount = (rand() & 15) + 120;
             allCharacters[charIdx].regenTime   = (rand() & 7) + 5;
-            allCharacters[charIdx].bonusAmount = (rand() & 7) + 1;
-            allCharacters[charIdx].bonusTime   = (rand() & 3) + 1;
+            allCharacters[charIdx].bonusAmount = (rand() & 7) + 2;
+            allCharacters[charIdx].bonusTime   = (rand() & 15) + 30;
         }
     }
 
@@ -190,7 +185,7 @@ void initKitchen(Kitchen * kit){
     kit->storage[FOOD_HOME_BREAD]  = 0;
     kit->storage[FOOD_CANNED_MEAT] = 2;
     kit->storage[FOOD_SOUSAGE]     = 0;
-    kit->maxStorage = 10;
+    kit->maxStorage = 4;
     kit->bakeBreadDaily = false;
     kit->breakfastType = MEAL_TYPE_LIGHT;
     kit->supperType = MEAL_TYPE_LIGHT;

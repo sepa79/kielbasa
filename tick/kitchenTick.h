@@ -20,8 +20,6 @@ struct FoodItem {
     // char * nameIdx;
     char regenAmount;
     char regenTime;
-    char bonusAmount;
-    char bonusTime;
     bool isHealing;
     char weight;
     char price;

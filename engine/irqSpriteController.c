@@ -111,8 +111,11 @@ void setCharacterSlotIcon(char charIdx, char * taskIconPtr){
 
 void drawBattery(char charIdx){
     char charSlot = allCharacters[charIdx].slot;
-    char energy = allCharacters[charIdx].energy;
     if(charSlot != NO_SLOT){
+        char energy = allCharacters[charIdx].energy / 10;
+    // char str[12*3+1];
+    // sprintf(str, "%4u        %4u", allCharacters[charIdx].energy, energy);
+    // updateStatusBar(str);
         char * charBarPtr = characterSlotSpriteBarPtr[charSlot];
         char max = BATTERY_LEVEL[energy];
         _batteryColors[charSlot] = BATTERY_COLOR[max];

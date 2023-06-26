@@ -110,10 +110,15 @@ static void _waitForScreenMiddle(){
     // unknown place? skip the checks
     if(gms_framePos != FRAME_UNKNOWN){
         if(gms_framePos == FRAME_MIDDLE){
-            while(gms_framePos == FRAME_MIDDLE){};
+            while(gms_framePos == FRAME_MIDDLE){
+                // vic.color_border++;
+            };
         }
+        // TODO: broken in TRANSITION mode - looks like it likes to stay in MIDDLE state forever
         // now wait until we move to middle of the screen
-        while(gms_framePos != FRAME_MIDDLE){};
+        // while(gms_framePos != FRAME_MIDDLE){
+        //     vic.color_border--;
+        // };
     }
 }
 
@@ -202,7 +207,6 @@ void menuGfxLoader(){
 }
 
 // Loads single file and never changes it.
-// Parameter is ignored, kept for compatibility.
 // Menu should set the variable 'isGfxLoaded = false' in the menuHandler code, before calling 'loadMenuGfx()'
 void menuGfxLoaderSingleBitmap(){
     if(!mnu_isGfxLoaded){

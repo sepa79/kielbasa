@@ -26,7 +26,7 @@ static void _execBakeBreadTask(char taskId){
     setTaskLogMsg(taskId);
     logger(LOG_DEBUG | LOG_MSG_TASK);
 
-    char energyNeeded = 5;
+    unsigned int energyNeeded = ENERGY_COST_BAKE_BREAD;
 
     if(task_status[taskId] == TASK_STATUS_NEW){
 

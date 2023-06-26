@@ -9,6 +9,11 @@
 #include <menu/villiageMap.h>
 #include <character/character.h>
 
+#define MAX_ENERGY 1000
+#define ENERGY_COST_MIA 90
+#define ENERGY_COST_BAKE_BREAD 100
+#define ENERGY_COST_MULTIPLIER_FIELD_TASK 10
+
 struct GameState {
     unsigned long cash;
     struct Calendar calendar;

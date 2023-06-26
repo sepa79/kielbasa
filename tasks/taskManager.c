@@ -300,7 +300,7 @@ static void _assignTaskToWorker(char taskId, char charIdx) {
 }
 
 // Minimum energy needed by character to undertake any tasks
-#define MIN_ENERGY_TO_CONTINUE 10
+#define MIN_ENERGY_TO_CONTINUE 100
 
 
 // Reset character icons if they are not busy

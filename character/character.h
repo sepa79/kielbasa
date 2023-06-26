@@ -4,6 +4,7 @@
 #include <translation/common.h>
 #include <assets/mainGfx.h>
 #include <tick/calendar.h>
+#include <engine/gameState.h>
 
 #define STAT_COUNT 3
 #define SKILL_COUNT 4
@@ -34,15 +35,15 @@ struct Character {
     char storyTextIdx;
     char nameIdx;
     /* How much energy char has, starts with 100, max 100, min 0 */
-    char energy;
+    unsigned int energy;
     // /* How much food char has, starts with 100, max 100, min 0 */
     // char food;
     /* How much health char has, starts with 100, max 100, min 0 */
     char health;
     /* Amount and time of regen, gained after eating */
-    char regenAmount;
+    unsigned int regenAmount;
     char regenTime;
-    char bonusAmount;
+    unsigned int bonusAmount;
     char bonusTime;
     /* CHARACTER_PORTRAITS index (0 based) */
     char * picture;
@@ -72,9 +73,9 @@ void initCharacterList();
 #pragma data ( data )
 //-----------------------------------------------------------------------------------------
 
-bool checkEnergyLevel(char charIdx, char amount);
-void incEnergyLevel(char charIdx, char amount);
-void decEnergyLevel(char charIdx, char amount);
+bool checkEnergyLevel(char charIdx, unsigned int amount);
+void incEnergyLevel(char charIdx, unsigned int amount);
+void decEnergyLevel(char charIdx, unsigned int amount);
 
 #pragma compile("character.c")
 #endif
