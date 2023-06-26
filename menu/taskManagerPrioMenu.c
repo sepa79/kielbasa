@@ -32,16 +32,16 @@ static void _showTaskPriorities(){
     cwin_putat_string_raw(&cw, 0, 12, TXT[TXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_9], VCOL_YELLOW);
     cwin_putat_string_raw(&cw, 0, 13, TXT[TXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_10], VCOL_YELLOW);
 
-    byte col1;
-    byte col2[4];
-    byte str[2];
+    char col1;
+    char col2[4];
+    char str[3];
 
-    for(byte charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
+    for(char charSlot=0;charSlot<CHARACTER_SLOTS;charSlot++){
         // only check active chars
         char charIdx = characterSlots[charSlot];
         if(charIdx != NO_CHARACTER){
 
-            byte line = TASK_SHOW_LINE+charSlot;
+            char line = TASK_SHOW_LINE+charSlot;
             if(charSlot == _currentCharacter){
                 col1 = VCOL_LT_GREEN;
                 col2[0] = VCOL_LT_GREY;
@@ -62,18 +62,18 @@ static void _showTaskPriorities(){
 
             cwin_putat_string_raw(&cw, 21, line, TBL_V, VCOL_YELLOW);
 
-            sprintf(str, "%u", allCharacters[charIdx].skill[SKILL_ANIMALS]);
-            cwin_putat_string_raw(&cw, 22,  line, str, col1);
-            sprintf(str, "%u", allCharacters[charIdx].skill[SKILL_FARMING]);
-            cwin_putat_string_raw(&cw, 24,  line, str, col1);
-            sprintf(str, "%u", allCharacters[charIdx].skill[SKILL_COOKING]);
-            cwin_putat_string_raw(&cw, 26,  line, str, col1);
-            sprintf(str, "%u", allCharacters[charIdx].skill[SKILL_TRADE]);
-            cwin_putat_string_raw(&cw, 28,  line, str, col1);
-            cwin_putat_string_raw(&cw, 23, line, TBL_V, VCOL_YELLOW);
-            cwin_putat_string_raw(&cw, 25, line, TBL_V, VCOL_YELLOW);
-            cwin_putat_string_raw(&cw, 27, line, TBL_V, VCOL_YELLOW);
-            cwin_putat_string_raw(&cw, 30, line, TBL_V, VCOL_YELLOW);
+            // sprintf(str, "%2u", allCharacters[charIdx].skill[SKILL_ANIMALS]);
+            // cwin_putat_string_raw(&cw, 22,  line, str, col1);
+            // sprintf(str, "%2u", allCharacters[charIdx].skill[SKILL_FARMING]);
+            // cwin_putat_string_raw(&cw, 24,  line, str, col1);
+            // sprintf(str, "%2u", allCharacters[charIdx].skill[SKILL_COOKING]);
+            // cwin_putat_string_raw(&cw, 26,  line, str, col1);
+            // sprintf(str, "%2u", allCharacters[charIdx].skill[SKILL_TRADE]);
+            // cwin_putat_string_raw(&cw, 28, line, str, col1);
+            // cwin_putat_string_raw(&cw, 23, line, TBL_V, VCOL_YELLOW);
+            // cwin_putat_string_raw(&cw, 25, line, TBL_V, VCOL_YELLOW);
+            // cwin_putat_string_raw(&cw, 27, line, TBL_V, VCOL_YELLOW);
+            // cwin_putat_string_raw(&cw, 30, line, TBL_V, VCOL_YELLOW);
 
 
             sprintf(str, "%u", allCharacters[charIdx].prio[SKILL_ANIMALS]);

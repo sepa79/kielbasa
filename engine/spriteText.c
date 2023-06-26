@@ -33,14 +33,12 @@ void _copyCharToSprite(char c, char col, char row, char * sprBankPtr){
     _charToSprite(c, sprBankPtr+si);
 }
 
-void _textToSprite(char * str, char width, char * sprBankPtr){
+void _textToSprite(char * str, char width, char * sprBankPtr, char col, char row){
     char c = str[0];
     char it = 0;
-    char col = 0;
-    char row = 0;
     char maxCol = width*3;
     
-    char * finalSprBankPtr = sprBankPtr;
+    char * finalSprBankPtr = sprBankPtr + colOffset[col] + rowOffset[row];
     while (c != 0) {
         _charToSprite(c, finalSprBankPtr);
 
@@ -119,7 +117,13 @@ void copyCharToSprite(char c, char col, char row, char * sprBankPtr){
 // routine will keep writing row by row, so make sure text is going to fit in
 void textToSprite(char * str, char width, char * sprBankPtr){
     char pbank = setBank(MAIN_GFX_BANK);
-    _textToSprite(str, width, sprBankPtr);
+    _textToSprite(str, width, sprBankPtr, 0, 0);
+    setBank(pbank);
+}
+
+void textToSpriteAt(char * str, char width, char * sprBankPtr, char col, char row){
+    char pbank = setBank(MAIN_GFX_BANK);
+    _textToSprite(str, width, sprBankPtr, col, row);
     setBank(pbank);
 }
 

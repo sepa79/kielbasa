@@ -76,23 +76,35 @@ void _goBackToPrvMenu(){
     // vic.color_back--;
 }
 
+// temp menus, in RAM so that data is visible to updateStatusBar()
+static void _siMenu1(){
+    updateStatusBar(s"Sklep menu, opcja 1     ");
+}
+static void _siMenu2(){
+    updateStatusBar(s"Sklep menu, opcja 2     ");
+}
+
 // menu code is in ROM - data in RAM
 #pragma code ( shopInCode )
 #pragma data ( data )
 
-static void _siMenu1(){
-    updateStatusBar("Sklep menu, opcja 1");
-}
-static void _siMenu2(){
-    updateStatusBar("Sklep menu, opcja 2");
-}
 // buy bread
 static void _siMenu3(){
-    addKitchenItem(FOOD_SHOP_BREAD);
+    if(GS.cash > foodItems[FOOD_SHOP_BREAD].price){
+        if(addKitchenItem(FOOD_SHOP_BREAD)){
+            GS.cash -= foodItems[FOOD_SHOP_BREAD].price;
+            updateMoney();
+        }
+    }
 }
 // buy canned meats
 static void _siMenu4(){
-    addKitchenItem(FOOD_CANNED_MEAT);
+    if(GS.cash > foodItems[FOOD_CANNED_MEAT].price){
+        if(addKitchenItem(FOOD_CANNED_MEAT)){
+            GS.cash -= foodItems[FOOD_CANNED_MEAT].price;
+            updateMoney();
+        }
+    }
 }
 
 const struct MenuOption SHOP_INSIDE_MENU[] = {
@@ -135,6 +147,18 @@ __interrupt static void _shopInsideShowSprites(){
     }
 }
 
+static void _printPrices(){
+    char str[11] = "";
+    sprintf(str, "%9u", foodItems[FOOD_SHOP_BREAD].price);
+    str[9] = 28; // zl
+    str[10] = 0;
+    cwin_putat_string_raw(&cw, 20, 3, str, VCOL_GREEN);
+    sprintf(str, "%9u", foodItems[FOOD_CANNED_MEAT].price);
+    str[9] = 28; // zl
+    str[10] = 0;
+    cwin_putat_string_raw(&cw, 20, 4, str, VCOL_GREEN);
+}
+
 static void _menuHandler(void){
     animGherkinFrame = 0;
     animGherkinDelay = SHOP_INSIDE_ANIM_1_DELAY;
@@ -151,6 +175,7 @@ static void _menuHandler(void){
     cwin_clear(&cw);
     
     displayMenu(SHOP_INSIDE_MENU);
+    _printPrices();
 }
 
 #pragma data ( shopInLoaderData )

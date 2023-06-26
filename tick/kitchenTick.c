@@ -18,18 +18,18 @@
 
 __striped const struct FoodItem foodItems[FOOD_ITEMS_COUNT] = {
     // FOOD_SHOP_BREAD
-    {60, 5, false, 0, 10},
+    {60, 5, false, 0, 848}, // real price
     // FOOD_HOME_BREAD
-    {60, 8, false, 0, 15},
+    {60, 8, false, 0, 1000},
     // FOOD_CANNED_MEAT
-    {120, 4, true, 0, 30},
+    {120, 4, true, 0, 3600}, // real price
     // FOOD_SOUSAGE
-    {180, 4, true, 0, 40},
+    {180, 4, true, 0, 9000},
     // bonus foods
     // FOOD_POTATOES
-    {60, 4, false, 0, 5},
+    {60, 4, false, 0, 176}, // real price
     // FOOD_CORN
-    {120, 2, false, 0, 5}
+    {120, 2, false, 0, 348} // guessed price
 };
 
 void kitchenTick(){

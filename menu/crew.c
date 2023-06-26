@@ -85,9 +85,9 @@ static void _drawBarsFor(char character_new) {
     // if there was character choosen previously
     if ( character_old != NO_CHARACTER ) {
         // get old character bars data
-        params_old[0] = allCharacters[character_old].stat[0];
-        params_old[1] = allCharacters[character_old].stat[1];
-        params_old[2] = allCharacters[character_old].stat[2];
+        params_old[0] = allCharacters[character_old].stat[0]*10;
+        params_old[1] = allCharacters[character_old].stat[1]*10;
+        params_old[2] = allCharacters[character_old].stat[2]*10;
 
         params_old[3] = allCharacters[character_old].skill[0];
         params_old[4] = allCharacters[character_old].skill[1];
@@ -96,9 +96,9 @@ static void _drawBarsFor(char character_new) {
     }
 
     // get new character bars data
-    params_new[0] = allCharacters[character_new].stat[0];
-    params_new[1] = allCharacters[character_new].stat[1];
-    params_new[2] = allCharacters[character_new].stat[2];
+    params_new[0] = allCharacters[character_new].stat[0]*10;
+    params_new[1] = allCharacters[character_new].stat[1]*10;
+    params_new[2] = allCharacters[character_new].stat[2]*10;
 
     params_new[3] = allCharacters[character_new].skill[0];
     params_new[4] = allCharacters[character_new].skill[1];
@@ -129,6 +129,11 @@ static void _drawBarsFor(char character_new) {
         }
 
         // next bar x position
+        if(i == 2){
+            // make a gap between Skills and Stats
+            x_draw += BARS_X_COORDS_GAP;
+            x_draw += BARS_X_COORDS_GAP;
+        }
         x_draw += BARS_X_COORDS_GAP;
     }
 
@@ -139,7 +144,10 @@ static void _drawBarsFor(char character_new) {
 static void _prepareBars(){
     // set screen colors under bars
     for ( unsigned y=3; y<11; y++ ) {
-        for ( unsigned x=15; x<30; x+=2 ) { 
+        for ( unsigned x=15; x<20; x+=2 ) { 
+            GFX_1_SCR[y*40+x] = 0x96;
+        }
+        for ( unsigned x=21; x<33; x+=2 ) { 
             GFX_1_SCR[y*40+x] = 0x97;
         }
     }
@@ -213,24 +221,24 @@ static void _showCharacterDetails(byte character){
     _setCharacterPic(character);
 }
 
-static void _emMenu1(){
+static void _crewMenu1(){
     _showCharacterDetails(0);
 }
-static void _emMenu2(){
+static void _crewMenu2(){
     _showCharacterDetails(1);
 }
-static void _emMenu3(){
+static void _crewMenu3(){
     _showCharacterDetails(2);
 }
-static void _emMenu4(){
+static void _crewMenu4(){
     _showCharacterDetails(3);
 }
 
 const struct MenuOption CREW_MENU[] = {
-    { TXT_IDX_MENU_CREW1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_emMenu1, 0, 1, 1},
-    { TXT_IDX_MENU_CREW2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_emMenu2, 0, 1, 2},
-    { TXT_IDX_MENU_CREW3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_emMenu3, 0, 1, 3},
-    { TXT_IDX_MENU_CREW4, '4', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_emMenu4, 0, 1, 4},
+    { TXT_IDX_MENU_CREW1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_crewMenu1, 0, 1, 1},
+    { TXT_IDX_MENU_CREW2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_crewMenu2, 0, 1, 2},
+    { TXT_IDX_MENU_CREW3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_crewMenu3, 0, 1, 3},
+    { TXT_IDX_MENU_CREW4, '4', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_crewMenu4, 0, 1, 4},
     { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
     END_MENU_CHOICES
 };
@@ -250,6 +258,7 @@ static void _menuHandler(void){
     cwin_clear(&cw);
 
     displayMenu(CREW_MENU);
+    _crewMenu1();
 }
 
 #pragma data ( crewLoaderData )

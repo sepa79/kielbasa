@@ -78,7 +78,7 @@ static void _getInside(){
 #pragma data ( data )
 
 static void _soMenu2(){
-    updateStatusBar("   Sklep menu, opcja 2");
+    updateStatusBar("Sklep menu, opcja 2");
 }
 
 const struct MenuOption SHOP_OUTSIDE_MENU[] = {

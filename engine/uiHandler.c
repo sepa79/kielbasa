@@ -346,13 +346,13 @@ void updateGameSpeed(){
 }
 
 // put new text on the scroll
-void updateStatusBar(const byte * text){
+void updateStatusBar(const char * text){
     // reset flash for text
     isc_statusTextColorIdx = 0;
     setNormalCursor();
     textToSprite((char *)text, 4, SPR_TXT_UP_1);
 }
-void updateStatusBarError(const byte * text){
+void updateStatusBarError(const char * text){
     setErrorCursor();
     textToSprite((char *)text, 4, SPR_TXT_UP_1);
 }
@@ -361,8 +361,8 @@ void updateStatusBarError(const byte * text){
 void initUI(){
     // vic.color_border--;
 
-    byte str[6*3+1];
-    byte tmp[3];
+    char str[6*3+1];
+    char tmp[3];
     sprBankPointer = SPR_DATE_TXT1;
     // draw hour
     sprintf(str, "%02u:%02u     %d%d%5u", GS.calendar.dateHour, GS.calendar.dateMinute, GS.calendar.dateYearH, GS.calendar.dateYearL, GS.cash);
@@ -379,6 +379,14 @@ void initUI(){
     str[17] = 28; // zl
     textToSprite(str, 2, SPR_DATE_TXT1);
     // vic.color_border++;
+}
+
+void updateMoney(){
+    char str[6+1];
+    sprintf(str, "%5u", GS.cash);
+    str[5] = 28; // zl
+    str[6] = 0;
+    textToSpriteAt(str, 2, SPR_DATE_TXT1, 0, 2);
 }
 
 void updateMinute(byte newMinute){

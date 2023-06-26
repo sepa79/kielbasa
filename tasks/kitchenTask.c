@@ -146,7 +146,7 @@ bool addKitchenItem(FOOD_ITEMS item){
     if(GS.kitchen.storage[item] < GS.kitchen.maxStorage){
         GS.kitchen.storage[item]++;
         // TODO: proper string handling via translations, item names
-        updateStatusBar(s"Food added");
+        updateStatusBar(s"Food added                          ");
         return true;
     }
     updateStatusBarError(TXT[SB_IDX_TASK_KITCHEN_BAKE_BREAD_STORAGE_FULL]);

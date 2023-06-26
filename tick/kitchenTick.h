@@ -18,11 +18,11 @@ enum FOOD_ITEMS {
 
 struct FoodItem {
     // char * nameIdx;
-    char regenAmount;
+    unsigned int regenAmount;
     char regenTime;
     bool isHealing;
     char weight;
-    char price;
+    unsigned int price;
 };
 
 extern __striped const struct FoodItem foodItems[FOOD_ITEMS_COUNT];
