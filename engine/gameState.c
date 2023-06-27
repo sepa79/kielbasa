@@ -17,6 +17,8 @@ struct Character allCharacters[CHARACTER_COUNT];
 #pragma bss ( data )
 
 void initGame() {
+    // https://www.prawo.pl/akty/m-p-1991-4-23,16823109.html
+    // 1/12th of 1989 r. - 49.583
     GS.cash = 4582;
     initCharacterList(); // data kept in allCharacters
     initCalendar(&GS.calendar);
@@ -26,7 +28,7 @@ void initGame() {
     GS.vMap.x = 110;
     GS.vMap.y = 180;
     GS.vMap.location = 0;
-    GS.vMap.direction = WALK_DOWN;
+    GS.vMap.direction = WALK_NONE;
 }
 
 void loadGame() {

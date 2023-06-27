@@ -74,70 +74,103 @@ __interrupt void _showVilliageMapSprites(){
 #pragma code ( villiageMapRAMCode )
 #pragma data ( villiageMapRAMData )
 
-#define WALKABLE 0b00010000
+const char MOVE_COST[] = {
+    0,
+    1,
+    2,
+    3,
+    5,
+    10
+};
+
+#define WALKABLE 0b11110000
+
+static char _getMaterialCost(char scrChar){
+    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][scrChar] >> 4;
+    // byteToSprite(scrChar, SPR_TXT_UP_1);
+    return MOVE_COST[mapCharAttr1];
+}
+
 static void _mapUp(){
     // check if tiles above us are walkable
     char pport = setPort(MMAP_RAM);
-    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*11+19]];
-    char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*11+20]];
-    bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
+    char mapChar1 = mapScreen[40*11+19];
+    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapChar1];
+    bool canWalk1 = mapCharAttr1 & WALKABLE;
+    char mapChar2 = mapScreen[40*11+20];
+    char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapChar2];
+    bool canWalk = canWalk1 && (mapCharAttr2 & WALKABLE);
     setPort(pport);
     
     if(canWalk){
         if (GS.vMap.y > 0){
-            GS.vMap.y--;
+            // GS.vMap.y--;
             GS.vMap.direction = WALK_UP;
-            villiageMapDraw();
+            // get material cost of both chars as we are 2x wide on up/down move
+            char lmc = _getMaterialCost(mapChar1);
+            char rmc = _getMaterialCost(mapChar2);
+            // use the higher cost
+            // decrease timer - each move takes time
+            moveCostBase = lmc > rmc ? lmc : rmc;
         }
     }
 }
 static void _mapDown(){
     // check if tile below us is walkable
     char pport = setPort(MMAP_RAM);
-    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*13+19]];
-    char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*13+20]];
-    bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
+    char mapChar1 = mapScreen[40*13+19];
+    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapChar1];
+    bool canWalk1 = mapCharAttr1 & WALKABLE;
+    char mapChar2 = mapScreen[40*13+20];
+    char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapChar2];
+    bool canWalk = canWalk1 && (mapCharAttr2 & WALKABLE);
     setPort(pport);
 
     if(canWalk){
         if (GS.vMap.y < V_MAP_SIZE_Y*4-6*4){
-            GS.vMap.y++;
+            // GS.vMap.y++;
             GS.vMap.direction = WALK_DOWN;
-            villiageMapDraw();
             // byteToSprite(GS.vMap.y, SPR_TXT_BOTTOM_1);
+            // get material cost of both chars as we are 2x wide on up/down move
+            char lmc = _getMaterialCost(mapChar1);
+            char rmc = _getMaterialCost(mapChar2);
+            // use the higher cost
+            // decrease timer - each move takes time
+            moveCostBase = lmc > rmc ? lmc : rmc;
         }
     }
 }
 static void _mapLeft(){
     // check if tile to the left is walkable
     char pport = setPort(MMAP_RAM);
-    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*12+18]];
-    char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*12+18]];
-    bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
+    char mapChar1 = mapScreen[40*12+18];
+    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapChar1];
+    bool canWalk = mapCharAttr1 & WALKABLE;
     setPort(pport);
 
     if(canWalk){
         if (GS.vMap.x > 0){
-            GS.vMap.x--;
+            // GS.vMap.x--;
             GS.vMap.direction = WALK_LEFT;
-            villiageMapDraw();
+            // decrease timer - each move takes time
+            moveCostBase = _getMaterialCost(mapChar1);
         }
     }
 }
 static void _mapRight(){
     // check if tile to the right is walkable
     char pport = setPort(MMAP_RAM);
-    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapScreen[40*12+21]];
-    char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapScreen[40*12+21]];
-    bool canWalk = mapCharAttr1 & mapCharAttr2 & WALKABLE;
+    char mapChar1 = mapScreen[40*12+21];
+    char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapChar1];
+    bool canWalk = mapCharAttr1 & WALKABLE;
     setPort(pport);
 
     if(canWalk){
         if (GS.vMap.x < V_MAP_SIZE_X*4-10*4){
-            GS.vMap.x++;
+            // GS.vMap.x++;
             GS.vMap.direction = WALK_RIGHT;
-            villiageMapDraw();
-            // byteToSprite(GS.vMap.x, SPR_TXT_BOTTOM_1);
+            // decrease timer - each move takes time
+            moveCostBase = _getMaterialCost(mapChar1);
         }
     }
 }
@@ -197,10 +230,10 @@ static void _villiageMapShowMenu(void){
 // called from _villiageMapCodeLoader on menu load only
 void villiageMapInit(void){
     // SCREEN_TRANSITION mode is on, so screen is black
-    // clean 0xffff - so we don't have artefacts when we open borders
     gms_disableTimeControls = true;
     gms_gameSpeed = SPEED_PAUSED;
 
+    // clean 0xffff - so we don't have artefacts when we open borders
     ((char *)0xffff)[0] = 0;
     // Load GFX
     villiageMapScreenInit();

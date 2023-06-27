@@ -63,13 +63,15 @@ const char romTiles[] = {
 
 #pragma data ( villiageMapData2 )
 
-const char1024 allLightMaps[4] = { { 
+const char1024 allLightMaps[5] = { { 
     #embed ctm_map8     "assets/charGfx/lightMap_up.ctm"
 },{
     #embed ctm_map8     "assets/charGfx/lightMap_down.ctm"
 },{
     #embed ctm_map8     "assets/charGfx/lightMap_left.ctm"
 },{
+    #embed ctm_map8     "assets/charGfx/lightMap_right.ctm"
+},{ // TODO: wasted space, remove and change display code
     #embed ctm_map8     "assets/charGfx/lightMap_right.ctm"
 }};
 
@@ -248,10 +250,10 @@ static void _drawPlayerAndColors(){
 // dark moon
 // char moonLightColor = VCOL_BLACK;
 char moonDetailLevel = 0;
-// timer used on map for time ticks
-#define MAP_TICK_DELAY 60;
 static volatile char timer = 0;
-static volatile char timeCost = 0;
+volatile char moveCostBase = 0;
+volatile char moveCostTime = 0;
+volatile char moveCostEnergy = 0;
 
 void villiageMapScreenInit(void){
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
@@ -269,7 +271,7 @@ void villiageMapScreenInit(void){
     }
     // reset timer
     timer = MAP_TICK_DELAY;
-    timeCost = 0;
+    moveCostBase = 0;
 }
 
 static void _drawPlayer(){
@@ -281,9 +283,6 @@ static void _drawPlayer(){
 void villiageMapDraw(){
     // performance metrics
     char frameStart = gms_frameCount;
-
-    // decrease timer - each move takes time
-    timeCost = 10;
 
     // draw map
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_2);
@@ -326,18 +325,18 @@ void villiageMapDraw(){
 
 static void _mapTimeTick(){
     // check if move happened and we need to adjust the timer
-    char str[12*3+1];
-    if(timeCost){
-        if(timer > timeCost){
-            timer -= timeCost;
-            timeCost = 0;
+    // char str[12*3+1];
+    // sprintf(str, "%03d %03d", moveCostBase, timer);
+    // textToSprite(str, 4, SPR_TXT_BOTTOM_1);
+    if(moveCostTime){
+        if(timer > moveCostTime){
+            timer -= moveCostTime;
+            moveCostTime = 0;
         } else {
-            timeCost -= timer;
+            moveCostTime -= timer;
             timer = 1;
         }
     }
-    // sprintf(str, "%03d %03d", timeCost, timer);
-    // textToSprite(str, 4, SPR_TXT_BOTTOM_1);
     if(!--timer){
         timer = MAP_TICK_DELAY;
         if(GS.calendar.dateMinute < 59){
@@ -346,15 +345,53 @@ static void _mapTimeTick(){
             GS.calendar.dateMinute = 0;
             char pbank = setBank(TICKS_BANK);
             hourTick();
+            regenTickMapHour();
             setBank(pbank);
         }
+        char pbank = setBank(TICKS_BANK);
+        regenTickMinute();
+        setBank(pbank);
         updateMinute(GS.calendar.dateMinute);
     }
     
 }
 
+static void _movePlayer(){
+    switch(GS.vMap.direction){
+        case WALK_UP:
+            GS.vMap.y--;
+            break;
+        case WALK_DOWN:
+            GS.vMap.y++;
+            break;
+        case WALK_LEFT:
+            GS.vMap.x--;
+            break;
+        case WALK_RIGHT:
+            GS.vMap.x++;
+            break;
+    }
+}
+
 void villiageMapGameLoop(){
     // vic.color_border--;
     _mapTimeTick();
+    // decide if we can move
+    if(GS.vMap.direction != WALK_NONE){
+        moveCostTime = moveCostBase * 10;
+        moveCostEnergy = moveCostBase;
+        if(checkEnergyLevel(0, moveCostBase)){
+            decEnergyLevel(0, moveCostBase);
+            drawBattery(0);
+
+            // char str[12*3+1];
+            // sprintf(str, "%03d %03d", moveCostTime, moveCostEnergy);
+            // textToSprite(str, 4, SPR_TXT_BOTTOM_1);
+
+            _movePlayer();
+            villiageMapDraw();
+        }
+        GS.vMap.direction = WALK_NONE;
+    }
     // vic.color_border++;
 }

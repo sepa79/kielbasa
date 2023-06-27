@@ -44,7 +44,7 @@
             }\
         }
 
-void tiles_put4x4row0(char * dp, char * cp, const char * lmp, const char * mp, const char * tp, const char * rtp){
+static void _drawNightRow0(char * dp, char * cp, const char * lmp, const char * mp, const char * tp, const char * rtp){
     for(char tx=0; tx<10; tx++){
         const char * tileP = tp;
         if(mp[tx] <= RAM_TILES_COUNT)
@@ -62,7 +62,7 @@ LIGHTMAP_DRAW_ROUTINE
     }
 }
 
-void tiles_put4x4row1(char * dp, char * cp, const char * lmp, const char * mp, const char * tp, const char * rtp){
+static void _drawNightRow1(char * dp, char * cp, const char * lmp, const char * mp, const char * tp, const char * rtp){
     const char * tileP = tp;
     if(mp[0] <= RAM_TILES_COUNT)
         tileP = rtp;
@@ -107,7 +107,7 @@ LIGHTMAP_DRAW_ROUTINE
 #until cx == 1
 }
 
-void tiles_put4x4row2(char * dp, char * cp, const char * lmp, const char * mp, const char * tp, const char * rtp){
+static void _drawNightRow2(char * dp, char * cp, const char * lmp, const char * mp, const char * tp, const char * rtp){
     const char * tileP = tp;
     if(mp[0] <= RAM_TILES_COUNT)
         tileP = rtp;
@@ -153,7 +153,7 @@ LIGHTMAP_DRAW_ROUTINE
 #until cx == 2
 }
 
-void tiles_put4x4row3(char * dp, char * cp, const char * lmp, const char * mp, const char * tp, const char * rtp){
+static void _drawNightRow3(char * dp, char * cp, const char * lmp, const char * mp, const char * tp, const char * rtp){
     const char * tileP = tp;
     if(mp[0] <= RAM_TILES_COUNT)
         tileP = rtp;
@@ -218,16 +218,16 @@ void villiageMapDrawNight(const char * mp, char ox, char oy){
     for(char ty=0; ty<24; ty++){
         switch (ox){
             case 0:
-                tiles_put4x4row0(dp, cp, lmp, mp, romTiles + 4 * oy, ramTiles + 4 * oy);
+                _drawNightRow0(dp, cp, lmp, mp, romTiles + 4 * oy, ramTiles + 4 * oy);
                 break;
             case 1:
-                tiles_put4x4row1(dp, cp, lmp, mp, romTiles + 4 * oy, ramTiles + 4 * oy);
+                _drawNightRow1(dp, cp, lmp, mp, romTiles + 4 * oy, ramTiles + 4 * oy);
                 break;
             case 2:
-                tiles_put4x4row2(dp, cp, lmp, mp, romTiles + 4 * oy, ramTiles + 4 * oy);
+                _drawNightRow2(dp, cp, lmp, mp, romTiles + 4 * oy, ramTiles + 4 * oy);
                 break;
             case 3:
-                tiles_put4x4row3(dp, cp, lmp, mp, romTiles + 4 * oy, ramTiles + 4 * oy);
+                _drawNightRow3(dp, cp, lmp, mp, romTiles + 4 * oy, ramTiles + 4 * oy);
                 break;
         }
         dp += 40;

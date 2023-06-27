@@ -111,8 +111,9 @@ static void _waitForScreenMiddle(){
     if(gms_framePos != FRAME_UNKNOWN){
         if(gms_framePos == FRAME_MIDDLE){
             while(gms_framePos == FRAME_MIDDLE){
-                // vic.color_border++;
+                vic.color_border++;
             };
+            vic.color_border = VCOL_BLACK;
         }
         // TODO: broken in TRANSITION mode - looks like it likes to stay in MIDDLE state forever
         // now wait until we move to middle of the screen

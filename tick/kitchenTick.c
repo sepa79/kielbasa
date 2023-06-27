@@ -2,6 +2,7 @@
 #include <c64/vic.h>
 #include <string.h>
 
+#include <engine/gameState.h>
 #include <tick/kitchenTick.h>
 #include <tick/farmlandTick.h>
 #include <tasks/kitchenTask.h>
@@ -53,6 +54,7 @@ static bool _eatBread(){
         GS.kitchen.storage[foodItem]--;
         allCharacters[0].regenAmount = foodItems[foodItem].regenAmount;
         allCharacters[0].regenTime   = foodItems[foodItem].regenTime;
+        regenAmountMin = foodItems[foodItem].regenAmount / MAP_TICK_DELAY;
         return false;
     }
     return true;
@@ -72,6 +74,7 @@ static bool _eatMeat(){
         GS.kitchen.storage[foodItem]--;
         allCharacters[0].regenAmount += foodItems[foodItem].regenAmount;
         allCharacters[0].regenTime   = allCharacters[0].regenTime   < foodItems[foodItem].regenTime   ? foodItems[foodItem].regenTime   : allCharacters[0].regenTime;
+        regenAmountMin += foodItems[foodItem].regenAmount / MAP_TICK_DELAY;
         return false;
     }
     return true;
@@ -94,6 +97,7 @@ static bool _eatVeggies(){
         GS.farm.storage[farmItem]--;
         allCharacters[0].bonusAmount = foodItems[foodItem].regenAmount;
         allCharacters[0].bonusTime   = foodItems[foodItem].regenTime;
+        bonusAmountMin = foodItems[foodItem].regenAmount / MAP_TICK_DELAY;
         return false;
     }
     return true;

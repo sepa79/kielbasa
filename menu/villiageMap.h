@@ -8,8 +8,20 @@ enum WalkDir {
     WALK_UP,
     WALK_DOWN,
     WALK_LEFT,
-    WALK_RIGHT
+    WALK_RIGHT,
+    WALK_NONE
 };
+
+enum MoveCost {
+    MCOST_IMPASSABLE,
+    MCOST_MAINROAD,
+    MCOST_ROAD,
+    MCOST_DIRTROAD,
+    MCOST_GRASS,
+    MCOST_MUD,
+};
+
+extern const char MOVE_COST[];
 
 enum Location {
     LOCATION_NOTHING,

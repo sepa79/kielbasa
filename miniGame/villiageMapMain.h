@@ -30,7 +30,7 @@ typedef char char1024[1024];
 
 // clolor map + main char attribs, day light and materials (walkable, water etc) - defined as colorMap[CHAR_ATTRIBS]
 extern char256 * const colorMap;
-extern const char1024 allLightMaps[4];
+extern const char1024 allLightMaps[5];
 
 // lightmap for night maps
 extern char * lightMap;
@@ -40,6 +40,7 @@ typedef char mapTile[16];
 extern char * ramTiles;
 extern const char * romTiles;
 extern char moonDetailLevel;
+extern volatile char moveCostBase;
 
 // load and init routines, from MENU_BANK_MAP_VILLIAGE_1
 void buildRamTiles();
