@@ -113,8 +113,9 @@ static void _mapInit(){
 // Display code
 // ---------------------------------------------------------------------------------------------
 #pragma code ( villiageMapDisplayCode )
-#pragma data ( villiageMapRAMData )
+#pragma data ( data )
 
+static unsigned int fLayout[96*4] = {0xffff};
 // ---------------------------------------------------------------------------------------------
 // Game code
 // ---------------------------------------------------------------------------------------------
@@ -128,7 +129,6 @@ char * ramTiles = (char *)0xc480;
 
 #define FIELD_START ramTiles
 
-static unsigned int fLayout[96*4] = {0xffff};
 
 // copy base map from ROM, add any specials to it
 static void buildRamTiles(void){
@@ -304,7 +304,6 @@ void villiageMapDraw(){
     // draw player
     _drawPlayer();
 
-
     // text window
     pbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
     char vx = (GS.vMap.x+19) >> 2;
@@ -313,12 +312,13 @@ void villiageMapDraw(){
     setBank(pbank);
     if(GS.vMap.location != locId){
         GS.vMap.location = locId;
-        // char str[12*3+1];
-        // char framesUsed = gms_frameCount - frameStart;
-        // sprintf(str, "%03d", framesUsed);
-        // textToSprite(str, 4);
         textToSprite((char *)LOCATION_NAMES[locId], 4, SPR_TXT_BOTTOM_1);
     }
+    // frame counter
+    char framesUsed = gms_frameCount - frameStart;
+    char str[12*3+1];
+    sprintf(str, "%03d", framesUsed);
+    textToSprite(str, 4, SPR_TXT_BOTTOM_1);
 
     joyCursor.moveDelayCurrent = 0;
 }

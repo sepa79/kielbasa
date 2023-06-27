@@ -429,7 +429,7 @@ void initRasterIRQ(){
     // with our joystick interrupt
     cia_init();
     // clean 0xffff - so we don't have artefacts when we open borders
-    ((char *)0xffff)[0] = 0;
+    // ((char *)0xffff)[0] = 0;
 
     // initialize raster IRQ
     rirq_init(true);
