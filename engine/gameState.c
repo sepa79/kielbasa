@@ -20,6 +20,9 @@ void initGame() {
     // https://www.prawo.pl/akty/m-p-1991-4-23,16823109.html
     // 1/12th of 1989 r. - 49.583
     GS.cash = 4582;
+    GS.pension = 4582;
+    GS.inflation = 20;
+    GS.bills = 80;
     initCharacterList(); // data kept in allCharacters
     initCalendar(&GS.calendar);
     initKitchen(&GS.kitchen);

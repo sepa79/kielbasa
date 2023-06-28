@@ -153,6 +153,8 @@ void _fieldStateRipen(byte fieldId){
         fields[fieldId].stage = PLANT_STAGE_READY;
         // apply the percentage to the 'grown' plants
         if(fields[fieldId].ready < 100)
+            // this is probably wrong, other way around 100, fields[fieldId].ready -> fields[fieldId].ready, 100
+            // need to observe in game
             fields[fieldId].grown = lmuldiv16u(fields[fieldId].grown, 100, fields[fieldId].ready);
         // calculate the amount to reap which decreases 'alive', store in gFactor as its not needed now
         fields[fieldId].gFactor = ldiv16u(fields[fieldId].grown, fields[fieldId].alive);

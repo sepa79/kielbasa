@@ -1,3 +1,5 @@
+#include <c64/vic.h>
+
 #include <engine/spriteText.h>
 #include <engine/easyFlashBanks.h>
 #include <assets/mainGfx.h>
@@ -91,15 +93,27 @@ void _intToWeightToSprite(unsigned int num, char * sprBankPtr){
         str[4] = s'k';
         str[5] = s'g';
     }
-    textToSprite(str, 1, sprBankPtr);
+    _textToSprite(str, 1, sprBankPtr, 0, 0);
 }
 
 
 void _byteToSprite(char byte, char * sprBankPtr){
     char str[10];
     sprintf(str, "%3d      ", byte);
-    textToSprite(str, 1, sprBankPtr);
+    _textToSprite(str, 1, sprBankPtr, 0, 0);
 }
+
+// __interrupt void _setSpriteTextBlock(char sprBankStart, unsigned int xPos, char yPos, char xSize, char ySize, char color){
+//     char sprId = 0;
+//     for(char y=0;y<ySize;y++){
+//         for(char x=0;x<xSize;x++){
+//             vic_sprxy(sprId, xPos + x*24, yPos + y*21);
+//             vic.spr_color[sprId] = VCOL_MED_GREY;
+//             GFX_2_SCR[OFFSET_SPRITE_PTRS+sprId] = sprBankStart + sprId;
+//             sprId++;
+//         }
+//     }
+// }
 
 // ===========================================================================================
 // Ram wrappers
@@ -142,3 +156,9 @@ void byteToSprite(char byte, char * sprBankPtr){
     _byteToSprite(byte, sprBankPtr);
     setBank(pbank);
 }
+
+// __interrupt void setSpriteTextBlock(char sprBankStart, unsigned int xPos, char yPos, char xSize, char ySize, char color){
+//     char pbank = setBank(MAIN_GFX_BANK);
+//     _setSpriteTextBlock(sprBankStart, xPos, yPos, xSize, ySize, color);
+//     setBank(pbank);
+// }

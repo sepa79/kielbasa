@@ -43,8 +43,8 @@ __interrupt void _showVilliageMapSprites(){
     vic.spr_priority = 0b00000000;
     vic.spr_multi    = 0b00000010;
     
-    vic.spr_mcolor0  = 12;
-    vic.spr_mcolor1  = 6;
+    vic.spr_mcolor0  = 9;
+    vic.spr_mcolor1  = 7;
 
     vic.spr_msbx = 0b00000000;
 
@@ -64,7 +64,7 @@ __interrupt void _showVilliageMapSprites(){
 
     // char pport = setPort(MMAP_NO_ROM);
     vic.spr_color[0] = 0;
-    vic.spr_color[1] = 7;
+    vic.spr_color[1] = 6;
     // setPort(pport);
 
     vic.spr_enable = 0b00000011;

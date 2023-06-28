@@ -10,6 +10,10 @@
 #define FULL_KOALA_SCR ((char *)0x9f40)
 #define FULL_KOALA_COL ((char *)0xa328)
 
+#define MENU_FULL_KOALA_BMP ((char *)0x9000)
+#define MENU_FULL_KOALA_SCR ((char *)0xaf40)
+#define MENU_FULL_KOALA_COL ((char *)0xb328)
+
 // ************************************************************************************
 // base values used in pragmas etc, pointers and values are calculated from them later
 // ************************************************************************************

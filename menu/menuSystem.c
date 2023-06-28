@@ -81,6 +81,7 @@ void runMenuLoop(){
 #pragma section( sharedMenuCode, 0 )
 #pragma region( sharedMenuCodeBank, 0xbc00, 0xc000, , {
     MENU_BANK_MAIN_MENU,
+    MENU_BANK_TV_SCREEN,
     MENU_BANK_FARMLAND,
     MENU_BANK_PIG_PEN,
     MENU_BANK_KITCHEN,

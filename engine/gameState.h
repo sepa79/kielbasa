@@ -8,6 +8,7 @@
 #include <tasks/taskManager.h>
 #include <menu/villiageMap.h>
 #include <character/character.h>
+#include <character/items.h>
 
 #define MAX_ENERGY 1000
 #define ENERGY_COST_MIA 90
@@ -19,6 +20,11 @@
 
 struct GameState {
     unsigned long cash;
+    unsigned long pension;
+    // percentage shown as byte
+    signed int inflation;
+    // percentage shown as byte
+    char bills;
     struct Calendar calendar;
     struct Kitchen kitchen;
     struct Farm farm;

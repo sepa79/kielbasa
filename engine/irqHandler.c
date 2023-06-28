@@ -366,6 +366,29 @@ void initRasterIRQ_HiresTxtMode(){
 }
 
 // main init raster must be called first, this one just remaps some IRQs
+void initRasterIRQ_MCGfxMode(){
+    // Top - switch to txt
+    rirq_build(&rirqc_topScreen, 1);
+    rirq_call(&rirqc_topScreen, 0, IRQ_topMCGfxScreen);
+    rirq_set(1, IRQ_RASTER_TOP_MC_SCREEN, &rirqc_topScreen);
+
+    // Middle - play msx
+    rirq_build(&rirqc_middleScreen, 1);
+    rirq_call(&rirqc_middleScreen, 0, IRQ_middleScreenMsx);
+    rirq_set(2, IRQ_RASTER_MIDDLE_TXT_SCREEN, &rirqc_middleScreen);
+    
+    // Bottom Sprites
+
+    rirq_build(&rirqc_bottomUI, 1);
+    rirq_call(&rirqc_bottomUI, 0, IRQ_bottomMapUI);
+    // Place it into the last line of the screen
+    rirq_set(3, IRQ_RASTER_BOTTOM_UI, &rirqc_bottomUI);
+
+    // sort the raster IRQs
+    rirq_sort();
+}
+
+// main init raster must be called first, this one just remaps some IRQs
 void initRasterIRQ_Transition(){
     // Top - switch to blank
     rirq_build(&rirqc_topScreen, 1);
@@ -459,6 +482,9 @@ void switchScreenTo(byte screenMode){
                 break;
             case SCREEN_HIRES_TXT:
                 initRasterIRQ_HiresTxtMode();
+                break;
+            case SCREEN_MC_GFX:
+                initRasterIRQ_MCGfxMode();
                 break;
             case SCREEN_TRANSITION:
                 initRasterIRQ_Transition();

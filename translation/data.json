@@ -167,23 +167,23 @@
       },
       {
         "id": "MAIN_ROAD",
-        "pl": "   Szosa       1 Energy ",
-        "en": "  Main road    1 Energy "
+        "pl": "   Szosa          û     ",
+        "en": "  Main road       û     "
       },
       {
         "id": "VILLIAGE_ROAD",
-        "pl": "   Droga       2 Energy ",
-        "en": "    Road       2 Energy "
+        "pl": "   Droga         ûû     ",
+        "en": "    Road         ûû     "
       },
       {
         "id": "DIRT_ROAD",
-        "pl": " Polna droga   3 Energy ",
-        "en": "  Dirt road    3 Energy "
+        "pl": " Polna droga     ûûû    ",
+        "en": "  Dirt road      ûûû    "
       },
       {
         "id": "WELL",
-        "pl": "   Studnia    +2 Regen  ",
-        "en": "    Well      +2 Regen  "
+        "pl": "   Studnia       úú     ",
+        "en": "    Well         úú     "
       },
       {
         "id": "TOILET",
@@ -242,6 +242,12 @@
       {
         "id": "MENU_MAIN3",
         "menu_opt": "3",
+        "pl": "Wiadomości",
+        "en": "TV News   "
+      },
+      {
+        "id": "MENU_MAIN4",
+        "menu_opt": "4",
         "pl": "Stonka",
         "en": "Air Defence"
       },
@@ -812,6 +818,36 @@
                "  F1: Help  "
               ]
       },
+      {
+        "id": "MENU_TV_SCREEN",
+        "prefix": "SB",
+        "pl": [" Wiadomości ",
+               "            ",
+               "  \\ü Wyjdź  "
+              ],
+        "en": ["   TV News  ",
+               "            ",
+               "   \\ü Exit  "
+              ]
+      },
+      {
+        "id": "MENU_TV_SCREEN_BILLS",
+        "prefix": "SB",
+        "pl": ["Rachunki:",
+               "         ",
+               "         ",
+               "Renta:   ",
+               "         ",
+               "         "
+              ],
+        "en": ["Bills:   ",
+               "         ",
+               "         ",
+               "Pension: ",
+               "         ",
+               "         "
+             ]
+     },
       {
         "id": "ABOUT",
         "prefix": "HELP",
