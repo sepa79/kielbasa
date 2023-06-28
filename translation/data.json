@@ -83,102 +83,112 @@
     "array_label": "LOCATION_NAMES",
     "contents": [
       {
-        "comment": "// fixed width - 12",
+        "comment": "// fixed width - 12x2",
 
         "id": "NOTHING",
-        "pl": "            ",
-        "en": "            "
+        "pl": "                        ",
+        "en": "                        "
       },
       {
         "id": "FARM_HOUSE",
-        "pl": "     Dom    ",
-        "en": "    House   "
+        "pl": "     Dom          ý     ",
+        "en": "    House         ý     "
       },
       {
         "id": "FARM_BARN",
-        "pl": "   Stodoła  ",
-        "en": "    Barn    "
+        "pl": "   Stodoła        ý     ",
+        "en": "    Barn          ý     "
       },
       {
         "id": "FARM_PIGPEN",
-        "pl": "   Chlewik  ",
-        "en": "   Pigpen   "
+        "pl": "   Chlewik        ý     ",
+        "en": "   Pigpen         ý     "
       },
       {
         "id": "FARM_EMPTY",
-        "pl": " Ściernisko ",
-        "en": "   Meadows  "
+        "pl": " Ściernisko             ",
+        "en": "   Meadows              "
       },
       {
         "id": "FARM_GARAGE",
-        "pl": "    Garaż   ",
-        "en": "    Garage  "
+        "pl": "    Garaż               ",
+        "en": "    Garage              "
       },
       {
         "id": "FARM_BIG_FIELD",
-        "pl": "  Duże pole ",
-        "en": "  Big field "
+        "pl": "  Duże pole             ",
+        "en": "  Big field             "
       },
       {
         "id": "FARM_SMALL_FIELD_1",
-        "pl": "  Małe pole ",
-        "en": " Small field"
+        "pl": "  Małe pole             ",
+        "en": " Small field            "
       },
       {
         "id": "FARM_SMALL_FIELD_2",
-        "pl": "  Małe pole ",
-        "en": " Small field"
+        "pl": "  Małe pole             ",
+        "en": " Small field            "
       },
       {
         "id": "FARM_MEDIUM_FIELD",
-        "pl": "Średnie pole",
-        "en": "Medium field"
+        "pl": "Średnie pole            ",
+        "en": "Medium field            "
 
       },
       {
         "id": "SHOP",
-        "pl": "    Sklep   ",
-        "en": "    Shop    "
+        "pl": "    Sklep         ý     ",
+        "en": "    Shop          ý     "
       },
       {
         "id": "CHURCH",
-        "pl": "   Kościół  ",
-        "en": "   Church   "
+        "pl": "   Kościół              ",
+        "en": "   Church               "
       },
       {
         "id": "HERMAN",
-        "pl": " Dom Hermana",
-        "en": "  Herman's  "
+        "pl": " Dom Hermana            ",
+        "en": "  Herman's              "
       },
       {
         "id": "SULEJUKOWA",
-        "pl": " Sulejukowa ",
-        "en": " Sulejukowa "
+        "pl": " Sulejukowa             ",
+        "en": " Sulejukowa             "
       },
       {
         "id": "HOUSE_1",
-        "pl": " Wiejski dom",
-        "en": "   Cottage  "
+        "pl": " Wiejski dom            ",
+        "en": "   Cottage              "
       },
       {
         "id": "HOUSE_2",
-        "pl": " Wiejski dom",
-        "en": "   Cottage  "
+        "pl": " Wiejski dom            ",
+        "en": "   Cottage              "
       },
       {
         "id": "MAIN_ROAD",
-        "pl": "   Szosa    ",
-        "en": "  Main road "
+        "pl": "   Szosa       1 Energy ",
+        "en": "  Main road    1 Energy "
       },
       {
         "id": "VILLIAGE_ROAD",
-        "pl": "   Droga    ",
-        "en": "    Road    "
+        "pl": "   Droga       2 Energy ",
+        "en": "    Road       2 Energy "
       },
       {
         "id": "DIRT_ROAD",
-        "pl": " Polna droga",
-        "en": "  Dirt road "
+        "pl": " Polna droga   3 Energy ",
+        "en": "  Dirt road    3 Energy "
+      },
+      {
+        "id": "WELL",
+        "pl": "   Studnia    +2 Regen  ",
+        "en": "    Well      +2 Regen  "
+      },
+      {
+        "id": "TOILET",
+        "pl": "  Sławojka              ",
+        "en": "   Toilet               "
       }
     ]
   },

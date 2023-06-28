@@ -77,9 +77,7 @@ void _goBackToPrvMenu(){
 }
 
 // temp menus, in RAM so that data is visible to updateStatusBar()
-static void _siMenu1(){
-    updateStatusBar(s"Sklep menu, opcja 1     ");
-}
+
 static void _siMenu2(){
     updateStatusBar(s"Sklep menu, opcja 2     ");
 }
@@ -87,6 +85,18 @@ static void _siMenu2(){
 // menu code is in ROM - data in RAM
 #pragma code ( shopInCode )
 #pragma data ( data )
+
+
+static void _siMenu1(){
+    // TODO: Add gherkin's dissapearance
+    if(GS.cash > 10){
+            GS.cash -= 10;
+            updateMoney();
+            // TODO: replace with 'eatFood', it should update UI, too
+            allCharacters[0].bonusTime += 1;
+            allCharacters[0].bonusAmountMin += 1;
+    }
+}
 
 // buy bread
 static void _siMenu3(){

@@ -42,8 +42,10 @@ struct Character {
     char health;
     /* Amount and time of regen, gained after eating */
     unsigned int regenAmount;
+    char regenAmountMin;
     char regenTime;
     unsigned int bonusAmount;
+    char bonusAmountMin;
     char bonusTime;
     /* CHARACTER_PORTRAITS index (0 based) */
     char * picture;

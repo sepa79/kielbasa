@@ -265,6 +265,8 @@ void villiageMapScreenInit(void){
     
     memcpy((char *)0xc780, _mapSprites, 0x80);
 
+    //set UI sprite
+    setCharacterSlotIcon(0, SPR_MAP_UI_PLR);
     // wait for IRQ to finish copying fonts - can't change bank before its done
     while(!fontCopyDone){
         // vic.color_border--;

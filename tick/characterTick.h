@@ -6,9 +6,6 @@
 #pragma data ( data )
 //-----------------------------------------------------------------------------------------
 
-extern volatile char regenAmountMin;
-extern volatile char bonusAmountMin;
-
 void sleepTick();
 void miaTick();
 void regenTick();

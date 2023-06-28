@@ -76,6 +76,7 @@ enum SPRITE_VIC_BANKS {
 #define SPR_TASK_CLEAN2  (AuxResources.TASK_ICONS + 64*12)
 #define SPR_TASK_EAT     (AuxResources.TASK_ICONS + 64*13)
 #define SPR_TASK_COOK    (AuxResources.TASK_ICONS + 64*14)
+#define SPR_MAP_UI_PLR   (AuxResources.TASK_ICONS + 64*15)
 #define SPR_PORTRAIT01   (AuxResources.PORTRAITS)
 #define SPR_PORTRAIT02   (AuxResources.PORTRAITS + 64*1)
 #define SPR_PORTRAIT03   (AuxResources.PORTRAITS + 64*2)

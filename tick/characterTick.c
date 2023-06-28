@@ -2,6 +2,7 @@
 #include <c64/vic.h>
 
 #include <character/character.h>
+#include <engine/spriteText.h>
 
 // =============================================================================
 // Tick code
@@ -9,9 +10,6 @@
 // dynamic data - in RAM
 #pragma data ( data )
 // =============================================================================
-volatile char regenAmountMin;
-volatile char bonusAmountMin;
-
 void sleepTick(){
     for(byte charSlot = 0; charSlot < CHARACTER_SLOTS; charSlot++){
         if(characterSlots[charSlot] != NO_CHARACTER){
@@ -69,11 +67,27 @@ void regenTick(){
     }
 }
 
-// used on map, will alter timers nad regen all chars apart from player
+// used on map, will:
+// - alter timers on all chars
+// - regen all chars apart from player
 void regenTickMapHour(){
     for(byte charSlot = 1; charSlot < CHARACTER_SLOTS; charSlot++){
         if(characterSlots[charSlot] != NO_CHARACTER){
             _regenChar(characterSlots[charSlot]);
+        }
+    }
+    if(allCharacters[0].regenTime){
+        allCharacters[0].regenTime--;
+        // clean up if we reduced timer to 0
+        if(!allCharacters[0].regenTime){
+            allCharacters[0].regenAmount = 0;
+        }
+    }
+    if(allCharacters[0].bonusTime){
+        allCharacters[0].bonusTime--;
+        // clean up if we reduced timer to 0
+        if(!allCharacters[0].bonusTime){
+            allCharacters[0].bonusAmount = 0;
         }
     }
 }
@@ -83,13 +97,22 @@ void regenTickMinute(){
     char charIdx = 0;
     char regen = 0;
     if(allCharacters[charIdx].regenTime){
-        regen += regenAmountMin;
+        regen += allCharacters[charIdx].regenAmountMin;
     }
     if(allCharacters[charIdx].bonusTime){
-        regen += bonusAmountMin;
+        regen += allCharacters[charIdx].bonusAmountMin;
+    }
+
+    // check special locations
+    if(GS.vMap.location == LOCATION_WELL){
+        regen += 2;
     }
     incEnergyLevel(charIdx, regen);
     drawBattery(0);
+    copyCharToSprite(regen+48, 2, 0, SPR_CHARACTER_BAR1);
+    char time = allCharacters[charIdx].regenTime > allCharacters[charIdx].bonusTime ? allCharacters[charIdx].regenTime : allCharacters[charIdx].bonusTime;
+    copyCharToSprite(time+48, 2, 2, SPR_CHARACTER_BAR1);
+
     // vic.color_border++;
 }
 //-----------------------------------------------------------------------------------------

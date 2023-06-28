@@ -23,6 +23,7 @@ struct GameState {
     struct Kitchen kitchen;
     struct Farm farm;
     struct VilliageMap vMap;
+
     // character data kept in allCharacters[], see gameState.c
     // tasks won't fit here, save separately
 };
