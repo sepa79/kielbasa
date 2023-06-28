@@ -122,7 +122,7 @@ const struct MenuOption SHOP_INSIDE_MENU[] = {
     { TXT_IDX_MENU_SHOPIN2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_siMenu2, 0, 1, 2},
     { TXT_IDX_MENU_SHOPIN3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_siMenu3, 0, 1, 3},
     { TXT_IDX_MENU_SHOPIN4, '4', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_siMenu4, 0, 1, 4},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &_goBackToPrvMenu, 0, 2, 6},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &_goBackToPrvMenu, 0, 2, 6},
     END_MENU_CHOICES
 };
 
@@ -186,6 +186,7 @@ static void _menuHandler(void){
     
     displayMenu(SHOP_INSIDE_MENU);
     _printPrices();
+    switchScreenTo(SCREEN_SPLIT_MC_TXT);
 }
 
 #pragma data ( shopInLoaderData )

@@ -332,10 +332,10 @@ __interrupt static void _menuShowSprites(){
 }
 
 const struct MenuOption MAIN_MENU[] = {
-    {TXT_IDX_MENU_MAIN1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &showMenu, MENU_BANK_KITCHEN, 1, 1},
-    {TXT_IDX_MENU_MAIN2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &showMenu, MENU_BANK_CREW, 1, 2},
+    {TXT_IDX_MENU_MAIN1, '1', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_KITCHEN, 1, 1},
+    {TXT_IDX_MENU_MAIN2, '2', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_CREW, 1, 2},
     {TXT_IDX_MENU_MAIN3, '3', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_TV_SCREEN, 1, 3},
-    {TXT_IDX_MENU_MAIN4, '4', SCREEN_PIGSLE_COMMAND, UI_SELECT, &showMenu, MENU_BANK_PIGSLE_COMMAND_1, 1, 4},
+    {TXT_IDX_MENU_MAIN4, '4', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_PIGSLE_COMMAND_1, 1, 4},
     {TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_SELECT, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 1, 6},
     END_MENU_CHOICES
 };
@@ -371,14 +371,14 @@ static void _menuHandler(){
         i++;
     } while (i != 0);
 
-    animBusStage = ANIM_BUS_ARRIVING1;
-    animBusX = 0;
-    
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);
     cwin_clear(&cw);
     
+    animBusStage = ANIM_BUS_ARRIVING1;
+    animBusX = 0;
     displayMenu(MAIN_MENU);
+    switchScreenTo(SCREEN_SPLIT_MC_TXT);
     _displayTaskList();
 }
 

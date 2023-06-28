@@ -140,7 +140,7 @@ const struct MenuOption KITCHEN_MENU[] = {
     { TXT_IDX_MENU_KITCHEN4, '4', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenSupperType, 0, 1, 4},
     { TXT_IDX_MENU_KITCHEN5, '5', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenFoodPreferrence, 0, 1, 5},
     { TXT_IDX_MENU_KITCHEN6, '6', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenVegPreferrence, 0, 1, 6},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 11},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 11},
     END_MENU_CHOICES
 };
 
@@ -154,6 +154,8 @@ static void _menuHandler(void){
     cwin_clear(&cw);
 
     displayMenu(KITCHEN_MENU);
+    switchScreenTo(SCREEN_SPLIT_MC_TXT);
+
     _updateView();
 }
 

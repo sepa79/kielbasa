@@ -64,6 +64,9 @@ static void _getInside(){
         setErrorCursor();
         return;
     }
+
+    switchScreenTo(SCREEN_TRANSITION);
+
     joyCursor.enabled = false;
     gms_disableTimeControls = true;
     gms_gameSpeed = SPEED_PAUSED;
@@ -99,6 +102,7 @@ static void _menuHandler(void){
     
     gms_disableTimeControls = false;
     displayMenu(SHOP_OUTSIDE_MENU);
+    switchScreenTo(SCREEN_SPLIT_MC_TXT);
 }
 
 #pragma data ( shopOutLoaderData )

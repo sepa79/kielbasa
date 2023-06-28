@@ -56,7 +56,7 @@ __interrupt static void _menuShowSprites(){
         #pragma unroll(full)
         for(char x=0;x<xSize;x++){
             vic_sprxy(sprId, xPos + x*48, yPos + y*42);
-            vic.spr_color[sprId] = VCOL_MED_GREY;
+            vic.spr_color[sprId] = VCOL_BROWN ;
             GFX_2_SCR[OFFSET_SPRITE_PTRS+sprId] = SPRITE_BLOCK + sprId;
             sprId++;
         }
@@ -90,7 +90,7 @@ static void _loadFullKoalaToBMP2(){
 }
 
 const struct MenuOption TV_SCREEN_MENU[] = {
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF+UI_HIDE, &showMenu, MENU_BANK_MAIN_MENU, 2, 11},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &showMenu, MENU_BANK_MAIN_MENU, 2, 11},
     END_MENU_CHOICES
 };
 

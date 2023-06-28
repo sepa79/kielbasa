@@ -137,6 +137,7 @@ void showOptionsMenu(){
     cwin_putat_string_raw(&cw, 0, 0, TXT[TXT_IDX_OPTIONS_HEADER], VCOL_GREEN);
 
     displayMenu(OPTIONS_MENU);
+    switchScreenTo(SCREEN_FULL_TXT);
 }
 
 static void _toggleMusic(){
@@ -184,6 +185,6 @@ const struct MenuOption MUSIC_MENU[] = {
 const struct MenuOption OPTIONS_MENU[] = {
     { TXT_IDX_MENU_OPTIONS_LANG, '1', SCREEN_FULL_TXT, UI_SELECT, &_changeLanguage, 0, 2, 1},
     { TXT_IDX_MENU_OPTIONS_MSX, '2', SCREEN_FULL_TXT, UI_SELECT, &_showMusicMenu, 0, 2, 2},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_RESTORE, UI_LF, &backToPreviousMenu, 0, 2, 3},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &backToPreviousMenu, 0, 2, 3},
     END_MENU_CHOICES
 };

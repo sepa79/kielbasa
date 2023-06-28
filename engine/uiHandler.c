@@ -224,7 +224,7 @@ static void _prepareFullScreenMenu() {
         previousScreenMode = currentScreenMode;
         gms_inSpecialMenu = true;
     }
-    switchScreenTo(SCREEN_FULL_TXT);
+    switchScreenTo(SCREEN_TRANSITION);
     gms_disableTimeControls = true;
     gms_gameSpeed = SPEED_PAUSED;
     updateGameSpeed();
@@ -234,8 +234,8 @@ static void _prepareFullScreenMenu() {
 void backToPreviousMenu(){
     gms_disableTimeControls = false;
     // This will simply call currently mounted menu again
-    switchScreenTo(previousScreenMode);
     showMenu();
+    switchScreenTo(previousScreenMode);
     gms_inSpecialMenu = false;
 }
 

@@ -180,7 +180,8 @@ __interrupt static void IRQ_topNoScreen() {
     if(!fontCopyDone) {
         // vic.color_border++;
         // ROM on, I/O off - as we will copy to RAM under I/O ports
-        char pport = setPort(MMAP_ALL_ROM);
+        // char pport = setPort(MMAP_ALL_ROM);
+        *((volatile char *)0x01) = MMAP_ALL_ROM;
 
         char i = 0;
         do {
@@ -200,7 +201,9 @@ __interrupt static void IRQ_topNoScreen() {
             fontCopyDst = GFX_1_FNT2;
         }
         // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
-        setPort(pport);
+        // setPort(pport);
+        *((volatile char *)0x01) = MMAP_ROM;
+
         // vic.color_border--;
     }
     // vic.color_back--;
@@ -452,7 +455,8 @@ void initRasterIRQ(){
     // with our joystick interrupt
     cia_init();
     // clean 0xffff - so we don't have artefacts when we open borders
-    ((char *)0xffff)[0] = 0;
+    // NOPE - messes up trampoline
+    // ((char *)0xffff)[0] = 0;
 
     // initialize raster IRQ
     rirq_init(true);
@@ -468,8 +472,10 @@ void initRasterIRQ(){
 void switchScreenTo(byte screenMode){
     if(currentScreenMode != screenMode){
         currentScreenMode = screenMode;
-        rirq_wait();
-
+        vic_waitLine(180);
+        // rirq_stop();
+        // vic.color_border++;
+        
         switch (screenMode) {
             case SCREEN_SPLIT_MC_TXT:
                 initRasterIRQ_SplitMCTxt();
@@ -490,5 +496,8 @@ void switchScreenTo(byte screenMode){
                 initRasterIRQ_Transition();
                 break;
         }
+
+        // rirq_start();
+        // vic.color_border--;
     }
 }

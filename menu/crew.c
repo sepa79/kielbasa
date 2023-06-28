@@ -239,7 +239,7 @@ const struct MenuOption CREW_MENU[] = {
     { TXT_IDX_MENU_CREW2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_crewMenu2, 0, 1, 2},
     { TXT_IDX_MENU_CREW3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_crewMenu3, 0, 1, 3},
     { TXT_IDX_MENU_CREW4, '4', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_crewMenu4, 0, 1, 4},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
     END_MENU_CHOICES
 };
 
@@ -259,6 +259,7 @@ static void _menuHandler(void){
 
     displayMenu(CREW_MENU);
     _crewMenu1();
+    switchScreenTo(SCREEN_SPLIT_MC_TXT);
 }
 
 #pragma data ( crewLoaderData )

@@ -192,7 +192,7 @@ static void _downPage(){
 #pragma data ( LogMenuData )
 
 const struct MenuOption LOG_MENU[] = {
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_FULL_TXT, UI_LF, &backToPreviousMenu, 0, 1, 21 },
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &backToPreviousMenu, 0, 1, 21 },
     { TXT_IDX_MENU_TASK_MANAGER_W, 'w', SCREEN_FULL_TXT, UI_U+UI_HIDE, &_upPage, 0, 0, ROW_OFFSET_LOGS-1 },
     { TXT_IDX_MENU_TASK_MANAGER_S, 's', SCREEN_FULL_TXT, UI_D+UI_HIDE, &_downPage, 0, 0, ROW_OFFSET_LOGS+10 },
 
@@ -208,4 +208,5 @@ void showLogMenu(){
     setBank(MENU_BANK_SPECIAL_MENUS);
     
     _showLogs();
+    switchScreenTo(SCREEN_FULL_TXT);
 }

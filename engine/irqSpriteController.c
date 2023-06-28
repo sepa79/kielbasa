@@ -154,9 +154,8 @@ void drawBattery(char charIdx){
 __interrupt void setSpritesTopScr(){
     if(gms_enableMenuSprites){
         // store/restore memory config, as we need to ensure BASIC ROM is on
-        char pport = setPort(MMAP_ROM);
+        *((volatile char *)0x01) = MMAP_ROM;
         showSprites();
-        setPort(pport);
     }
 }
 
@@ -225,7 +224,7 @@ __interrupt void showUiSpritesTop(){
     vic.spr_pos[6].x = 160+24;
     vic.spr_pos[7].x = 160+48;
 
-    char pport = setPort(MMAP_NO_ROM);
+    *((volatile char *)0x01) = MMAP_NO_ROM;
     vic.spr_color[2] = SPR_TIME_ICON[63];
     vic.spr_color[3] = SPR_WEATHER_ICON[63];
     vic.spr_color[0] = VCOL_MED_GREY;//DATE;
@@ -244,7 +243,7 @@ __interrupt void showUiSpritesTop(){
             isc_statusTextColorIdx++;
         }
     }
-    setPort(pport);
+    *((volatile char *)0x01) = MMAP_ROM;
 
     vic.spr_enable = 0b11111111;
     gms_framePos = FRAME_TOP_BORDER;
@@ -299,7 +298,7 @@ __interrupt void showUiSpritesBottom(){
     vic.spr_pos[6].y = 2;
     vic.spr_pos[7].y = 2;
 
-    char pport = setPort(MMAP_NO_ROM);
+    *((volatile char *)0x01) = MMAP_NO_ROM;
     vic.spr_color[0] = SPR_CHARACTER_PORTRAIT1[63];
     vic.spr_color[1] = _batteryColors[0];
     vic.spr_color[2] = SPR_CHARACTER_PORTRAIT2[63];
@@ -308,7 +307,7 @@ __interrupt void showUiSpritesBottom(){
     vic.spr_color[5] = _batteryColors[2];
     vic.spr_color[6] = SPR_CHARACTER_PORTRAIT4[63];
     vic.spr_color[7] = _batteryColors[3];
-    setPort(pport);
+    *((volatile char *)0x01) = MMAP_ROM;
 
     vic.spr_enable = 0b11111111;
     // indicate frame position
@@ -366,7 +365,7 @@ __interrupt void showMapSpritesBottom(){
     vic.spr_pos[6].y = 2;
     vic.spr_pos[7].y = 2;
 
-    char pport = setPort(MMAP_NO_ROM);
+    *((volatile char *)0x01) = MMAP_NO_ROM;
     vic.spr_color[0] = SPR_CHARACTER_PORTRAIT1[63];
     vic.spr_color[1] = _batteryColors[0];
     vic.spr_color[2] = VCOL_MED_GREY;
@@ -375,7 +374,7 @@ __interrupt void showMapSpritesBottom(){
     vic.spr_color[5] = VCOL_MED_GREY;
     vic.spr_color[6] = SPR_CHARACTER_PORTRAIT4[63];
     vic.spr_color[7] = _batteryColors[3];
-    setPort(pport);
+    *((volatile char *)0x01) = MMAP_ROM;
 
     vic.spr_enable = 0b11111111;
     // indicate frame position

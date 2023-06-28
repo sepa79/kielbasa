@@ -27,8 +27,9 @@
 #include <tick/farmlandTick.h>
 #include <tick/kitchenTick.h>
 
-static void _showNormalMenu(){
+static void _showNormalMenu(char menuBank){
     switchScreenTo(SCREEN_TRANSITION);
+    loadMenu(menuBank);
     // clean sprites
     memset(SPR_CHARACTER_PORTRAIT2, 0, 64*4);
     // show menu is sensitive to timing, as it load GFXs and needs to wait for middle screen
@@ -42,20 +43,16 @@ static void _showNormalMenu(){
 void gotoLocation(){
     switch(GS.vMap.location){
         case LOCATION_FARM_HOUSE:
-            loadMenu(MENU_BANK_MAIN_MENU);
-            _showNormalMenu();
+            _showNormalMenu(MENU_BANK_MAIN_MENU);
             break;
         case LOCATION_FARM_BARN:
-            loadMenu(MENU_BANK_FARMLAND);
-            _showNormalMenu();
+            _showNormalMenu(MENU_BANK_FARMLAND);
             break;
         case LOCATION_FARM_PIGPEN:
-            loadMenu(MENU_BANK_PIG_PEN);
-            _showNormalMenu();
+            _showNormalMenu(MENU_BANK_PIG_PEN);
             break;
         case LOCATION_SHOP:
-            loadMenu(MENU_BANK_SHOP);
-            _showNormalMenu();
+            _showNormalMenu(MENU_BANK_SHOP);
             break;
     }
     // reset location so when we are back to map it gets re-set and sprites are drawn

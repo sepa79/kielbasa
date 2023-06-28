@@ -11,7 +11,7 @@ extern const char * fontCopySrc;
 extern volatile bool fontCopyDone;
 
 enum SCREEN_MODE {
-// Restore the screen using 'previousScreenMode'
+// Restore the screen using 'previousScreenMode', dummy entry for the sake of Menu struct readability
     SCREEN_RESTORE,
 
 // Partial IRQ init - full TXT mode, with regular UI on top & bottom, MSX, normal txt screen sprite handlers used.

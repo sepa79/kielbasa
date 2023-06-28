@@ -72,11 +72,12 @@ void showTaskManagerMenu(){
 
     displayMenu(TASK_MANAGER_MENU);
     _showTasks();
+    switchScreenTo(SCREEN_FULL_TXT);
 }
 
 const struct MenuOption TASK_MANAGER_MENU[] = {
     { TXT_IDX_MENU_TASK_MANAGER_MINUS, '-', SCREEN_FULL_TXT, UI_SELECT,&_deleteTask, 0, 0, 20 },
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_FULL_TXT, UI_LF, &backToPreviousMenu, 0, 20, 20 },
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &backToPreviousMenu, 0, 20, 20 },
     { TXT_IDX_MENU_TASK_MANAGER_W, 'w', SCREEN_FULL_TXT, UI_U+UI_HIDE, &_upRow, 0, 0, ROW_OFFSET_TASKLIST_TM-1 },
     { TXT_IDX_MENU_TASK_MANAGER_S, 's', SCREEN_FULL_TXT, UI_D+UI_HIDE, &_downRow, 0, 0, ROW_OFFSET_TASKLIST_TM+10 },
 
