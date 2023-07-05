@@ -833,18 +833,18 @@
       {
         "id": "MENU_TV_SCREEN_BILLS",
         "prefix": "SB",
-        "pl": ["Rachunki:",
+        "pl": ["  Budżet ",
                "         ",
+               "Rachunki:",
                "         ",
                "Renta:   ",
-               "         ",
                "         "
               ],
-        "en": ["Bills:   ",
+        "en": ["  Budget ",
                "         ",
+               "Bills:   ",
                "         ",
                "Pension: ",
-               "         ",
                "         "
              ]
      },

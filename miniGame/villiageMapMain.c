@@ -92,7 +92,6 @@ char256 * const colorMap = (char256 *)0xcc00;
 // lightmap for night
 char * lightMap = (char *)0xc800;
 
-// TODO: a bit obsolete as almost nothing is here
 // Copy chars and lightmaps, any sprites etc
 static void _mapInit(){
     // ROM on, I/O off - as we will copy to RAM under I/O ports - IRQs must be off
@@ -107,6 +106,11 @@ static void _mapInit(){
 
     memset(COLOR_RAM, VCOL_BLACK, 1000);
     memset(GFX_1_SCR, VCOL_BLACK, 1000);
+    memcpy((char *)0xc780, _mapSprites, 0x80);
+
+    //set UI sprite
+    setCharacterSlotIcon(0, SPR_MAP_UI_PLR);
+
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -256,21 +260,25 @@ volatile char moveCostTime = 0;
 volatile char moveCostEnergy = 0;
 
 void villiageMapScreenInit(void){
-    char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
     // set the pointer for chars to copy and indicate it needs to be done, SCREEN_TRANSITION IRQ handler will pick it up
-    fontCopySrc = _chars;
-    fontCopyDone = false;
+    // fontCopySrc = _chars;
+    // fontCopyDone = false;
+    // copy fonts
+    rirq_stop();
+    char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
+    char pport = setPort(MMAP_ALL_ROM);
+    memcpy(GFX_1_FNT2, _chars, 0x800);
+    setPort(pport);
+    setBank(pbank);
+    rirq_start();
 
+    // saving mem - call ROM code
     _mapInit();
     
-    memcpy((char *)0xc780, _mapSprites, 0x80);
-
-    //set UI sprite
-    setCharacterSlotIcon(0, SPR_MAP_UI_PLR);
     // wait for IRQ to finish copying fonts - can't change bank before its done
-    while(!fontCopyDone){
-        // vic.color_border--;
-    }
+    // while(!fontCopyDone){
+    //     // vic.color_border--;
+    // }
     // reset timer
     timer = MAP_TICK_DELAY;
     moveCostBase = 0;

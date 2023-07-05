@@ -77,7 +77,11 @@ static void _downRow(){
     setBank(pbank);
 }
 
-static void _playMsx(struct Song * song){
+char curBank    = 0;
+char curSidIdx  = 0;
+char curSongIdx = 0;
+
+static void _playMsx(struct Song * song, bool restart){
     joyCursor.enabled = false;
     if(gms_enableMusic) {
         // stop music
@@ -86,22 +90,31 @@ static void _playMsx(struct Song * song){
 
         // set Radio bank
         char pbank = setBank(MUSIC_BANK);
-        // now songs are visible from ROM
-        setBank(song->bank);
+        // now songs are visible from ROM - we can use structs
 
-        // load different MSX file
-        loadMusic(song);
-        byte songIdx = song->songIdx;
+        // check if we need to load anything
+        if(curBank != song->bank || curSidIdx != song->sidIdx){
+            // load it
+            setBank(song->bank);
+            // load different MSX file
+            loadMusic(song);
+        }
+        // all loaded or there was no need to load
+        curBank   = song->bank;
+        curSidIdx = song->sidIdx;
 
-        char pport = setPort(MMAP_NO_BASIC);
-        // init it
-        __asm {
-            lda songIdx
-            jsr MSX_INIT
-        };
+        char songIdx = song->songIdx;
+        if(curSongIdx != songIdx || restart){
+            char pport = setPort(MMAP_NO_BASIC);
+            // init it
+            __asm {
+                lda songIdx
+                jsr MSX_INIT
+            };
 
-        // set ROM back
-        setPort(pport);
+            // set ROM back
+            setPort(pport);
+        }
 
         // revert menu bank
         setBank(pbank);
@@ -115,7 +128,7 @@ static void _playMsx(struct Song * song){
 
 // menu wrapper
 static void _loadMsx() {
-    _playMsx(&PLAYLIST[_currentSong]);
+    _playMsx(&PLAYLIST[_currentSong], true);
 }
 
 void _showMusicMenu(){
@@ -167,11 +180,11 @@ void playNextRadioSong(){
     _currentRadioSong++;
     if(_currentRadioSong >= RADIO_PLAYLIST_SIZE)
         _currentRadioSong = 0;
-    _playMsx(&RADIO_PLAYLIST[_currentRadioSong]);
+    _playMsx(&RADIO_PLAYLIST[_currentRadioSong], true);
 }
 
 void playSong(char song){
-    _playMsx(&PLAYLIST[song]);
+    _playMsx(&PLAYLIST[song], false);
 }
 
 const struct MenuOption MUSIC_MENU[] = {

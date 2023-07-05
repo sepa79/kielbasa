@@ -10,6 +10,7 @@
 #include <tick/farmlandTick.h>
 #include <tick/characterTick.h>
 #include <engine/easyFlashBanks.h>
+#include <engine/gameSettings.h>
 
 // dynamic data - in RAM
 #pragma data ( data )
@@ -63,6 +64,7 @@ const byte WEEKLY_SUNSET[53] = {
  15,  15,  15,  15,  15
 };
 
+// ---------------------------------------------------------------------------------------------
 // ticks code
 #pragma code ( ticksCode )
 
@@ -142,9 +144,11 @@ static void _monthTick(){
     } else {
         updateMonth(1);
         GS.calendar.dateMonth = 1;
-
         _yearTick();
     }
+
+    // monthly bills, display TV Screen
+    gms_event = EVENT_END_OF_MONTH;
 }
 
 static void _dayTick(){

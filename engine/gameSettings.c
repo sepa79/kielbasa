@@ -11,11 +11,10 @@ volatile byte gms_gameSpeedWait = WAIT_TIME_PAUSED;
 // IRQs set it true, game loop sets it to false after tasks are done
 volatile byte gms_framePos = FRAME_UNKNOWN;
 
-// // enable full screen text mode
-// volatile bool gms_textMode = false;
-
 volatile bool gms_disableTimeControls = false;
 volatile bool gms_inSpecialMenu = false;
 volatile bool gms_enableMenuSprites = true;
 volatile bool gms_enableMusic = true;
 volatile char gms_frameCount = 0;
+
+Events gms_event = EVENT_NONE;

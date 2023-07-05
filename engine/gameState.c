@@ -1,3 +1,5 @@
+#include <fixmath.h>
+
 #include <engine/gameState.h>
 
 // Sections and regions
@@ -22,7 +24,8 @@ void initGame() {
     GS.cash = 4582;
     GS.pension = 4582;
     GS.inflation = 20;
-    GS.bills = 80;
+    GS.billsPercent = 80;
+    GS.bills = lmuldiv16u(GS.pension, GS.billsPercent, 100);
     initCharacterList(); // data kept in allCharacters
     initCalendar(&GS.calendar);
     initKitchen(&GS.kitchen);

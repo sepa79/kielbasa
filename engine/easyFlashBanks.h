@@ -37,6 +37,8 @@ char setBank(char bank);
 // Set Port ($01), return previous value that was set.
 char setPort(char port);
 
+extern volatile char curport;
+
 #pragma compile("easyFlashBanks.c")
 
 #endif

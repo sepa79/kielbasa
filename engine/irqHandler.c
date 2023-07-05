@@ -37,13 +37,15 @@ Play msx, if enabled
 ================================================================================ */
 static void playMsx(){
     if(gms_enableMusic){
-        byte _prevRomCfgPC = ((byte *)0x01)[0];
+        // byte _prevRomCfgPC = ((byte *)0x01)[0];
         __asm {
             lda #MSX_ROM
             sta $01
             jsr MSX_PLAY
         };
-        ((byte *)0x01)[0] = _prevRomCfgPC;
+        // ((byte *)0x01)[0] = _prevRomCfgPC;
+        *((volatile char *)0x01) = curport;
+
     }
 }
 
@@ -177,35 +179,35 @@ __interrupt static void IRQ_topNoScreen() {
     // indicate frame position
     gms_framePos = FRAME_TOP;
     // copying font on IRQ as it goes to RAM under IO, and doing it in normal code would result in a crash due to some collisions
-    if(!fontCopyDone) {
-        // vic.color_border++;
-        // ROM on, I/O off - as we will copy to RAM under I/O ports
-        // char pport = setPort(MMAP_ALL_ROM);
-        *((volatile char *)0x01) = MMAP_ALL_ROM;
+//     if(!fontCopyDone) {
+//         // vic.color_border++;
+//         // ROM on, I/O off - as we will copy to RAM under I/O ports
+//         // char pport = setPort(MMAP_ALL_ROM);
+//         *((volatile char *)0x01) = MMAP_ALL_ROM;
 
-        char i = 0;
-        do {
-#assign y 0
-#repeat
-        fontCopyDst[y + i] = fontCopySrc[y + i];
-#assign y y + 0x100
-#until y == 0x100*1
-            i++;
-        } while (i != 0);
+//         char i = 0;
+//         do {
+// #assign y 0
+// #repeat
+//         fontCopyDst[y + i] = fontCopySrc[y + i];
+// #assign y y + 0x100
+// #until y == 0x100*1
+//             i++;
+//         } while (i != 0);
 
-        fontCopyDst += 1*256;
-        fontCopySrc += 1*256;
+//         fontCopyDst += 1*256;
+//         fontCopySrc += 1*256;
 
-        if(fontCopyDst == GFX_1_FNT2+2048){
-            fontCopyDone = true;
-            fontCopyDst = GFX_1_FNT2;
-        }
-        // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
-        // setPort(pport);
-        *((volatile char *)0x01) = MMAP_ROM;
+//         if(fontCopyDst == GFX_1_FNT2+2048){
+//             fontCopyDone = true;
+//             fontCopyDst = GFX_1_FNT2;
+//         }
+//         // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
+//         // setPort(pport);
+//         *((volatile char *)0x01) = MMAP_ROM;
 
-        // vic.color_border--;
-    }
+//         // vic.color_border--;
+//     }
     // vic.color_back--;
     // vic.color_border--;
 }

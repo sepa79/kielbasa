@@ -27,6 +27,22 @@
 #include <tick/farmlandTick.h>
 #include <tick/kitchenTick.h>
 
+// loads a TVScreen to display some news, keeps track of the current menu so it can be restored
+static char prvMenu = 0;
+void showTvScreen() {
+    prvMenu = mnu_menuBank;
+    switchScreenTo(SCREEN_TRANSITION);
+    loadMenu(MENU_BANK_TV_SCREEN);
+    showMenu();
+}
+
+void revertPreviousMenu() {
+    switchScreenTo(SCREEN_TRANSITION);
+    gms_disableTimeControls = false; // do it before loading menu, in case it needs to disable it again
+    loadMenu(prvMenu);
+    showMenu();
+}
+
 static void _showNormalMenu(char menuBank){
     switchScreenTo(SCREEN_TRANSITION);
     loadMenu(menuBank);
@@ -40,6 +56,7 @@ static void _showNormalMenu(char menuBank){
     gms_disableTimeControls = false;
     joyCursor.enabled = true;
 }
+
 void gotoLocation(){
     switch(GS.vMap.location){
         case LOCATION_FARM_HOUSE:
@@ -119,13 +136,20 @@ void mainLoop(){
             timeTick();
             setBank(pbank);
 
+            switch(gms_event){
+                case EVENT_END_OF_MONTH:
+                    showTvScreen();
+                    break;
+            }
+            gms_event = EVENT_NONE;
+            
         }
-        // do this once per frame only - carefull with FRAME_MIDDLE as its not fired in gms_textMode
+        // do this once per frame only
         if(gms_framePos == FRAME_BOTTOM && !oncePerFrameFinished){
             // keep that in RAM as it changes banks a lot to display menus and their code
             checkKeys();
             oncePerFrameFinished = true;
-            // process special tasks
+            // process special tasks, like minigame loops
             if(!gms_inSpecialMenu){
                 runMenuLoop();
             }

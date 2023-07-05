@@ -1,6 +1,7 @@
 #ifndef TV_SCREEN_H
 #define TV_SCREEN_H
 
+// extern const struct MenuOption TV_SCREEN_MENU_RETURN[];
 extern const struct MenuOption TV_SCREEN_MENU[];
 
 #pragma compile("tvScreen.c")

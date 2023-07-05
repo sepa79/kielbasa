@@ -55,6 +55,17 @@ __export const char retroMsx01[] = {
     #embed 0xffff 136 "assets/music/FarmGameRadioRetro.sid"
 };
 
+// boombox and its fonts
+__export const char boomboxScr[] = {
+    #embed "assets/charGfx/boombox - MapArea.bin"
+};
+__export const char boomboxFnt[] = {
+    #embed 0x400 "assets/charGfx/boombox - Chars.bin"
+};
+__export const char boomboxAtr[] = {
+    #embed 128 "assets/charGfx/boombox - CharAttribs_L1.bin"
+};
+
 // store this song data in shared section, so we can safely switch banks to load SIDs and this data is always available
 #pragma code ( musicCode )
 #pragma data ( musicData )

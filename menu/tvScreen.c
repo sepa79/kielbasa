@@ -2,7 +2,6 @@
 #include <c64/charwin.h>
 #include <c64/rasterirq.h>
 #include <string.h>
-#include <fixmath.h>
 
 #include <menu/menuSystem.h>
 #include <translation/common.h>
@@ -10,6 +9,7 @@
 #include <engine/spriteText.h>
 #include <assets/assetsSettings.h>
 #include <assets/mainGfx.h>
+#include <engine/gameSettings.h>
 
 // Sections and regions
 #pragma section(tvScreenLoaderData, 0)
@@ -46,17 +46,17 @@ __interrupt static void _menuShowSprites(){
     vic.spr_priority = 0b00000000;
     vic.spr_multi    = 0b00000000;
 
-    const char xPos = 100;
-    const char yPos = 100;
-    const char xSize = 3;
-    const char ySize = 2;
+    #define xPos   108
+    #define yPos   100
+    #define xSize  3
+    #define ySize  2
 
     char sprId = 0;
     for(char y=0;y<ySize;y++){
         #pragma unroll(full)
         for(char x=0;x<xSize;x++){
             vic_sprxy(sprId, xPos + x*48, yPos + y*42);
-            vic.spr_color[sprId] = VCOL_BROWN ;
+            vic.spr_color[sprId] = VCOL_BLUE ;
             GFX_2_SCR[OFFSET_SPRITE_PTRS+sprId] = SPRITE_BLOCK + sprId;
             sprId++;
         }
@@ -90,26 +90,30 @@ static void _loadFullKoalaToBMP2(){
 }
 
 const struct MenuOption TV_SCREEN_MENU[] = {
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &showMenu, MENU_BANK_MAIN_MENU, 2, 11},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &revertPreviousMenu, 0, 2, 11},
     END_MENU_CHOICES
 };
 
 static void _menuHandler(void) {
+    gms_disableTimeControls = true;
+    gms_gameSpeed = SPEED_PAUSED;
+    updateGameSpeed();
+    
     loadMenuGfx();
 
     memset(SPRITE_BLOCK_POINTER, 0, 0x40*8);
     textToSprite((char*)TXT[SB_IDX_MENU_TV_SCREEN_BILLS], 3, SPRITE_BLOCK_POINTER);
 
     char str[10] = "";
-    sprintf(str, "%8d", lmuldiv16u(GS.pension, GS.bills, 100));
+    sprintf(str, "%8d", GS.bills);
     str[8] = 28; // zl
     str[9] = 0;
-    textToSpriteAt(str, 3, SPRITE_BLOCK_POINTER, 0, 1);
+    textToSpriteAt(str, 3, SPRITE_BLOCK_POINTER+64*3, 0, 0);
 
     sprintf(str, "%8d", GS.pension);
     str[8] = 28; // zl
     str[9] = 0;
-    textToSpriteAt(str, 3, SPRITE_BLOCK_POINTER+64*3, 0, 1);
+    textToSpriteAt(str, 3, SPRITE_BLOCK_POINTER+64*3, 0, 2);
 
     switchScreenTo(SCREEN_MC_GFX);
     displayMenu(TV_SCREEN_MENU);

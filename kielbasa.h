@@ -3,6 +3,8 @@
 
 void mainLoop();
 void gotoLocation();
+void showTvScreen();
+void revertPreviousMenu();
 
 #pragma compile("kielbasa.c")
 

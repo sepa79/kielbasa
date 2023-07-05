@@ -24,7 +24,8 @@ struct GameState {
     // percentage shown as byte
     signed int inflation;
     // percentage shown as byte
-    char bills;
+    unsigned long bills;
+    char billsPercent;
     struct Calendar calendar;
     struct Kitchen kitchen;
     struct Farm farm;

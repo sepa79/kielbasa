@@ -60,5 +60,13 @@ extern volatile byte isc_weatherSprite;
 // debug variable, counts frames (showUiSpritesTop() increases it every time it is called)
 extern volatile char gms_frameCount;
 
+enum Events {
+    EVENT_NONE,
+    EVENT_END_OF_MONTH,
+    EVENT_XMAS,
+};
+
+extern Events gms_event;
+
 #pragma compile("gameSettings.c")
 #endif
