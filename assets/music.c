@@ -60,10 +60,10 @@ __export const char boomboxScr[] = {
     #embed "assets/charGfx/boombox - MapArea.bin"
 };
 __export const char boomboxFnt[] = {
-    #embed 0x400 "assets/charGfx/boombox - Chars.bin"
+    #embed 0x400 0x400 "assets/charGfx/boombox - Chars.bin"
 };
 __export const char boomboxAtr[] = {
-    #embed 128 "assets/charGfx/boombox - CharAttribs_L1.bin"
+    #embed "assets/charGfx/boombox - CharAttribs_L1.bin"
 };
 
 // store this song data in shared section, so we can safely switch banks to load SIDs and this data is always available

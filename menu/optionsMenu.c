@@ -1,5 +1,6 @@
 #include <c64/charwin.h>
 #include <c64/keyboard.h>
+#include <string.h>
 #include <c64/types.h>
 #include <c64/vic.h>
 #include <c64/easyflash.h>
@@ -42,6 +43,28 @@ static void _displayPlaylist(){
     }
 
     setBank(pbank);
+}
+
+static void _displayBoombox(){
+    rirq_stop();
+
+    char pbank = setBank(MUSIC_BANK_RETRO_1);
+    char pport = setPort(MMAP_ALL_ROM);
+
+    memcpy(GFX_1_FNT+0x400, boomboxFnt, 0x400);
+    memcpy(GFX_1_SCR+12*40, boomboxScr, 13*40);
+    setPort(pport);
+    rirq_start();
+    // colors
+    for(char i=0; i<130; i++){
+        COLOR_RAM[12*40 + i + 000] = boomboxAtr[GFX_1_SCR[12*40 + i + 000]];
+        COLOR_RAM[12*40 + i + 130] = boomboxAtr[GFX_1_SCR[12*40 + i + 130]];
+        COLOR_RAM[12*40 + i + 260] = boomboxAtr[GFX_1_SCR[12*40 + i + 260]];
+        COLOR_RAM[12*40 + i + 390] = boomboxAtr[GFX_1_SCR[12*40 + i + 390]];
+    }
+    setBank(pbank);
+    vic.color_back1 = VCOL_DARK_GREY;
+    vic.color_back2 = VCOL_LT_GREY;
 }
 
 static void _upRowCheck(){
@@ -138,8 +161,10 @@ void _showMusicMenu(){
     // static menu texts
     cwin_putat_string_raw(&cw, 0, 0, TXT[TXT_IDX_MUSIC_OPTIONS_HEADER], VCOL_GREEN);
 
+    switchScreenTo(SCREEN_MC_TXT);
     displayMenu(MUSIC_MENU);
     _displayPlaylist();
+    _displayBoombox();
 }
 
 void showOptionsMenu(){
@@ -188,16 +213,16 @@ void playSong(char song){
 }
 
 const struct MenuOption MUSIC_MENU[] = {
-    { TXT_IDX_MENU_OPTIONS_MSX_PLAY, KEY_RETURN, SCREEN_FULL_TXT, UI_SELECT, &_loadMsx, 0, 1, 1},
-    { TXT_IDX_MENU_OPTIONS_MSX_ON_OFF, '1', SCREEN_FULL_TXT, UI_SELECT, &_toggleMusic, 0, 10, 1},
+    { TXT_IDX_MENU_OPTIONS_MSX_PLAY, KEY_RETURN, SCREEN_MC_TXT, UI_SELECT, &_loadMsx, 0, 1, 1},
+    { TXT_IDX_MENU_OPTIONS_MSX_ON_OFF, '1', SCREEN_MC_TXT, UI_SELECT, &_toggleMusic, 0, 10, 1},
     { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_FULL_TXT, UI_LF, &showOptionsMenu, 0, 30, 0},
-    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', SCREEN_FULL_TXT, UI_U+UI_HIDE, &_upRow, 0, 0, 4 },
-    { TXT_IDX_MENU_TASK_MANAGER_S, 's', SCREEN_FULL_TXT, UI_D+UI_HIDE, &_downRow, 0, 0, 22 },
+    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', SCREEN_MC_TXT, UI_U+UI_HIDE, &_upRow, 0, 0, 4 },
+    { TXT_IDX_MENU_TASK_MANAGER_S, 's', SCREEN_MC_TXT, UI_D+UI_HIDE, &_downRow, 0, 0, 22 },
     END_MENU_CHOICES
 };
 const struct MenuOption OPTIONS_MENU[] = {
     { TXT_IDX_MENU_OPTIONS_LANG, '1', SCREEN_FULL_TXT, UI_SELECT, &_changeLanguage, 0, 2, 1},
-    { TXT_IDX_MENU_OPTIONS_MSX, '2', SCREEN_FULL_TXT, UI_SELECT, &_showMusicMenu, 0, 2, 2},
+    { TXT_IDX_MENU_OPTIONS_MSX, '2', SCREEN_MC_TXT, UI_SELECT, &_showMusicMenu, 0, 2, 2},
     { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &backToPreviousMenu, 0, 2, 3},
     END_MENU_CHOICES
 };

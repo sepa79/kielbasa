@@ -166,6 +166,87 @@ __interrupt static void IRQ_topMCTxtScreen() {
     // indicate frame position
     gms_framePos = FRAME_TOP;
 
+    char register1_value = 0;
+    char register2_value = 0;
+    #define eq_linia 0xc000+12+40*14
+    __asm {
+equalizer:
+
+        lda $d41c       // music register 1
+        cmp register1_value
+        beq no_change1
+        sta register1_value
+        lsr 
+        lsr 
+        lsr 
+        lsr
+        tay
+        // cpy #16
+        // bcs no_change1
+
+        jsr draw_equ
+
+no_change1:
+
+//         lda $8300+4*40+26  //   music register 2
+//         cmp register2_value
+//         beq no_change2
+//         sta register2_value
+//         lsr 
+//         lsr 
+//         lsr 
+//         lsr
+//         tay
+//         cpy #16
+//         bcs no_change2
+
+//         jsr draw_equ
+
+// no_change2:
+
+        ldx #16
+nxt:
+        dex
+        bmi exitEq
+        lda eq_linia,x 
+        cmp #$f1 
+        bcc nxt_line1
+        dec eq_linia,x 
+        bne nxt
+
+
+nxt_line1:
+
+        lda eq_linia+40,x 
+        cmp #$ec 
+        bcc nxt_line2
+        dec eq_linia+40,x 
+        bne nxt
+        jmp exitEq
+
+nxt_line2:
+
+        lda eq_linia+80,x 
+        cmp #$e7+1
+        bcc nxt
+        dec eq_linia+80,x 
+        bne nxt
+        jmp exitEq
+
+draw_equ:
+
+        lda #$f4 
+        sta eq_linia,y 
+        sec 
+        sbc #5
+        sta eq_linia+40,y 
+        sbc #5
+        sta eq_linia+80,y 
+        rts 
+
+exitEq:
+
+    }
     // vic.color_back--;
     // vic.color_border--;
 }
