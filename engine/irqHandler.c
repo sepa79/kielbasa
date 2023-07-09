@@ -240,6 +240,7 @@ __interrupt void IRQ_middleTxtScreen(){
         ldx #$08
     la: dex
         bne la
+        nop
     }
     vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
     vic.ctrl2 = VIC_CTRL2_CSEL | 0;
@@ -250,12 +251,21 @@ __interrupt void IRQ_middleTxtScreen(){
     IRQ_middleScreenMsx();
 }
 
+
+char register1_value = 0;
+char register2_value = 0;
+char cassette_anim_delay = 0;
+
 __interrupt void IRQ_middleMCTxtScreen(){
     // run after playMsx so that we have player visible in RAM
     IRQ_middleScreenMsx();
 
-    char register1_value = 0;
-    char register2_value = 0;
+    #define BAR_L3 0xea
+    #define BAR_L2 BAR_L3+5
+    #define BAR_L1 BAR_L3+10
+    #define BAR_FULL BAR_L3+13
+
+
     #define eq_linia 0xc000+12+40*14
     __asm {
 equalizer:
@@ -276,7 +286,7 @@ equalizer:
 
 no_change1:
 
-        lda $8300+4*40+26  //   music register 2
+        lda $83c7  //   music register 2
         cmp register2_value
         beq no_change2
         sta register2_value
@@ -297,7 +307,7 @@ nxt:
         dex
         bmi exitEq
         lda eq_linia,x 
-        cmp #$f1 
+        cmp #BAR_L1
         bcc nxt_line1
         dec eq_linia,x 
         bne nxt
@@ -306,7 +316,7 @@ nxt:
 nxt_line1:
 
         lda eq_linia+40,x 
-        cmp #$ec 
+        cmp #BAR_L2
         bcc nxt_line2
         dec eq_linia+40,x 
         bne nxt
@@ -315,7 +325,7 @@ nxt_line1:
 nxt_line2:
 
         lda eq_linia+80,x 
-        cmp #$e7+1
+        cmp #BAR_L3+1
         bcc nxt
         dec eq_linia+80,x 
         bne nxt
@@ -323,7 +333,7 @@ nxt_line2:
 
 draw_equ:
 
-        lda #$f4 
+        lda #BAR_FULL
         sta eq_linia,y 
         sec 
         sbc #5
@@ -335,6 +345,82 @@ draw_equ:
 exitEq:
 
     }
+
+    #define TAPE_FNT_S 0xf8
+    #define TAPE_FNT_E 0xfc
+    #define tape1 0xc000+16+40*19
+    #define tape2 0xc000+23+40*19
+    // tape anim
+    if(gms_enableMusic){
+        __asm{
+            inc cassette_anim_delay
+            lda cassette_anim_delay
+            cmp #6
+            bne cass_q
+            lda #0
+            sta cassette_anim_delay
+
+            inc tape1
+            inc tape2
+            inc tape1+40
+            inc tape2+40
+
+            lda tape1
+            cmp #TAPE_FNT_E
+            bne cass_q
+            lda #TAPE_FNT_S
+            sta tape1
+            sta tape2
+            lda #TAPE_FNT_E
+            sta tape1+40
+            sta tape2+40
+    cass_q:
+        }
+    }
+
+    // speaker anim
+    char ul;
+    char ur;
+    char ml;
+    char mr;
+    char ll;
+    char lr;
+    
+    // get sound form buffer
+    char sound = *(char *)0xd41c;
+    sound = (sound >> 2) & 3;
+    if(sound == 2){
+        // big
+        ul = 0x85;
+        ur = 0x86;
+        ml = 0x87;
+        mr = 0x88;
+        ll = 0x89;
+        lr = 0x8a;
+    } else {
+        // small
+        ul = 0x85+6;
+        ur = 0x86+6;
+        ml = 0x87+6;
+        mr = 0x88+6;
+        ll = 0x89+6;
+        lr = 0x8a+6;
+    }
+    #define spk1 ((char *)0xc000+5+40*17)
+    #define spk2 ((char *)0xc000+33+40*17)
+    spk1[0] = ul;
+    spk1[1] = ur;
+    spk1[0+40] = ml;
+    spk1[1+40] = mr;
+    spk1[0+80] = ll;
+    spk1[1+80] = lr;
+    spk2[0] = ul;
+    spk2[1] = ur;
+    spk2[0+40] = ml;
+    spk2[1+40] = mr;
+    spk2[0+80] = ll;
+    spk2[1+80] = lr;
+
 }
 
 /* ================================================================================

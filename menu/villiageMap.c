@@ -221,7 +221,7 @@ static void _villiageMapLoadGfx(){
 
 static void _villiageMapShowMenu(void){
     // make screen visible
-    // _villiageMapLoadGfx();
+    _villiageMapLoadGfx();
     switchScreenTo(SCREEN_HIRES_TXT);
     displayMenu(VILLIAGE_MAP_MENU);
 }
@@ -239,7 +239,7 @@ void villiageMapInit(void){
     villiageMapScreenInit();
     buildRamTiles();
     // init and draw map
-    _villiageMapLoadGfx();
+    // _villiageMapLoadGfx();
 
     _villiageMapShowMenu();
 }

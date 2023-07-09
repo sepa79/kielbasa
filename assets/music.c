@@ -11,12 +11,12 @@
 #pragma section( radioMsx1, 0 )
 // #pragma section( radioMsx2, 0 )
 #pragma section( retroMsx1, 0 )
-#pragma region( musicBank1, 0x8000, 0xbd00, , MUSIC_BANK, { mainGameMsx } )
+#pragma region( musicBank1, 0x8000, 0xbc00, , MUSIC_BANK, { mainGameMsx } )
 #pragma region( radio01, 0x8000, 0xbd00, , MUSIC_BANK_RADIO_1, { radioMsx1 } )
 // #pragma region( radio02, 0xa000, 0xbd00, , MUSIC_BANK_RADIO_1, { radioMsx2 } )
 #pragma region( retro01, 0x8000, 0xa000, , MUSIC_BANK_RETRO_1, { retroMsx1 } )
 // shared section - music loader
-#pragma region( musicBank2, 0xbd00, 0xc000, , {MUSIC_BANK, MUSIC_BANK_RADIO_1, MUSIC_BANK_RETRO_1}, { musicCode, musicData } )
+#pragma region( musicBank2, 0xbc00, 0xc000, , {MUSIC_BANK, MUSIC_BANK_RADIO_1, MUSIC_BANK_RETRO_1}, { musicCode, musicData } )
 
 //++++++++++++++++++++++++++++++++
 #pragma data ( mainGameMsx )
@@ -83,27 +83,27 @@ __export const char* sidIndex[] ={
     retroMsx01
 };
 
-const char TXT_PLAYLIST_GM_NAME[] = s" Kielbasa music";
-const char TXT_PLAYLIST_GM_S1[] = s"1 Take me for a dance";
-const char TXT_PLAYLIST_GM_S2[] = s"2 For Sausage and Stonka";
-const char TXT_PLAYLIST_GM_S3[] = s"3 Flack Attack";
-const char TXT_PLAYLIST_GM_S4[] = s"4 Dare to Lair";
-const char TXT_PLAYLIST_GM_S5[] = s"5 Forest Froth";
-const char TXT_PLAYLIST_GM_S6[] = s"6 War of the Crops and Worlds";
-const char TXT_PLAYLIST_RETRO_NAME[] = s" Retro Tributes";
-const char TXT_PLAYLIST_RETRO_S1[] = s"1 Robbing Mr Hubbard";
-const char TXT_PLAYLIST_RETRO_S2[] = s"2 From Bangladesh to Bankok";
-const char TXT_PLAYLIST_RETRO_S3[] = s"3 Gray walls torn down";
-const char TXT_PLAYLIST_RADIO_NAME[] = s" 90's Radio";
-const char TXT_PLAYLIST_RADIO_S1[] = s"1 Kraftwerk - The Model";
-const char TXT_PLAYLIST_RADIO_S2[] = s"2 Yazz - Don't Go";
-const char TXT_PLAYLIST_RADIO_S3[] = s"3 Human League - Don't You Want Me?";
-const char TXT_PLAYLIST_RADIO_S4[] = s"4 Depeche Mode - Everything Counts";
-const char TXT_PLAYLIST_RADIO_S5[] = s"5 Donna Summer - I Feel Love";
-const char TXT_PLAYLIST_RADIO_S6[] = s"6 OMD - Enola Gay";
-const char TXT_PLAYLIST_RADIO_S7[] = s"7 Pink Floyd - A.B.I.T.W. Part 2";
-const char TXT_PLAYLIST_RADIO_S8[] = s"8 Tom Robinson - Listen to the radio";
-const char TXT_PLAYLIST_RADIO_S9[] = s"9 Eurythmics - Sweet Dreams";
+const char TXT_PLAYLIST_GM_NAME[] =     s" Kielbasa music                      ";
+const char TXT_PLAYLIST_GM_S1[] =       s"1 Take me for a dance                ";
+const char TXT_PLAYLIST_GM_S2[] =       s"2 For Sausage and Stonka             ";
+const char TXT_PLAYLIST_GM_S3[] =       s"3 Flack Attack                       ";
+const char TXT_PLAYLIST_GM_S4[] =       s"4 Dare to Lair                       ";
+const char TXT_PLAYLIST_GM_S5[] =       s"5 Forest Froth                       ";
+const char TXT_PLAYLIST_GM_S6[] =       s"6 War of the Crops and Worlds        ";
+const char TXT_PLAYLIST_RETRO_NAME[] =  s" Retro Tributes                      ";
+const char TXT_PLAYLIST_RETRO_S1[] =    s"1 Robbing Mr Hubbard                 ";
+const char TXT_PLAYLIST_RETRO_S2[] =    s"2 From Bangladesh to Bankok          ";
+const char TXT_PLAYLIST_RETRO_S3[] =    s"3 Gray walls torn down               ";
+const char TXT_PLAYLIST_RADIO_NAME[] =  s" 90's Radio                          ";
+const char TXT_PLAYLIST_RADIO_S1[] =    s"1 Kraftwerk - The Model              ";
+const char TXT_PLAYLIST_RADIO_S2[] =    s"2 Yazz - Don't Go                    ";
+const char TXT_PLAYLIST_RADIO_S3[] =    s"3 Human League - Don't You Want Me?  ";
+const char TXT_PLAYLIST_RADIO_S4[] =    s"4 Depeche Mode - Everything Counts   ";
+const char TXT_PLAYLIST_RADIO_S5[] =    s"5 Donna Summer - I Feel Love         ";
+const char TXT_PLAYLIST_RADIO_S6[] =    s"6 OMD - Enola Gay                    ";
+const char TXT_PLAYLIST_RADIO_S7[] =    s"7 Pink Floyd - A.B.I.T.W. Part 2     ";
+const char TXT_PLAYLIST_RADIO_S8[] =    s"8 Tom Robinson - Listen to the radio ";
+const char TXT_PLAYLIST_RADIO_S9[] =    s"9 Eurythmics - Sweet Dreams          ";
 
 const struct Song RADIO_PLAYLIST[RADIO_PLAYLIST_SIZE] = {
     { TXT_PLAYLIST_RADIO_S1, MUSIC_BANK_RADIO_1, 0, 4, sizeof(radioMsx01) },

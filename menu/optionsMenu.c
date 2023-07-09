@@ -15,31 +15,44 @@
 #include <engine/gameSettings.h>
 
 #define MAX_LANG 1
-const byte LANGUAGE_BANKS[MAX_LANG+1] = {TRANSLATION_PL_BANK, TRANSLATION_EN_BANK};
-static byte _currentLang = 1;
-static byte _currentSong = 2;
-static byte _currentRadioSong = RADIO_PLAYLIST_SIZE;
+const char LANGUAGE_BANKS[MAX_LANG+1] = {TRANSLATION_PL_BANK, TRANSLATION_EN_BANK};
+static char _currentLang = 1;
+static char _currentSong = 2;
+static char _currentRadioSong = RADIO_PLAYLIST_SIZE;
+static char _page = 0;
 
 #define PLAYLIST_X 2
-#define PLAYLIST_Y 3
+#define PLAYLIST_Y 0
+#define MAX_PAGE 1
+
+static void _displayPlaylistPage(char start, char end){
+    char yPos = PLAYLIST_Y;
+    for(byte i=start;i<end;i++){
+        byte color = VCOL_GREEN;
+        // print songs marker
+        if(PLAYLIST[i].bank == TITLE_ONLY){
+            color = VCOL_BLUE;
+        } else if(_currentSong == i){
+            color = VCOL_GREEN;
+            cwin_putat_string_raw(&cw, PLAYLIST_X-2, yPos, s">", VCOL_WHITE);
+        } else {
+            cwin_putat_string_raw(&cw, PLAYLIST_X-2, yPos, s" ", VCOL_WHITE);
+        }
+
+        cwin_putat_string_raw(&cw, PLAYLIST_X, yPos, PLAYLIST[i].textIdx, color);
+
+        yPos++;
+    }
+}
 static void _displayPlaylist(){
     // songs list
     char pbank = setBank(MUSIC_BANK);
     // now songs are visible from ROM
 
-    for(byte i=0;i<PLAYLIST_SIZE;i++){
-        byte color = VCOL_GREEN;
-        // print songs marker
-        if(PLAYLIST[i].bank == TITLE_ONLY){
-            color = VCOL_LT_BLUE;
-        } else if(_currentSong == i){
-            color = VCOL_LT_GREEN;
-            cwin_putat_string_raw(&cw, PLAYLIST_X-2, PLAYLIST_Y+i, s">", VCOL_WHITE);
-        } else {
-            cwin_putat_string_raw(&cw, PLAYLIST_X-2, PLAYLIST_Y+i, s" ", VCOL_WHITE);
-        }
-
-        cwin_putat_string_raw(&cw, PLAYLIST_X, PLAYLIST_Y+i, PLAYLIST[i].textIdx, color);
+    if(_page == 0){
+        _displayPlaylistPage(0, 11);
+    } else {
+        _displayPlaylistPage(11, PLAYLIST_SIZE);
     }
 
     setBank(pbank);
@@ -67,11 +80,30 @@ static void _displayBoombox(){
     vic.color_back2 = VCOL_LT_GREY;
 }
 
+static void _left(){
+    if(_page > 0){
+        _page--;
+        _currentSong = 1;
+    }
+    cwin_clear(&cw);
+    _displayPlaylist();
+}
+static void _right(){
+    if(_page < MAX_PAGE){
+        _page++;
+        _currentSong = 12;
+    }
+    cwin_clear(&cw);
+    _displayPlaylist();
+}
+
 static void _upRowCheck(){
-    if(_currentSong > 0){
+    if(_currentSong > 1){
         _currentSong--;
-    } else {
-        _currentSong = PLAYLIST_SIZE-1;
+    }
+    if(_currentSong < 11 && _page == 1){
+        _page = 0;
+        cwin_clear(&cw);
     }
 }
 static void _upRow(){
@@ -86,8 +118,10 @@ static void _upRow(){
 static void _downRowCheck(){
     if(_currentSong < PLAYLIST_SIZE-1){
         _currentSong++;
-    } else {
-        _currentSong = 0;
+    }
+    if(_currentSong > 11 && _page == 0){
+        _page = 1;
+        cwin_clear(&cw);
     }
 }
 static void _downRow(){
@@ -154,17 +188,27 @@ static void _loadMsx() {
     _playMsx(&PLAYLIST[_currentSong], true);
 }
 
-void _showMusicMenu(){
-    cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, BIG_SCREEN_Y_START, SCREEN_WIDTH, BIG_SCREEN_HEIGHT);
+static void closeMsxMenu(){
+   // reload fonts
+    rirq_stop(); // this causes flicker, need to fix font copy & irqs collision
+    loadMainFont();
+    rirq_start();
+
+    showOptionsMenu();
+}
+
+static void _showMusicMenu(){
+    cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, BIG_SCREEN_Y_START, SCREEN_WIDTH, 12);
     cwin_clear(&cw);
 
-    // static menu texts
-    cwin_putat_string_raw(&cw, 0, 0, TXT[TXT_IDX_MUSIC_OPTIONS_HEADER], VCOL_GREEN);
-
-    switchScreenTo(SCREEN_MC_TXT_BOOMBOX);
     displayMenu(MUSIC_MENU);
+
+    // static menu texts
+    updateStatusBar(TXT[TXT_IDX_MENU_OPTIONS_MSX_MENU]);
+
     _displayPlaylist();
     _displayBoombox();
+    switchScreenTo(SCREEN_MC_TXT_BOOMBOX);
 }
 
 void showOptionsMenu(){
@@ -213,11 +257,13 @@ void playSong(char song){
 }
 
 const struct MenuOption MUSIC_MENU[] = {
-    { TXT_IDX_MENU_OPTIONS_MSX_PLAY, KEY_RETURN, SCREEN_MC_TXT_BOOMBOX, UI_SELECT, &_loadMsx, 0, 1, 1},
-    { TXT_IDX_MENU_OPTIONS_MSX_ON_OFF, '1', SCREEN_MC_TXT_BOOMBOX, UI_SELECT, &_toggleMusic, 0, 10, 1},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_FULL_TXT, UI_LF, &showOptionsMenu, 0, 30, 0},
-    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', SCREEN_MC_TXT_BOOMBOX, UI_U+UI_HIDE, &_upRow, 0, 0, 4 },
-    { TXT_IDX_MENU_TASK_MANAGER_S, 's', SCREEN_MC_TXT_BOOMBOX, UI_D+UI_HIDE, &_downRow, 0, 0, 22 },
+    { TXT_IDX_MENU_TASK_MANAGER_A, KEY_RETURN, SCREEN_MC_TXT_BOOMBOX, UI_SELECT+UI_HIDE, &_loadMsx, 0, 1, 1},
+    { TXT_IDX_MENU_TASK_MANAGER_A, 'm', SCREEN_MC_TXT_BOOMBOX, UI_HIDE, &_toggleMusic, 0, 1, 1},
+    { TXT_IDX_MENU_TASK_MANAGER_A, 'a', SCREEN_MC_TXT_BOOMBOX, UI_L+UI_HIDE, &_left, 0, 1, 1},
+    { TXT_IDX_MENU_TASK_MANAGER_D, 'd', SCREEN_MC_TXT_BOOMBOX, UI_R+UI_HIDE, &_right, 0, 1, 1},
+    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', SCREEN_MC_TXT_BOOMBOX, UI_U+UI_HIDE, &_upRow, 0, 1, 1 },
+    { TXT_IDX_MENU_TASK_MANAGER_S, 's', SCREEN_MC_TXT_BOOMBOX, UI_D+UI_HIDE, &_downRow, 0, 1, 1 },
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &closeMsxMenu, 0, 1, 1},
     END_MENU_CHOICES
 };
 const struct MenuOption OPTIONS_MENU[] = {

@@ -62,10 +62,10 @@ __interrupt static void _menuShowSprites(){
     vic.spr_pos[1].x = 24+196;
     vic.spr_pos[2].x = 12;
     vic.spr_pos[3].x = 60;
-    vic.spr_pos[0].y = 50+67+2+9;
-    vic.spr_pos[1].y = 50+67+2+9;
-    vic.spr_pos[2].y = 50+67+2+9;
-    vic.spr_pos[3].y = 50+67+2+9;
+    vic.spr_pos[0].y = 50+67;
+    vic.spr_pos[1].y = 50+67;
+    vic.spr_pos[2].y = 50+67;
+    vic.spr_pos[3].y = 50+67;
 
     vic.spr_color[0] = VCOL_MED_GREY;
     vic.spr_color[1] = VCOL_MED_GREY;

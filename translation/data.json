@@ -280,15 +280,17 @@
         "en": "Music settings"
       },
       {
-        "id": "MENU_OPTIONS_MSX_PLAY",
-        "pl": "û Graj",
-        "en": "û Play"
-      },
-      {
-        "id": "MENU_OPTIONS_MSX_ON_OFF",
-        "menu_opt": "1",
-        "pl": " Muzyka on/off",
-        "en": " Music on/off"
+        "id": "MENU_OPTIONS_MSX_MENU",
+        "pl": [
+               "Wybór muzyki",
+               "  M on/off  ",
+               "   ü Wyjdź  "
+              ],
+        "en": [
+               "Select music",
+               "  M on/off  ",
+               "   ü Exit   "
+              ]
       },
       {
         "id": "LOG_MENU_HEADER",
