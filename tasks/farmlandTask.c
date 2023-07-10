@@ -81,7 +81,7 @@ void _sowFieldTask(char taskId){
                 // process task
                 fields[fieldId].planted += partDone;
                 fields[fieldId].alive   += partDone;
-                fields[fieldId].grown   = 0;
+                fields[fieldId].grown   += partDone;
                 fields[fieldId].ready   = 0; // reap takes this / SOME_DIVIDER
 
                 // is the whole field done now?

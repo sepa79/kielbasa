@@ -3,7 +3,9 @@
 #include <c64/vic.h>
 #include <c64/types.h>
 #include <stdio.h>
+#include <fixmath.h>
 
+#include <menu/farmland.h>
 #include <engine/gameState.h>
 #include <menu/menuSystem.h>
 #include <translation/common.h>
@@ -19,6 +21,7 @@
 
 // column offset for printing data
 #define COL_OFFSET_FIELDLIST 0
+#define ROW_OFFSET_FIELDLIST 1
 
 static byte _currentField = 0;
 static byte _currentPlant = 0;
@@ -190,7 +193,6 @@ static void _showWaterLevel(){
     } ;
 }
 
-
 __interrupt static void _menuShowSprites(){
     vic.spr_enable   = 0b11111111;
     vic.spr_expand_x = 0b00000000;
@@ -228,9 +230,9 @@ __interrupt static void _menuShowSprites(){
     if(fields[_currentField].plantId){
         vic.spr_color[2+fields[_currentField].plantId] = VCOL_WHITE;
     }
-    if(_currentPlant){
-        vic.spr_color[2+_currentPlant] = VCOL_LT_GREY;
-    }
+    // if(_currentPlant){
+    //     vic.spr_color[2+_currentPlant] = VCOL_LT_GREY;
+    // }
 
     GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = SPR_BANK_THERMO_BAR_1;
     GFX_1_SCR[OFFSET_SPRITE_PTRS+1] = SPR_BANK_THERMO_BAR_2;
@@ -251,50 +253,63 @@ __interrupt static void _menuShowSprites(){
     }
 }
 
+static const char separator[22] = { 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x7f, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x0 };
 static void _displayFieldList(){
 
-    // clearBox(COL_OFFSET_FIELDLIST, 20, 40-COL_OFFSET_FIELDLIST, 5);
+    cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST, ROW_OFFSET_FIELDLIST, TXT[TXT_IDX_FIELD_LIST_HEADER], VCOL_YELLOW);
 
-    // gotoxy(COL_OFFSET_FIELDLIST, 19);
-    // printf("Water 0b-2u Temp 0b-2d Week 0b-2u Rain 0b-1u", GS.farm.waterLevel, GS.calendar.currentTemp, GS.calendar.dateWeek, WEEKLY_AVG_RAIN[GS.calendar.dateWeek]);
-
-    cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST, 7, TXT[TXT_IDX_FIELD_LIST_HEADER], VCOL_YELLOW);
-
-    byte str[6];
-    byte col;
+    char str[10];
+    char col;
     for(byte i=0;i<FIELDS_COUNT;i++){
-        sprintf(str, "%u", fields[i].area);
         if(i==_currentField){
-            col = VCOL_LT_GREEN;
-        } else {
             col = VCOL_GREEN;
+        } else {
+            col = VCOL_DARK_GREY;
         }
-        cwin_putat_string(&cw, COL_OFFSET_FIELDLIST, 8+i, str, col);
+        // separators - skip last line
+        if(i<FIELDS_COUNT-1){
+            cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST, ROW_OFFSET_FIELDLIST+3+i*3, separator, VCOL_YELLOW);
+        }
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+12, ROW_OFFSET_FIELDLIST+1+i*3, TBL_V, VCOL_YELLOW);
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+12, ROW_OFFSET_FIELDLIST+2+i*3, TBL_V, VCOL_YELLOW);
+        // field size
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST, ROW_OFFSET_FIELDLIST+1+i*3, FIELD_SIZES[fields[i].area-1], col);
+        // plant name
+        char plantId = fields[i].plantId;
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+2, ROW_OFFSET_FIELDLIST+2+i*3, PLANT_TYPES_TXT[plantId], col);
 
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+2, 8+i, TBL_V, VCOL_YELLOW);
+        // stage
+        char stage = fields[i].stage;
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+13, ROW_OFFSET_FIELDLIST+1+i*3, PLANT_STAGE_NAMES[stage], col);
 
-        byte plantId = fields[i].plantId;
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+3, 8+i, PLANT_TYPES_TXT[plantId], col);
+        // state
+        sprintf(str, " ");
+        if(fields[i].plantId != PLANT_NONE ){
+            if(fields[i].stage == PLANT_STAGE_SPROUT){
+                sprintf(str, "%u/%u", fields[i].alive, fields[i].grown);
+            } else if(fields[i].stage == PLANT_STAGE_GROWTH || fields[i].stage == PLANT_STAGE_READY){
+                sprintf(str, "%u/%u", fields[i].grown, fields[i].planted);
+            } else if(fields[i].stage == PLANT_STAGE_RIPEN){
+                sprintf(str, "%u %     ", fields[i].ready);
+            }
+        }
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+13, ROW_OFFSET_FIELDLIST+2+i*3, str, col);
 
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+12, 8+i, TBL_V, VCOL_YELLOW);
-        byte stage = fields[i].stage;
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+13, 8+i, PLANT_STAGE_NAMES[stage], col);
+        // cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+21, 8+i, TBL_V, VCOL_YELLOW);
+        // sprintf(str, "%3u", fields[i].timer);
+        // cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+22, 8+i, str, col);
 
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+21, 8+i, TBL_V, VCOL_YELLOW);
-        sprintf(str, "%3u", fields[i].timer);
-        cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+22, 8+i, str, col);
+        // cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+25, 8+i, TBL_V, VCOL_YELLOW);
+        // sprintf(str, "%3u", fields[i].alive);
+        // cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+26, 8+i, str, col);
 
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+25, 8+i, TBL_V, VCOL_YELLOW);
-        sprintf(str, "%3u", fields[i].alive);
-        cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+26, 8+i, str, col);
+        // cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+29, 8+i, TBL_V, VCOL_YELLOW);
+        // sprintf(str, "%4u", fields[i].grown);
+        // cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+30, 8+i, str, col);
 
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+29, 8+i, TBL_V, VCOL_YELLOW);
-        sprintf(str, "%4u", fields[i].grown);
-        cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+30, 8+i, str, col);
-
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+34, 8+i, TBL_V, VCOL_YELLOW);
-        sprintf(str, "%3u", fields[i].ready);
-        cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+35, 8+i, str, col);
+        // cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+34, 8+i, TBL_V, VCOL_YELLOW);
+        // sprintf(str, "%3u", fields[i].ready);
+        // cwin_putat_string(&cw, COL_OFFSET_FIELDLIST+35, 8+i, str, col);
     }
 }
 
@@ -314,13 +329,30 @@ static void _updateFieldView(){
     _displayFieldList();
 }
 
-static void _showMenuDetails(){
-    cwin_putat_string_raw(&cw, 0, 2, TXT[TXT_IDX_FARM_FIELD_TXT], VCOL_GREEN);
-    byte str[2];
-    sprintf(str, "%u", _currentField+1);
-    cwin_putat_string(&cw, 8, 2, str, VCOL_GREEN);
-    cwin_putat_string_raw(&cw, 12, 2, TXT[TXT_IDX_FARM_PLANT_TXT], VCOL_GREEN);
-    cwin_putat_string_raw(&cw, 12+11, 2, PLANT_TYPES_TXT[_currentPlant], VCOL_GREEN);
+// select field - display sub-menu
+static void _selectField(){
+    cwin_clear(&cw);
+
+    displayMenu(FARMLAND_FIELD_MENU);
+
+    // static menu texts
+    // updateStatusBar(TXT[TXT_IDX_MENU_OPTIONS_MSX_MENU]);
+}
+
+static void _showFarmMenu(){
+    // Prepare output window
+    cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);
+    cwin_clear(&cw);
+
+    displayMenu(FARMLAND_MENU);
+    
+    _updateFieldView();
+    // in case we seen the TV screen - turn things back on
+    switchScreenTo(SCREEN_SPLIT_MC_TXT);
+}
+
+static void _backToFarmMenu(){
+    _showFarmMenu();
 }
 
 static void _nextField(){
@@ -329,7 +361,6 @@ static void _nextField(){
     } else {
         _currentField = 0;
     }
-    _showMenuDetails();
     _displayFieldList();
 }
 static void _previousField(){
@@ -338,7 +369,6 @@ static void _previousField(){
     } else {
         _currentField = FIELDS_COUNT-1;
     }
-    _showMenuDetails();
     _displayFieldList();
 }
 
@@ -416,7 +446,6 @@ static void _nextPlant(){
     } else {
         _currentPlant = 1;
     }
-    _showMenuDetails();
 }
 
 static void _previousPlant(){
@@ -425,21 +454,28 @@ static void _previousPlant(){
     } else {
         _currentPlant = PLANTS_COUNT;
     }
-    _showMenuDetails();
 }
+
+const struct MenuOption FARMLAND_FIELD_MENU[] = {
+    // options to select
+    { TXT_IDX_MENU_A, ':', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_previousPlant, 0, 12+10, 2},
+    { TXT_IDX_MENU_D, ';', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_nextPlant, 0, 12+10+11, 2},
+    { TXT_IDX_MENU_FARMLAND5, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_sowPlant, 0, 1, 3},
+    { TXT_IDX_MENU_FARMLAND6, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_maintainPlant, 0, 11, 3},
+    { TXT_IDX_MENU_FARMLAND7, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_reapPlant, 0, 21, 3},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &_backToFarmMenu, 0, 31, 3},
+    END_MENU_CHOICES
+};
 
 const struct MenuOption FARMLAND_MENU[] = {
     // options to select
-    { TXT_IDX_MENU_FARMLAND3, ':', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_previousPlant, 0, 12+10, 2},
-    { TXT_IDX_MENU_FARMLAND4, ';', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_nextPlant, 0, 12+10+11, 2},
-    { TXT_IDX_MENU_FARMLAND5, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_sowPlant, 0, 1, 3},
-    // { TXT_IDX_MENU_FARMLAND6, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_maintainPlant, 0, 11, 3},
-    { TXT_IDX_MENU_FARMLAND7, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_reapPlant, 0, 21, 3},
+    { TXT_IDX_MENU_FARMLAND_MAIN, KEY_RETURN, SCREEN_SPLIT_MC_TXT, UI_F, &_selectField, 0, 23, 4},
     // standard navigation
-    { TXT_IDX_MENU_FARMLAND1, 'w', SCREEN_SPLIT_MC_TXT, UI_U+UI_HIDE, &_previousField, 0, 7, 2},
-    { TXT_IDX_MENU_FARMLAND2, 's', SCREEN_SPLIT_MC_TXT, UI_D+UI_HIDE, &_nextField, 0, 9, 2},
-    { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_SELECT, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 31, 3},
+    { TXT_IDX_MENU_W, 'w', SCREEN_SPLIT_MC_TXT, UI_U+UI_HIDE, &_previousField, 0, 7, 2},
+    { TXT_IDX_MENU_S, 's', SCREEN_SPLIT_MC_TXT, UI_D+UI_HIDE, &_nextField, 0, 9, 2},
     // { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 31, 3},
+    // exit first, to keep cursor in place
+    { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 27, 6},
     END_MENU_CHOICES
 };
 
@@ -449,18 +485,7 @@ static void _menuHandler(void){
     loadMenuGfx();
     loadMenuSprites();
 
-    // Prepare output window
-    cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);
-    cwin_clear(&cw);
-
-    displayMenu(FARMLAND_MENU);
-
-    // print arrows up/down
-    char str[4] = {0x1e, 0x20, 0x23, 0x00};
-    cwin_putat_string_raw(&cw, 7, 2, str, VCOL_MED_GREY);
-
-    _showMenuDetails();
-    _updateFieldView();
+    _showFarmMenu();
 }
 
 #pragma data ( farmlandLoaderData )

@@ -52,7 +52,7 @@ struct FieldStruct {
     unsigned int planted;
     // how much have survived stage 1
     unsigned int alive;
-    // how much was grown in stage 2
+    // how much was planetd, then how much was grown in stage 2
     unsigned int grown;
     // growth factor calculated at the end of the 1st stage
     unsigned int gFactor;
@@ -62,7 +62,10 @@ struct FieldStruct {
     unsigned int reaped;
     // timer till the end of current stage (days)
     char timer;
+    // calculated in each stage separately
+    // char health;
 };
+#define FIELD_HEALTH_MAX 100
 
 extern __striped struct FieldStruct fields[FIELDS_COUNT];
 

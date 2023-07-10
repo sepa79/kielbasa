@@ -77,6 +77,9 @@ void _fieldStateSprout(byte fieldId){
         }
     }
 
+    // // calculate health
+    // fields[fieldId].health = lmuldiv16u(fields[fieldId].alive, FIELD_HEALTH_MAX, fields[fieldId].grown);
+
     fields[fieldId].timer--;
     if(fields[fieldId].timer == 0){
         fields[fieldId].stage = PLANT_STAGE_GROWTH;
@@ -85,6 +88,8 @@ void _fieldStateSprout(byte fieldId){
 
         // calculate growth factor
         unsigned int gFactor = lmuldiv16u(fields[fieldId].alive, plants[plantId].maxYeldFactor, plants[plantId].stage2timer);
+
+        // make it gro a bit, even if we got just a few
         if(!gFactor){
             gFactor++;
         }
@@ -153,9 +158,7 @@ void _fieldStateRipen(byte fieldId){
         fields[fieldId].stage = PLANT_STAGE_READY;
         // apply the percentage to the 'grown' plants
         if(fields[fieldId].ready < 100)
-            // this is probably wrong, other way around 100, fields[fieldId].ready -> fields[fieldId].ready, 100
-            // need to observe in game
-            fields[fieldId].grown = lmuldiv16u(fields[fieldId].grown, 100, fields[fieldId].ready);
+            fields[fieldId].grown = lmuldiv16u(fields[fieldId].grown, fields[fieldId].ready, 100);
         // calculate the amount to reap which decreases 'alive', store in gFactor as its not needed now
         fields[fieldId].gFactor = ldiv16u(fields[fieldId].grown, fields[fieldId].alive);
     }
@@ -245,6 +248,10 @@ void initFarmland(Farm* farm){
         {1, 3, 2, PLANT_NONE  , 0, 0, 0, 0, 0, 0, 0, 0},
         {2, 3, 4, PLANT_CORN  , PLANT_STAGE_GROWTH, 666, 96, 80, 240, 8, 0, 0, 10},
         {4, 4, 6, PLANT_NONE  , 0, 0, 0, 0, 0, 0, 0, 0},
+        // {1, 3, 2, PLANT_WHEAT , PLANT_STAGE_GROWTH, 666, 96, 90, 448, 15, 0, 0, 60, 0},
+        // {1, 3, 2, PLANT_NONE  , 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        // {2, 3, 4, PLANT_CORN  , PLANT_STAGE_GROWTH, 666, 96, 80, 240, 8, 0, 0, 10, 0},
+        // {4, 4, 6, PLANT_NONE  , 0, 0, 0, 0, 0, 0, 0, 0, 0},
     };
 
     memcpy(fields, initialFields, sizeof(initialFields));

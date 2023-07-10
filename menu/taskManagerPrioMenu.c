@@ -162,12 +162,12 @@ void showTaskManagerPrioMenu(){
 }
 
 const struct MenuOption TASK_MANAGER_PRIO_MENU[] = {
-    { TXT_IDX_MENU_TASK_MANAGER_W, 'w', SCREEN_FULL_TXT, UI_SELECT, &_upChar, 0, 2, 1},
-    { TXT_IDX_MENU_TASK_MANAGER_S, 's', SCREEN_FULL_TXT, UI_SELECT, &_downChar, 0, 2, 3},
     { TXT_IDX_MENU_TASK_MANAGER_PLUS, '+', SCREEN_FULL_TXT, UI_SELECT, &_prioDown, 0, 10, 1},
     { TXT_IDX_MENU_TASK_MANAGER_MINUS, '-', SCREEN_FULL_TXT, UI_SELECT, &_prioUp, 0, 10, 3},
-    { TXT_IDX_MENU_TASK_MANAGER_A, 'a', SCREEN_FULL_TXT, UI_L+UI_HIDE, &_skillLeft, 0, 1, 2},
-    { TXT_IDX_MENU_TASK_MANAGER_D, 'd', SCREEN_FULL_TXT, UI_R+UI_HIDE, &_skillRight, 0, 3, 2},
+    { TXT_IDX_MENU_W, 'w', SCREEN_FULL_TXT, UI_SELECT, &_upChar, 0, 2, 1},
+    { TXT_IDX_MENU_A, 'a', SCREEN_FULL_TXT, UI_L+UI_HIDE, &_skillLeft, 0, 1, 2},
+    { TXT_IDX_MENU_S, 's', SCREEN_FULL_TXT, UI_SELECT, &_downChar, 0, 2, 3},
+    { TXT_IDX_MENU_D, 'd', SCREEN_FULL_TXT, UI_R+UI_HIDE, &_skillRight, 0, 3, 2},
     { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &backToPreviousMenu, 0, 1, 20},
 
     END_MENU_CHOICES

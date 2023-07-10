@@ -8,8 +8,8 @@
     "contents": [
       {
         "id": "PLANT_NAME_NONE",
-        "pl": " - - - - -",
-        "en": "- - - - - "
+        "pl": "Puste     ",
+        "en": "Empty     "
       },
       {
         "id": "PLANT_NAME_POTATO",
@@ -34,15 +34,15 @@
     ]
   },
 
-  "plant_names":
+  "plant_stage_names":
   {
-    "pragma_label": "PlantStateNames",
+    "pragma_label": "PlantStageNames",
     "array_label": "PLANT_STAGE_NAMES",
     "contents": [
       {
         "id": "PLANT_STAGE_NONE",
-        "pl": " - - - -",
-        "en": "- - - - "
+        "pl": "        ",
+        "en": "        "
       },
       {
         "id": "PLANT_STAGE_SOW_TASK_ASSIGNED",
@@ -73,6 +73,35 @@
         "id": "PLANT_STAGE_REAP_TASK_ASSIGNED",
         "pl": "Z: Zbiór",
         "en": "T: Reap "
+      }
+    ]
+  },
+
+  
+  "field_sizes":
+  {
+    "pragma_label": "FieldSizes",
+    "array_label": "FIELD_SIZES",
+    "contents": [
+      {
+        "id": "FIELD_SMALL",
+        "pl": "Małe   ",
+        "en": "Small  "
+      },
+      {
+        "id": "FIELD_MEDIUM",
+        "pl": "Średnie",
+        "en": "Medium "
+      },
+      {
+        "id": "FIELD_BIG",
+        "pl": "Duże   ",
+        "en": "Big    "
+      },
+      {
+        "id": "FIELD_VBIG",
+        "pl": "Wielkie",
+        "en": "Huge   "
       }
     ]
   },
@@ -115,9 +144,9 @@
         "en": "    Garage              "
       },
       {
-        "id": "FARM_BIG_FIELD",
-        "pl": "  Duże pole             ",
-        "en": "  Big field             "
+        "id": "FARM_VBIG_FIELD",
+        "pl": "Wielkie pole            ",
+        "en": " Huge field             "
       },
       {
         "id": "FARM_SMALL_FIELD_1",
@@ -198,12 +227,7 @@
     "pragma_label": "MainArray",
     "array_label": "TXT",
     "contents": [
-      {
-        "id": "MENU_CANCEL",
-        "menu_opt": "<",
-        "pl": "ü Anuluj",
-        "en": "ü Cancel"
-      },
+
       {
         "id": "MENU_EXIT",
         "menu_opt": "<",
@@ -281,6 +305,7 @@
       },
       {
         "id": "MENU_OPTIONS_MSX_MENU",
+        "prefix": "SB",
         "pl": [
                "Wybór muzyki",
                "  M on/off  ",
@@ -355,22 +380,27 @@
         "en_m": "---------------------------------------"
       },
       {
-        "id": "MENU_TASK_MANAGER_W",
+        "id": "MENU_SELECT",
+        "pl": "ûý",
+        "en": "ûý"
+      },
+      {
+        "id": "MENU_W",
         "pl": "w",
         "en": "w"
       },
       {
-        "id": "MENU_TASK_MANAGER_S",
+        "id": "MENU_S",
         "pl": "s",
         "en": "s"
       },
       {
-        "id": "MENU_TASK_MANAGER_A",
+        "id": "MENU_A",
         "pl": "a",
         "en": "a"
       },
       {
-        "id": "MENU_TASK_MANAGER_D",
+        "id": "MENU_D",
         "pl": "d",
         "en": "d"
       },
@@ -397,22 +427,6 @@
         "en_m": "----------------------------"
       },
       {
-        "id": "MENU_FARMLAND1",
-        "common": "w"
-      },
-      {
-        "id": "MENU_FARMLAND2",
-        "common": "s"
-      },
-      {
-        "id": "MENU_FARMLAND3",
-        "common": "["
-      },
-      {
-        "id": "MENU_FARMLAND4",
-        "common": "]"
-      },
-      {
         "id": "MENU_FARMLAND5",
         "menu_opt": "1",
         "pl": "Uprawa",
@@ -432,20 +446,15 @@
       },
       {
         "id": "FIELD_LIST_HEADER",
-        "pl":   "Mg| Uprawa  |  Stan  |T  |S1 | S2 |S3 ",
-        "pl_m": "--------------------------------------",
-        "en":   "Mg| Farming | State  |T  |S1 | S2 |S3 ",
-        "en_m": "--------------------------------------"
+        "pl":   "¼#  Pole    |  Stan  ",
+        "pl_m": "---------------------",
+        "en":   "¼#  Field   | State  ",
+        "en_m": "---------------------"
       },
       {
-        "id": "FARM_FIELD_TXT",
-        "pl": "Pole:  ",
-        "en": "Field: "
-      },
-      {
-        "id": "FARM_PLANT_TXT",
-        "pl": "Uprawa: ",
-        "en": "Growing:"
+        "id": "MENU_FARMLAND_MAIN",
+        "pl": "ûý Wybierz pole",
+        "en": "ûý Select field"
       },
       {
         "id": "TASK_FARMLAND_FARM",
@@ -821,15 +830,27 @@
               ]
       },
       {
+        "id": "MENU_FARM",
+        "prefix": "SB",
+        "pl": [" Wiadomości ",
+               "            ",
+               "  ½ü Wyjdź  "
+              ],
+        "en": ["   TV News  ",
+               "            ",
+               "   ½ü Exit  "
+              ]
+      },
+      {
         "id": "MENU_TV_SCREEN",
         "prefix": "SB",
         "pl": [" Wiadomości ",
                "            ",
-               "  \\ü Wyjdź  "
+               "  ½ü Wyjdź  "
               ],
         "en": ["   TV News  ",
                "            ",
-               "   \\ü Exit  "
+               "   ½ü Exit  "
               ]
       },
       {

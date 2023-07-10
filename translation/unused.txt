@@ -11,3 +11,37 @@
                " Freezer   |    "],
         "en_m": "----------------                                                "
       },
+
+
+  "plant_state_names":
+  {
+    "pragma_label": "PlantStateNames",
+    "array_label": "PLANT_STATE_NAMES",
+    "contents": [
+      {
+        "id": "PLANT_STATE_NONE",
+        "pl": "        ",
+        "en": "        "
+      },
+      {
+        "id": "PLANT_STATE_DYING",
+        "pl": "Umiera  ",
+        "en": "Dying   "
+      },
+      {
+        "id": "PLANT_STATE_SICKLY",
+        "pl": "Choruje ",
+        "en": "WitherS "
+      },
+      {
+        "id": "PLANT_STATE_ENDURING",
+        "pl": "W miarę ",
+        "en": "Endures "
+      },
+      {
+        "id": "PLANT_STATE_HEALTHY",
+        "pl": "Zdrowe  ",
+        "en": "Healthy "
+      }
+    ]
+  },

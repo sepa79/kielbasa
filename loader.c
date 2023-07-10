@@ -78,3 +78,28 @@ void cwin_write_string_raw(CharWin * win, const char * buffer)
     }	
 
 }
+
+// static const unsigned mul40[25] = {
+//       0,  40,  80, 120, 160,
+//     200, 240, 280, 320, 360,
+//     400, 440, 480, 520, 560,
+//     600, 640, 680, 720, 760,
+//     800, 840, 880, 920, 960
+// };
+
+// char cwin_putat_string_raw_underlined(CharWin * win, char x, char y, const char * str, char color){
+//     int	offset = mul40[y] + x;
+
+//     char * sp = win->sp + offset;
+//     char * cp = win->cp + offset;
+    
+//     char i = 0;
+//     while (char ch = str[i])
+//     {
+//         sp[i] = ch + 0x80;
+//         cp[i] = color;
+//         i++;
+//     }
+
+//     return i;
+// }

@@ -48,10 +48,13 @@ static bool _joyFirePressed = false;
 static byte _selectionsCount = 0;
 
 static void _setJoyCursorPos(byte menuPos){
-    if(!(currentMenu[menuPos].uiMode & UI_HIDE)){
+    if(currentMenu[menuPos].uiMode & UI_SELECT){
         joyCursor.x = (currentMenu[menuPos].x + cw.sx) * 8 + BORDER_XPOS_LEFT - 1;
         joyCursor.y = (currentMenu[menuPos].y + cw.sy) * 8 + BORDER_YPOS_TOP - 1;
         setNormalCursor();
+    } else {
+        // hide cursor
+        joyCursor.x = 0;
     }
 }
 
