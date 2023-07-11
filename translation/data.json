@@ -45,6 +45,16 @@
         "en": "        "
       },
       {
+        "id": "PLANT_STAGE_PLOW_TASK_ASSIGNED",
+        "pl": "Z: Orka ",
+        "en": "T: Plow "
+      },
+      {
+        "id": "PLANT_STAGE_PLOWED",
+        "pl": "Zaorane ",
+        "en": "Plowed  "
+      },
+      {
         "id": "PLANT_STAGE_SOW_TASK_ASSIGNED",
         "pl": "Z: Siew ",
         "en": "T: Plant"
@@ -176,8 +186,8 @@
       },
       {
         "id": "HERMAN",
-        "pl": " Dom Hermana            ",
-        "en": "  Herman's              "
+        "pl": " Dom Hermana      ý     ",
+        "en": "  Herman's        ý     "
       },
       {
         "id": "SULEJUKOWA",
@@ -427,34 +437,26 @@
         "en_m": "----------------------------"
       },
       {
-        "id": "MENU_FARMLAND5",
-        "menu_opt": "1",
-        "pl": "Uprawa",
-        "en": "Grow"
+        "id": "MENU_FARMLAND_PLOW",
+        "pl": " ûý Zaoraj pole ",
+        "en": "  ûý Plow field "
       },
       {
-        "id": "MENU_FARMLAND6",
-        "menu_opt": "2",
-        "pl": "Opieka",
-        "en": "Care"
+        "id": "MENU_FARMLAND_SOW",
+        "pl": "ûý Uprawiaj pole",
+        "en": "  ûý Farm field "
       },
       {
-        "id": "MENU_FARMLAND7",
-        "menu_opt": "2",
-        "pl": "Zbiory",
-        "en": "Reap"
+        "id": "MENU_FARMLAND_REAP",
+        "pl": "    ûý Zbiory   ",
+        "en": "     ûý Reap    "
       },
       {
         "id": "FIELD_LIST_HEADER",
-        "pl":   "¼#  Pole    |  Stan  ",
-        "pl_m": "---------------------",
-        "en":   "¼#  Field   | State  ",
-        "en_m": "---------------------"
-      },
-      {
-        "id": "MENU_FARMLAND_MAIN",
-        "pl": "ûý Wybierz pole",
-        "en": "ûý Select field"
+        "pl":   "¼#  Pole   |   Stan   ",
+        "pl_m": "----------------------",
+        "en":   "¼#  Field  |  State   ",
+        "en_m": "----------------------"
       },
       {
         "id": "TASK_FARMLAND_FARM",

@@ -57,7 +57,8 @@
         "kitchentick.h": "c",
         "spritetext.h": "c",
         "taskmanagermenu.h": "c",
-        "kitchentask.h": "c"
+        "kitchentask.h": "c",
+        "sulejukowashouse.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }

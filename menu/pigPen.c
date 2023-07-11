@@ -98,6 +98,7 @@ static void _menuHandler(void){
     cwin_clear(&cw);
     
     displayMenu(PIG_PEN_MENU);
+    switchScreenTo(SCREEN_SPLIT_MC_TXT);
 }
 
 #pragma data ( pigPenLoaderData )

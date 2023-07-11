@@ -13,6 +13,8 @@
 #include <menu/mainMenu.h>
 #include <menu/optionsMenu.h>
 #include <menu/villiageMap.h>
+#include <menu/hermansHouse.h>
+#include <menu/sulejukowasHouse.h>
 #include <engine/easyFlashBanks.h>
 #include <engine/gameSettings.h>
 #include <engine/irqSpriteController.h>
@@ -70,6 +72,12 @@ void gotoLocation(){
             break;
         case LOCATION_SHOP:
             _showNormalMenu(MENU_BANK_SHOP);
+            break;
+        case LOCATION_HERMAN:
+            _showNormalMenu(MENU_BANK_HERMANS_HOUSE);
+            break;
+        case LOCATION_SULEJUKOWA:
+            _showNormalMenu(MENU_BANK_SULEJUKOWAS_HOUSE);
             break;
     }
     // reset location so when we are back to map it gets re-set and sprites are drawn

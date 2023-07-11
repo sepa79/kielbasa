@@ -245,13 +245,9 @@ void initFarmland(Farm* farm){
 
     __striped static const struct FieldStruct initialFields[FIELDS_COUNT] = {
         {1, 3, 2, PLANT_WHEAT , PLANT_STAGE_GROWTH, 666, 96, 90, 448, 15, 0, 0, 60},
-        {1, 3, 2, PLANT_NONE  , 0, 0, 0, 0, 0, 0, 0, 0},
+        {1, 3, 2, PLANT_NONE  , PLANT_STAGE_PLOWED, 0, 0, 0, 0, 0, 0, 0},
         {2, 3, 4, PLANT_CORN  , PLANT_STAGE_GROWTH, 666, 96, 80, 240, 8, 0, 0, 10},
-        {4, 4, 6, PLANT_NONE  , 0, 0, 0, 0, 0, 0, 0, 0},
-        // {1, 3, 2, PLANT_WHEAT , PLANT_STAGE_GROWTH, 666, 96, 90, 448, 15, 0, 0, 60, 0},
-        // {1, 3, 2, PLANT_NONE  , 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        // {2, 3, 4, PLANT_CORN  , PLANT_STAGE_GROWTH, 666, 96, 80, 240, 8, 0, 0, 10, 0},
-        // {4, 4, 6, PLANT_NONE  , 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {4, 4, 6, PLANT_NONE  , PLANT_STAGE_NONE, 0, 0, 0, 0, 0, 0, 0},
     };
 
     memcpy(fields, initialFields, sizeof(initialFields));

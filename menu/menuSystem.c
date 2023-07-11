@@ -87,7 +87,9 @@ void runMenuLoop(){
     MENU_BANK_KITCHEN,
     MENU_BANK_SHOP,
     MENU_BANK_SHOP_IN,
-    MENU_BANK_CREW
+    MENU_BANK_CREW,
+    MENU_BANK_HERMANS_HOUSE,
+    MENU_BANK_SULEJUKOWAS_HOUSE
     }, { sharedMenuCode } )
 
 // Code shared by all menu banks

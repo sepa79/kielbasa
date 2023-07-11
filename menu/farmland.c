@@ -20,6 +20,7 @@
 #include <tasks/farmlandTask.h>
 
 // column offset for printing data
+#define COL_OFFSET_MENU 22
 #define COL_OFFSET_FIELDLIST 0
 #define ROW_OFFSET_FIELDLIST 1
 
@@ -253,7 +254,99 @@ __interrupt static void _menuShowSprites(){
     }
 }
 
-static const char separator[22] = { 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x7f, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x0 };
+
+// Set the plant task
+static void _sowPlant(){
+    if(_currentPlant == 0){
+        setErrorCursor();
+        return;
+    }
+    // don't allow to ruin growth in progress
+    if(fields[_currentField].stage != PLANT_STAGE_NONE){
+        setErrorCursor();
+        return;
+    }
+    // indicate task is assigned
+    fields[_currentField].plantId = _currentPlant;
+    fields[_currentField].stage   = PLANT_STAGE_SOW_TASK_ASSIGNED;
+    fields[_currentField].rseed   = rand();
+    fields[_currentField].timer   = 0;
+    fields[_currentField].planted = 0;
+    fields[_currentField].alive   = 0;
+    fields[_currentField].grown   = 0;
+    fields[_currentField].ready   = 0;
+    // _displayFieldList();
+
+    byte idx = plants[_currentPlant].taskDscIdx;
+    // "Field 2, Potatoes"
+    sprintf(newTask.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
+    newTask.codeRef   = &sowFieldTask;
+    newTask.nameIdx   = TXT_IDX_TASK_FARMLAND_FARM;
+    newTask.params[0] = _currentPlant;
+    newTask.params[1] = _currentField;
+    newTask.params[2] = 0;
+    newTask.params[3] = 0;
+    newTask.params[4] = 0;
+    newTask.reqType   = SKILL_FARMING;
+    newTask.icon      = SPR_TASK_FARM2;
+    newTask.status    = TASK_STATUS_NEW;
+    addTask();
+}
+
+static void _reapPlant(){
+    // don't allow to ruin growth in progress
+    if(fields[_currentField].stage != PLANT_STAGE_READY){
+        setErrorCursor();
+        return;
+    }
+    // indicate task is assigned
+    fields[_currentField].stage = PLANT_STAGE_REAP_TASK_ASSIGNED;
+    // _displayFieldList();
+
+    byte idx = plants[fields[_currentField].plantId].taskDscIdx;
+    // "Field 2, Potatoes"
+    sprintf(newTask.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
+    newTask.codeRef   = &reapFieldTask;
+    newTask.nameIdx   = TXT_IDX_TASK_FARMLAND_REAP;
+    newTask.params[0] = _currentField;
+    newTask.params[1] = 0;
+    newTask.params[2] = 0;
+    newTask.params[3] = 0;
+    newTask.params[4] = 0;
+    newTask.reqType   = SKILL_FARMING;
+    newTask.icon      = SPR_TASK_FARM2;
+    newTask.status    = TASK_STATUS_NEW;
+    addTask();
+}
+
+#define FARM_CTX_MENU_X 23
+#define FARM_CTX_MENU_Y 5
+
+static void _showOptionPlow(){
+    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X, FARM_CTX_MENU_Y, TXT[TXT_IDX_MENU_FARMLAND_PLOW], VCOL_DARK_GREY);
+}
+static void _showOptionSow(){
+    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X, FARM_CTX_MENU_Y, TXT[TXT_IDX_MENU_FARMLAND_SOW], VCOL_DARK_GREY);
+}
+static void _showOptionReap(){
+    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X, FARM_CTX_MENU_Y, TXT[TXT_IDX_MENU_FARMLAND_REAP], VCOL_DARK_GREY);
+}
+
+static void _showContextMenu(){
+    switch(fields[_currentField].stage){
+        case PLANT_STAGE_PLOWED:
+            _showOptionSow();
+            break;
+        case PLANT_STAGE_READY:
+            _showOptionReap();
+            break;
+        default:
+            _showOptionPlow();
+            break;
+    }
+}
+
+static const char separator[23] = { 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x7f, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x0 };
 static void _displayFieldList(){
 
     cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST, ROW_OFFSET_FIELDLIST, TXT[TXT_IDX_FIELD_LIST_HEADER], VCOL_YELLOW);
@@ -270,13 +363,13 @@ static void _displayFieldList(){
         if(i<FIELDS_COUNT-1){
             cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST, ROW_OFFSET_FIELDLIST+3+i*3, separator, VCOL_YELLOW);
         }
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+12, ROW_OFFSET_FIELDLIST+1+i*3, TBL_V, VCOL_YELLOW);
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+12, ROW_OFFSET_FIELDLIST+2+i*3, TBL_V, VCOL_YELLOW);
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+11, ROW_OFFSET_FIELDLIST+1+i*3, TBL_V, VCOL_YELLOW);
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+11, ROW_OFFSET_FIELDLIST+2+i*3, TBL_V, VCOL_YELLOW);
         // field size
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST, ROW_OFFSET_FIELDLIST+1+i*3, FIELD_SIZES[fields[i].area-1], col);
         // plant name
         char plantId = fields[i].plantId;
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+2, ROW_OFFSET_FIELDLIST+2+i*3, PLANT_TYPES_TXT[plantId], col);
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+1, ROW_OFFSET_FIELDLIST+2+i*3, PLANT_TYPES_TXT[plantId], col);
 
         // stage
         char stage = fields[i].stage;
@@ -286,11 +379,14 @@ static void _displayFieldList(){
         sprintf(str, " ");
         if(fields[i].plantId != PLANT_NONE ){
             if(fields[i].stage == PLANT_STAGE_SPROUT){
-                sprintf(str, "%u/%u", fields[i].alive, fields[i].grown);
-            } else if(fields[i].stage == PLANT_STAGE_GROWTH || fields[i].stage == PLANT_STAGE_READY){
-                sprintf(str, "%u/%u", fields[i].grown, fields[i].planted);
+                sprintf(str, "%4u/%4u", fields[i].alive, fields[i].grown);
+            } else if(fields[i].stage == PLANT_STAGE_GROWTH){
+                sprintf(str, "%4u$%4u", fields[i].alive, fields[i].grown);
             } else if(fields[i].stage == PLANT_STAGE_RIPEN){
-                sprintf(str, "%u %     ", fields[i].ready);
+                unsigned int ready = lmuldiv16u(fields[i].grown, fields[i].ready, 100);
+                sprintf(str, "%4u/%4u", ready, fields[i].grown);
+            } else if(fields[i].stage == PLANT_STAGE_READY){
+                sprintf(str, "%4u     ", fields[i].grown);
             }
         }
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+13, ROW_OFFSET_FIELDLIST+2+i*3, str, col);
@@ -331,12 +427,24 @@ static void _updateFieldView(){
 
 // select field - display sub-menu
 static void _selectField(){
-    cwin_clear(&cw);
+    // displayMenu(FARMLAND_FIELD_MENU);
+    // Prepare output window
+    CharWin cd;
+    cwin_init(&cd, GFX_1_SCR, COL_OFFSET_MENU, SCREEN_Y_START, SCREEN_WIDTH-COL_OFFSET_MENU, SCREEN_HEIGHT);
+    cwin_clear(&cd);
 
-    displayMenu(FARMLAND_FIELD_MENU);
-
-    // static menu texts
-    // updateStatusBar(TXT[TXT_IDX_MENU_OPTIONS_MSX_MENU]);
+    switch(fields[_currentField].stage){
+        case PLANT_STAGE_PLOWED:
+            _sowPlant();
+            break;
+        case PLANT_STAGE_READY:
+            _reapPlant();
+            break;
+        default:
+            //_plowField();
+            break;
+    }
+    _displayFieldList();
 }
 
 static void _showFarmMenu(){
@@ -345,8 +453,8 @@ static void _showFarmMenu(){
     cwin_clear(&cw);
 
     displayMenu(FARMLAND_MENU);
-    
     _updateFieldView();
+    _showContextMenu();
     // in case we seen the TV screen - turn things back on
     switchScreenTo(SCREEN_SPLIT_MC_TXT);
 }
@@ -362,6 +470,7 @@ static void _nextField(){
         _currentField = 0;
     }
     _displayFieldList();
+    _showContextMenu();
 }
 static void _previousField(){
     if(_currentField > 0){
@@ -370,74 +479,7 @@ static void _previousField(){
         _currentField = FIELDS_COUNT-1;
     }
     _displayFieldList();
-}
-
-// Set the plant task
-static void _sowPlant(){
-    if(_currentPlant == 0){
-        setErrorCursor();
-        return;
-    }
-    // don't allow to ruin growth in progress
-    if(fields[_currentField].stage != PLANT_STAGE_NONE){
-        setErrorCursor();
-        return;
-    }
-    // indicate task is assigned
-    fields[_currentField].plantId = _currentPlant;
-    fields[_currentField].stage   = PLANT_STAGE_SOW_TASK_ASSIGNED;
-    fields[_currentField].rseed   = rand();
-    fields[_currentField].timer   = 0;
-    fields[_currentField].planted = 0;
-    fields[_currentField].alive   = 0;
-    fields[_currentField].grown   = 0;
-    fields[_currentField].ready   = 0;
-    _displayFieldList();
-
-    byte idx = plants[_currentPlant].taskDscIdx;
-    // "Field 2, Potatoes"
-    sprintf(newTask.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
-    newTask.codeRef   = &sowFieldTask;
-    newTask.nameIdx   = TXT_IDX_TASK_FARMLAND_FARM;
-    newTask.params[0] = _currentPlant;
-    newTask.params[1] = _currentField;
-    newTask.params[2] = 0;
-    newTask.params[3] = 0;
-    newTask.params[4] = 0;
-    newTask.reqType   = SKILL_FARMING;
-    newTask.icon      = SPR_TASK_FARM2;
-    newTask.status    = TASK_STATUS_NEW;
-    addTask();
-}
-
-static void _maintainPlant(){
-    updateStatusBar(s"   maintainPlant");
-}
-
-static void _reapPlant(){
-    // don't allow to ruin growth in progress
-    if(fields[_currentField].stage != PLANT_STAGE_READY){
-        setErrorCursor();
-        return;
-    }
-    // indicate task is assigned
-    fields[_currentField].stage = PLANT_STAGE_REAP_TASK_ASSIGNED;
-    _displayFieldList();
-
-    byte idx = plants[fields[_currentField].plantId].taskDscIdx;
-    // "Field 2, Potatoes"
-    sprintf(newTask.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
-    newTask.codeRef   = &reapFieldTask;
-    newTask.nameIdx   = TXT_IDX_TASK_FARMLAND_REAP;
-    newTask.params[0] = _currentField;
-    newTask.params[1] = 0;
-    newTask.params[2] = 0;
-    newTask.params[3] = 0;
-    newTask.params[4] = 0;
-    newTask.reqType   = SKILL_FARMING;
-    newTask.icon      = SPR_TASK_FARM2;
-    newTask.status    = TASK_STATUS_NEW;
-    addTask();
+    _showContextMenu();
 }
 
 static void _nextPlant(){
@@ -460,22 +502,20 @@ const struct MenuOption FARMLAND_FIELD_MENU[] = {
     // options to select
     { TXT_IDX_MENU_A, ':', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_previousPlant, 0, 12+10, 2},
     { TXT_IDX_MENU_D, ';', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_nextPlant, 0, 12+10+11, 2},
-    { TXT_IDX_MENU_FARMLAND5, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_sowPlant, 0, 1, 3},
-    { TXT_IDX_MENU_FARMLAND6, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_maintainPlant, 0, 11, 3},
-    { TXT_IDX_MENU_FARMLAND7, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_reapPlant, 0, 21, 3},
+    // { TXT_IDX_MENU_FARMLAND5, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_sowPlant, 0, 1, 3},
+    // { TXT_IDX_MENU_FARMLAND6, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_maintainPlant, 0, 11, 3},
+    // { TXT_IDX_MENU_FARMLAND7, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_reapPlant, 0, 21, 3},
     { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &_backToFarmMenu, 0, 31, 3},
     END_MENU_CHOICES
 };
 
 const struct MenuOption FARMLAND_MENU[] = {
     // options to select
-    { TXT_IDX_MENU_FARMLAND_MAIN, KEY_RETURN, SCREEN_SPLIT_MC_TXT, UI_F, &_selectField, 0, 23, 4},
+    { TXT_IDX_MENU_SELECT, KEY_RETURN, SCREEN_SPLIT_MC_TXT, UI_F+UI_HIDE, &_selectField, 0, 23, 4},
     // standard navigation
     { TXT_IDX_MENU_W, 'w', SCREEN_SPLIT_MC_TXT, UI_U+UI_HIDE, &_previousField, 0, 7, 2},
     { TXT_IDX_MENU_S, 's', SCREEN_SPLIT_MC_TXT, UI_D+UI_HIDE, &_nextField, 0, 9, 2},
-    // { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 31, 3},
-    // exit first, to keep cursor in place
-    { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 27, 6},
+    { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 32, 12},
     END_MENU_CHOICES
 };
 
