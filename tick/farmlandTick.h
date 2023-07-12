@@ -48,7 +48,7 @@ struct FieldStruct {
     char stage;
     // random seed used to visualise this field
     unsigned int rseed;
-    // how much was planted in stage 1
+    // how much was planted in stage 1 (also used in Plow task)
     unsigned int planted;
     // how much have survived stage 1
     unsigned int alive;
@@ -57,7 +57,7 @@ struct FieldStruct {
     // growth factor calculated at the end of the 1st stage
     unsigned int gFactor;
     // how much has rippened in stage 3, percent
-    unsigned int ready;
+    char ready;
     // used to show nicely how much is left during reaping
     unsigned int reaped;
     // timer till the end of current stage (days)

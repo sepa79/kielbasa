@@ -144,7 +144,7 @@ void _fieldStateRipen(byte fieldId){
 
     if(diff > 10)
         diff = 10;
-
+    // prcent of crops ripening today
     fields[fieldId].ready += 10 - diff;
 
     if(fields[fieldId].ready > 100){
@@ -161,6 +161,8 @@ void _fieldStateRipen(byte fieldId){
             fields[fieldId].grown = lmuldiv16u(fields[fieldId].grown, fields[fieldId].ready, 100);
         // calculate the amount to reap which decreases 'alive', store in gFactor as its not needed now
         fields[fieldId].gFactor = ldiv16u(fields[fieldId].grown, fields[fieldId].alive);
+        // // store the final grown in alive, so we can show reaping/rotting progress
+        // fields[fieldId].alive = fields[fieldId].grown;
     }
 }
 

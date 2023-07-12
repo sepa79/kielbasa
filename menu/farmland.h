@@ -3,7 +3,6 @@
 #include <menu/menuSystem.h>
 
 extern const struct MenuOption FARMLAND_MENU[];
-extern const struct MenuOption FARMLAND_FIELD_MENU[];
 
 enum FieldSizes {
     FIELD_SMALL,

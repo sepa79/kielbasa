@@ -3,6 +3,7 @@
 
 void sowFieldTask(char taskId);
 void reapFieldTask(char taskId);
+void plowFieldTask(char taskId);
 
 #pragma compile("farmlandTask.c")
 #endif

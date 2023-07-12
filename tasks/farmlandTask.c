@@ -74,6 +74,7 @@ void _sowFieldTask(char taskId){
             // check if we got enough energy
             energyNeeded = partDone*ENERGY_COST_MULTIPLIER_FIELD_TASK;
             if(checkEnergyLevel(charIdx, energyNeeded)){
+                // decrease available seeds
                 GS.farm.storage[plantId] -= partDone;
 
                 // decrease energy
@@ -81,8 +82,8 @@ void _sowFieldTask(char taskId){
                 // process task
                 fields[fieldId].planted += partDone;
                 fields[fieldId].alive   += partDone;
-                fields[fieldId].grown   += partDone;
-                fields[fieldId].ready   = 0; // reap takes this / SOME_DIVIDER
+                fields[fieldId].grown   = 0;
+                fields[fieldId].ready   = 0;
 
                 // is the whole field done now?
                 if(fields[fieldId].planted >= FIELD_CAPACITY*fields[fieldId].area) {
@@ -220,6 +221,73 @@ void _reapFieldTask(char taskId){
 }
 
 
+void _plowFieldTask(char taskId) {
+    // Retrieve the fieldId from the task parameters
+    char fieldId = task_params[taskId][0];
+
+    if(task_status[taskId] == TASK_STATUS_NEW){
+        // get worker, get his skills and the value he can 'do' in a turn from the table
+        char charIdx     = task_worker[taskId];
+        char skill       = allCharacters[charIdx].skill[ task_reqType[taskId] ];
+        char priModifier = allCharacters[charIdx].stat[ STAT_STR ] -1;
+        char secModifier = allCharacters[charIdx].stat[ STAT_INT ] -1;
+        char terModifier = allCharacters[charIdx].stat[ STAT_CUN ] -1;
+        signed int partDone = skill + priModifierTable[priModifier] + secModifierTable[secModifier] + terModifierTable[terModifier];
+        if(partDone <= 0){
+            partDone = 1;
+        }
+        // make sure we don't plow more than field 'capacity'
+        unsigned int fSize = FIELD_CAPACITY*fields[fieldId].area;
+        if(fields[fieldId].planted+partDone > fSize){
+            partDone = fSize - fields[fieldId].planted;
+        }
+        
+        // check if we got enough energy
+        unsigned int energyNeeded = partDone*ENERGY_COST_MULTIPLIER_FIELD_TASK;
+        if(checkEnergyLevel(charIdx, energyNeeded)){
+            // decrease energy
+            decEnergyLevel(charIdx, energyNeeded);
+            // process task
+            fields[fieldId].planted += partDone;
+
+            // calculate % done
+            fields[fieldId].ready = lmuldiv16u(100, fields[fieldId].planted, fSize);
+
+            // is the whole field done now?
+            if(fields[fieldId].planted >= fSize) {
+                // task done, set status & remove
+                fields[fieldId].planted = 0;
+                task_status[taskId] = TASK_STATUS_DONE;
+                fields[fieldId].stage = PLANT_STAGE_PLOWED;
+                removeTask(taskId);
+            }
+        } else {
+            // not enough energy? set character to MIA by unassigning this task
+            unassignTask(taskId);
+        }
+
+    } else if (task_status[taskId] == TASK_STATUS_REMOVE) {
+        // Task removal logic goes here
+
+        // Clean up and set the field stage to none
+        fields[fieldId].stage = PLANT_STAGE_NONE;
+    } else {
+        // Handle unknown status codes
+
+        // Log the error and update the status bar
+        LOG_DATA[0] = LOG_DATA_CONTEXT_TASK_STATUS_UNKNOWN;
+        setTaskLogMsg(taskId);
+        logger(LOG_ERROR | LOG_MSG_TASK);
+
+        char str[50];
+        sprintf(str, "  [%3u] _plowFieldsTask - unknown status code   ", task_status[taskId]);
+        updateStatusBar(str);
+        setErrorCursor();
+    }
+
+    updateMenuIfIn(MENU_BANK_FARMLAND);
+}
+
 #pragma code ( code )
 #pragma data ( data )
 //-----------------------------------------------------------------------------------------
@@ -234,5 +302,11 @@ void sowFieldTask(char taskId){
 void reapFieldTask(char taskId){
     char pbank = setBank(TASKS_BANK);
     _reapFieldTask(taskId);
+    setBank(pbank);
+}
+
+void plowFieldTask(char taskId) {
+    char pbank = setBank(TASKS_BANK);
+    _plowFieldTask(taskId);
     setBank(pbank);
 }

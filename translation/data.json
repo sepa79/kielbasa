@@ -459,14 +459,24 @@
         "en_m": "----------------------"
       },
       {
+        "id": "FARM_FIELD_TXT",
+        "pl": "Pole:  ",
+        "en": "Field: "
+      },
+      {
+        "id": "FARM_PLANT_TXT",
+        "pl": "Uprawa: ",
+        "en": "Growing:"
+      },
+      {
+        "id": "TASK_FARMLAND_PLOW",
+        "pl": "Orka    ",
+        "en": "Plow    "
+      },
+      {
         "id": "TASK_FARMLAND_FARM",
         "pl": "Uprawa  ",
         "en": "Farm    "
-      },
-      {
-        "id": "TASK_FARMLAND_CARE",
-        "pl": "Opieka  ",
-        "en": "Care    "
       },
       {
         "id": "TASK_FARMLAND_REAP",
