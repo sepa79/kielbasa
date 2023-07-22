@@ -237,9 +237,11 @@ __interrupt static void IRQ_middleScreenMsx() {
 __interrupt void IRQ_middleTxtScreen(){
 
     __asm {
-        ldx #$08
+        ldx #$07
     la: dex
         bne la
+        nop
+        nop
         nop
     }
     vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
@@ -265,7 +267,6 @@ __interrupt void IRQ_middleMCTxtScreen(){
     #define BAR_L1 BAR_L3+10
     #define BAR_FULL BAR_L3+13
 
-
     #define eq_linia 0xc000+12+40*14
     __asm {
 equalizer:
@@ -274,9 +275,9 @@ equalizer:
         cmp register1_value
         beq no_change1
         sta register1_value
-        lsr 
-        lsr 
-        lsr 
+        lsr
+        lsr
+        lsr
         lsr
         tay
         // cpy #16

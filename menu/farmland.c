@@ -351,13 +351,16 @@ static void _plowField() {
 
 // Prepare output window
 static CharWin cd;
+static CharWin ht;
 
 static void _showOptionPlow(){
     cwin_clear(&cd);
     cwin_putat_string_raw(&cw, FARM_CTX_MENU_X, FARM_CTX_MENU_Y, TXT[TXT_IDX_MENU_FARMLAND_PLOW], VCOL_DARK_GREY);
+    cwin_write_string_raw(&ht, TXT[TXT_IDX_DESC_FARMLAND_PLOW]);
 }
 static void _showOptionSow(){
     cwin_putat_string_raw(&cw, FARM_CTX_MENU_X, FARM_CTX_MENU_Y, TXT[TXT_IDX_MENU_FARMLAND_SOW], VCOL_DARK_GREY);
+    cwin_write_string_raw(&ht, TXT[TXT_IDX_DESC_FARMLAND_SOW]);
 
     // Field: 1
     cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 1, TXT[TXT_IDX_FARM_FIELD_TXT], VCOL_MED_GREY);
@@ -376,6 +379,7 @@ static void _showOptionSow(){
 static void _showOptionReap(){
     cwin_clear(&cd);
     cwin_putat_string_raw(&cw, FARM_CTX_MENU_X, FARM_CTX_MENU_Y, TXT[TXT_IDX_MENU_FARMLAND_REAP], VCOL_DARK_GREY);
+    cwin_write_string_raw(&ht, TXT[TXT_IDX_DESC_FARMLAND_REAP]);
 }
 
 static void _showContextMenu(){
@@ -490,10 +494,13 @@ static void _selectField(){
 
 static void _showFarmMenu(){
     // Prepare output window
-    cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);
+    cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, COL_OFFSET_MENU+1, SCREEN_HEIGHT);
     cwin_clear(&cw);
     // secondary window for context menu
-    cwin_init(&cd, GFX_1_SCR, COL_OFFSET_MENU, SCREEN_Y_START, SCREEN_WIDTH-COL_OFFSET_MENU, SCREEN_HEIGHT);
+    cwin_init(&cd, GFX_1_SCR, COL_OFFSET_MENU, SCREEN_Y_START, SCREEN_WIDTH-COL_OFFSET_MENU, 7);
+    // help text window
+    cwin_init(&ht, GFX_1_SCR, COL_OFFSET_MENU+1, SCREEN_Y_START+7, SCREEN_WIDTH-COL_OFFSET_MENU-1, SCREEN_HEIGHT-7);
+    cwin_fill(&ht, 32, VCOL_DARK_GREY);
 
     displayMenu(FARMLAND_MENU);
     _updateFieldView();

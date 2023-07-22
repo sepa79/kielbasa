@@ -220,7 +220,6 @@ void _reapFieldTask(char taskId){
     updateMenuIfIn(MENU_BANK_FARMLAND);
 }
 
-
 void _plowFieldTask(char taskId) {
     // Retrieve the fieldId from the task parameters
     char fieldId = task_params[taskId][0];

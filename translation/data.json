@@ -469,6 +469,21 @@
         "en": "Growing:"
       },
       {
+        "id": "DESC_FARMLAND_PLOW",
+        "pl": "Przygotowuje pole   pod uprawę    ",
+        "en": " Prepares field    for farming    "
+      },
+      {
+        "id": "DESC_FARMLAND_SOW",
+        "pl": " Uprawia wybraną      roślinę     ",
+        "en": " Select and farm      a crop      "
+      },
+      {
+        "id": "DESC_FARMLAND_REAP",
+        "pl": "   Zbierz plony                   ",
+        "en": "   Harvest the         crops      "
+      },
+      {
         "id": "TASK_FARMLAND_PLOW",
         "pl": "Orka    ",
         "en": "Plow    "
@@ -679,8 +694,8 @@
       },
       {
         "id": "SHOP_DESCRIPTION",
-        "pl": "Sklep wielobranżowy 'GS', otwarty 7-11 i 15-19, codziennie.",
-        "en": "A general store, open 7-11, then 15-19, everyday"
+        "pl": "Sklep wielobranżowy 'GS', otwarty 7-11 i15-19, codziennie.",
+        "en": "A general store, open 7-11, then 15-19, everyday."
       },
       {
         "id": "MENU_SHOPIN1",
@@ -771,8 +786,8 @@
       },
       {
         "id": "CHAR_1_STORY",
-        "pl": "Janusz całe życie pracował w PGR. Na niczym się tak naprawdę nie zna, ale za to ma  nałogi i jest leniwy. Janusz to postać startowa.",
-        "en": "Janusz spent his whole life working in PGR. He does not really excel in anything, but thankfully he is lazy and an addict. He is your main character."
+        "pl": "Janusz całe życie pracował wPGR. Na niczym się tak      naprawdę nie zna, ale za to ma nałogi i jest leniwy.    Janusz to postać startowa.",
+        "en": "Janusz spent his whole life working in PGR. He does not really excel in anything,   but thankfully he is lazy   and an addict. He is your   main character."
       },
       {
         "id": "CHAR_2_NAME",
@@ -780,8 +795,8 @@
       },
       {
         "id": "CHAR_2_STORY",
-        "pl": "Zdzisiek nie jest popularny we wsi. Ludziska pamiętają, że jego ojciec był folks-dojczem. Zdzisia wyróżnia inteligencja po tacie.",
-        "en": "Zdzisiek is not very popularin the villiage. Folks reme-mber that his father was a volksdeustch. He is bright - like his father - and that makes him stand out."
+        "pl": "Zdzisiek nie jest popularny we wsi. Ludziska pamiętają, że jego ojciec był folks-   dojczem. Zdzisia wyróżnia   inteligencja po tacie.",
+        "en": "Zdzisiek is not very popularin the villiage. Folks reme-mber that his father was a  volksdeustch. He is bright -like his father - and that  makes him stand out."
       },
       {
         "id": "CHAR_3_NAME",
@@ -789,8 +804,8 @@
       },
       {
         "id": "CHAR_3_STORY",
-        "pl": "Tutaj będzie Historia Wieśka",
-        "en": "Wiesiek's story will be here."
+        "pl": "Tutaj będzie historia       Wieśka",
+        "en": "Wiesiek's story will be here"
       },
       {
         "id": "CHAR_4_NAME",
@@ -798,8 +813,8 @@
       },
       {
         "id": "CHAR_4_STORY",
-        "pl": "Józek jest wujkiem Janusza. Tak właściwie to jego gospodarstwo. Jak Janusz da radę, to może je odziedziczy.",
-        "en": "Józek is Janusz's uncle. It is his farm, really. One day it might belong to Janusz, though, if he is worthy."
+        "pl": "Józek jest wujkiem Janusza. Tak właściwie to jego       gospodarstwo. Janusz musi   się wykazać, to może je     odziedziczy.",
+        "en": "Józek is Janusz's uncle. It is his farm, really. One dayit might belong to Janusz,  if he proves worthy."
       },
       {
         "id": "TASK_ADDED",
@@ -883,30 +898,20 @@
                "         "
              ]
      },
-      {
-        "id": "ABOUT",
-        "prefix": "HELP",
-        "pl": [
-          "    Witaj! +/-/Space - kontrola czasu    Kielbasa Empire - wersja alpha. ",
-          "    Credits: ",
-          "    Wsparcie programistyczne i kompilator (Oscar64): DrMortalWombat ",
-          "    Gra: Kod - Sepa, Koval, Gfx - Juras, Twisty & Saturnz, Msx - Crisps, Support - Angry Andy, Fonts - Sepa ",
-          "    Specialne podziękowania dla Rex/Camelot za pomoc z KickC "
-        ],
-        "en": [
-          "    Hello! +/-/Space - time control    Kielbasa Empire - early alpha. ",
-          "    Credits: ",
-          "    Code support and compiler (Oscar64): DrMortalWombat ",
-          "    Game: Code - Sepa, Koval, Gfx - Juras, Twisty & Saturnz, Msx - Crisps, Support - Angry Andy, Fonts - Sepa ",
-          "    Special thanks for KickC support to Rex/Camelot "
-        ]
-      },
-      {
+     {
         "id": "SHOP_CLOSED",
         "prefix": "SB",
-        "pl": "Sklep jest zamknięty",
-        "en": "Shop is closed"
-      }
+        "pl": [
+          " Sklep jest ",
+          " zamknięty  ",
+          "            "
+        ],
+        "en": [
+          "    Shop    ",
+          "     is     ",
+          "   closed   "
+        ]
+     }
     ]
   }
 }

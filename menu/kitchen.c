@@ -58,10 +58,10 @@ __interrupt static void _menuShowSprites(){
     vic.spr_msbx     = 0b00001100;
 
     // food ui sprites
-    vic.spr_pos[0].x = 24+148;
-    vic.spr_pos[1].x = 24+196;
-    vic.spr_pos[2].x = 12;
-    vic.spr_pos[3].x = 60;
+    vic.spr_pos[0].x = 24+148-10;
+    vic.spr_pos[1].x = 24+196-10;
+    vic.spr_pos[2].x = 12-10;
+    vic.spr_pos[3].x = 60-10;
     vic.spr_pos[0].y = 50+67;
     vic.spr_pos[1].y = 50+67;
     vic.spr_pos[2].y = 50+67;
