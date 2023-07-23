@@ -51,9 +51,9 @@ enum SHOPIN_SPRITE_VIC_BANKS {
 
 #pragma data ( shopInGfxDay )
 __export const char shopInGfx1[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/shopInside.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/shopInside.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/shopInside.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/sklep_230723.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/sklep_230723.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/sklep_230723.kla"
 };
 
 #pragma data ( shopInSprites )

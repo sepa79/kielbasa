@@ -103,8 +103,7 @@ static bool _eatVeggies(){
     return true;
 }
 
-static void _mealTick(MEAL_TYPE mealType){
-    setCharacterSlotIcon(0, SPR_TASK_EAT);
+static void _mealTickNPC(){
     setCharacterSlotIcon(1, SPR_TASK_DRINK);
     setCharacterSlotIcon(2, SPR_TASK_EAT);
     setCharacterSlotIcon(3, SPR_TASK_EAT);
@@ -118,6 +117,10 @@ static void _mealTick(MEAL_TYPE mealType){
             allCharacters[charIdx].bonusTime   = (rand() & 15) + 30;
         }
     }
+}
+
+static void _mealTickPlayer(MEAL_TYPE mealType){
+    setCharacterSlotIcon(0, SPR_TASK_EAT);
 
     // deal with the player
     bool noMeat  = false;
@@ -171,11 +174,22 @@ static void _mealTick(MEAL_TYPE mealType){
 
 
 void breakfastTick(){
-    _mealTick(GS.kitchen.breakfastType);
+    _mealTickNPC();
+    _mealTickPlayer(GS.kitchen.breakfastType);
+}
+
+void _secondBreakfastNow(){
+    // only available if we have less than 3h regen
+    if(allCharacters[0].regenTime < 3){
+        _mealTickPlayer(GS.kitchen.breakfastType);
+    } else {
+        updateStatusBarError(TXT[SB_IDX_KITCHEN_CANNOT_EAT]);
+    }
 }
 
 void supperTick(){
-    _mealTick(GS.kitchen.supperType);
+    _mealTickNPC();
+    _mealTickPlayer(GS.kitchen.supperType);
 }
 
 //-----------------------------------------------------------------------------------------
@@ -202,3 +216,10 @@ void initKitchen(Kitchen * kit){
 #pragma code ( code )
 #pragma data ( data )
 //-----------------------------------------------------------------------------------------
+// Wrappers in RAM
+
+void secondBreakfastNow(){
+    char pbank = setBank(TICKS_BANK);
+    _secondBreakfastNow();
+    setBank(pbank);
+}

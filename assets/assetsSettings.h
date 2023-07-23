@@ -56,6 +56,7 @@
 #define MAIN_MENU_SONG 2
 #define VILLIAGE_MAP_SONG_DAY 5
 #define VILLIAGE_MAP_SONG_NIGHT 6
+#define PIGSLE_CMD_SONG 3
 // used in loader only
 #define MSX_MAIN_THEME 1
 #define MSX_SRC_ADR_0 0x8000

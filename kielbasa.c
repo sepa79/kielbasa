@@ -5,10 +5,12 @@
 #include <stdbool.h>
 #include <string.h>
 #include <c64/rasterirq.h>
+#include <fixmath.h>
 
 #include <engine/logger.h>
 #include <engine/gameState.h>
 
+#include <common.h>
 #include <menu/menuSystem.h>
 #include <menu/mainMenu.h>
 #include <menu/optionsMenu.h>
@@ -144,6 +146,7 @@ void mainLoop(){
             timeTick();
             setBank(pbank);
 
+            // out-of-map events
             switch(gms_event){
                 case EVENT_END_OF_MONTH:
                     showTvScreen();
@@ -161,7 +164,23 @@ void mainLoop(){
             if(!gms_inSpecialMenu){
                 runMenuLoop();
             }
+            // map events
+            switch(gms_event){
+                case EVENT_RESPAWN_AT_HOME:
+                    splashScreen(false, 2);
+                    GS.vMap.x = MAP_HOME_X;
+                    GS.vMap.y = MAP_HOME_Y;
+                    GS.vMap.location = LOCATION_FARM_HOUSE;
+                    allCharacters[0].energy = 50;
+                    GS.cash = lmuldiv16u(GS.cash, 90, 100);
+                    updateMoney();
+                    // TODO: some nice picture would be good here, and time shift
+                    gotoLocation();
+                    break;
+            }
+            gms_event = EVENT_NONE;
         }
+        
         // reset the flags once the 'middle' part has been drawn
         if(gms_framePos == FRAME_TOP_BORDER){
             oncePerFrameFinished = false;

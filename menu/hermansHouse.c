@@ -19,9 +19,9 @@
 
 #pragma data(hermansHouseGfxDay)
 __export const char hermansHouseGfx1[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/herman3.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/herman3.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/herman3.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/herman140723.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/herman140723.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/herman140723.kla"
 };
 
 // menu code is in ROM - data in RAM
@@ -50,6 +50,7 @@ const struct MenuOption HERMANS_HOUSE_MENU[] = {
     // { TXT_IDX_MENU_HERMANS_HOUSE1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_hhMenu1, 0, 1, 1 },
     // { TXT_IDX_MENU_HERMANS_HOUSE2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_hhMenu2, 0, 1, 2 },
     // { TXT_IDX_MENU_HERMANS_HOUSE3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_hhMenu3, 0, 1, 3 },
+    { TXT_IDX_MENU_AIR_DEF, '1', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_PIGSLE_COMMAND_1, 1, 2 },
     { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF + UI_SELECT, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 2, 5 },
     END_MENU_CHOICES
 };

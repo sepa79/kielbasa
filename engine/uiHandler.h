@@ -33,6 +33,7 @@ void updateMinute(char newMinute);
 void updateHour(char newHour);
 void updateDay(char newDay);
 void updateMonth(char newMonth);
+void updateMoney();
 void drawYearH();
 void drawYearL();
 

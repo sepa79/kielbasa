@@ -24,7 +24,7 @@ enum TEXT_INDEXES {
     TXT_IDX_MENU_MAIN1,
     TXT_IDX_MENU_MAIN2,
     TXT_IDX_MENU_MAIN3,
-    TXT_IDX_MENU_MAIN4,
+    TXT_IDX_MENU_AIR_DEF,
     TXT_IDX_EXIT_TO_MAP,
     TXT_IDX_MENU_OPTIONS_LANG,
     TXT_IDX_MENU_OPTIONS_MSX,
@@ -83,6 +83,8 @@ enum TEXT_INDEXES {
     TXT_IDX_MENU_KITCHEN4,
     TXT_IDX_MENU_KITCHEN5,
     TXT_IDX_MENU_KITCHEN6,
+    TXT_IDX_MENU_KITCHEN7,
+    SB_IDX_KITCHEN_CANNOT_EAT,
     TXT_IDX_KITCHEN_TASK_OFF,
     TXT_IDX_KITCHEN_TASK_ON,
     TXT_IDX_KITCHEN_EATING_STYLE_LIGHT,
@@ -122,12 +124,12 @@ enum TEXT_INDEXES {
     TXT_IDX_CHAR_3_STORY,
     TXT_IDX_CHAR_4_NAME,
     TXT_IDX_CHAR_4_STORY,
+    TXT_IDX_SAVE_POTATOES,
     SB_IDX_TASK_ADDED,
     SB_IDX_TASKS_FULL,
     SB_IDX_WELCOME,
-    SB_IDX_MENU_FARM,
     SB_IDX_MENU_TV_SCREEN,
-    SB_IDX_MENU_TV_SCREEN_BILLS,
+    TV_IDX_MENU_TV_SCREEN_BILLS,
     SB_IDX_SHOP_CLOSED
 };
 
@@ -142,8 +144,8 @@ static const char TXT_TASK_EMPTY_DESCRIPTION[] = {0x20, 0x20, 0x20, 0x20, 0x20, 
 static const char TXT_CHAR_1_NAME[] = {0x4a, 0x01, 0x0e, 0x15, 0x13, 0x1a, 0x20, 0x44, 0x0f, 0x02, 0x12, 0x0f, 0x17, 0x0f, 0x0c, 0x13, 0x0b, 0x09, 0x00};
 //     "common": "Zdzisław Hermann"
 static const char TXT_CHAR_2_NAME[] = {0x5a, 0x04, 0x1a, 0x09, 0x13, 0x5e, 0x01, 0x17, 0x20, 0x48, 0x05, 0x12, 0x0d, 0x01, 0x0e, 0x0e, 0x00};
-//     "common": "Wiesław Dobrowolski"
-static const char TXT_CHAR_3_NAME[] = {0x57, 0x09, 0x05, 0x13, 0x5e, 0x01, 0x17, 0x20, 0x44, 0x0f, 0x02, 0x12, 0x0f, 0x17, 0x0f, 0x0c, 0x13, 0x0b, 0x09, 0x00};
+//     "common": "Wiesław C."
+static const char TXT_CHAR_3_NAME[] = {0x57, 0x09, 0x05, 0x13, 0x5e, 0x01, 0x17, 0x20, 0x43, 0x2e, 0x00};
 //     "common": "Józef Kołodziej"
 static const char TXT_CHAR_4_NAME[] = {0x4a, 0x60, 0x1a, 0x05, 0x06, 0x20, 0x4b, 0x0f, 0x5e, 0x0f, 0x04, 0x1a, 0x09, 0x05, 0x0a, 0x00};
 

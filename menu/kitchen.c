@@ -133,6 +133,11 @@ static void _kitchenVegPreferrence(){
     _updateView();
 }
 
+static void _kitchenEatNow(){
+    secondBreakfastNow();
+    _updateView();
+}
+
 const struct MenuOption KITCHEN_MENU[] = {
     { TXT_IDX_MENU_KITCHEN1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenBakeBread, 0, 1, 1},
     { TXT_IDX_MENU_KITCHEN2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenBakeBreadDaily, 0, 1, 2},
@@ -140,6 +145,7 @@ const struct MenuOption KITCHEN_MENU[] = {
     { TXT_IDX_MENU_KITCHEN4, '4', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenSupperType, 0, 1, 4},
     { TXT_IDX_MENU_KITCHEN5, '5', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenFoodPreferrence, 0, 1, 5},
     { TXT_IDX_MENU_KITCHEN6, '6', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenVegPreferrence, 0, 1, 6},
+    { TXT_IDX_MENU_KITCHEN7, '7', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenEatNow, 0, 1, 8},
     { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 11},
     END_MENU_CHOICES
 };

@@ -164,9 +164,9 @@ static void buildRamTiles(void){
         }
         // plant & stage to draw, plantId 0 is nothing, so -1 there
         char plant = CROPS_CHAR + 4*(fields[fi].plantId-1);
-        // stages start at 2 for planting, but above 5 its just tasks, so stop there
-        if(fields[fi].stage < 5){
-            plant += 5-fields[fi].stage;
+        // stages start at 4 for planting, but above 7 its just tasks, so stop there
+        if(fields[fi].stage < PLANT_STAGE_READY){
+            plant += PLANT_STAGE_READY-fields[fi].stage;
         } else {
             // stage 5 has special needs - we have leave the used squares in their random positions,
             // but sort them so that reaping process is in sensible order
@@ -400,6 +400,9 @@ void villiageMapGameLoop(){
 
             _movePlayer();
             villiageMapDraw();
+        } else if(!GS.regenMin){
+            // out of energy, out of regen - respawn
+            gms_event = EVENT_RESPAWN_AT_HOME;
         }
         GS.vMap.direction = WALK_NONE;
     }

@@ -31,8 +31,8 @@ void initGame() {
     initKitchen(&GS.kitchen);
     initTaskList(); // data kept in arrays in TaskManager
     initFarmland(&GS.farm);
-    GS.vMap.x = 110;
-    GS.vMap.y = 180;
+    GS.vMap.x = MAP_HOME_X;
+    GS.vMap.y = MAP_HOME_Y;
     GS.vMap.location = 0;
     GS.vMap.direction = WALK_NONE;
 }

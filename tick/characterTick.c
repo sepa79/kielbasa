@@ -71,11 +71,13 @@ void regenTick(){
 // - alter timers on all chars
 // - regen all chars apart from player
 void regenTickMapHour(){
+    // regen other chars
     for(byte charSlot = 1; charSlot < CHARACTER_SLOTS; charSlot++){
         if(characterSlots[charSlot] != NO_CHARACTER){
             _regenChar(characterSlots[charSlot]);
         }
     }
+    // decrease player regen timers
     if(allCharacters[0].regenTime){
         allCharacters[0].regenTime--;
         // clean up if we reduced timer to 0
@@ -108,6 +110,7 @@ void regenTickMinute(){
         regen += 2;
     }
     incEnergyLevel(charIdx, regen);
+    GS.regenMin = regen;
     drawBattery(0);
     copyCharToSprite(regen+48, 2, 0, SPR_CHARACTER_BAR1);
     char time = allCharacters[charIdx].regenTime > allCharacters[charIdx].bonusTime ? allCharacters[charIdx].regenTime : allCharacters[charIdx].bonusTime;

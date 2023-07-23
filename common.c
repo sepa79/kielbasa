@@ -2,10 +2,6 @@
 #include <c64/vic.h>
 #include <c64/charwin.h>
 
-// stage:
-//  1 - black to bright
-//  2 - bright to black
-//  3 - full
 void splashScreen(bool turnOn, char stage) {
     // splash screen
     static const char color[8] = {

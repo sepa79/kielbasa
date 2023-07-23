@@ -45,6 +45,17 @@ static void _pigsleCmdInit(void){
     // TODO: return to main menu
 }
 
+static void _pigsleCmdLoop(void){
+    // main loop
+    vic.color_border++;
+
+    gameLoop();
+    // vic_waitFrame();
+    // rirq_wait();
+    vic.color_border--;
+
+}
+
 #pragma data ( pigsleCommandLoaderData )
 
 __export static const Loaders menuLoaders = {

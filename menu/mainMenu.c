@@ -71,9 +71,9 @@ __export const byte mainMenuGfx1[] = {
 };
 #pragma data ( mainMenuGfxNight )
 __export const byte mainMenuGfx2[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/main_16.10.22_Night.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/main_16.10.22_Night.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/main_16.10.22_Night.kla"
+    #embed 0x0f00 0x0002 "assets/multicolorGfx/main_14.03.23_noc2.kla"
+    #embed 0x01e0 0x1f42 "assets/multicolorGfx/main_14.03.23_noc2.kla"
+    #embed 0x01e0 0x232a "assets/multicolorGfx/main_14.03.23_noc2.kla"
 };
 
 #pragma data ( mainMenuSprites )
@@ -335,7 +335,7 @@ const struct MenuOption MAIN_MENU[] = {
     {TXT_IDX_MENU_MAIN1, '1', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_KITCHEN, 1, 1},
     {TXT_IDX_MENU_MAIN2, '2', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_CREW, 1, 2},
     {TXT_IDX_MENU_MAIN3, '3', SCREEN_TRANSITION, UI_SELECT, &showTvScreen, 0, 1, 3},
-    {TXT_IDX_MENU_MAIN4, '4', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_PIGSLE_COMMAND_1, 1, 4},
+    // { TXT_IDX_MENU_AIR_DEF, '4', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_PIGSLE_COMMAND_1, 1, 7 },
     {TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 1, 6},
     END_MENU_CHOICES
 };

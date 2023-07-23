@@ -24,7 +24,7 @@
 
 #pragma data(tvScreenGfx)
 __export const char tvScreenGfx1[] = {
-    #embed 0xffff 2 "assets/multicolorGfx/tv1.kla"
+    #embed 0xffff 2 "assets/multicolorGfx/tv53.kla"
 };
 
 // #pragma data(tvScreenFnt)
@@ -102,7 +102,7 @@ static void _menuHandler(void) {
     loadMenuGfx();
 
     memset(SPRITE_BLOCK_POINTER, 0, 0x40*8);
-    textToSprite((char*)TXT[SB_IDX_MENU_TV_SCREEN_BILLS], 3, SPRITE_BLOCK_POINTER);
+    textToSprite((char*)TXT[TV_IDX_MENU_TV_SCREEN_BILLS], 3, SPRITE_BLOCK_POINTER);
 
     char str[10] = "";
     sprintf(str, "%8d", GS.bills);

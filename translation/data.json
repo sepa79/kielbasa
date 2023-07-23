@@ -280,10 +280,10 @@
         "en": "TV News   "
       },
       {
-        "id": "MENU_MAIN4",
-        "menu_opt": "4",
-        "pl": "Stonka",
-        "en": "Air Defence"
+        "id": "MENU_AIR_DEF",
+        "menu_opt": "1",
+        "pl": "Stonka (Uwaga: Bez powrotu do gry!)",
+        "en": "Air Defence (Warning: No return to    main game!)"
       },
       {
         "id": "EXIT_TO_MAP",
@@ -538,12 +538,12 @@
         "prefix": "SB",
         "pl": [
           "Brak miejsca",
-          " na chleb w ",
+          "      w     ",
           "  spiżarni  "
         ],
         "en": [
-          "No space for",
-          " more bread ",
+          "   No more  ",
+          "    space   ",
           "  in pantry "
         ]
       },
@@ -614,6 +614,26 @@
         "menu_opt": "6",
         "pl": "Ulubione warzywo",
         "en": "Favourite veggie"
+      },
+      {
+        "id": "MENU_KITCHEN7",
+        "menu_opt": "7",
+        "pl": "Zjedz teraz drugie śniadanie",
+        "en": "Eat second breakfast now    "
+      },
+      {
+        "id": "KITCHEN_CANNOT_EAT",
+        "prefix": "SB",
+        "pl": [
+          "   Jesteś   ",
+          "  najedzony ",
+          "            "
+        ],
+        "en": [
+          "   You are  ",
+          "     full   ",
+          "            "
+        ]
       },
       {
         "id": "KITCHEN_TASK_OFF",
@@ -800,7 +820,7 @@
       },
       {
         "id": "CHAR_3_NAME",
-        "common": "Wiesław Dobrowolski"
+        "common": "Wiesław C."
       },
       {
         "id": "CHAR_3_STORY",
@@ -815,6 +835,11 @@
         "id": "CHAR_4_STORY",
         "pl": "Józek jest wujkiem Janusza. Tak właściwie to jego       gospodarstwo. Janusz musi   się wykazać, to może je     odziedziczy.",
         "en": "Józek is Janusz's uncle. It is his farm, really. One dayit might belong to Janusz,  if he proves worthy."
+      },
+      {
+        "id": "SAVE_POTATOES",
+        "pl": "Ratuj kartofle!",
+        "en": "Save potatoes!"
       },
       {
         "id": "TASK_ADDED",
@@ -849,23 +874,11 @@
         "prefix": "SB",
         "pl": [" +/-/Space: ",
                "prędkość gry",
-               "  F1: Pomoc "
+               "  F1: Opcje "
               ],
         "en": [" +/-/Space: ",
                "time control",
-               "  F1: Help  "
-              ]
-      },
-      {
-        "id": "MENU_FARM",
-        "prefix": "SB",
-        "pl": [" Wiadomości ",
-               "            ",
-               "  ½ü Wyjdź  "
-              ],
-        "en": ["   TV News  ",
-               "            ",
-               "   ½ü Exit  "
+               " F1: Options"
               ]
       },
       {
@@ -882,7 +895,7 @@
       },
       {
         "id": "MENU_TV_SCREEN_BILLS",
-        "prefix": "SB",
+        "prefix": "TV",
         "pl": ["  Budżet ",
                "         ",
                "Rachunki:",

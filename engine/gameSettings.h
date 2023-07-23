@@ -64,6 +64,7 @@ enum Events {
     EVENT_NONE,
     EVENT_END_OF_MONTH,
     EVENT_XMAS,
+    EVENT_RESPAWN_AT_HOME,
 };
 
 extern Events gms_event;

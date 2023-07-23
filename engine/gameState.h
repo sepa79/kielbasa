@@ -17,8 +17,12 @@
 
 // timer used on map for time ticks
 #define MAP_TICK_DELAY 60;
+#define MAP_HOME_X 110
+#define MAP_HOME_Y 180
 
 struct GameState {
+    // cached regen/min, set by RegenTickMin from characterTick
+    char regenMin;
     unsigned long cash;
     unsigned long pension;
     // percentage shown as byte

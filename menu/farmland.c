@@ -494,12 +494,12 @@ static void _selectField(){
 
 static void _showFarmMenu(){
     // Prepare output window
-    cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, COL_OFFSET_MENU+1, SCREEN_HEIGHT);
+    cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);
     cwin_clear(&cw);
     // secondary window for context menu
     cwin_init(&cd, GFX_1_SCR, COL_OFFSET_MENU, SCREEN_Y_START, SCREEN_WIDTH-COL_OFFSET_MENU, 7);
     // help text window
-    cwin_init(&ht, GFX_1_SCR, COL_OFFSET_MENU+1, SCREEN_Y_START+7, SCREEN_WIDTH-COL_OFFSET_MENU-1, SCREEN_HEIGHT-7);
+    cwin_init(&ht, GFX_1_SCR, COL_OFFSET_MENU+1, SCREEN_Y_START+7, SCREEN_WIDTH-COL_OFFSET_MENU-1, SCREEN_HEIGHT-8);
     cwin_fill(&ht, 32, VCOL_DARK_GREY);
 
     displayMenu(FARMLAND_MENU);

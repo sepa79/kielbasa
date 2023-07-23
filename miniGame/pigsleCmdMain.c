@@ -9,6 +9,7 @@
 #include <miniGame/pigsleCmdMain.h>
 #include <miniGame/pigsleCmdIrq.h>
 #include <miniGame/pigsleCmdAnims.h>
+#include <translation/common.h>
 
 // ---------------------------------------------------------------------------------------------
 // Main screen and sprite bank + loaders code
@@ -601,7 +602,7 @@ void gameState(GameState state){
         memset(COLOR_RAM+7*40, 2, 3*40);
         memset(GFX_1_BMP+7*40*8, 0, 3*40*8);
         // TODO: add txt to translations
-        charWrite(60, s"Ratuj kartofle!");
+        charWrite(60, TXT[TXT_IDX_SAVE_POTATOES]);
         TheGame.count = 50;
         break;
 
@@ -703,13 +704,8 @@ void pigsleCmdInit(){
     // vic.ctrl1 = VIC_CTRL1_BMM | VIC_CTRL1_RSEL | 3;
     vic.spr_enable   = 0b00000000;
 
-    __asm {
-        // init music
-        lda #MSX_ROM
-        sta $01
-        lda #$02
-        jsr MSX_INIT
-    }
+    playSong(PIGSLE_CMD_SONG);
+
     // if you use the mmap_trampoline() you have to call the mmap_set() at least once to init the shadow variable
     char pport = setPort(MMAP_ROM);
     // Activate trampoline
@@ -735,14 +731,14 @@ void pigsleCmdInit(){
     rirq_set(1, IRQ_TOP_PESTS, &topPests);
 
     // Middle - Pests
-    rirq_build(&middlePests, 1);
-    rirq_call(&middlePests, 0, pigsleCmdIrq_middlePests);
-    rirq_set(2, IRQ_MIDDLE_PESTS, &middlePests);
+    // rirq_build(&middlePests, 1);
+    // rirq_call(&middlePests, 0, pigsleCmdIrq_middlePests);
+    // rirq_set(2, IRQ_MIDDLE_PESTS, &middlePests);
 
     // Bottom - Cannon anims
     rirq_build(&cannonAnims, 1);
     rirq_call(&cannonAnims, 0, pigsleCmdIrq_cannonAnims);
-    rirq_set(3, IRQ_CANNON, &cannonAnims);
+    rirq_set(2, IRQ_CANNON, &cannonAnims);
 
     // Open border raster IRQ
     rirq_build(&open, 2);
@@ -750,7 +746,7 @@ void pigsleCmdInit(){
     rirq_write(&open, 0, &vic.ctrl1, VIC_CTRL1_BMM |VIC_CTRL1_DEN | 3);
     rirq_call(&open, 1, pigsleCmdIrq_openBorder);
     // Place it into the last line of the screen
-    rirq_set(4, IRQ_FRAME_OPEN, &open);
+    rirq_set(3, IRQ_FRAME_OPEN, &open);
 
     // sort the raster IRQs
     rirq_sort();
