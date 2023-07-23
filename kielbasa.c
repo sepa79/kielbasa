@@ -124,8 +124,6 @@ void mainLoop(){
     gms_inSpecialMenu = false;
     updateGameSpeed();
 
-    updateStatusBar(TXT[SB_IDX_WELCOME]);
-
     // splash and turn screen on
     splashScreen(false, 2);
     initRasterIRQ();

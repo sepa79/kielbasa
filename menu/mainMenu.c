@@ -380,6 +380,7 @@ static void _menuHandler(){
     displayMenu(MAIN_MENU);
     switchScreenTo(SCREEN_SPLIT_MC_TXT);
     _displayTaskList();
+    updateStatusBar(TXT[SB_IDX_WELCOME]);
 }
 
 #pragma data ( mainMenuLoaderData )

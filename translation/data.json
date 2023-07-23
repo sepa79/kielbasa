@@ -309,6 +309,31 @@
         "en": "Game settings"
       },
       {
+        "id": "OPTIONS_HELP1",
+        "pl": "Znaczenie ikon UI:",
+        "en": "UI items legend:"
+      },
+      {
+        "id": "OPTIONS_HELP2",
+        "pl": "ü - Długi fire (1s lub dłużej)",
+        "en": "ü - Long Fire  (1s or more)"
+      },
+      {
+        "id": "OPTIONS_HELP3",
+        "pl": "ý - Fire",
+        "en": "ý - Fire"
+      },
+      {
+        "id": "OPTIONS_HELP4",
+        "pl": "û - Klawisz 'Return'",
+        "en": "û - 'Return' key"
+      },
+      {
+        "id": "OPTIONS_HELP5",
+        "pl": "½ - 'Escape' w menu i na mapie",
+        "en": "½ - 'Escape' key in menus and on map"
+      },
+      {
         "id": "MUSIC_OPTIONS_HEADER",
         "pl": "Ustawienia muzyki",
         "en": "Music settings"
@@ -874,11 +899,11 @@
         "prefix": "SB",
         "pl": [" +/-/Space: ",
                "prędkość gry",
-               "  F1: Opcje "
+               "  F1: Pomoc "
               ],
         "en": [" +/-/Space: ",
                "time control",
-               " F1: Options"
+               "  F1: Help  "
               ]
       },
       {
