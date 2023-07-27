@@ -59,15 +59,19 @@ static void _displayPlaylist(){
 }
 
 static void _displayBoombox(){
-    rirq_stop();
 
     char pbank = setBank(MUSIC_BANK_RETRO_1);
-    char pport = setPort(MMAP_ALL_ROM);
+    char pport = setPort(MMAP_ROM);
 
-    memcpy(GFX_1_FNT+0x400, boomboxFnt, 0x400);
-    memcpy(GFX_1_SCR+12*40, boomboxScr, 13*40);
+    // rom to buffer -> GFX_1_SCR
+    memcpy(GFX_1_SCR, boomboxFnt, 0x400);
+    // switch IO off
+    setPort(MMAP_RAM);
+    // buffer to RAM under IO
+    memcpy(GFX_1_FNT+0x400, GFX_1_SCR, 0x400);
     setPort(pport);
-    rirq_start();
+    memcpy(GFX_1_SCR+12*40, boomboxScr, 13*40);
+
     // colors
     for(char i=0; i<130; i++){
         COLOR_RAM[12*40 + i + 000] = boomboxAtr[GFX_1_SCR[12*40 + i + 000]];
@@ -155,6 +159,9 @@ static void _playMsx(struct Song * song, bool restart){
             setBank(song->bank);
             // load different MSX file
             loadMusic(song);
+            setBank(MUSIC_BANK);
+            // if we have reloaded, reset SongIdx
+            curSongIdx = 0xff;
         }
         // all loaded or there was no need to load
         curBank   = song->bank;
@@ -172,6 +179,7 @@ static void _playMsx(struct Song * song, bool restart){
             // set ROM back
             setPort(pport);
         }
+        curSongIdx = songIdx;
 
         // revert menu bank
         setBank(pbank);
@@ -190,24 +198,30 @@ static void _loadMsx() {
 
 static void closeMsxMenu(){
    // reload fonts
-    rirq_stop(); // this causes flicker, need to fix font copy & irqs collision
-    loadMainFont();
-    rirq_start();
+    char pBank = setBank(MAIN_GFX_BANK);
+    char pport = setPort(MMAP_ROM);
 
+    // rom to buffer -> GFX_1_SCR
+    memcpy(GFX_1_SCR, GFX_1_FNT_SRC+0x400, 0x400);
+    // switch IO off
+    setPort(MMAP_RAM);
+    // buffer to RAM under IO
+    memcpy(GFX_1_FNT+0x400, GFX_1_SCR, 0x400);
+    setPort(pport);
+    setBank(pBank);
     showOptionsMenu();
 }
 
 static void _showMusicMenu(){
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, BIG_SCREEN_Y_START, SCREEN_WIDTH, 12);
+
+    _displayBoombox();
+    // clean after, as disply uses screen as buffer
     cwin_clear(&cw);
-
     displayMenu(MUSIC_MENU);
-
+    _displayPlaylist();
     // static menu texts
     updateStatusBar(TXT[SB_IDX_MENU_OPTIONS_MSX_MENU]);
-
-    _displayPlaylist();
-    _displayBoombox();
     switchScreenTo(SCREEN_MC_TXT_BOOMBOX);
 }
 
@@ -274,7 +288,7 @@ const struct MenuOption MUSIC_MENU[] = {
 };
 const struct MenuOption OPTIONS_MENU[] = {
     { TXT_IDX_MENU_OPTIONS_LANG, '1', SCREEN_FULL_TXT, UI_SELECT, &_changeLanguage, 0, 2, 1},
-    { TXT_IDX_MENU_OPTIONS_MSX, '2', SCREEN_MC_TXT_BOOMBOX, UI_SELECT, &_showMusicMenu, 0, 2, 2},
+    { TXT_IDX_MENU_OPTIONS_MSX, '2', SCREEN_TRANSITION, UI_SELECT, &_showMusicMenu, 0, 2, 2},
     { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &backToPreviousMenu, 0, 2, 3},
     END_MENU_CHOICES
 };

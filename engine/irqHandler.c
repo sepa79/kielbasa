@@ -37,15 +37,13 @@ Play msx, if enabled
 ================================================================================ */
 static void playMsx(){
     if(gms_enableMusic){
-        // byte _prevRomCfgPC = ((byte *)0x01)[0];
+        byte _prevRomCfgPC = ((byte *)0x01)[0];
         __asm {
             lda #MSX_ROM
             sta $01
             jsr MSX_PLAY
         };
-        // ((byte *)0x01)[0] = _prevRomCfgPC;
-        *((volatile char *)0x01) = curport;
-
+        ((byte *)0x01)[0] = _prevRomCfgPC;
     }
 }
 

@@ -1,1 +1,2 @@
-Files here are kept in RAM all the time, and should have 'tick' routines to be called by /engine/callendar.c.
+Ticks are stored in Tick bank, with wrappers in RAM if necessary.
+Called by calendar.c

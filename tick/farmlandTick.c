@@ -18,8 +18,8 @@
 __striped struct FieldStruct fields[FIELDS_COUNT];
 __striped const struct PlantStruct plants[PLANTS_COUNT+1] = {
     {TXT_IDX_TASK_EMPTY_DESCRIPTION, 0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0 },
-    {TXT_IDX_TASK_DSC_FARMLAND_POTATO, 10,  8,20,20,40, 15,  18,23,10,30,60, 15,22, 5,20,25 }, // Plant 1st May, high yeld, but fragile, 100 days to mature
-    {TXT_IDX_TASK_DSC_FARMLAND_LUPINE,  8,  1,15,20,40, 20,  13,18,15,40,70, 15,20,15,40,20 }, // Plant end of April, high yeld, fragile, 110 days to mature
+    {TXT_IDX_TASK_DSC_FARMLAND_POTATO, 10,  8,20,18,40, 15,  18,23,10,30,60, 15,22, 5,20,25 }, // Plant 1st May, high yeld, but fragile, 100 days to mature
+    {TXT_IDX_TASK_DSC_FARMLAND_LUPINE,  8,  1,15,18,40, 20,  13,18,15,40,70, 15,20,15,40,20 }, // Plant end of April, high yeld, fragile, 110 days to mature
     {TXT_IDX_TASK_DSC_FARMLAND_WHEAT,   7, -5,15, 5,60,180,   8,25,10,40,90, 20,30, 5,20,45 }, // Plant September, medium yeld, long growth, robust, 315 days to mature
     {TXT_IDX_TASK_DSC_FARMLAND_CORN,    4, -5,30, 5,40, 30,   5,30,10,40,40, 20,30,10,50,30 }, // Plant end of winter, low yeld, very robust, 100 days to mature
 };
@@ -52,22 +52,17 @@ byte _waterCheck(byte min, byte max){
 // =============================================================================
 // Sprout stage
 // In this stage we are only removing some sprouts (they can die if conditions are not optimal)
-void _fieldStateSprout(byte fieldId){
+void _fieldStateSprout(char fieldId){
     // get our plant data
-    byte plantId = fields[fieldId].plantId;
+    char plantId = fields[fieldId].plantId;
 
     // temp check
-    byte diff = _tempCheck(plants[plantId].stage1minTemp, plants[plantId].stage1maxTemp);
-    // gotoxy(0, 16);
-    // printf("S 1 plantId [%u]temp diff %-5u ", plantId, diff);
+    char diff = _tempCheck(plants[plantId].stage1minTemp, plants[plantId].stage1maxTemp);
     // rain check
     diff += _waterCheck(plants[plantId].stage1minWater, plants[plantId].stage1maxWater);
 
-    // gotoxy(20, 16);
-    // printf("+ rain diff %-5u ", diff);
-
     if(diff != 0){
-        int alive = fields[fieldId].alive;
+        unsigned int alive = fields[fieldId].alive;
         if(diff < alive) {
             fields[fieldId].alive = alive - diff;
         } else {
@@ -76,9 +71,6 @@ void _fieldStateSprout(byte fieldId){
             fields[fieldId].stage = PLANT_STAGE_NONE;
         }
     }
-
-    // // calculate health
-    // fields[fieldId].health = lmuldiv16u(fields[fieldId].alive, FIELD_HEALTH_MAX, fields[fieldId].grown);
 
     fields[fieldId].timer--;
     if(fields[fieldId].timer == 0){
@@ -89,7 +81,9 @@ void _fieldStateSprout(byte fieldId){
         // calculate growth factor
         unsigned int gFactor = lmuldiv16u(fields[fieldId].alive, plants[plantId].maxYeldFactor, plants[plantId].stage2timer);
 
-        // make it gro a bit, even if we got just a few
+        // make it grow a bit, even if we got just a few
+        // TODO: add some limit, as with 1 plant and 1 growth factor we can achieve a real gFactor of equal to Timer e.g. 90 in case of Wheat
+        // where the max growth factor is 7
         if(!gFactor){
             gFactor++;
         }
@@ -99,22 +93,17 @@ void _fieldStateSprout(byte fieldId){
 
 // =============================================================================
 // Growth stage
-void _fieldStateGrowth(byte fieldId){
+void _fieldStateGrowth(char fieldId){
     // get our plant data
-    byte plantId = fields[fieldId].plantId;
+    char plantId = fields[fieldId].plantId;
 
     // temp check
-    byte diff = _tempCheck(plants[plantId].stage2minTemp, plants[plantId].stage2maxTemp);
-    // gotoxy(0, 17);
-    // printf("S 2 temp diff %-5u ", diff);
+    char diff = _tempCheck(plants[plantId].stage2minTemp, plants[plantId].stage2maxTemp);
     // rain check
     diff += _waterCheck(plants[plantId].stage2minWater, plants[plantId].stage2maxWater);
-    // gotoxy(20, 17);
-    // printf("+ rain diff %-5u ", diff);
 
-    // adjust the diff for the size of field
-    byte adjustedDiff = diff*fields[fieldId].area;
-
+    // adjust the diff for the amount of crops alive, where FIELD_CAPACITY is max crops on small field
+    char adjustedDiff = lmuldiv16u(fields[fieldId].alive, diff, FIELD_CAPACITY);
     if(adjustedDiff < fields[fieldId].gFactor){
         fields[fieldId].grown += fields[fieldId].gFactor - adjustedDiff;
     }
@@ -129,18 +118,14 @@ void _fieldStateGrowth(byte fieldId){
 // =============================================================================
 // Rippen stage
 
-void _fieldStateRipen(byte fieldId){
+void _fieldStateRipen(char fieldId){
     // get our plant data
-    byte plantId = fields[fieldId].plantId;
+    char plantId = fields[fieldId].plantId;
 
     // temp check
-    byte diff = _tempCheck(plants[plantId].stage3minTemp, plants[plantId].stage3maxTemp);
-    // gotoxy(0, 18);
-    // printf("s 3 temp %-5d diff %-5u ", GS.calendar.currentTemp, diff);
+    char diff = _tempCheck(plants[plantId].stage3minTemp, plants[plantId].stage3maxTemp);
     // rain check
     diff += _waterCheck(plants[plantId].stage2minWater, plants[plantId].stage2maxWater);
-    // gotoxy(0, 18);
-    // printf("temp + rain diff %-5u ", diff);
 
     if(diff > 10)
         diff = 10;
@@ -246,10 +231,10 @@ void initFarmland(Farm* farm){
     farm->storage[PLANT_CORN]   = 50;
 
     __striped static const struct FieldStruct initialFields[FIELDS_COUNT] = {
-        {1, 3, 2, PLANT_WHEAT , PLANT_STAGE_GROWTH, 666, 96, 90, 448, 15, 0, 0, 60},
-        {1, 3, 2, PLANT_NONE  , PLANT_STAGE_PLOWED, 0, 0, 0, 0, 0, 0, 0},
+        {1, 3, 2, PLANT_WHEAT , PLANT_STAGE_GROWTH, 666, 96, 90, 300, 7, 0, 0, 60},
+        {1, 3, 2, PLANT_NONE  , PLANT_STAGE_PLOWED,   0,  0,  0,   0, 0, 0, 0,  0},
         {2, 3, 4, PLANT_CORN  , PLANT_STAGE_GROWTH, 666, 96, 80, 240, 8, 0, 0, 10},
-        {4, 4, 6, PLANT_NONE  , PLANT_STAGE_NONE, 0, 0, 0, 0, 0, 0, 0},
+        {4, 4, 6, PLANT_NONE  , PLANT_STAGE_NONE,     0,  0,  0,   0, 0, 0, 0,  0},
     };
 
     memcpy(fields, initialFields, sizeof(initialFields));

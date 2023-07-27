@@ -220,8 +220,8 @@ static void _villiageMapLoadGfx(){
 }
 
 static void _villiageMapShowMenu(void){
-    // make screen visible
     _villiageMapLoadGfx();
+    // make screen visible
     switchScreenTo(SCREEN_HIRES_TXT);
     displayMenu(VILLIAGE_MAP_MENU);
 }
@@ -233,15 +233,9 @@ void villiageMapInit(void){
     gms_disableTimeControls = true;
     gms_gameSpeed = SPEED_PAUSED;
 
-    // clean 0xffff - so we don't have artefacts when we open borders
-    // ((char *)0xffff)[0] = 0;
     // Load GFX
     villiageMapScreenInit();
     buildRamTiles();
-    // init and draw map
-    // _villiageMapLoadGfx();
-
-    _villiageMapShowMenu();
 }
 
 #pragma data ( villiageMapLoaderData )

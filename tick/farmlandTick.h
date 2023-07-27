@@ -62,10 +62,7 @@ struct FieldStruct {
     unsigned int reaped;
     // timer till the end of current stage (days)
     char timer;
-    // calculated in each stage separately
-    // char health;
 };
-#define FIELD_HEALTH_MAX 100
 
 extern __striped struct FieldStruct fields[FIELDS_COUNT];
 

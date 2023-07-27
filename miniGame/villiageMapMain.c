@@ -94,11 +94,6 @@ char * lightMap = (char *)0xc800;
 
 // Copy chars and lightmaps, any sprites etc
 static void _mapInit(){
-    // ROM on, I/O off - as we will copy to RAM under I/O ports - IRQs must be off
-    // mmap_set(0b00110011);
-    // memcpy(GFX_1_FNT2, _chars, sizeof(_chars));
-    // // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
-    // mmap_set(MMAP_ROM);
     memcpy(colorMap[0], _charAttribsL1, 0x100);
     memcpy(colorMap[1], _charAttribsL2, 0x100);
     memcpy(colorMap[2], _charAttribsL3, 0x100);
@@ -260,25 +255,32 @@ volatile char moveCostTime = 0;
 volatile char moveCostEnergy = 0;
 
 void villiageMapScreenInit(void){
-    // set the pointer for chars to copy and indicate it needs to be done, SCREEN_TRANSITION IRQ handler will pick it up
-    // fontCopySrc = _chars;
-    // fontCopyDone = false;
     // copy fonts
-    rirq_stop();
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
-    char pport = setPort(MMAP_ALL_ROM);
-    memcpy(GFX_1_FNT2, _chars, 0x800);
+    char pport = setPort(MMAP_ROM);
+    
+    // rom to buffer -> GFX_1_SCR
+    memcpy(GFX_1_SCR, _chars, 0x400);
+    // switch IO off
+    setPort(MMAP_RAM);
+    // buffer to RAM under IO
+    memcpy(GFX_1_FNT2, GFX_1_SCR, 0x400);
+
+    // repeat to copy 2nd half
+    // rom to buffer -> GFX_1_SCR
+    setPort(MMAP_ROM);
+    memcpy(GFX_1_SCR, _chars+0x400, 0x400);
+    // switch IO off
+    setPort(MMAP_RAM);
+    // buffer to RAM under IO
+    memcpy(GFX_1_FNT2+0x400, GFX_1_SCR, 0x400);
+
     setPort(pport);
     setBank(pbank);
-    rirq_start();
 
     // saving mem - call ROM code
     _mapInit();
     
-    // wait for IRQ to finish copying fonts - can't change bank before its done
-    // while(!fontCopyDone){
-    //     // vic.color_border--;
-    // }
     // reset timer
     timer = MAP_TICK_DELAY;
     moveCostBase = 0;
@@ -313,7 +315,6 @@ void villiageMapDraw(){
 
     // draw player
     _drawPlayer();
-
 
     // text window
     pbank = setBank(MENU_BANK_MAP_VILLIAGE_3);
