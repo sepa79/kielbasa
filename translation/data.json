@@ -228,6 +228,11 @@
         "id": "TOILET",
         "pl": "  Sławojka              ",
         "en": "   Toilet               "
+      },
+      {
+        "id": "WHARF",
+        "pl": "   Pomost               ",
+        "en": "   Wharf                "
       }
     ]
   },

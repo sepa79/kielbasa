@@ -9,10 +9,10 @@
 #define DAY_GFX_BMP 0x9000
 #define DAY_GFX_SCR 0x9000+0x0f00
 #define DAY_GFX_COL 0x9000+0x0f00+0x01e0
-#define NIGHT_GFX_BMP 0xa400
-#define NIGHT_GFX_SCR 0xa400+0x0f00
-#define NIGHT_GFX_COL 0xa400+0x0f00+0x01e0
-#define MENU_SPRITE_SRC 0xb800
+#define NIGHT_GFX_BMP 0xa2c0
+#define NIGHT_GFX_SCR 0xa2c0+0x0f00
+#define NIGHT_GFX_COL 0xa2c0+0x0f00+0x01e0
+#define MENU_SPRITE_SRC 0xb580
 #define MENU_SPRITE_DST 0xef00
 
 #define SCREEN_X_START 0
@@ -74,6 +74,7 @@ extern volatile char mnu_menuBank;
 
 void loadMenu(byte bank);
 void loadMenuGfx();
+void loadFullKoalaToBMP2();
 void loadMenuSprites();
 void showMenu();
 __interrupt void showSprites();

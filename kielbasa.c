@@ -17,6 +17,7 @@
 #include <menu/villiageMap.h>
 #include <menu/hermansHouse.h>
 #include <menu/sulejukowasHouse.h>
+#include <menu/fishing.h>
 #include <engine/easyFlashBanks.h>
 #include <engine/gameSettings.h>
 #include <engine/irqSpriteController.h>
@@ -61,6 +62,15 @@ static void _showNormalMenu(char menuBank){
     joyCursor.enabled = true;
 }
 
+static void _showMiniGame(char menuBank){
+    switchScreenTo(SCREEN_TRANSITION);
+    gms_disableTimeControls = true;
+    gms_gameSpeed = SPEED_PAUSED;
+    updateGameSpeed();
+    loadMenu(menuBank);
+    showMenu();
+}
+
 void gotoLocation(){
     switch(GS.vMap.location){
         case LOCATION_FARM_HOUSE:
@@ -80,6 +90,9 @@ void gotoLocation(){
             break;
         case LOCATION_SULEJUKOWA:
             _showNormalMenu(MENU_BANK_SULEJUKOWAS_HOUSE);
+            break;
+        case LOCATION_FISHING:
+            _showMiniGame(MENU_BANK_FISHING_MENU);
             break;
     }
     // reset location so when we are back to map it gets re-set and sprites are drawn

@@ -14,16 +14,16 @@ enum SCREEN_MODE {
 // Restore the screen using 'previousScreenMode', dummy entry for the sake of Menu struct readability
     SCREEN_RESTORE,
 
-// Partial IRQ init - full TXT mode, with regular UI on top & bottom, MSX, normal txt screen sprite handlers used.
+// Partial IRQ init - split screen mode, with regular UI on top & bottom, MSX, MC on top half with sprites, text on bottom half with sprites.
     SCREEN_SPLIT_MC_TXT,
 
-// Partial IRQ init - split screen mode, with regular UI on top & bottom, MSX, MC on top half with sprites, text on bottom half with sprites.
+// Partial IRQ init - full TXT mode, with regular UI on top & bottom, MSX, normal txt screen sprite handlers used.
     SCREEN_FULL_TXT,
 
 // Partial IRQ init - full MC TXT mode, with regular UI on top & bottom, MSX, no sprite handlers.
     SCREEN_MC_TXT_BOOMBOX,
 
-// Partial IRQ init - full Hires (normal) TXT mode, with regular UI on top & map UI at the bottom, MSX, no sprite handlers.
+// Partial IRQ init - full Hires (normal) TXT mode, with regular UI on top & map UI at the bottom, MSX, no sprite handlers. Used for Map.
     SCREEN_HIRES_TXT,
 
 // Partial IRQ init - full MC GFX mode, with regular UI on top & bottom, MSX, normal txt screen sprite handlers used.

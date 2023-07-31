@@ -63,32 +63,6 @@ __interrupt static void _menuShowSprites(){
     }
 }
 
-static void _loadFullKoalaToBMP2(){
-    // load colors
-    char i = 0;
-    do {
-#assign y 0
-#repeat
-        GFX_2_SCR[y + i] = MENU_FULL_KOALA_SCR[y + i];
-        COLOR_RAM[y + i] = MENU_FULL_KOALA_COL[y + i];
-#assign y y + 256
-#until y == 1024
-        i++;
-    } while (i != 0);
-
-    // load bitmap
-    i = 0;
-    do {
-#assign y 0
-#repeat
-        GFX_2_BMP[y + i] = MENU_FULL_KOALA_BMP[y + i];
-#assign y y + 256
-#until y == 8192
-        i++;
-    } while (i != 0);
-#undef y
-}
-
 const struct MenuOption TV_SCREEN_MENU[] = {
     { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &revertPreviousMenu, 0, 2, 11},
     END_MENU_CHOICES
@@ -124,7 +98,7 @@ static void _menuHandler(void) {
 
 __export static const Loaders menuLoaders = {
     .loadMenuCode    = &menuNoop,
-    .loadMenuGfx     = &_loadFullKoalaToBMP2,
+    .loadMenuGfx     = &loadFullKoalaToBMP2,
     .loadMenuSprites = &menuNoop,
     .showMenu        = &_menuHandler,
     .showSprites     = &_menuShowSprites,

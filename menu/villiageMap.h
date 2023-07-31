@@ -45,6 +45,7 @@ enum Location {
     LOCATION_DIRT_ROAD,
     LOCATION_WELL,
     LOCATION_TOILET,
+    LOCATION_FISHING,
     LOCATION_RESET = 0xff
 };
 

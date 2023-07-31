@@ -89,7 +89,8 @@ void runMenuLoop(){
     MENU_BANK_SHOP_IN,
     MENU_BANK_CREW,
     MENU_BANK_HERMANS_HOUSE,
-    MENU_BANK_SULEJUKOWAS_HOUSE
+    MENU_BANK_SULEJUKOWAS_HOUSE,
+    MENU_BANK_FISHING_MENU
     }, { sharedMenuCode } )
 
 // Code shared by all menu banks
@@ -208,6 +209,39 @@ void menuGfxLoader(){
     } else {
         _loadNightGfx();
     }
+}
+
+void loadFullKoalaToBMP2(){
+    // load colors
+    char i = 0;
+    do {
+#assign y 0
+#repeat
+        GFX_2_SCR[y + i] = MENU_FULL_KOALA_SCR[y + i];
+        COLOR_RAM[y + i] = MENU_FULL_KOALA_COL[y + i];
+#assign y y + 256
+#until y == 1024
+        i++;
+    } while (i != 0);
+
+    // load bitmap
+    i = 0;
+    do {
+#assign y 0
+#repeat
+        GFX_2_BMP[y + i] = MENU_FULL_KOALA_BMP[y + i];
+#assign y y + 256
+// don't go too far, we don't want to ruin trampoline buffers
+#until y == 8192 - 256
+        i++;
+    } while (i != 0);
+#undef y
+// now copy last 64 bytes
+    i = 0;
+    do {
+        GFX_2_BMP[7936+i] = MENU_FULL_KOALA_BMP[7936+i];
+        i++;
+    } while (i != 64);
 }
 
 // Loads single file and never changes it.
