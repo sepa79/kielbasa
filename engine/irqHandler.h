@@ -1,14 +1,19 @@
 #ifndef IRQ_HANDLER_H
 #define IRQ_HANDLER_H
 
+// screen will be split at these lines
+#define IRQ_RASTER_TOP_MC_SCREEN 0x2e
+#define IRQ_RASTER_MIDDLE_TXT_SCREEN 0x91
+// special irqs to control sprites
+#define IRQ_RASTER_BOTTOM_UI 0xf9
+#define IRQ_RASTER_TOP_UI_SPRITES 0x01
+
 // scroll text pointer
 extern const char * SB_TEXT;
 
 // used by villiage map, for double buffering and loading fonts seamlesly
 extern volatile bool map_2ndScreen;
 extern char * mapScreen;
-extern const char * fontCopySrc;
-extern volatile bool fontCopyDone;
 
 enum SCREEN_MODE {
 // Restore the screen using 'previousScreenMode', dummy entry for the sake of Menu struct readability
@@ -32,6 +37,7 @@ enum SCREEN_MODE {
 // Changing screen modes - keep screen off
     SCREEN_TRANSITION,
     SCREEN_PIGSLE_COMMAND,
+    SCREEN_FISHING,
 };
 
 void playMsx();
@@ -40,14 +46,6 @@ void switchScreenTo(byte screenMode);
 
 // Main IRQ init - must be called first, sets up all the bits.
 void initRasterIRQ();
-// // Partial IRQ init - full TXT mode, with regular UI on top & bottom, MSX, normal txt screen sprite handlers used.
-// void switchScreenToFullTxt();
-// // Partial IRQ init - split screen mode, with regular UI on top & bottom, MSX, MC on top half with sprites, text on bottom half with sprites.
-// void switchScreenToSplitMcTxt();
-// // Partial IRQ init - full MC TXT mode, with regular UI on top & bottom, MSX, no sprite handlers.
-// void switchScreenToFullMCTxt();
-// // Partial IRQ init - full Hires (normal) TXT mode, with regular UI on top & bottom, MSX, no sprite handlers.
-// void switchScreenToFullHiresTxt();
 
 #pragma compile("irqHandler.c")
 

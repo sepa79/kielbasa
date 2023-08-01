@@ -12,7 +12,7 @@
 #define NIGHT_GFX_BMP 0xa2c0
 #define NIGHT_GFX_SCR 0xa2c0+0x0f00
 #define NIGHT_GFX_COL 0xa2c0+0x0f00+0x01e0
-#define MENU_SPRITE_SRC 0xb580
+#define MENU_SPRITE_SRC 0xb711
 #define MENU_SPRITE_DST 0xef00
 
 #define SCREEN_X_START 0

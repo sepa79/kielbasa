@@ -18,9 +18,6 @@
 #define IRQ_RASTER_TOP_UI_SPRITES 0x01
 
 volatile bool map_2ndScreen = true;
-const char * fontCopySrc = nullptr;
-volatile char * fontCopyDst = GFX_1_FNT2;
-volatile bool fontCopyDone = true;
 
 // used to check if move to given tile is possible
 // irqs update it to point to current screen (as we do double buffer)
@@ -176,36 +173,6 @@ __interrupt static void IRQ_topNoScreen() {
 
     // indicate frame position
     gms_framePos = FRAME_TOP;
-    // copying font on IRQ as it goes to RAM under IO, and doing it in normal code would result in a crash due to some collisions
-//     if(!fontCopyDone) {
-//         // vic.color_border++;
-//         // ROM on, I/O off - as we will copy to RAM under I/O ports
-//         // char pport = setPort(MMAP_ALL_ROM);
-//         *((volatile char *)0x01) = MMAP_ALL_ROM;
-
-//         char i = 0;
-//         do {
-// #assign y 0
-// #repeat
-//         fontCopyDst[y + i] = fontCopySrc[y + i];
-// #assign y y + 0x100
-// #until y == 0x100*1
-//             i++;
-//         } while (i != 0);
-
-//         fontCopyDst += 1*256;
-//         fontCopySrc += 1*256;
-
-//         if(fontCopyDst == GFX_1_FNT2+2048){
-//             fontCopyDone = true;
-//             fontCopyDst = GFX_1_FNT2;
-//         }
-//         // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
-//         // setPort(pport);
-//         *((volatile char *)0x01) = MMAP_ROM;
-
-//         // vic.color_border--;
-//     }
     // vic.color_back--;
     // vic.color_border--;
 }
@@ -578,13 +545,19 @@ void initRasterIRQ_Transition(){
     rirq_call(&rirqc_middleScreen, 0, IRQ_middleNoScreen);
     rirq_set(2, IRQ_RASTER_MIDDLE_TXT_SCREEN, &rirqc_middleScreen);
 
+    // Bottom - Open borders + Sprites
+    rirq_build(&rirqc_bottomUI, 1);
+    rirq_call(&rirqc_bottomUI, 0, IRQ_bottomUI);
+    // Place it into the last line of the screen
+    rirq_set(3, IRQ_RASTER_BOTTOM_UI, &rirqc_bottomUI);
+
     // sort the raster IRQs
     rirq_sort();
 }
 
 // main IRQ routine
 void initRasterIRQ_SplitMCTxt(){
-    // Top
+    // Top UI
     rirq_build(&rirqc_topUISprites, 1);
     // rirq_write(&topUISprites, 0, &vic.ctrl1, VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3 );
     // rirq_write(&topUISprites, 1, &vic.ctrl2, VIC_CTRL2_CSEL | VIC_CTRL2_MCM );
@@ -669,6 +642,10 @@ void switchScreenTo(byte screenMode){
                 break;
             case SCREEN_TRANSITION:
                 initRasterIRQ_Transition();
+                break;
+            // in menu/fishing.c
+            case SCREEN_FISHING:
+                initRasterIRQ_Fishing();
                 break;
         }
 
