@@ -11,42 +11,6 @@
 #pragma data ( txtPlTxtData )
 
 
-//     "pragma_label": "PlantTypes"
-//     "array_label" : "PLANT_TYPES_TXT"
-
-//     "pl": "Puste     "
-const char TXT_PL_PLANT_NAME_NONE[] = {0x50, 0x15, 0x13, 0x14, 0x05, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
-//     "pl": "Ziemniaki "
-const char TXT_PL_PLANT_NAME_POTATO[] = {0x5a, 0x09, 0x05, 0x0d, 0x0e, 0x09, 0x01, 0x0b, 0x09, 0x20, 0x00};
-//     "pl": "Łubin     "
-const char TXT_PL_PLANT_NAME_LUPINE[] = {0x67, 0x15, 0x02, 0x09, 0x0e, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
-//     "pl": "Pszenica  "
-const char TXT_PL_PLANT_NAME_WHEAT[] = {0x50, 0x13, 0x1a, 0x05, 0x0e, 0x09, 0x03, 0x01, 0x20, 0x20, 0x00};
-//     "pl": "Kukurydza "
-const char TXT_PL_PLANT_NAME_CORN[] = {0x4b, 0x15, 0x0b, 0x15, 0x12, 0x19, 0x04, 0x1a, 0x01, 0x20, 0x00};
-
-//     "pragma_label": "PlantStageNames"
-//     "array_label" : "PLANT_STAGE_NAMES"
-
-//     "pl": "        "
-const char TXT_PL_PLANT_STAGE_NONE[] = {0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
-//     "pl": "Z: Orka "
-const char TXT_PL_PLANT_STAGE_PLOW_TASK_ASSIGNED[] = {0x5a, 0x3a, 0x20, 0x4f, 0x12, 0x0b, 0x01, 0x20, 0x00};
-//     "pl": "Zaorane "
-const char TXT_PL_PLANT_STAGE_PLOWED[] = {0x5a, 0x01, 0x0f, 0x12, 0x01, 0x0e, 0x05, 0x20, 0x00};
-//     "pl": "Z: Siew "
-const char TXT_PL_PLANT_STAGE_SOW_TASK_ASSIGNED[] = {0x5a, 0x3a, 0x20, 0x53, 0x09, 0x05, 0x17, 0x20, 0x00};
-//     "pl": "Kiełkuje"
-const char TXT_PL_PLANT_STAGE_SPROUT[] = {0x4b, 0x09, 0x05, 0x5e, 0x0b, 0x15, 0x0a, 0x05, 0x00};
-//     "pl": "Rośnie  "
-const char TXT_PL_PLANT_STAGE_GROWTH[] = {0x52, 0x0f, 0x61, 0x0e, 0x09, 0x05, 0x20, 0x20, 0x00};
-//     "pl": "Dojrzewa"
-const char TXT_PL_PLANT_STAGE_RIPEN[] = {0x44, 0x0f, 0x0a, 0x12, 0x1a, 0x05, 0x17, 0x01, 0x00};
-//     "pl": "Dojrzałe"
-const char TXT_PL_PLANT_STAGE_READY[] = {0x44, 0x0f, 0x0a, 0x12, 0x1a, 0x01, 0x5e, 0x05, 0x00};
-//     "pl": "Z: Zbiór"
-const char TXT_PL_PLANT_STAGE_REAP_TASK_ASSIGNED[] = {0x5a, 0x3a, 0x20, 0x5a, 0x02, 0x09, 0x60, 0x12, 0x00};
-
 //     "pragma_label": "FieldSizes"
 //     "array_label" : "FIELD_SIZES"
 
@@ -360,33 +324,41 @@ const char TV_PL_MENU_TV_SCREEN_BILLS[] = {0x20, 0x20, 0x42, 0x15, 0x04, 0x63, 0
 //           "            "
 const char SB_PL_SHOP_CLOSED[] = {0x20, 0x53, 0x0b, 0x0c, 0x05, 0x10, 0x20, 0x0a, 0x05, 0x13, 0x14, 0x20, 0x20, 0x1a, 0x01, 0x0d, 0x0b, 0x0e, 0x09, 0x5d, 0x14, 0x19, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
 
-//     "pragma_label": PlantTypes,
-//     "array_label": PLANT_TYPES_TXT,
+//     "pragma_label": "PlantStageNames"
+//     "array_label" : "PLANT_STAGE_NAMES"
 
-#pragma data ( txtPlPlantTypes )
-__export const char* PLANT_TYPES_TXT[] = {
-    TXT_PL_PLANT_NAME_NONE,
-    TXT_PL_PLANT_NAME_POTATO,
-    TXT_PL_PLANT_NAME_LUPINE,
-    TXT_PL_PLANT_NAME_WHEAT,
-    TXT_PL_PLANT_NAME_CORN
-};
+//     "pl": "        "
+const char TXT_PL_PLANT_STAGE_NONE[] = {0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
+//     "pl": "Z: Orka "
+const char TXT_PL_PLANT_STAGE_PLOW_TASK_ASSIGNED[] = {0x5a, 0x3a, 0x20, 0x4f, 0x12, 0x0b, 0x01, 0x20, 0x00};
+//     "pl": "Zaorane "
+const char TXT_PL_PLANT_STAGE_PLOWED[] = {0x5a, 0x01, 0x0f, 0x12, 0x01, 0x0e, 0x05, 0x20, 0x00};
+//     "pl": "Z: Siew "
+const char TXT_PL_PLANT_STAGE_SOW_TASK_ASSIGNED[] = {0x5a, 0x3a, 0x20, 0x53, 0x09, 0x05, 0x17, 0x20, 0x00};
+//     "pl": "Kiełkuje"
+const char TXT_PL_PLANT_STAGE_SPROUT[] = {0x4b, 0x09, 0x05, 0x5e, 0x0b, 0x15, 0x0a, 0x05, 0x00};
+//     "pl": "Rośnie  "
+const char TXT_PL_PLANT_STAGE_GROWTH[] = {0x52, 0x0f, 0x61, 0x0e, 0x09, 0x05, 0x20, 0x20, 0x00};
+//     "pl": "Dojrzewa"
+const char TXT_PL_PLANT_STAGE_RIPEN[] = {0x44, 0x0f, 0x0a, 0x12, 0x1a, 0x05, 0x17, 0x01, 0x00};
+//     "pl": "Dojrzałe"
+const char TXT_PL_PLANT_STAGE_READY[] = {0x44, 0x0f, 0x0a, 0x12, 0x1a, 0x01, 0x5e, 0x05, 0x00};
+//     "pl": "Z: Zbiór"
+const char TXT_PL_PLANT_STAGE_REAP_TASK_ASSIGNED[] = {0x5a, 0x3a, 0x20, 0x5a, 0x02, 0x09, 0x60, 0x12, 0x00};
 
-//     "pragma_label": PlantStageNames,
-//     "array_label": PLANT_STAGE_NAMES,
+//     "pragma_label": "PlantTypes"
+//     "array_label" : "PLANT_TYPES_TXT"
 
-#pragma data ( txtPlPlantStageNames )
-__export const char* PLANT_STAGE_NAMES[] = {
-    TXT_PL_PLANT_STAGE_NONE,
-    TXT_PL_PLANT_STAGE_PLOW_TASK_ASSIGNED,
-    TXT_PL_PLANT_STAGE_PLOWED,
-    TXT_PL_PLANT_STAGE_SOW_TASK_ASSIGNED,
-    TXT_PL_PLANT_STAGE_SPROUT,
-    TXT_PL_PLANT_STAGE_GROWTH,
-    TXT_PL_PLANT_STAGE_RIPEN,
-    TXT_PL_PLANT_STAGE_READY,
-    TXT_PL_PLANT_STAGE_REAP_TASK_ASSIGNED
-};
+//     "pl": "Puste     "
+const char TXT_PL_PLANT_NAME_NONE[] = {0x50, 0x15, 0x13, 0x14, 0x05, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
+//     "pl": "Ziemniaki "
+const char TXT_PL_PLANT_NAME_POTATO[] = {0x5a, 0x09, 0x05, 0x0d, 0x0e, 0x09, 0x01, 0x0b, 0x09, 0x20, 0x00};
+//     "pl": "Łubin     "
+const char TXT_PL_PLANT_NAME_LUPINE[] = {0x67, 0x15, 0x02, 0x09, 0x0e, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
+//     "pl": "Pszenica  "
+const char TXT_PL_PLANT_NAME_WHEAT[] = {0x50, 0x13, 0x1a, 0x05, 0x0e, 0x09, 0x03, 0x01, 0x20, 0x20, 0x00};
+//     "pl": "Kukurydza "
+const char TXT_PL_PLANT_NAME_CORN[] = {0x4b, 0x15, 0x0b, 0x15, 0x12, 0x19, 0x04, 0x1a, 0x01, 0x20, 0x00};
 
 //     "pragma_label": FieldSizes,
 //     "array_label": FIELD_SIZES,
@@ -552,6 +524,34 @@ __export const char* TXT[] = {
     SB_PL_MENU_TV_SCREEN,
     TV_PL_MENU_TV_SCREEN_BILLS,
     SB_PL_SHOP_CLOSED
+};
+
+//     "pragma_label": PlantStageNames,
+//     "array_label": PLANT_STAGE_NAMES,
+
+#pragma data ( txtPlPlantStageNames )
+__export const char* PLANT_STAGE_NAMES[] = {
+    TXT_PL_PLANT_STAGE_NONE,
+    TXT_PL_PLANT_STAGE_PLOW_TASK_ASSIGNED,
+    TXT_PL_PLANT_STAGE_PLOWED,
+    TXT_PL_PLANT_STAGE_SOW_TASK_ASSIGNED,
+    TXT_PL_PLANT_STAGE_SPROUT,
+    TXT_PL_PLANT_STAGE_GROWTH,
+    TXT_PL_PLANT_STAGE_RIPEN,
+    TXT_PL_PLANT_STAGE_READY,
+    TXT_PL_PLANT_STAGE_REAP_TASK_ASSIGNED
+};
+
+//     "pragma_label": PlantTypes,
+//     "array_label": PLANT_TYPES_TXT,
+
+#pragma data ( txtPlPlantTypes )
+__export const char* PLANT_TYPES_TXT[] = {
+    TXT_PL_PLANT_NAME_NONE,
+    TXT_PL_PLANT_NAME_POTATO,
+    TXT_PL_PLANT_NAME_LUPINE,
+    TXT_PL_PLANT_NAME_WHEAT,
+    TXT_PL_PLANT_NAME_CORN
 };
 
 // =============================================================================

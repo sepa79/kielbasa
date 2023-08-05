@@ -1,6 +1,7 @@
 #!/bin/python3
 # -*- coding: utf-8 -*-
-import json
+import yaml
+from yaml.loader import SafeLoader
 
 # Load given filename
 def load_charset( filename ):
@@ -151,9 +152,16 @@ def generate_c_file_text_arrays( config, lang, text_filter ):
                 out.append( "%s {%s, 0x00};" % ( p1, text ) )
     return out
 
+# read yml config file, no error checking so be careful
+def read_yml_config_file( filename ):
+    fh = open(filename, "r", encoding="utf-8")
+    content = yaml.load(fh, Loader=SafeLoader)
+    fh.close()
+    return content
+
 # read json config file, no error checking so be careful
 def read_json_config_file( filename ):
-    fh = open("data.json", "r", encoding="utf-8")
+    fh = open(filename, "r", encoding="utf-8")
     content = json.load(fh)
     fh.close()
     return content
@@ -221,7 +229,7 @@ def create_common_h_file( config ):
 if __name__ == "__main__":
 
     # read config file
-    config = read_json_config_file( "data.json" )
+    config = read_yml_config_file( "data.yml" )
 
     # create common.h file basing on data.json file
     create_common_h_file( config )
@@ -229,8 +237,8 @@ if __name__ == "__main__":
     # create textsPL.c and textsPL.h files
     create_pl_files( config )
 
-    # create files from data.json with given language 
-    # if it exists in 'data.json'
+    # create files from data.yml with given language 
+    # if it exists in 'data.yml'
     create_lang_files( config, "en" )
 
 
