@@ -1,0 +1,73 @@
+
+location_names:
+  pragma_label: LocationNames
+  array_label: LOCATION_NAMES
+  contents:
+    # fixed width - 12x2
+  - id: NOTHING
+    en: '                        '
+    pl: '                        '
+  - id: FARM_HOUSE
+    en: '    House         ý     '
+    pl: '     Dom          ý     '
+  - id: FARM_BARN
+    en: '    Barn          ý     '
+    pl: '   Stodoła        ý     '
+  - id: FARM_PIGPEN
+    en: '   Pigpen         ý     '
+    pl: '   Chlewik        ý     '
+  - id: FARM_EMPTY
+    en: '   Meadows              '
+    pl: ' Ściernisko             '
+  - id: FARM_GARAGE
+    en: '    Garage              '
+    pl: '    Garaż               '
+  - id: FARM_VBIG_FIELD
+    en: ' Huge field             '
+    pl: 'Wielkie pole            '
+  - id: FARM_SMALL_FIELD_1
+    en: ' Small field            '
+    pl: '  Małe pole             '
+  - id: FARM_SMALL_FIELD_2
+    en: ' Small field            '
+    pl: '  Małe pole             '
+  - id: FARM_MEDIUM_FIELD
+    en: 'Medium field            '
+    pl: 'Średnie pole            '
+  - id: SHOP
+    en: '    Shop          ý     '
+    pl: '    Sklep         ý     '
+  - id: CHURCH
+    en: '   Church               '
+    pl: '   Kościół              '
+  - id: HERMAN
+    en: "  Herman's        ý     "
+    pl: ' Dom Hermana      ý     '
+  - id: SULEJUKOWA
+    en: ' Sulejukowa             '
+    pl: ' Sulejukowa             '
+  - id: HOUSE_1
+    en: '   Cottage              '
+    pl: ' Wiejski dom            '
+  - id: HOUSE_2
+    en: '   Cottage              '
+    pl: ' Wiejski dom            '
+  - id: MAIN_ROAD
+    en: '  Main road       û     '
+    pl: '    Szosa         û     '
+  - id: VILLIAGE_ROAD
+    en: '    Road         ûû     '
+    pl: '   Droga         ûû     '
+  - id: DIRT_ROAD
+    en: '  Dirt road      ûûû    '
+    pl: ' Polna droga     ûûû    '
+  - id: WELL
+    en: '    Well         úú     '
+    pl: '   Studnia       úú     '
+  - id: TOILET
+    en: '   Toilet               '
+    pl: '  Sławojka              '
+  - id: WHARF
+    en: '   Wharf                '
+    pl: '   Pomost               '
+

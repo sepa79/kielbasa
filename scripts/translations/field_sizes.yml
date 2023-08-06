@@ -1,0 +1,18 @@
+
+field_sizes:
+  pragma_label: FieldSizes
+  array_label: FIELD_SIZES
+  contents:
+  - id: FIELD_SMALL
+    en: 'Small  '
+    pl: 'Małe   '
+  - id: FIELD_MEDIUM
+    en: 'Medium '
+    pl: 'Średnie'
+  - id: FIELD_BIG
+    en: 'Big    '
+    pl: 'Duże   '
+  - id: FIELD_VBIG
+    en: 'Huge   '
+    pl: 'Wielkie'
+

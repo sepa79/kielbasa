@@ -1,0 +1,20 @@
+
+plant_types:
+  pragma_label: PlantTypes
+  array_label: PLANT_TYPES_TXT
+  contents:
+  - id: PLANT_NAME_NONE
+    en: 'Empty     '
+    pl: 'Puste     '
+  - id: PLANT_NAME_POTATO
+    en: 'Potatoes  '
+    pl: 'Ziemniaki '
+  - id: PLANT_NAME_LUPINE
+    en: 'Lupine    '
+    pl: 'Łubin     '
+  - id: PLANT_NAME_WHEAT
+    en: 'Wheat     '
+    pl: 'Pszenica  '
+  - id: PLANT_NAME_CORN
+    en: 'Corn      '
+    pl: 'Kukurydza '

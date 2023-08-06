@@ -1,0 +1,21 @@
+
+main_contents:
+  pragma_label: MainArray
+  array_label: TXT
+  contents:
+  - id: MENU_SHOPIN1
+    menu_opt: '1'
+    en: 'Buy gherkin'
+    pl: 'Kup ogóra'
+  - id: MENU_SHOPIN2
+    menu_opt: '2'
+    en: 'Chat'
+    pl: 'Rozmowa'
+  - id: MENU_SHOPIN3
+    menu_opt: '3'
+    en: 'Buy bread'
+    pl: 'Kup chleb'
+  - id: MENU_SHOPIN4
+    menu_opt: '4'
+    en: 'Buy canned meat'
+    pl: 'Kup Turystyczną'

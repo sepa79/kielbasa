@@ -1,0 +1,47 @@
+
+main_contents:
+  pragma_label: MainArray
+  array_label: TXT
+  contents:
+  - id: MENU_FARMLAND_PLOW
+    en: '  ûý Plow field '
+    pl: ' ûý Zaoraj pole '
+  - id: MENU_FARMLAND_SOW
+    en: '  ûý Farm field '
+    pl: 'ûý Uprawiaj pole'
+  - id: MENU_FARMLAND_REAP
+    en: '     ûý Reap    '
+    pl: '    ûý Zbiory   '
+  - id: DESC_FARMLAND_PLOW
+    en: ' Prepares field    for farming    '
+    pl: 'Przygotowuje pole   pod uprawę    '
+  - id: DESC_FARMLAND_SOW
+    en: ' Select and farm      a crop      '
+    pl: ' Uprawia wybraną      roślinę     '
+  - id: DESC_FARMLAND_REAP
+    en: '   Harvest the         crops      '
+    pl: '   Zbierz plony                   '
+  - id: TASK_FARMLAND_PLOW
+    en: 'Plow    '
+    pl: 'Orka    '
+  - id: TASK_FARMLAND_FARM
+    en: 'Farm    '
+    pl: 'Uprawa  '
+  - id: TASK_FARMLAND_REAP
+    en: 'Reap    '
+    pl: 'Zbiory  '
+  - id: TASK_DSC_FARMLAND_FIELD
+    en: 'Field'
+    pl: 'Pole'
+  - id: TASK_DSC_FARMLAND_POTATO
+    en: 'potatoes'
+    pl: 'ziemniaki'
+  - id: TASK_DSC_FARMLAND_LUPINE
+    en: 'lupine'
+    pl: 'łubin'
+  - id: TASK_DSC_FARMLAND_WHEAT
+    en: 'wheat'
+    pl: 'pszenica'
+  - id: TASK_DSC_FARMLAND_CORN
+    en: 'corn'
+    pl: 'kukurydza'

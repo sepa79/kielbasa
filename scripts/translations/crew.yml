@@ -1,0 +1,53 @@
+
+main_contents:
+  pragma_label: MainArray
+  array_label: TXT
+  contents:
+  - id: MENU_CREW1
+    menu_opt: '1'
+    en: 'Char 1'
+    pl: 'Slot 1'
+  - id: MENU_CREW2
+    menu_opt: '2'
+    en: 'Char 2'
+    pl: 'Slot 2'
+  - id: MENU_CREW3
+    menu_opt: '3'
+    en: 'Char 3'
+    pl: 'Slot 3'
+  - id: MENU_CREW4
+    menu_opt: '4'
+    en: 'Char 4'
+    pl: 'Slot 4'
+  - id: CHAR_1_NAME
+    common: 'Janusz Dobrowolski'
+  - id: CHAR_1_STORY
+    en: 'Janusz spent his whole life working in PGR. He does not really excel in anything,   but
+      thankfully he is lazy   and an addict. He is your   main character.'
+    pl: 'Janusz całe życie pracował wPGR. Na niczym się tak      naprawdę nie zna,
+      ale za to ma nałogi i jest leniwy.    Janusz to postać startowa.'
+  - id: CHAR_2_NAME
+    common: 'Zdzisław Hermann'
+  - id: CHAR_2_STORY
+    en: 'Zdzisiek is not very popularin the villiage. Folks reme-mber that his father
+      was a  volksdeustch. He is bright -like his father - and that  makes him stand
+      out.'
+    pl: 'Zdzisiek nie jest popularny we wsi. Ludziska pamiętają, że jego ojciec był
+      folks-   dojczem. Zdzisia wyróżnia   inteligencja po tacie.'
+  - id: CHAR_3_NAME
+    common: 'Wiesław C.'
+  - id: CHAR_3_STORY
+    en: "Wiesiek's story will be here"
+    pl: 'Tutaj będzie historia       Wieśka'
+  - id: CHAR_4_NAME
+    common: 'Józef Kołodziej'
+  - id: CHAR_4_STORY
+    en: "Józek is Janusz's uncle. It is his farm, really. One dayit might belong to
+      Janusz,  if he proves worthy."
+    pl: 'Józek jest wujkiem Janusza. Tak właściwie to jego       gospodarstwo. Janusz
+      musi   się wykazać, to może je     odziedziczy.'
+
+
+
+
+

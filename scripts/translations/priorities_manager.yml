@@ -1,0 +1,55 @@
+
+main_contents:
+  pragma_label: MainArray
+  array_label: TXT
+  contents:
+  - id: TASK_MANAGER_PRIO_HEADER
+    en: 'Task Priority Manager'
+    pl: 'Manager priorytetów zadań'
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_1
+    en:   '                     |Skill   | Task   '
+    en_m: '                     ------------------'
+    pl:   '                     |Zdolność| Zadanie'
+    pl_m: '                     ------------------'
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_2
+    en:   '                     | | | |  |  | | | '
+    pl:   '                     | |R|G|  |  |R|G| '
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_3
+    en:   '                     | | | |  |  | | | '
+    pl:   '                     | |o|o|  |  |o|o| '
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_4
+    en:   '                     |A|F|C|  | A|F|C| '
+    pl:   '                     |H|l|t|  | H|l|t| '
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_5
+    en:   '                     |n|a|o|  | n|a|o| '
+    pl:   '                     |o|n|o|H | o|n|o|H'
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_6
+    en:   '                     |i|r|o|T | i|r|o|T'
+    pl:   '                     |d|i|w|a | d|i|w|a'
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_7
+    en:   '                     |m|m|k|r | m|m|k|r'
+    pl:   '                     |o|c|a|n | o|c|a|n'
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_8
+    en:   '                     |a|i|i|a | a|i|i|a'
+    pl:   '                     |w|t|n|d | w|t|n|d'
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_9
+    en:   '                     |l|n|n|d | l|n|n|d'
+    pl:   '                     |l|w|i|e | l|w|i|e'
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_10
+    en:   'Character            |s|g|g|e | s|g|g|e'
+    en_m: '---------------------------------------'
+    pl:   'Postać               |a|o|e|l | a|o|e|l'
+    pl_m: '---------------------------------------'
+  - id: MENU_TASK_MANAGER_PLUS
+    en: '+'
+    pl: '+'
+  - id: MENU_TASK_MANAGER_MINUS
+    en: '-'
+    pl: '-'
+
+
+
+
+
+
+

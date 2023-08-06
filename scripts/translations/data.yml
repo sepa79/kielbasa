@@ -1,0 +1,144 @@
+main_contents:
+  pragma_label: MainArray
+  array_label: TXT
+  contents:
+  - id: MENU_EXIT
+    menu_opt: '<'
+    en: 'ü Exit '
+    pl: 'ü Wyjdź'
+  - id: EXIT_TO_MAP
+    menu_opt: '<'
+    en: 'ü Map'
+    pl: 'ü Mapa'
+  - id: MENU_OPTIONS_LANG
+    menu_opt: '1'
+    en: 'Language / Język'
+    pl: 'Język / Language'
+  - id: MENU_OPTIONS_MSX
+    menu_opt: '2'
+    en: 'Music settings'
+    pl: 'Ustawienia muzyki'
+  - id: OPTIONS_HEADER
+    en: 'Game settings'
+    pl: 'Ustawienia gry'
+  - id: OPTIONS_HELP1
+    en: 'UI items legend:'
+    pl: 'Znaczenie ikon UI:'
+  - id: OPTIONS_HELP2
+    en: 'ü - Long Fire  (1s or more)'
+    pl: 'ü - Długi fire (1s lub dłużej)'
+  - id: OPTIONS_HELP3
+    en: 'ý - Fire'
+    pl: 'ý - Fire'
+  - id: OPTIONS_HELP4
+    en: "û - 'Return' key"
+    pl: "û - Klawisz 'Return'"
+  - id: OPTIONS_HELP5
+    en: "½ - 'Escape' key in menus and on map"
+    pl: "½ - 'Escape' w menu i na mapie"
+  - id: MUSIC_OPTIONS_HEADER
+    en: 'Music settings'
+    pl: 'Ustawienia muzyki'
+  - id: MENU_OPTIONS_MSX_MENU
+    prefix: SB
+    en:
+    - 'Select music'
+    - '  M on/off  '
+    - '   ü Exit   '
+    pl:
+    - 'Wybór muzyki'
+    - '  M on/off  '
+    - '   ü Wyjdź  '
+  - id: LOG_MENU_HEADER
+    en: 'Logs and events'
+    pl: 'Logi i wydarzenia'
+  - id: LOG_MENU_LOG_TABLE_HEADER
+    en: ' Date   | Description                   '
+    en_m: '----------------------------------------'
+    pl: ' Data   | Opis                          '
+    pl_m: '----------------------------------------'
+  - id: MENU_SELECT
+    en: 'ûý'
+    pl: 'ûý'
+  - id: MENU_W
+    en: 'w'
+    pl: 'w'
+  - id: MENU_S
+    en: 's'
+    pl: 's'
+  - id: MENU_A
+    en: 'a'
+    pl: 'a'
+  - id: MENU_D
+    en: 'd'
+    pl: 'd'
+  - id: TASK_MANAGER_HEADER
+    en: 'Task Manager'
+    pl: 'Manager zadań'
+  - id: TASK_MANAGER_TABLE_HEADER
+    en:   '  Task  |    Description    '
+    en_m: '----------------------------'
+    pl:   'Zadanie |       Opis        '
+    pl_m: '----------------------------'
+  - id: FIELD_LIST_HEADER
+    en:   '¼#  Field  |  State   '
+    en_m: '----------------------'
+    pl:   '¼#  Pole   |   Stan   '
+    pl_m: '----------------------'
+  - id: FARM_FIELD_TXT
+    en: 'Field: '
+    pl: 'Pole:  '
+  - id: FARM_PLANT_TXT
+    en: 'Growing:'
+    pl: 'Uprawa: '
+  - id: STAT_INT
+    en: 'Wisdom'
+    pl: 'Mądrość'
+  - id: STAT_STR
+    en: 'Strength'
+    pl: 'Siła'
+  - id: STAT_CUN
+    en: 'Cunning'
+    pl: 'Spryt'
+  - id: SKILL_ANI
+    en: 'Animal C. '
+    pl: 'Hodowla   '
+  - id: SKILL_FRM
+    en: 'Farming   '
+    pl: 'Rolnictwo '
+  - id: SKILL_BTH
+    en: 'Cooking   '
+    pl: 'Gotowanie '
+  - id: SKILL_TRD
+    en: 'Trade     '
+    pl: 'Handel    '
+  - id: TASK_ADDED
+    prefix: SB
+    en:
+    - '    Task    '
+    - '  added to  '
+    - '    queue   '
+    pl:
+    - '   Zadanie  '
+    - '  dodane do '
+    - '   kolejki  '
+  - id: TASKS_FULL
+    prefix: SB
+    en:
+    - '    Task    '
+    - '    queue   '
+    - '    full    '
+    pl:
+    - '   Kolejka  '
+    - '    zadań   '
+    - '    pełna   '
+  - id: WELCOME
+    prefix: SB
+    en:
+    - ' +/-/Space: '
+    - 'time control'
+    - '  F1: Help  '
+    pl:
+    - ' +/-/Space: '
+    - 'prędkość gry'
+    - '  F1: Pomoc '

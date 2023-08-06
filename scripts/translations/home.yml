@@ -1,0 +1,28 @@
+
+main_contents:
+  pragma_label: MainArray
+  array_label: TXT
+  contents:
+  - id: TASK_LIST_HEADER
+    en: '  Task  |    Description    '
+    en_m: '----------------------------'
+    pl: 'Zadanie |       Opis        '
+    pl_m: '----------------------------'
+  - id: MENU_MAIN1
+    menu_opt: '1'
+    en: 'Kitchen'
+    pl: 'Kuchnia'
+  - id: MENU_MAIN2
+    menu_opt: '2'
+    en: 'Crew'
+    pl: 'Załoga'
+  - id: MENU_MAIN3
+    menu_opt: '3'
+    en: 'TV News   '
+    pl: 'Wiadomości'
+
+
+
+
+
+

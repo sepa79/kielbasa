@@ -1,0 +1,31 @@
+
+main_contents:
+  pragma_label: MainArray
+  array_label: TXT
+  contents:
+  - id: MENU_TV_SCREEN
+    prefix: SB
+    en:
+    - '   TV News  '
+    - '            '
+    - '   ½ü Exit  '
+    pl:
+    - ' Wiadomości '
+    - '            '
+    - '  ½ü Wyjdź  '
+  - id: MENU_TV_SCREEN_BILLS
+    prefix: TV
+    en:
+    - '  Budget '
+    - '         '
+    - 'Bills:   '
+    - '         '
+    - 'Pension: '
+    - '         '
+    pl:
+    - '  Budżet '
+    - '         '
+    - 'Rachunki:'
+    - '         '
+    - 'Renta:   '
+    - '         '

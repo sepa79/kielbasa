@@ -1,0 +1,9 @@
+
+main_contents:
+  pragma_label: MainArray
+  array_label: TXT
+  contents:
+  - id: TASK_EMPTY_NAME           # fixed width - 8
+    common: '        '
+  - id: TASK_EMPTY_DESCRIPTION    # fixed width - 18
+    common: '                  '

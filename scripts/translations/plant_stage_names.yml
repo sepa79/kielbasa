@@ -1,0 +1,33 @@
+
+plant_stage_names:
+  pragma_label: PlantStageNames
+  array_label: PLANT_STAGE_NAMES
+  contents:
+  - id: PLANT_STAGE_NONE
+    en: '        '
+    pl: '        '
+  - id: PLANT_STAGE_PLOW_TASK_ASSIGNED
+    en: 'T: Plow '
+    pl: 'Z: Orka '
+  - id: PLANT_STAGE_PLOWED
+    en: 'Plowed  '
+    pl: 'Zaorane '
+  - id: PLANT_STAGE_SOW_TASK_ASSIGNED
+    en: 'T: Plant'
+    pl: 'Z: Siew '
+  - id: PLANT_STAGE_SPROUT
+    en: 'Sprouts '
+    pl: 'Kiełkuje'
+  - id: PLANT_STAGE_GROWTH
+    en: 'Grows   '
+    pl: 'Rośnie  '
+  - id: PLANT_STAGE_RIPEN
+    en: 'Ripens  '
+    pl: 'Dojrzewa'
+  - id: PLANT_STAGE_READY
+    en: 'Ready   '
+    pl: 'Dojrzałe'
+  - id: PLANT_STAGE_REAP_TASK_ASSIGNED
+    en: 'T: Reap '
+    pl: 'Z: Zbiór'
+
