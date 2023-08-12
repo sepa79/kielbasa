@@ -61,7 +61,8 @@
         "sulejukowashouse.h": "c",
         "array": "c",
         "string": "c",
-        "string_view": "c"
+        "string_view": "c",
+        "cstddef": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }
