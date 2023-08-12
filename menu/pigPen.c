@@ -24,7 +24,7 @@ enum SHOPIN_SPRITE_VIC_BANKS {
 #pragma section( pigPenGfxDay, 0 )
 #pragma section( pigPenSprites, 0 )
 #pragma region( bankPigPenC, 0x8000, 0x9000, , MENU_BANK_PIG_PEN, { pigPenLoaderData, pigPenCode } )
-#pragma region( bankPigPenG1, DAY_GFX_BMP, DAY_GFX_BMP+0x1400, , MENU_BANK_PIG_PEN, { pigPenGfxDay } )
+#pragma region( bankPigPenG1, DAY_GFX_BMP, DAY_GFX_BMP+0x12c0, , MENU_BANK_PIG_PEN, { pigPenGfxDay } )
 #pragma region( bankPigPenG3, MENU_SPRITE_SRC, MENU_SPRITE_SRC+0x0400, , MENU_BANK_PIG_PEN, { pigPenSprites } )
 
 #pragma data ( pigPenGfxDay )

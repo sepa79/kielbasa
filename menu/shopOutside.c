@@ -21,8 +21,8 @@
 #pragma section( shopOutGfxDay, 0 )
 #pragma section( shopOutGfxNight, 0 )
 #pragma region( bankShopOutC, 0x8000, 0x9000, , MENU_BANK_SHOP, { shopOutLoaderData, shopOutCode } )
-#pragma region( bankShopOutG1, DAY_GFX_BMP, DAY_GFX_BMP+0x1400, , MENU_BANK_SHOP, { shopOutGfxDay } )
-#pragma region( bankShopOutG2, NIGHT_GFX_BMP, NIGHT_GFX_BMP+0x1400, , MENU_BANK_SHOP, { shopOutGfxNight } )
+#pragma region( bankShopOutG1, DAY_GFX_BMP, DAY_GFX_BMP+0x12c0, , MENU_BANK_SHOP, { shopOutGfxDay } )
+#pragma region( bankShopOutG2, NIGHT_GFX_BMP, NIGHT_GFX_BMP+0x12c0, , MENU_BANK_SHOP, { shopOutGfxNight } )
 
 #pragma data ( shopOutGfxDay )
 __export const char shopOutGfx1[] = {

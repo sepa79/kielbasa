@@ -46,7 +46,7 @@ enum SHOPIN_SPRITE_VIC_BANKS {
 #pragma section( shopInGfxDay, 0 )
 #pragma section( shopInSprites, 0 )
 #pragma region( bankShopInC, 0x8000, 0x9000, , MENU_BANK_SHOP_IN, { shopInLoaderData, shopInCode } )
-#pragma region( bankShopInG1, DAY_GFX_BMP, DAY_GFX_BMP+0x1400, , MENU_BANK_SHOP_IN, { shopInGfxDay } )
+#pragma region( bankShopInG1, DAY_GFX_BMP, DAY_GFX_BMP+0x12c0, , MENU_BANK_SHOP_IN, { shopInGfxDay } )
 #pragma region( bankShopInG3, MENU_SPRITE_SRC, MENU_SPRITE_SRC+0x0400, , MENU_BANK_SHOP_IN, { shopInSprites } )
 
 #pragma data ( shopInGfxDay )

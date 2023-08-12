@@ -59,8 +59,8 @@ static volatile byte animBusX = 0;
 #pragma section( mainMenuGfxNight, 0 )
 #pragma section( mainMenuSprites, 0 )
 #pragma region( bankMainMenuC, 0x8000, 0x9000, , MENU_BANK_MAIN_MENU, { mainMenuLoaderData, mainMenuCode, mainMenuLoaderData2 } )
-#pragma region( bankMainMenuG1, DAY_GFX_BMP, DAY_GFX_BMP+0x1400, , MENU_BANK_MAIN_MENU, { mainMenuGfxDay } )
-#pragma region( bankMainMenuG2, NIGHT_GFX_BMP, NIGHT_GFX_BMP+0x1400, , MENU_BANK_MAIN_MENU, { mainMenuGfxNight } )
+#pragma region( bankMainMenuG1, DAY_GFX_BMP, DAY_GFX_BMP+0x12c0, , MENU_BANK_MAIN_MENU, { mainMenuGfxDay } )
+#pragma region( bankMainMenuG2, NIGHT_GFX_BMP, NIGHT_GFX_BMP+0x12c0, , MENU_BANK_MAIN_MENU, { mainMenuGfxNight } )
 #pragma region( bankMainMenuG3, MENU_SPRITE_SRC, MENU_SPRITE_SRC+0x0400, , MENU_BANK_MAIN_MENU, { mainMenuSprites } )
 
 #pragma data ( mainMenuGfxDay )

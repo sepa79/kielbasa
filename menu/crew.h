@@ -3,13 +3,14 @@
 
 #pragma section( crewLoaderData, 0 )
 #pragma section( crewCode, 0 )
+#pragma section( crewData, 0 )
 #pragma section( crewCodeRam, 0 )
 #pragma section( crewGfxDay, 0 )
-#pragma region( regionCrewC, 0x8000, 0x9000, , MENU_BANK_CREW, { crewLoaderData, crewCode } )
-#pragma region( regionCrewG1, DAY_GFX_BMP, DAY_GFX_BMP+0x1400, , MENU_BANK_CREW, { crewGfxDay } )
+#pragma region( regionCrewC, 0x8000, 0x9000, , MENU_BANK_CREW, { crewLoaderData, crewCode, crewData } )
+#pragma region( regionCrewG1, DAY_GFX_BMP, DAY_GFX_BMP+0x12c0, , MENU_BANK_CREW, { crewGfxDay } )
 
-// will be on cartridge under 0xa400 (NIGHT_GFX_BMP) but compiled under 0x7000
-#pragma region( regionCrewRam, NIGHT_GFX_BMP, 0xb3ff, , MENU_BANK_CREW, { crewCodeRam }, 0x7000 )
+// will be on cartridge under 0xa2c0 (NIGHT_GFX_BMP) but compiled under 0x7000
+#pragma region( regionCrewRam, NIGHT_GFX_BMP, NIGHT_GFX_BMP+0x1000, , MENU_BANK_CREW, { crewCodeRam }, 0x7000 )
 
 // column offset for printing character data
 #define COL_OFFSET_CHARACTERDATA 12

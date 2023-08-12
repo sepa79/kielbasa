@@ -20,7 +20,7 @@ struct Character allCharacters[CHARACTER_COUNT];
 
 void initGame() {
     // https://www.prawo.pl/akty/m-p-1991-4-23,16823109.html
-    // 1/12th of 1989 r. - 49.583
+    // 1/12th of yarly benefit in 1989 r. - 49.583
     GS.cash = 4582;
     GS.pension = 4582;
     GS.inflation = 20;

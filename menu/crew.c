@@ -54,6 +54,7 @@ static void _drawByteK(int x, int y, char b) {
     GFX_1_BMP[addr] = b;
 }
 
+#pragma data ( crewData )
 // bars height table
 static const char bar_height[101] =   {
     BARS_Y_POSITION_MAX - 0,

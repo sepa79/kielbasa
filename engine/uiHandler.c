@@ -370,16 +370,17 @@ void initUI(){
     // draw hour
     sprintf(str, "%02u:%02u     %d%d%5u", GS.calendar.dateHour, GS.calendar.dateMinute, GS.calendar.dateYearH, GS.calendar.dateYearL, GS.cash);
 
-    // day, month
-    sprintf(tmp, "%02u", GS.calendar.dateDay, sprBankPointer);
+    // day, month with a . (+0x40)
+    sprintf(tmp, "%02u", GS.calendar.dateDay);
     str[6] = tmp[0];
     str[7] = tmp[1]+0x40;
 
-    sprintf(tmp, "%02u", GS.calendar.dateMonth, sprBankPointer);
+    sprintf(tmp, "%02u", GS.calendar.dateMonth);
     str[8] = tmp[0];
     str[9] = tmp[1]+0x40;
 
     str[17] = 28; // zl
+    str[18] = 0;
     textToSprite(str, 2, SPR_DATE_TXT1);
     // vic.color_border++;
 }

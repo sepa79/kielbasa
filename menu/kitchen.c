@@ -32,7 +32,7 @@ enum FARMLAND_SPRITE_VIC_BANKS {
 #pragma section( kitchenSprites, 0 )
 
 #pragma region( regionSmokeHouseC, 0x8000, 0x9000, , MENU_BANK_KITCHEN, { kitchenLoaderData, kitchenCode } )
-#pragma region( regionSmokeHouseG1, DAY_GFX_BMP, DAY_GFX_BMP+0x1400, , MENU_BANK_KITCHEN, { kitchenGfxDay } )
+#pragma region( regionSmokeHouseG1, DAY_GFX_BMP, DAY_GFX_BMP+0x12c0, , MENU_BANK_KITCHEN, { kitchenGfxDay } )
 #pragma region( regionSmokeHouseG2, MENU_SPRITE_SRC, MENU_SPRITE_SRC+0x0400, , MENU_BANK_KITCHEN, { kitchenSprites } )
 
 #pragma data ( kitchenGfxDay )

@@ -55,8 +55,8 @@ enum FARMLAND_SPRITE_VIC_BANKS {
 #pragma section( farmlandGfxNight, 0 )
 #pragma section( farmlandSprites, 0 )
 #pragma region( bankFarmlandC, 0x8000, 0x9000, , MENU_BANK_FARMLAND, { farmlandLoaderData, farmlandCode } )
-#pragma region( bankFarmlandG1, DAY_GFX_BMP, DAY_GFX_BMP+0x1400, , MENU_BANK_FARMLAND, { farmlandGfxDay } )
-#pragma region( bankFarmlandG2, NIGHT_GFX_BMP, NIGHT_GFX_BMP+0x1400, , MENU_BANK_FARMLAND, { farmlandGfxNight } )
+#pragma region( bankFarmlandG1, DAY_GFX_BMP, DAY_GFX_BMP+0x12c0, , MENU_BANK_FARMLAND, { farmlandGfxDay } )
+#pragma region( bankFarmlandG2, NIGHT_GFX_BMP, NIGHT_GFX_BMP+0x12c0, , MENU_BANK_FARMLAND, { farmlandGfxNight } )
 #pragma region( bankFarmlandG3, MENU_SPRITE_SRC, MENU_SPRITE_SRC+0x0400, , MENU_BANK_FARMLAND, { farmlandSprites } )
 
 #pragma data ( farmlandGfxDay )
