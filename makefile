@@ -4,7 +4,7 @@ all:
 	"$(HOME)"/apps/c64/oscar64/bin/oscar64 -n -dNOFLOAT -dNOLONG -tf=crt -pp loader.c
 
 lang:
-	cd translation/ && python3 create_translations_yaml.py
+	cd scripts/ && python3 create_translations_yaml.py
 
 clean: 
 	$(RM) -f loader.asm loader.crt loader.int loader.lbl loader.map
