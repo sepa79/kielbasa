@@ -24,7 +24,7 @@
 }, 0x6000 )
 
 #pragma region( bankTxt{{ LANGUAGE_C }}Array, 0x8100, 0x8200, , TRANSLATION_{{ LANGUAGE_U }}_BANK, { txt{{ LANGUAGE_C }}MainArray }, 0x6100 )
-#pragma region( bankTxt{{ LANGUAGE_C }}Data, 0x8200, 0x8eff, , TRANSLATION_{{ LANGUAGE_U }}_BANK, { txt{{ LANGUAGE_C }}TxtData }, 0x6200 )
+#pragma region( bankTxt{{ LANGUAGE_C }}Data, 0x8200, 0x8fff, , TRANSLATION_{{ LANGUAGE_U }}_BANK, { txt{{ LANGUAGE_C }}TxtData }, 0x6200 )
 
 #pragma compile("texts{{ LANGUAGE_U }}.c")
 #endif

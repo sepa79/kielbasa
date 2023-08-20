@@ -1,5 +1,7 @@
 #!/bin/python3
 # -*- coding: utf-8 -*-
+import yaml
+from yaml.loader import SafeLoader
 
 # Load given filename
 def load_charset( filename ):
@@ -9,7 +11,7 @@ def load_charset( filename ):
 # char position is directly translated into byte value
 # first char is 0x00, second is 0x01, third 0x02
 # '\n' - newline characters are stripped
-charset = load_charset( "templates/charset_pl.txt" )
+charset = load_charset( "charset_pl.txt" )
 
 # convert ascii text into byte array
 def encode_charset( text ):
@@ -150,22 +152,37 @@ def generate_c_file_text_arrays( config, lang, text_filter ):
                 out.append( "%s {%s, 0x00};" % ( p1, text ) )
     return out
 
+# read yml config file, no error checking so be careful
+def read_yml_config_file( filename ):
+    fh = open(filename, "r", encoding="utf-8")
+    content = yaml.load(fh, Loader=SafeLoader)
+    fh.close()
+    return content
+
+# read json config file, no error checking so be careful
+def read_json_config_file( filename ):
+    fh = open(filename, "r", encoding="utf-8")
+    content = json.load(fh)
+    fh.close()
+    return content
+
 # write common.h file in templates/ directory
-def write_common_h_file( fullpath, template_fullpath, index_array ):
-    fh = open(fullpath, "w", encoding="utf-8")
-    template = open( template_fullpath, "r" ).read()
+def write_common_h_file( index_array ):
+    fh = open("common.h", "w", encoding="utf-8")
+    template = open( "templates/common_h.template", "r" ).read()
     fh.write( template.replace( "{{ content }}", "\n".join( index_array ) ) )
     fh.close()
 
 # write texts{{ LANGUAGE }}.c file with given template, text arrays, index array and language
-def write_texts_c_file( dst_filename, src_template, text_array, index_array, lang ):
+def write_texts_c_file( template, text_array, index_array, lang ):
     out = []
     out.append( "#pragma data ( txt%sTxtData )\n" % lang.capitalize() )
     out.append( "\n".join( text_array ) )
     out.append( "\n".join( index_array ) )
 
-    fh = open(dst_filename, "w", encoding="utf-8")
-    template = open( src_template, "r" ).read()
+    filename = "texts%s.c" % lang.upper()
+    fh = open(filename, "w", encoding="utf-8")
+    template = open( template, "r" ).read()
     fh.write( template.replace( "{{ content }}", "\n".join( out ) ) )
     fh.close()
 
@@ -174,44 +191,61 @@ def write_texts_c_file( dst_filename, src_template, text_array, index_array, lan
 # LANGUAGE_U    -- language symbol UPPERCASE
 # LANGUAGE_C    -- language symbol Capitalized
 #
-def create_h_file_text_arrays( dst_dot_h_file, template, lang ):
+def create_h_file_text_arrays( template, lang ):
     content = open( template, "r" ).read()
     content = content.replace( "{{ LANGUAGE_U }}", lang.upper() )
     content = content.replace( "{{ LANGUAGE_C }}", lang.capitalize() )
 
-    fh = open( dst_dot_h_file, "w" )
+    filename = "texts%s.h" % lang.upper()
+    fh = open( filename, "w" )
     fh.writelines( content )
     fh.close()
 
 # generic master function for 'lang' translation
 # creates texts{{ LANGUAGE }}.c file and texts{{ LANGUAGE }}.h file
-def create_lang_files( config, lang, dot_c_template, dot_h_template ):
-
-    #
-    # Set language output file names.
-    #
-    # dst_dot_c_file = "text%s.c" % lang.upper()
-    # dst_dot_h_file = "text%s.h" % lang.upper()
-    dst_dot_c_file = "../translation/texts%s.c" % lang.upper()
-    dst_dot_h_file = "../translation/texts%s.h" % lang.upper()
-
-    #
+def create_lang_files( config, lang ):
     # texts{{ lang }}.c
-    #
     txt_array = generate_c_file_text_arrays( config, lang, encode_charset )
-    if lang == "pl":
-        index_arrays = generate_c_file_pl_index_arrays( config, lang )
-    else:
-        index_arrays = generate_c_file_index_arrays( config, lang )
-    write_texts_c_file( dst_dot_c_file, dot_c_template, txt_array, index_arrays, lang )
-
-    #
+    index_arrays = generate_c_file_index_arrays( config, lang )
+    write_texts_c_file( "templates/texts_c.template", txt_array, index_arrays, lang )
     # texts{{ lang }}.h
-    #
-    create_h_file_text_arrays( dst_dot_h_file, dot_h_template, lang )
+    create_h_file_text_arrays( "templates/texts_h.template", lang )
 
-# create 'common.h' file baseing on "config" data structure
-def create_common_h_file( config, dot_h_template, dst_filename ):
-    index_array     = generate_common_h_index_array( config )
-    write_common_h_file( dst_filename, dot_h_template, index_array )
+# dedicated master function for Polish translation
+# creates textsPL.c file and textsPL.h file
+def create_pl_files( config ):
+    # textsPL.c
+    txt_array = generate_c_file_text_arrays( config, "pl", encode_charset )
+    index_arrays = generate_c_file_pl_index_arrays( config, "pl" )
+    write_texts_c_file(  "templates/texts_c_pl.template", txt_array, index_arrays, "pl" )
+    # textsPL.h
+    create_h_file_text_arrays(  "templates/texts_h_pl.template", "pl" )
+
+# master function for creating common.h file
+def create_common_h_file( config ):
+    index_array = generate_common_h_index_array( config )
+    write_common_h_file( index_array )
+
+if __name__ == "__main__":
+
+    # read config file
+    config = read_yml_config_file( "data.yml" )
+
+    # create common.h file basing on data.json file
+    create_common_h_file( config )
+
+    # create textsPL.c and textsPL.h files
+    create_pl_files( config )
+
+    # create files from data.yml with given language 
+    # if it exists in 'data.yml'
+    create_lang_files( config, "en" )
+
+
+
+
+
+
+
+
 

@@ -1,0 +1,638 @@
+field_sizes:
+  pragma_label: FieldSizes
+  array_label: FIELD_SIZES
+  contents:
+  - id: FIELD_SMALL
+    en: 'Small  '
+    pl: 'Małe   '
+  - id: FIELD_MEDIUM
+    en: 'Medium '
+    pl: 'Średnie'
+  - id: FIELD_BIG
+    en: 'Big    '
+    pl: 'Duże   '
+  - id: FIELD_VBIG
+    en: 'Huge   '
+    pl: 'Wielkie'
+
+location_names:
+  pragma_label: LocationNames
+  array_label: LOCATION_NAMES
+  contents:
+    # fixed width - 12x2
+  - id: NOTHING
+    en: '                        '
+    pl: '                        '
+  - id: FARM_HOUSE
+    en: '    House         ý     '
+    pl: '     Dom          ý     '
+  - id: FARM_BARN
+    en: '    Barn          ý     '
+    pl: '   Stodoła        ý     '
+  - id: FARM_PIGPEN
+    en: '   Pigpen         ý     '
+    pl: '   Chlewik        ý     '
+  - id: FARM_EMPTY
+    en: '   Meadows              '
+    pl: ' Ściernisko             '
+  - id: FARM_GARAGE
+    en: '    Garage              '
+    pl: '    Garaż               '
+  - id: FARM_VBIG_FIELD
+    en: ' Huge field             '
+    pl: 'Wielkie pole            '
+  - id: FARM_SMALL_FIELD_1
+    en: ' Small field            '
+    pl: '  Małe pole             '
+  - id: FARM_SMALL_FIELD_2
+    en: ' Small field            '
+    pl: '  Małe pole             '
+  - id: FARM_MEDIUM_FIELD
+    en: 'Medium field            '
+    pl: 'Średnie pole            '
+  - id: SHOP
+    en: '    Shop          ý     '
+    pl: '    Sklep         ý     '
+  - id: CHURCH
+    en: '   Church               '
+    pl: '   Kościół              '
+  - id: HERMAN
+    en: "  Herman's        ý     "
+    pl: ' Dom Hermana      ý     '
+  - id: SULEJUKOWA
+    en: ' Sulejukowa             '
+    pl: ' Sulejukowa             '
+  - id: HOUSE_1
+    en: '   Cottage              '
+    pl: ' Wiejski dom            '
+  - id: HOUSE_2
+    en: '   Cottage              '
+    pl: ' Wiejski dom            '
+  - id: MAIN_ROAD
+    en: '  Main road       û     '
+    pl: '    Szosa         û     '
+  - id: VILLIAGE_ROAD
+    en: '    Road         ûû     '
+    pl: '   Droga         ûû     '
+  - id: DIRT_ROAD
+    en: '  Dirt road      ûûû    '
+    pl: ' Polna droga     ûûû    '
+  - id: WELL
+    en: '    Well         úú     '
+    pl: '   Studnia       úú     '
+  - id: TOILET
+    en: '   Toilet               '
+    pl: '  Sławojka              '
+  - id: WHARF
+    en: '   Wharf                '
+    pl: '   Pomost               '
+
+main_contents:
+  pragma_label: MainArray
+  array_label: TXT
+  contents:
+  - id: MENU_EXIT
+    menu_opt: '<'
+    en: 'ü Exit '
+    pl: 'ü Wyjdź'
+  - id: TASK_EMPTY_NAME           # fixed width - 8
+    common: '        '
+  - id: TASK_EMPTY_DESCRIPTION    # fixed width - 18
+    common: '                  '
+  - id: TASK_LIST_HEADER
+    en: '  Task  |    Description    '
+    en_m: '----------------------------'
+    pl: 'Zadanie |       Opis        '
+    pl_m: '----------------------------'
+  - id: MENU_MAIN1
+    menu_opt: '1'
+    en: 'Kitchen'
+    pl: 'Kuchnia'
+  - id: MENU_MAIN2
+    menu_opt: '2'
+    en: 'Crew'
+    pl: 'Załoga'
+  - id: MENU_MAIN3
+    menu_opt: '3'
+    en: 'TV News   '
+    pl: 'Wiadomości'
+  - id: MENU_AIR_DEF
+    menu_opt: '1'
+    en: 'Air Defence (Warning: No return to    main game!)'
+    pl: 'Stonka (Uwaga: Bez powrotu do gry!)'
+  - id: EXIT_TO_MAP
+    menu_opt: '<'
+    en: 'ü Map'
+    pl: 'ü Mapa'
+  - id: MENU_OPTIONS_LANG
+    menu_opt: '1'
+    en: 'Language / Język'
+    pl: 'Język / Language'
+  - id: MENU_OPTIONS_MSX
+    menu_opt: '2'
+    en: 'Music settings'
+    pl: 'Ustawienia muzyki'
+  - id: OPTIONS_HEADER
+    en: 'Game settings'
+    pl: 'Ustawienia gry'
+  - id: OPTIONS_HELP1
+    en: 'UI items legend:'
+    pl: 'Znaczenie ikon UI:'
+  - id: OPTIONS_HELP2
+    en: 'ü - Long Fire  (1s or more)'
+    pl: 'ü - Długi fire (1s lub dłużej)'
+  - id: OPTIONS_HELP3
+    en: 'ý - Fire'
+    pl: 'ý - Fire'
+  - id: OPTIONS_HELP4
+    en: "û - 'Return' key"
+    pl: "û - Klawisz 'Return'"
+  - id: OPTIONS_HELP5
+    en: "½ - 'Escape' key in menus and on map"
+    pl: "½ - 'Escape' w menu i na mapie"
+  - id: MUSIC_OPTIONS_HEADER
+    en: 'Music settings'
+    pl: 'Ustawienia muzyki'
+  - id: MENU_OPTIONS_MSX_MENU
+    prefix: SB
+    en:
+    - 'Select music'
+    - '  M on/off  '
+    - '   ü Exit   '
+    pl:
+    - 'Wybór muzyki'
+    - '  M on/off  '
+    - '   ü Wyjdź  '
+  - id: LOG_MENU_HEADER
+    en: 'Logs and events'
+    pl: 'Logi i wydarzenia'
+  - id: LOG_MENU_LOG_TABLE_HEADER
+    en: ' Date   | Description                   '
+    en_m: '----------------------------------------'
+    pl: ' Data   | Opis                          '
+    pl_m: '----------------------------------------'
+  - id: TASK_MANAGER_PRIO_HEADER
+    en: 'Task Priority Manager'
+    pl: 'Manager priorytetów zadań'
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_1
+    en:   '                     |Skill   | Task   '
+    en_m: '                     ------------------'
+    pl:   '                     |Zdolność| Zadanie'
+    pl_m: '                     ------------------'
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_2
+    en:   '                     | | | |  |  | | | '
+    pl:   '                     | |R|G|  |  |R|G| '
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_3
+    en:   '                     | | | |  |  | | | '
+    pl:   '                     | |o|o|  |  |o|o| '
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_4
+    en:   '                     |A|F|C|  | A|F|C| '
+    pl:   '                     |H|l|t|  | H|l|t| '
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_5
+    en:   '                     |n|a|o|  | n|a|o| '
+    pl:   '                     |o|n|o|H | o|n|o|H'
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_6
+    en:   '                     |i|r|o|T | i|r|o|T'
+    pl:   '                     |d|i|w|a | d|i|w|a'
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_7
+    en:   '                     |m|m|k|r | m|m|k|r'
+    pl:   '                     |o|c|a|n | o|c|a|n'
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_8
+    en:   '                     |a|i|i|a | a|i|i|a'
+    pl:   '                     |w|t|n|d | w|t|n|d'
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_9
+    en:   '                     |l|n|n|d | l|n|n|d'
+    pl:   '                     |l|w|i|e | l|w|i|e'
+  - id: TASK_MANAGER_PRIO_TABLE_HEADER_10
+    en:   'Character            |s|g|g|e | s|g|g|e'
+    en_m: '---------------------------------------'
+    pl:   'Postać               |a|o|e|l | a|o|e|l'
+    pl_m: '---------------------------------------'
+  - id: MENU_SELECT
+    en: 'ûý'
+    pl: 'ûý'
+  - id: MENU_W
+    en: 'w'
+    pl: 'w'
+  - id: MENU_S
+    en: 's'
+    pl: 's'
+  - id: MENU_A
+    en: 'a'
+    pl: 'a'
+  - id: MENU_D
+    en: 'd'
+    pl: 'd'
+  - id: MENU_TASK_MANAGER_PLUS
+    en: '+'
+    pl: '+'
+  - id: MENU_TASK_MANAGER_MINUS
+    en: '-'
+    pl: '-'
+  - id: TASK_MANAGER_HEADER
+    en: 'Task Manager'
+    pl: 'Manager zadań'
+  - id: TASK_MANAGER_TABLE_HEADER
+    en:   '  Task  |    Description    '
+    en_m: '----------------------------'
+    pl:   'Zadanie |       Opis        '
+    pl_m: '----------------------------'
+  - id: MENU_FARMLAND_PLOW
+    en: '  ûý Plow field '
+    pl: ' ûý Zaoraj pole '
+  - id: MENU_FARMLAND_SOW
+    en: '  ûý Farm field '
+    pl: 'ûý Uprawiaj pole'
+  - id: MENU_FARMLAND_REAP
+    en: '     ûý Reap    '
+    pl: '    ûý Zbiory   '
+  - id: FIELD_LIST_HEADER
+    en:   '¼#  Field  |  State   '
+    en_m: '----------------------'
+    pl:   '¼#  Pole   |   Stan   '
+    pl_m: '----------------------'
+  - id: FARM_FIELD_TXT
+    en: 'Field: '
+    pl: 'Pole:  '
+  - id: FARM_PLANT_TXT
+    en: 'Growing:'
+    pl: 'Uprawa: '
+  - id: CONFIRM_TXT
+    en: 'Confirm:'
+    pl: 'Wybierz:'
+  - id: CONFIRM_ERROR
+    en:
+    - '   Action   '
+    - '     not    '
+    - '  confirmed '
+    pl:
+    - '    Akcja   '
+    - '   wymaga   '
+    - ' akceptacji '
+  - id: CONFIRM_YES
+    en: '  Yes   '
+    pl: '  Tak   '
+  - id: CONFIRM_NO
+    en: '   No   '
+    pl: '  Nie   '
+  - id: DESC_FARMLAND_PLOW
+    en: ' Prepares field    for farming    '
+    pl: 'Przygotowuje pole   pod uprawę    '
+  - id: DESC_FARMLAND_SOW
+    en: ' Select and farm      a crop      '
+    pl: ' Uprawia wybraną      roślinę     '
+  - id: DESC_FARMLAND_REAP
+    en: '   Harvest the         crops      '
+    pl: '   Zbierz plony                   '
+  - id: TASK_FARMLAND_PLOW
+    en: 'Plow    '
+    pl: 'Orka    '
+  - id: TASK_FARMLAND_FARM
+    en: 'Farm    '
+    pl: 'Uprawa  '
+  - id: TASK_FARMLAND_REAP
+    en: 'Reap    '
+    pl: 'Zbiory  '
+  - id: TASK_DSC_FARMLAND_FIELD
+    en: 'Field'
+    pl: 'Pole'
+  - id: TASK_DSC_FARMLAND_POTATO
+    en: 'potatoes'
+    pl: 'ziemniaki'
+  - id: TASK_DSC_FARMLAND_LUPINE
+    en: 'lupine'
+    pl: 'łubin'
+  - id: TASK_DSC_FARMLAND_WHEAT
+    en: 'wheat'
+    pl: 'pszenica'
+  - id: TASK_DSC_FARMLAND_CORN
+    en: 'corn'
+    pl: 'kukurydza'
+  - id: TASK_KITCHEN
+    en: 'Kitchen '
+    pl: 'Kuchnia '
+  - id: TASK_DSC_KITCHEN_BAKE_BREAD
+    en: 'Bake bread'
+    pl: 'Upiecz chleb'
+  - id: TASK_KITCHEN_BAKE_BREAD_STORAGE_FULL
+    prefix: SB
+    en:
+    - '   No more  '
+    - '    space   '
+    - '  in pantry '
+    pl:
+    - 'Brak miejsca'
+    - '      w     '
+    - '  spiżarni  '
+  - id: TASK_KITCHEN_BAKE_BREAD_NO_WHEAT
+    prefix: SB
+    en:
+    - '  No wheat  '
+    - '   to bake  '
+    - ' bread from '
+    pl:
+    - '    Brak    '
+    - '  pszenicy  '
+    - '  na chleb  '
+  - id: MENU_PIGPEN1
+    menu_opt: '1'
+    en: 'Feed'
+    pl: 'Karmienie'
+  - id: MENU_PIGPEN2
+    menu_opt: '2'
+    en: 'Cleanup'
+    pl: 'Sprzątanie'
+  - id: MENU_PIGPEN3
+    menu_opt: '3'
+    en: 'Upgrade'
+    pl: 'Przebudowa'
+  - id: MENU_KITCHEN1
+    menu_opt: '1'
+    en: 'Bake bread'
+    pl: 'Upiecz chleb'
+  - id: MENU_KITCHEN2
+    menu_opt: '2'
+    en: 'Bake bread daily'
+    pl: 'Piecz codziennie'
+  - id: MENU_KITCHEN3
+    menu_opt: '3'
+    en: 'For breakfast'
+    pl: 'Na śniadanie'
+  - id: MENU_KITCHEN4
+    menu_opt: '4'
+    en: 'For supper have'
+    pl: 'Na kolację jedz'
+  - id: MENU_KITCHEN5
+    menu_opt: '5'
+    en: 'Food preferences'
+    pl: 'Preferuj żarcie'
+  - id: MENU_KITCHEN6
+    menu_opt: '6'
+    en: 'Favourite veggie'
+    pl: 'Ulubione warzywo'
+  - id: MENU_KITCHEN7
+    menu_opt: '7'
+    en: 'Eat second breakfast now    '
+    pl: 'Zjedz teraz drugie śniadanie'
+  - id: KITCHEN_CANNOT_EAT
+    prefix: SB
+    en:
+    - '   You are  '
+    - '     full   '
+    - '            '
+    pl:
+    - '   Jesteś   '
+    - '  najedzony '
+    - '            '
+  - id: KITCHEN_TASK_OFF
+    en: 'No                   '
+    pl: 'Nie                  '
+  - id: KITCHEN_TASK_ON
+    en: 'Yes                  '
+    pl: 'Tak                  '
+  - id: KITCHEN_EATING_STYLE_LIGHT
+    en: 'Bread                '
+    pl: 'Chleb                '
+  - id: KITCHEN_EATING_STYLE_MEDIUM
+    en: 'Bread, meat          '
+    pl: 'Chleb, mięso         '
+  - id: KITCHEN_EATING_STYLE_FULL
+    en: 'Bread, meat, veggies '
+    pl: 'Chleb, mięso, warzywa'
+  - id: KITCHEN_PREFER_SHOP
+    en: 'Shop food            '
+    pl: 'Sklepowe             '
+  - id: KITCHEN_PREFER_HOME
+    en: 'Home made            '
+    pl: 'Domowe               '
+  - id: KITCHEN_PREFER_POTATO
+    en: 'Potato               '
+    pl: 'Ziemniak             '
+  - id: KITCHEN_PREFER_CORN
+    en: 'Corn                 '
+    pl: 'Kukurydza            '
+  - id: KITCHEN_MISSING
+    en: 'Missing:    '
+    pl: 'Brak:       '
+  - id: KITCHEN_MISSING_BREAD
+    en: 'bread'
+    pl: 'chleba'
+  - id: KITCHEN_MISSING_MEAT
+    en: 'meat'
+    pl: 'mięsa'
+  - id: KITCHEN_MISSING_VEG
+    en: 'veggies'
+    pl: 'warzyw'
+  - id: MENU_SHOPOUT1
+    menu_opt: '1'
+    en: 'Go in'
+    pl: 'Wejdź'
+  - id: MENU_SHOPOUT2
+    menu_opt: '2'
+    en: 'Chat'
+    pl: 'Rozmowa'
+  - id: SHOP_DESCRIPTION
+    en: 'A general store, open 7-11, then 15-19, everyday.'
+    pl: "Sklep wielobranżowy 'GS', otwarty 7-11 i15-19, codziennie."
+  - id: MENU_SHOPIN1
+    menu_opt: '1'
+    en: 'Buy gherkin'
+    pl: 'Kup ogóra'
+  - id: MENU_SHOPIN2
+    menu_opt: '2'
+    en: 'Chat'
+    pl: 'Rozmowa'
+  - id: MENU_SHOPIN3
+    menu_opt: '3'
+    en: 'Buy bread'
+    pl: 'Kup chleb'
+  - id: MENU_SHOPIN4
+    menu_opt: '4'
+    en: 'Buy canned meat'
+    pl: 'Kup Turystyczną'
+  - id: MENU_CREW1
+    menu_opt: '1'
+    en: 'Char 1'
+    pl: 'Slot 1'
+  - id: MENU_CREW2
+    menu_opt: '2'
+    en: 'Char 2'
+    pl: 'Slot 2'
+  - id: MENU_CREW3
+    menu_opt: '3'
+    en: 'Char 3'
+    pl: 'Slot 3'
+  - id: MENU_CREW4
+    menu_opt: '4'
+    en: 'Char 4'
+    pl: 'Slot 4'
+  - id: STAT_INT
+    en: 'Wisdom'
+    pl: 'Mądrość'
+  - id: STAT_STR
+    en: 'Strength'
+    pl: 'Siła'
+  - id: STAT_CUN
+    en: 'Cunning'
+    pl: 'Spryt'
+  - id: SKILL_ANI
+    en: 'Animal C. '
+    pl: 'Hodowla   '
+  - id: SKILL_FRM
+    en: 'Farming   '
+    pl: 'Rolnictwo '
+  - id: SKILL_BTH
+    en: 'Cooking   '
+    pl: 'Gotowanie '
+  - id: SKILL_TRD
+    en: 'Trade     '
+    pl: 'Handel    '
+  - id: CHAR_1_NAME
+    common: 'Janusz Dobrowolski'
+  - id: CHAR_1_STORY
+    en: 'Janusz spent his whole life working in PGR. He does not really excel in anything,   but
+      thankfully he is lazy   and an addict. He is your   main character.'
+    pl: 'Janusz całe życie pracował wPGR. Na niczym się tak      naprawdę nie zna,
+      ale za to ma nałogi i jest leniwy.    Janusz to postać startowa.'
+  - id: CHAR_2_NAME
+    common: 'Zdzisław Hermann'
+  - id: CHAR_2_STORY
+    en: 'Zdzisiek is not very popularin the villiage. Folks reme-mber that his father
+      was a  volksdeustch. He is bright -like his father - and that  makes him stand
+      out.'
+    pl: 'Zdzisiek nie jest popularny we wsi. Ludziska pamiętają, że jego ojciec był
+      folks-   dojczem. Zdzisia wyróżnia   inteligencja po tacie.'
+  - id: CHAR_3_NAME
+    common: 'Wiesław C.'
+  - id: CHAR_3_STORY
+    en: "Wiesiek's story will be here"
+    pl: 'Tutaj będzie historia       Wieśka'
+  - id: CHAR_4_NAME
+    common: 'Józef Kołodziej'
+  - id: CHAR_4_STORY
+    en: "Józek is Janusz's uncle. It is his farm, really. One dayit might belong to
+      Janusz,  if he proves worthy."
+    pl: 'Józek jest wujkiem Janusza. Tak właściwie to jego       gospodarstwo. Janusz
+      musi   się wykazać, to może je     odziedziczy.'
+  - id: SAVE_POTATOES
+    en: 'Save potatoes!'
+    pl: 'Ratuj kartofle!'
+  - id: TASK_ADDED
+    prefix: SB
+    en:
+    - '    Task    '
+    - '  added to  '
+    - '    queue   '
+    pl:
+    - '   Zadanie  '
+    - '  dodane do '
+    - '   kolejki  '
+  - id: TASKS_FULL
+    prefix: SB
+    en:
+    - '    Task    '
+    - '    queue   '
+    - '    full    '
+    pl:
+    - '   Kolejka  '
+    - '    zadań   '
+    - '    pełna   '
+  - id: WELCOME
+    prefix: SB
+    en:
+    - ' +/-/Space: '
+    - 'time control'
+    - '  F1: Help  '
+    pl:
+    - ' +/-/Space: '
+    - 'prędkość gry'
+    - '  F1: Pomoc '
+  - id: MENU_TV_SCREEN
+    prefix: SB
+    en:
+    - '   TV News  '
+    - '            '
+    - '   ½ü Exit  '
+    pl:
+    - ' Wiadomości '
+    - '            '
+    - '  ½ü Wyjdź  '
+  - id: MENU_TV_SCREEN_BILLS
+    prefix: TV
+    en:
+    - '  Budget '
+    - '         '
+    - 'Bills:   '
+    - '         '
+    - 'Pension: '
+    - '         '
+    pl:
+    - '  Budżet '
+    - '         '
+    - 'Rachunki:'
+    - '         '
+    - 'Renta:   '
+    - '         '
+  - id: SHOP_CLOSED
+    prefix: SB
+    en:
+    - '    Shop    '
+    - '     is     '
+    - '   closed   '
+    pl:
+    - ' Sklep jest '
+    - ' zamknięty  '
+    - '            '
+
+plant_stage_names:
+  pragma_label: PlantStageNames
+  array_label: PLANT_STAGE_NAMES
+  contents:
+  - id: PLANT_STAGE_NONE
+    en: '        '
+    pl: '        '
+  - id: PLANT_STAGE_PLOW_TASK_ASSIGNED
+    en: 'T: Plow '
+    pl: 'Z: Orka '
+  - id: PLANT_STAGE_PLOWED
+    en: 'Plowed  '
+    pl: 'Zaorane '
+  - id: PLANT_STAGE_SOW_TASK_ASSIGNED
+    en: 'T: Plant'
+    pl: 'Z: Siew '
+  - id: PLANT_STAGE_SPROUT
+    en: 'Sprouts '
+    pl: 'Kiełkuje'
+  - id: PLANT_STAGE_GROWTH
+    en: 'Grows   '
+    pl: 'Rośnie  '
+  - id: PLANT_STAGE_RIPEN
+    en: 'Ripens  '
+    pl: 'Dojrzewa'
+  - id: PLANT_STAGE_READY
+    en: 'Ready   '
+    pl: 'Dojrzałe'
+  - id: PLANT_STAGE_REAP_TASK_ASSIGNED
+    en: 'T: Reap '
+    pl: 'Z: Zbiór'
+
+plant_types:
+  pragma_label: PlantTypes
+  array_label: PLANT_TYPES_TXT
+  contents:
+  - id: PLANT_NAME_NONE
+    en: 'Empty     '
+    pl: 'Puste     '
+  - id: PLANT_NAME_POTATO
+    en: 'Potatoes  '
+    pl: 'Ziemniaki '
+  - id: PLANT_NAME_LUPINE
+    en: 'Lupine    '
+    pl: 'Łubin     '
+  - id: PLANT_NAME_WHEAT
+    en: 'Wheat     '
+    pl: 'Pszenica  '
+  - id: PLANT_NAME_CORN
+    en: 'Corn      '
+    pl: 'Kukurydza '
+

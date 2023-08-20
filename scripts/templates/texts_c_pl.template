@@ -13,19 +13,11 @@
 // =============================================================================
 // Copy code
 // =============================================================================
-#pragma code ( txtCommonCode )
-#pragma data ( txtCommonData )
+#pragma code ( code )
+#pragma data ( data )
 
 void loadTranslation(){
-    char i = 0;
-    do {
-#assign y 0
-#repeat
-        TRANSLATION_DST[y + i] = TRANSLATION_SRC[y + i];
-#assign y y + 0x100
-#until y == 0x100*0xf
-        i++;
-    } while (i != 0);
+    memcpy(TRANSLATION_DST, TRANSLATION_SRC, 0x1000);
 }
 
 // Switching code generation back to shared section
