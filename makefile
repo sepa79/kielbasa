@@ -1,7 +1,7 @@
 
 all:
 	# cd translation/ && python3 create_translations.py
-	"$(HOME)"/apps/c64/oscar64/bin/oscar64 -n -dNOFLOAT -dNOLONG -tf=crt loader.c
+	"$(HOME)"/apps/c64/oscar64/bin/oscar64 -n -dNOFLOAT -dNOLONG -tf=crt -pp loader.c
 
 lang:
 	cd translation/ && python3 create_translations_yaml.py

@@ -28,6 +28,7 @@ void backToPreviousMenu();
 void checkKeys();
 void updateStatusBar(const char * text);
 void updateStatusBarError(const char * text);
+void clearStatusBar();
 void updateGameSpeed();
 void updateMinute(char newMinute);
 void updateHour(char newHour);

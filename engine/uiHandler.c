@@ -112,8 +112,7 @@ void displayMenu(struct MenuOption * menu){
     joyCursor.menuPos = 0;
     // // vic.color_border--;
     _setJoyCursorPos(joyCursor.menuPos);
-    // clear status bar
-    updateStatusBar(p"                                    ");
+    clearStatusBar();
 }
 
 static void _incMenuPos(){
@@ -359,7 +358,10 @@ void updateStatusBarError(const char * text){
     setErrorCursor();
     textToSprite((char *)text, 4, SPR_TXT_UP_1);
 }
-
+// clear status bar
+void clearStatusBar(){
+    updateStatusBar(p"                                    ");
+}
 // Does not need to be called more than once - at new game
 void initUI(){
     // vic.color_border--;

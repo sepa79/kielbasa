@@ -645,6 +645,7 @@ void switchScreenTo(byte screenMode){
                 break;
             // in menu/fishing.c
             case SCREEN_FISHING:
+                vic_waitLine(80);
                 initRasterIRQ_Fishing();
                 break;
         }

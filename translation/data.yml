@@ -257,6 +257,24 @@ main_contents:
   - id: FARM_PLANT_TXT
     en: 'Growing:'
     pl: 'Uprawa: '
+  - id: CONFIRM_TXT
+    en: 'Confirm:'
+    pl: 'Wybierz:'
+  - id: CONFIRM_ERROR
+    en:
+    - '   Action   '
+    - '     not    '
+    - '  confirmed '
+    pl:
+    - '    Akcja   '
+    - '   wymaga   '
+    - ' akceptacji '
+  - id: CONFIRM_YES
+    en: '  Yes   '
+    pl: '  Tak   '
+  - id: CONFIRM_NO
+    en: '   No   '
+    pl: '  Nie   '
   - id: DESC_FARMLAND_PLOW
     en: ' Prepares field    for farming    '
     pl: 'Przygotowuje pole   pod uprawę    '

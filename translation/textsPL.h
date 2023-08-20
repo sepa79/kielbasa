@@ -24,14 +24,10 @@
 }, 0x6000 )
 
 #pragma region( bankTxtPlArray, 0x8100, 0x8200, , TRANSLATION_PL_BANK, { txtPlMainArray }, 0x6100 )
-#pragma region( bankTxtPlData, 0x8200, 0x8eff, , TRANSLATION_PL_BANK, { txtPlTxtData }, 0x6200 )
+#pragma region( bankTxtPlData, 0x8200, 0x8fff, , TRANSLATION_PL_BANK, { txtPlTxtData }, 0x6200 )
 
-#pragma section( txtCommonCode, 0 )
-#pragma section( txtCommonData, 0 )
-#pragma region( bankTxtCommonCode, 0x8f00, 0x8fff, , {TRANSLATION_PL_BANK, TRANSLATION_EN_BANK}, { txtCommonCode, txtCommonData } )
-
-#pragma code ( txtCommonCode )
-#pragma data ( txtCommonData )
+#pragma code ( code )
+#pragma data ( data )
 
 void loadTranslation();
 

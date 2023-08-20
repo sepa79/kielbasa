@@ -3,6 +3,7 @@
 #include <c64/charwin.h>
 #include <string.h>
 #include <c64/keyboard.h>
+#include <c64/rasterirq.h>
 
 #include <menu/menuSystem.h>
 #include <translation/common.h>
@@ -11,6 +12,8 @@
 #include <engine/uiHandler.h>
 #include <engine/irqHandler.h>
 #include <engine/gameSettings.h>
+
+#include <miniGame/fishing.cpp>
 
 #pragma data(fishingMenuGfxDay)
 __export const char fishingMenuGfx1[] = {
@@ -23,6 +26,18 @@ __export const char fishingMenuSprites[] = {
 
 #pragma code(fishingMenuRAMCode)
 #pragma data(fishingMenuRAMData)
+
+RIRQCode rirqc_frow1, rirqc_frow2, rirqc_frow3;
+#define IRQ_RASTER_FROW1 0x80
+#define IRQ_RASTER_FROW2 0xa0
+#define IRQ_RASTER_FROW3 0xc0
+
+__interrupt static void IRQ_rowFishing() {
+    vic.color_border--;
+    for(char x=0;x<220;x++){}
+    vic.color_border++;
+
+}
 
 __interrupt static void IRQ_topFishing() {
     // vic.color_border++;
@@ -85,8 +100,27 @@ void initRasterIRQ_Fishing(){
     // Place it into the last line of the screen
     rirq_set(3, IRQ_RASTER_BOTTOM_UI, &rirqc_bottomUI);
 
+    // 1st row of fish
+    rirq_build(&rirqc_frow1, 1);
+    rirq_call(&rirqc_frow1, 0, IRQ_rowFishing);
+    // Place it into the last line of the screen
+    rirq_set(10, IRQ_RASTER_FROW1, &rirqc_frow1);
+
+    // 2nd row of fish
+    rirq_build(&rirqc_frow2, 1);
+    rirq_call(&rirqc_frow2, 0, IRQ_rowFishing);
+    // Place it into the last line of the screen
+    rirq_set(11, IRQ_RASTER_FROW2, &rirqc_frow2);
+
+    // 3rd row of fish
+    rirq_build(&rirqc_frow3, 1);
+    rirq_call(&rirqc_frow3, 0, IRQ_rowFishing);
+    // Place it into the last line of the screen
+    rirq_set(12, IRQ_RASTER_FROW3, &rirqc_frow3);
+
     // sort the raster IRQs
     rirq_sort();
+    // vic.color_border++;
 }
 
 #pragma code(fishingMenuCode)

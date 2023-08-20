@@ -24,6 +24,7 @@
 #define COL_OFFSET_FIELDLIST 0
 #define ROW_OFFSET_FIELDLIST 1
 
+static bool _confirm = false;
 static byte _currentField = 0;
 static byte _currentPlant = 0;
 static byte _waterSpriteBank = 0;
@@ -258,14 +259,14 @@ __interrupt static void _menuShowSprites(){
 // Set the plant task
 static void _sowPlant(){
     if(_currentPlant == 0){
-        setErrorCursor();
+        updateStatusBarError(TXT[TXT_IDX_CONFIRM_ERROR]);
         return;
     }
-    // don't allow to ruin growth in progress
-    if(fields[_currentField].stage != PLANT_STAGE_PLOWED){
-        setErrorCursor();
-        return;
-    }
+    // // must be plowed
+    // if(fields[_currentField].stage != PLANT_STAGE_PLOWED){
+    //     setErrorCursor();
+    //     return;
+    // }
     // indicate task is assigned
     fields[_currentField].plantId = _currentPlant;
     fields[_currentField].stage   = PLANT_STAGE_SOW_TASK_ASSIGNED;
@@ -295,8 +296,8 @@ static void _sowPlant(){
 
 static void _reapPlant(){
     // don't allow to ruin growth in progress
-    if(fields[_currentField].stage != PLANT_STAGE_READY){
-        setErrorCursor();
+    if(fields[_currentField].stage != PLANT_STAGE_READY || !_confirm){
+        updateStatusBarError(TXT[TXT_IDX_CONFIRM_ERROR]);
         return;
     }
     // indicate task is assigned
@@ -321,6 +322,11 @@ static void _reapPlant(){
 
 // Plow can be called anytime to destroy what's on the field
 static void _plowField() {
+    // don't allow to ruin growth in progress
+    if(!_confirm){
+        updateStatusBarError(TXT[TXT_IDX_CONFIRM_ERROR]);
+        return;
+    }
     // Indicate task is assigned
     fields[_currentField].plantId = PLANT_NONE;
     fields[_currentField].stage   = PLANT_STAGE_PLOW_TASK_ASSIGNED;
@@ -353,20 +359,40 @@ static void _plowField() {
 static CharWin cd;
 static CharWin ht;
 
+static void _showField(){
+    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 1, TXT[TXT_IDX_FARM_FIELD_TXT], VCOL_MED_GREY);
+    byte str[2];
+    sprintf(str, "%u", _currentField+1);
+    cwin_putat_string(&cw, FARM_CTX_MENU_X+4+7, 1, str, VCOL_LT_GREY);
+}
+
+static void _showConfirmBox(){
+    // Confirm:
+    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 2, TXT[TXT_IDX_CONFIRM_TXT], VCOL_MED_GREY);
+    // yes/no
+    if(_confirm){
+        cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 3, TXT[TXT_IDX_CONFIRM_YES], VCOL_LT_GREY);
+    } else {
+        cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 3, TXT[TXT_IDX_CONFIRM_NO], VCOL_LT_GREY);
+    }
+    // arrows
+    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+2, 3, "\x1f", VCOL_MED_GREY);
+    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+14, 3, "$", VCOL_MED_GREY);
+}
+
 static void _showOptionPlow(){
-    cwin_clear(&cd);
+    // cwin_clear(&cd);
     cwin_putat_string_raw(&cw, FARM_CTX_MENU_X, FARM_CTX_MENU_Y, TXT[TXT_IDX_MENU_FARMLAND_PLOW], VCOL_DARK_GREY);
     cwin_write_string_raw(&ht, TXT[TXT_IDX_DESC_FARMLAND_PLOW]);
+
+    _showField();
+    _showConfirmBox();
 }
 static void _showOptionSow(){
     cwin_putat_string_raw(&cw, FARM_CTX_MENU_X, FARM_CTX_MENU_Y, TXT[TXT_IDX_MENU_FARMLAND_SOW], VCOL_DARK_GREY);
     cwin_write_string_raw(&ht, TXT[TXT_IDX_DESC_FARMLAND_SOW]);
 
-    // Field: 1
-    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 1, TXT[TXT_IDX_FARM_FIELD_TXT], VCOL_MED_GREY);
-    byte str[2];
-    sprintf(str, "%u", _currentField+1);
-    cwin_putat_string(&cw, FARM_CTX_MENU_X+4+7, 1, str, VCOL_LT_GREY);
+    _showField();
 
     // Growing:
     cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 2, TXT[TXT_IDX_FARM_PLANT_TXT], VCOL_MED_GREY);
@@ -377,7 +403,11 @@ static void _showOptionSow(){
     cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+14, 3, "$", VCOL_MED_GREY);
 }
 static void _showOptionReap(){
-    cwin_clear(&cd);
+    // cwin_clear(&cd);
+
+    _showField();
+    _showConfirmBox();
+
     cwin_putat_string_raw(&cw, FARM_CTX_MENU_X, FARM_CTX_MENU_Y, TXT[TXT_IDX_MENU_FARMLAND_REAP], VCOL_DARK_GREY);
     cwin_write_string_raw(&ht, TXT[TXT_IDX_DESC_FARMLAND_REAP]);
 }
@@ -474,8 +504,6 @@ static void _updateFieldView(){
 
 // select field - display sub-menu
 static void _selectField(){
-    // displayMenu(FARMLAND_FIELD_MENU);
-
     switch(fields[_currentField].stage){
         case PLANT_STAGE_PLOWED:
             _sowPlant();
@@ -509,6 +537,10 @@ static void _showFarmMenu(){
 }
 
 static void _nextField(){
+    _confirm = false;
+    _currentPlant = PLANT_NONE;
+    clearStatusBar();
+
     if(_currentField < FIELDS_COUNT-1){
         _currentField++;
     } else {
@@ -517,6 +549,10 @@ static void _nextField(){
     _displayFieldList();
 }
 static void _previousField(){
+    _confirm = false;
+    _currentPlant = PLANT_NONE;
+    clearStatusBar();
+
     if(_currentField > 0){
         _currentField--;
     } else {
@@ -533,8 +569,10 @@ static void _nextPlant(){
         } else {
             _currentPlant = 1;
         }
-        _showContextMenu();
+    } else {
+        _confirm = true;
     }
+    _showContextMenu();
 }
 
 static void _previousPlant(){
@@ -545,8 +583,10 @@ static void _previousPlant(){
         } else {
             _currentPlant = PLANTS_COUNT;
         }
-        _showContextMenu();
+    } else {
+        _confirm = false;
     }
+    _showContextMenu();
 }
 
 const struct MenuOption FARMLAND_MENU[] = {
