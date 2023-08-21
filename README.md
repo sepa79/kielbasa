@@ -8,13 +8,15 @@ Code:
   Sepa
   Koval
   Blumba
+  Logan
 
 Art:
   Juras
-  Von_Bednar
+  Mr.Melvin
   
 Music:
   Crisps
 
 Tester:
+  Borg
   Angry Andy
