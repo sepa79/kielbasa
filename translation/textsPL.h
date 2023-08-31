@@ -35,5 +35,6 @@ void loadTranslation();
 #pragma code ( code )
 #pragma data ( data )
 
+
 #pragma compile("textsPL.c")
 #endif

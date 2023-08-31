@@ -26,5 +26,7 @@
 #pragma region( bankTxtEnArray, 0x8100, 0x8200, , TRANSLATION_EN_BANK, { txtEnMainArray }, 0x6100 )
 #pragma region( bankTxtEnData, 0x8200, 0x8fff, , TRANSLATION_EN_BANK, { txtEnTxtData }, 0x6200 )
 
+
+
 #pragma compile("textsEN.c")
 #endif

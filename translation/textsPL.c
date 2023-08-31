@@ -11,8 +11,10 @@
 #pragma data ( txtPlTxtData )
 
 
-//     "pragma_label": "PlantTypes"
-//     "array_label" : "PLANT_TYPES_TXT"
+
+//     "pragma_label": PlantTypes,
+//     "array_label": PLANT_TYPES_TXT,
+
 
 //     "pl": "Puste     "
 const char TXT_PL_PLANT_NAME_NONE[] = {0x50, 0x15, 0x13, 0x14, 0x05, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
@@ -25,8 +27,11 @@ const char TXT_PL_PLANT_NAME_WHEAT[] = {0x50, 0x13, 0x1a, 0x05, 0x0e, 0x09, 0x03
 //     "pl": "Kukurydza "
 const char TXT_PL_PLANT_NAME_CORN[] = {0x4b, 0x15, 0x0b, 0x15, 0x12, 0x19, 0x04, 0x1a, 0x01, 0x20, 0x00};
 
-//     "pragma_label": "PlantStageNames"
-//     "array_label" : "PLANT_STAGE_NAMES"
+
+
+//     "pragma_label": PlantStageNames,
+//     "array_label": PLANT_STAGE_NAMES,
+
 
 //     "pl": "        "
 const char TXT_PL_PLANT_STAGE_NONE[] = {0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
@@ -47,8 +52,11 @@ const char TXT_PL_PLANT_STAGE_READY[] = {0x44, 0x0f, 0x0a, 0x12, 0x1a, 0x01, 0x5
 //     "pl": "Z: Zbiór"
 const char TXT_PL_PLANT_STAGE_REAP_TASK_ASSIGNED[] = {0x5a, 0x3a, 0x20, 0x5a, 0x02, 0x09, 0x60, 0x12, 0x00};
 
-//     "pragma_label": "MainArray"
-//     "array_label" : "TXT"
+
+
+//     "pragma_label": MainArray,
+//     "array_label": TXT,
+
 
 //     "pl": "ü Wyjdź"
 const char TXT_PL_MENU_EXIT[] = {0x1f, 0x7c, 0x20, 0x57, 0x19, 0x0a, 0x04, 0x62, 0x00};
@@ -310,8 +318,11 @@ const char TXT_PL_MENU_AIR_DEF[] = {0x71, 0x53, 0x14, 0x0f, 0x0e, 0x0b, 0x01, 0x
 //     "pl": "Ratuj kartofle!"
 const char TXT_PL_SAVE_POTATOES[] = {0x52, 0x01, 0x14, 0x15, 0x0a, 0x20, 0x0b, 0x01, 0x12, 0x14, 0x0f, 0x06, 0x0c, 0x05, 0x21, 0x00};
 
-//     "pragma_label": "LocationNames"
-//     "array_label" : "LOCATION_NAMES"
+
+
+//     "pragma_label": LocationNames,
+//     "array_label": LOCATION_NAMES,
+
 
 //     "pl": "                        "
 const char TXT_PL_NOTHING[] = {0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
@@ -358,8 +369,11 @@ const char TXT_PL_TOILET[] = {0x20, 0x20, 0x53, 0x5e, 0x01, 0x17, 0x0f, 0x0a, 0x
 //     "pl": "   Pomost               "
 const char TXT_PL_WHARF[] = {0x20, 0x20, 0x20, 0x50, 0x0f, 0x0d, 0x0f, 0x13, 0x14, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
 
-//     "pragma_label": "FieldSizes"
-//     "array_label" : "FIELD_SIZES"
+
+
+//     "pragma_label": FieldSizes,
+//     "array_label": FIELD_SIZES,
+
 
 //     "pl": "Małe   "
 const char TXT_PL_FIELD_SMALL[] = {0x4d, 0x01, 0x5e, 0x05, 0x20, 0x20, 0x20, 0x00};
@@ -369,6 +383,10 @@ const char TXT_PL_FIELD_MEDIUM[] = {0x6a, 0x12, 0x05, 0x04, 0x0e, 0x09, 0x05, 0x
 const char TXT_PL_FIELD_BIG[] = {0x44, 0x15, 0x63, 0x05, 0x20, 0x20, 0x20, 0x00};
 //     "pl": "Wielkie"
 const char TXT_PL_FIELD_VBIG[] = {0x57, 0x09, 0x05, 0x0c, 0x0b, 0x09, 0x05, 0x00};
+
+
+
+
 
 //     "pragma_label": PlantTypes,
 //     "array_label": PLANT_TYPES_TXT,
@@ -381,6 +399,7 @@ __export const char* PLANT_TYPES_TXT[] = {
     TXT_PL_PLANT_NAME_WHEAT,
     TXT_PL_PLANT_NAME_CORN
 };
+
 
 //     "pragma_label": PlantStageNames,
 //     "array_label": PLANT_STAGE_NAMES,
@@ -397,6 +416,7 @@ __export const char* PLANT_STAGE_NAMES[] = {
     TXT_PL_PLANT_STAGE_READY,
     TXT_PL_PLANT_STAGE_REAP_TASK_ASSIGNED
 };
+
 
 //     "pragma_label": MainArray,
 //     "array_label": TXT,
@@ -528,6 +548,7 @@ __export const char* TXT[] = {
     TXT_PL_SAVE_POTATOES
 };
 
+
 //     "pragma_label": LocationNames,
 //     "array_label": LOCATION_NAMES,
 
@@ -557,6 +578,7 @@ __export const char* LOCATION_NAMES[] = {
     TXT_PL_WHARF
 };
 
+
 //     "pragma_label": FieldSizes,
 //     "array_label": FIELD_SIZES,
 
@@ -577,8 +599,6 @@ __export const char* FIELD_SIZES[] = {
 void loadTranslation(){
     memcpy(TRANSLATION_DST, TRANSLATION_SRC, 0x1000);
 }
-
 // Switching code generation back to shared section
 #pragma code ( code )
 #pragma data ( data )
-

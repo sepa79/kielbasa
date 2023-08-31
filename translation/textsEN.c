@@ -11,8 +11,10 @@
 #pragma data ( txtEnTxtData )
 
 
-//     "pragma_label": "PlantTypes"
-//     "array_label" : "PLANT_TYPES_TXT"
+
+//     "pragma_label": PlantTypes,
+//     "array_label": PLANT_TYPES_TXT,
+
 
 //     "en": "Empty     "
 const char TXT_EN_PLANT_NAME_NONE[] = {0x45, 0x0d, 0x10, 0x14, 0x19, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
@@ -25,8 +27,11 @@ const char TXT_EN_PLANT_NAME_WHEAT[] = {0x57, 0x08, 0x05, 0x01, 0x14, 0x20, 0x20
 //     "en": "Corn      "
 const char TXT_EN_PLANT_NAME_CORN[] = {0x43, 0x0f, 0x12, 0x0e, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
 
-//     "pragma_label": "PlantStageNames"
-//     "array_label" : "PLANT_STAGE_NAMES"
+
+
+//     "pragma_label": PlantStageNames,
+//     "array_label": PLANT_STAGE_NAMES,
+
 
 //     "en": "        "
 const char TXT_EN_PLANT_STAGE_NONE[] = {0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
@@ -47,8 +52,11 @@ const char TXT_EN_PLANT_STAGE_READY[] = {0x52, 0x05, 0x01, 0x04, 0x19, 0x20, 0x2
 //     "en": "T: Reap "
 const char TXT_EN_PLANT_STAGE_REAP_TASK_ASSIGNED[] = {0x54, 0x3a, 0x20, 0x52, 0x05, 0x01, 0x10, 0x20, 0x00};
 
-//     "pragma_label": "MainArray"
-//     "array_label" : "TXT"
+
+
+//     "pragma_label": MainArray,
+//     "array_label": TXT,
+
 
 //     "en": "ü Exit "
 const char TXT_EN_MENU_EXIT[] = {0x1f, 0x7c, 0x20, 0x45, 0x18, 0x09, 0x14, 0x20, 0x00};
@@ -310,8 +318,11 @@ const char TXT_EN_MENU_AIR_DEF[] = {0x71, 0x41, 0x09, 0x12, 0x20, 0x44, 0x05, 0x
 //     "en": "Save potatoes!"
 const char TXT_EN_SAVE_POTATOES[] = {0x53, 0x01, 0x16, 0x05, 0x20, 0x10, 0x0f, 0x14, 0x01, 0x14, 0x0f, 0x05, 0x13, 0x21, 0x00};
 
-//     "pragma_label": "LocationNames"
-//     "array_label" : "LOCATION_NAMES"
+
+
+//     "pragma_label": LocationNames,
+//     "array_label": LOCATION_NAMES,
+
 
 //     "en": "                        "
 const char TXT_EN_NOTHING[] = {0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
@@ -358,8 +369,11 @@ const char TXT_EN_TOILET[] = {0x20, 0x20, 0x20, 0x54, 0x0f, 0x09, 0x0c, 0x05, 0x
 //     "en": "   Wharf                "
 const char TXT_EN_WHARF[] = {0x20, 0x20, 0x20, 0x57, 0x08, 0x01, 0x12, 0x06, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
 
-//     "pragma_label": "FieldSizes"
-//     "array_label" : "FIELD_SIZES"
+
+
+//     "pragma_label": FieldSizes,
+//     "array_label": FIELD_SIZES,
+
 
 //     "en": "Small  "
 const char TXT_EN_FIELD_SMALL[] = {0x53, 0x0d, 0x01, 0x0c, 0x0c, 0x20, 0x20, 0x00};
@@ -370,11 +384,16 @@ const char TXT_EN_FIELD_BIG[] = {0x42, 0x09, 0x07, 0x20, 0x20, 0x20, 0x20, 0x00}
 //     "en": "Huge   "
 const char TXT_EN_FIELD_VBIG[] = {0x48, 0x15, 0x07, 0x05, 0x20, 0x20, 0x20, 0x00};
 
+
+
+
+
 //     "pragma_label": PlantTypes,
 //     "array_label": PLANT_TYPES_TXT,
 
 #pragma data ( txtEnPlantTypes )
 __export const char* PLANT_TYPES_TXT_EN[] = {
+
     TXT_EN_PLANT_NAME_NONE,
     TXT_EN_PLANT_NAME_POTATO,
     TXT_EN_PLANT_NAME_LUPINE,
@@ -382,11 +401,13 @@ __export const char* PLANT_TYPES_TXT_EN[] = {
     TXT_EN_PLANT_NAME_CORN
 };
 
+
 //     "pragma_label": PlantStageNames,
 //     "array_label": PLANT_STAGE_NAMES,
 
 #pragma data ( txtEnPlantStageNames )
 __export const char* PLANT_STAGE_NAMES_EN[] = {
+
     TXT_EN_PLANT_STAGE_NONE,
     TXT_EN_PLANT_STAGE_PLOW_TASK_ASSIGNED,
     TXT_EN_PLANT_STAGE_PLOWED,
@@ -398,11 +419,13 @@ __export const char* PLANT_STAGE_NAMES_EN[] = {
     TXT_EN_PLANT_STAGE_REAP_TASK_ASSIGNED
 };
 
+
 //     "pragma_label": MainArray,
 //     "array_label": TXT,
 
 #pragma data ( txtEnMainArray )
 __export const char* TXT_EN[] = {
+
     TXT_EN_MENU_EXIT,
     TXT_EN_EXIT_TO_MAP,
     TXT_EN_MENU_OPTIONS_LANG,
@@ -528,11 +551,13 @@ __export const char* TXT_EN[] = {
     TXT_EN_SAVE_POTATOES
 };
 
+
 //     "pragma_label": LocationNames,
 //     "array_label": LOCATION_NAMES,
 
 #pragma data ( txtEnLocationNames )
 __export const char* LOCATION_NAMES_EN[] = {
+
     TXT_EN_NOTHING,
     TXT_EN_FARM_HOUSE,
     TXT_EN_FARM_BARN,
@@ -557,18 +582,18 @@ __export const char* LOCATION_NAMES_EN[] = {
     TXT_EN_WHARF
 };
 
+
 //     "pragma_label": FieldSizes,
 //     "array_label": FIELD_SIZES,
 
 #pragma data ( txtEnFieldSizes )
 __export const char* FIELD_SIZES_EN[] = {
+
     TXT_EN_FIELD_SMALL,
     TXT_EN_FIELD_MEDIUM,
     TXT_EN_FIELD_BIG,
     TXT_EN_FIELD_VBIG
 };
-
 // Switching code generation back to shared section
 #pragma code ( code )
 #pragma data ( data )
-
