@@ -20,7 +20,7 @@ if __name__ == "__main__":
     #
     # Create 'common.h' file from "config" data structure
     #
-    create_common_h_file_jinja2( config, "templates/common_h.template", "../translation/common.h" )
+    create_common_h_file_jinja2( config, "common_h.j2", "../translation/common.h" )
 
     ##
     ## Create given language translation '*.c' and '*.h' files.

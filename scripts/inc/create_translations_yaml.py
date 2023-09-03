@@ -145,7 +145,7 @@ def create_lang_files_jinja2( config, lang, dot_c_template, dot_h_template, dst_
 def create_common_h_file_jinja2( config, dot_h_template, dst_filename ):
 
     environment = Environment(loader=FileSystemLoader("templates/"))
-    template    = environment.get_template("common_h.j2")
+    template    = environment.get_template( dot_h_template )
 
     common_h_content = generate_common_h_index_array_jinja2( config )
 
