@@ -1,6 +1,5 @@
 
-plant_stage_names:
-  pragma_label: PlantStageNames
+PlantStageNames:
   array_label: PLANT_STAGE_NAMES
   contents:
   - id: PLANT_STAGE_NONE

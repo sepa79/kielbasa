@@ -1,6 +1,5 @@
 
-main_contents:
-  pragma_label: MainArray
+MainArray:
   array_label: TXT
   contents:
   - id: TASK_EMPTY_NAME           # fixed width - 8

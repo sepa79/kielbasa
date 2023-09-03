@@ -1,6 +1,5 @@
 
-location_names:
-  pragma_label: LocationNames
+LocationNames:
   array_label: LOCATION_NAMES
   contents:
     # fixed width - 12x2

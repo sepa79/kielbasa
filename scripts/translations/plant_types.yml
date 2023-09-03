@@ -1,6 +1,5 @@
 
-plant_types:
-  pragma_label: PlantTypes
+PlantTypes:
   array_label: PLANT_TYPES_TXT
   contents:
   - id: PLANT_NAME_NONE

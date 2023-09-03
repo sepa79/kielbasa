@@ -1,6 +1,5 @@
 
-field_sizes:
-  pragma_label: FieldSizes
+FieldSizes:
   array_label: FIELD_SIZES
   contents:
   - id: FIELD_SMALL
@@ -15,4 +14,5 @@ field_sizes:
   - id: FIELD_VBIG
     en: 'Huge   '
     pl: 'Wielkie'
+
 

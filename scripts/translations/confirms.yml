@@ -1,6 +1,5 @@
 
-main_contents:
-  pragma_label: MainArray
+MainArray:
   array_label: TXT
   contents:
   - id: CONFIRM_TXT

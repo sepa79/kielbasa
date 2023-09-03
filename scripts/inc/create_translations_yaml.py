@@ -47,14 +47,14 @@ def generate_common_h_index_array_jinja2( config ):
     arrays_info = {}
     enum_labels = []
     text_variables = []
-    if config.get( 'main_contents' ):
+    if config.get( 'MainArray' ):
         arrays_info = {
-                'pragma_label': config[ 'main_contents' ].get( 'pragma_label' ),
-                'array_label' : config[ 'main_contents' ].get( 'array_label' )
+                'pragma_label': 'MainArray',
+                'array_label' : config[ 'MainArray' ].get( 'array_label' )
         }
-        if config[ 'main_contents' ].get( 'contents' ):
-            # if there is 'main_contents' and 'contents' in 'config'
-            for p in config[ 'main_contents' ][ 'contents' ]:
+        if config[ 'MainArray' ].get( 'contents' ):
+            # if there is 'MainArray' and 'contents' in 'config'
+            for p in config[ 'MainArray' ][ 'contents' ]:
                 prefix = 'TXT' if not p.get( 'prefix' ) else p[ 'prefix' ]
                 enum_labels.append({'prefix': prefix, 'label': p['id']})
                 # if there is a 'common' in config database then create variable in common.h file
@@ -77,13 +77,15 @@ def generate_c_file_index_arrays_jinja2( config, lang ):
     for k, v in config.items():
         section = {}
         contents = []
-        if v.get( "pragma_label" ):
-            section['pragma_label'] = v.get('pragma_label')
+        # if v.get( "pragma_label" ):
+        #     section['pragma_label'] = v.get('pragma_label')
+        section['pragma_label'] = k
         if v.get( "array_label" ):
             section['array_label'] = v.get('array_label')
         for p in v.get( "contents" ):
             prefix = "TXT" if not p.get("prefix") else p["prefix"]
             if p.get( "common" ):
+                print(lang + "   common from c file :  %s   %s" % (prefix, p['id']))
                 contents.append('%s_%s' % (prefix, p['id']))
             else:
                 contents.append('%s_%s_%s' % (prefix, lang.upper(), p['id']))
@@ -94,10 +96,11 @@ def generate_c_file_index_arrays_jinja2( config, lang ):
 def generate_c_file_text_arrays_jinja2( config, lang, text_filter ):
     text_arrays = []
     for k, v in config.items():
-        section = {'pragma_label': v.get('pragma_label'), 'array_label': v.get('array_label')}
+        section = {'pragma_label': k, 'array_label': v.get('array_label')}
         contents = []
         for p in v.get( "contents" ):
             if p.get( "common" ):
+                print("%s   common :  " % lang, p.get( "common" ))
                 # "common" definition is already in common.h file
                 # so we will get index from common.h file
                 # in index array part
