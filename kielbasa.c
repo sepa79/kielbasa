@@ -18,6 +18,7 @@
 #include <menu/hermansHouse.h>
 #include <menu/sulejukowasHouse.h>
 #include <menu/fishing.h>
+#include <menu/church.h>
 #include <engine/easyFlashBanks.h>
 #include <engine/gameSettings.h>
 #include <engine/irqSpriteController.h>
@@ -90,6 +91,9 @@ void gotoLocation(){
             break;
         case LOCATION_SULEJUKOWA:
             _showNormalMenu(MENU_BANK_SULEJUKOWAS_HOUSE);
+            break;
+        case LOCATION_CHURCH:
+            _showMiniGame(MENU_BANK_CHURCH_MENU);
             break;
         case LOCATION_FISHING:
             _showMiniGame(MENU_BANK_FISHING_MENU);

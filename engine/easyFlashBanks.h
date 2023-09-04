@@ -33,6 +33,7 @@ enum {
     MENU_BANK_HERMANS_HOUSE,
     MENU_BANK_SULEJUKOWAS_HOUSE,
     MENU_BANK_FISHING_MENU,
+    MENU_BANK_CHURCH_MENU,
 };
 
 // Set CRT bank, return previous bank that was set.

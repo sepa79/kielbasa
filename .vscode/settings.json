@@ -62,7 +62,8 @@
         "array": "c",
         "string": "c",
         "string_view": "c",
-        "cstddef": "c"
+        "cstddef": "c",
+        "church.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }
