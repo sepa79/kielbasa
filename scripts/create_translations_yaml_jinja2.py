@@ -22,9 +22,9 @@ if __name__ == "__main__":
     #
     create_common_h_file_jinja2( config, "common_h.j2", "../translation/common.h" )
 
-    ##
-    ## Create given language translation '*.c' and '*.h' files.
-    ##
+    #
+    # Create given language translation '*.c' and '*.h' files.
+    #
     create_lang_files_jinja2( config, "pl", "texts_c.j2", "texts_h.j2", "../translation/textsPL" )
     create_lang_files_jinja2( config, "en", "texts_c.j2", "texts_h.j2", "../translation/textsEN" )
 

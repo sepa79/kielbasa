@@ -129,16 +129,16 @@ def generate_c_file_text_arrays_jinja2( config, lang, text_filter ):
     return {'text_arrays': text_arrays, 'lang': lang}
 
 def write( filename, content ):
-    with open(filename, 'w') as fh:
+    with open(filename, 'w', encoding="utf-8") as fh:
         fh.write( content )
 
 def create_lang_files_jinja2( config, lang, dot_c_template, dot_h_template, dst_filename ):
     
     environment  = Environment(loader=FileSystemLoader("templates/"))
-    template     = environment.get_template( dot_c_template )
 
     text_arrays  = generate_c_file_text_arrays_jinja2( config, lang, encode_charset )
     index_arrays = generate_c_file_index_arrays_jinja2( config, lang )
+    template     = environment.get_template( dot_c_template )
     write( dst_filename + '.c', template.render( {**text_arrays, **index_arrays} ) )
     
     template     = environment.get_template( dot_h_template )
@@ -147,11 +147,10 @@ def create_lang_files_jinja2( config, lang, dot_c_template, dot_h_template, dst_
 # create 'common.h' file baseing on "config" data structure
 def create_common_h_file_jinja2( config, dot_h_template, dst_filename ):
 
-    environment = Environment(loader=FileSystemLoader("templates/"))
-    template    = environment.get_template( dot_h_template )
+    environment      = Environment(loader=FileSystemLoader("templates/"))
 
     common_h_content = generate_common_h_index_array_jinja2( config )
-
+    template         = environment.get_template( dot_h_template )
     write( dst_filename, template.render( common_h_content ) )
 
 
