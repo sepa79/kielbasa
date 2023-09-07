@@ -85,7 +85,6 @@ def generate_c_file_index_arrays_jinja2( config, lang ):
         for p in v.get( "contents" ):
             prefix = "TXT" if not p.get("prefix") else p["prefix"]
             if p.get( "common" ):
-                print(lang + "   common from c file :  %s   %s" % (prefix, p['id']))
                 contents.append('%s_%s' % (prefix, p['id']))
             else:
                 contents.append('%s_%s_%s' % (prefix, lang.upper(), p['id']))
@@ -100,7 +99,6 @@ def generate_c_file_text_arrays_jinja2( config, lang, text_filter ):
         contents = []
         for p in v.get( "contents" ):
             if p.get( "common" ):
-                print("%s   common :  " % lang, p.get( "common" ))
                 # "common" definition is already in common.h file
                 # so we will get index from common.h file
                 # in index array part
