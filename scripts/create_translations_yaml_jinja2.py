@@ -14,7 +14,7 @@ if __name__ == "__main__":
     # and create one big config data structure.
     #
     START_DIR           = getParentDirAsPathlibPathInstance()
-    SKIP_DIRS_AND_FILES = {".vscode", "charGfx", "ble.yml", "bin_archives", "data.yml"}
+    SKIP_DIRS_AND_FILES = {".vscode", "charGfx", "bin_archives", "merged_config_dump.yml"}
     config = recursivelyMergeAllYmlFiles( START_DIR, SKIP_DIRS_AND_FILES )
 
     #

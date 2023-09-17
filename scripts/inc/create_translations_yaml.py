@@ -62,6 +62,7 @@ def generate_common_h_index_array_jinja2( config ):
                 if p.get( 'common' ):
                     text = p[ 'common' ]
                     if p.get( 'common_m' ):     # common text mask label
+                        # print("common mask variable :  ", mask)
                         text = underline_text( text, p[ mask ] )
                     else:
                         text = encode_charset( text )
@@ -75,14 +76,8 @@ def generate_common_h_index_array_jinja2( config ):
 def generate_c_file_index_arrays_jinja2( config, lang ):
     index_arrays = []
     for k, v in config.items():
-        section = {}
+        section = {'pragma_label': k, 'array_label': v.get('array_label'), 'indexes_count': len(v.get("contents"))}
         contents = []
-        # if v.get( "pragma_label" ):
-        #     section['pragma_label'] = v.get('pragma_label')
-        section['pragma_label'] = k
-        section['indexes_count'] = len(v.get("contents"))
-        if v.get( "array_label" ):
-            section['array_label'] = v.get('array_label')
         for p in v.get( "contents" ):
             prefix = "TXT" if not p.get("prefix") else p["prefix"]
             if p.get( "common" ):
@@ -96,7 +91,7 @@ def generate_c_file_index_arrays_jinja2( config, lang ):
 def generate_c_file_text_arrays_jinja2( config, lang, text_filter ):
     text_arrays = []
     for k, v in config.items():
-        section = {'pragma_label': k, 'array_label': v.get('array_label')}
+        section = {'pragma_label': k, 'array_label': v.get('array_label'), 'indexes_count': len(v.get("contents"))}
         array_length = 0
         contents = []
         for p in v.get( "contents" ):
@@ -106,27 +101,37 @@ def generate_c_file_text_arrays_jinja2( config, lang, text_filter ):
                 # in index array part
                 pass
             else:
-                prefix = "TXT" if not p.get("prefix") else p["prefix"]
-                label = {'prefix': prefix, 'name': p['id']}
                 text = p[ lang ]
+
+                # make human readable comment from text
                 if isinstance( text, list ):
-                    label['comment'] = '"\n//           "'.join(text)
+                    comment = '"\n//           "'.join(text)
                 else:
-                    label['comment'] = f'{text}'
-                # support for json (yaml ?) multiline values
+                    comment = f'{text}'
+
+                # merge text in to one single string if text is a 'list' type
                 if isinstance(text, list):
                     text = "".join( text )
+
+                # convert text into bytearray, with mask (+0x80) or without (+0x00)
                 mask = "%s_m" % lang
                 if p.get( mask ):
                     text = underline_text( text, p[ mask ] )
                 else:
                     text = text_filter( text )
+
+                # add appropriate menu option symbol if this is menu option
                 if p.get( "menu_opt" ):
                     text = menu_opt( p.get( "menu_opt" ) ) + text
-                label['bytearray'] = text
-                # print('bytearray length :  ', text.count('x'))
-                array_length += text.count('x') + 1
+
+                # create and add label data, prefix and name as dictionary
+                prefix = "TXT" if not p.get("prefix") else p["prefix"]
+                label = {'prefix': prefix, 'name': p['id'], 'bytearray': text, 'comment': comment}
                 contents.append(label)
+
+                # count text array size in bytes ( add 1 for zero terminated string )
+                array_length += text.count('x') + 1
+
         text_arrays.append({**section, 'contents': contents, 'array_length': array_length})
     return {'text_arrays': text_arrays, 'lang': lang}
 

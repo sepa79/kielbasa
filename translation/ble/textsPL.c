@@ -15,7 +15,8 @@
 //      "pragma_label": PlantTypes,
 //      "array_label": PLANT_TYPES_TXT,
 //      "array_length": 55
-//      "indexes_count": 5
+//      "indexes_count": 
+//      "indexes_count2": 5
 
 
 //     "pl": "Puste     "
@@ -34,7 +35,8 @@ const char TXT_PL_PLANT_NAME_CORN[] = {0x4b, 0x15, 0x0b, 0x15, 0x12, 0x19, 0x04,
 //      "pragma_label": PlantStageNames,
 //      "array_label": PLANT_STAGE_NAMES,
 //      "array_length": 81
-//      "indexes_count": 9
+//      "indexes_count": 
+//      "indexes_count2": 9
 
 
 //     "pl": "        "
@@ -61,7 +63,8 @@ const char TXT_PL_PLANT_STAGE_REAP_TASK_ASSIGNED[] = {0x5a, 0x3a, 0x20, 0x5a, 0x
 //      "pragma_label": MainArray,
 //      "array_label": TXT,
 //      "array_length": 2635
-//      "indexes_count": 123
+//      "indexes_count": 
+//      "indexes_count2": 123
 
 
 //     "pl": "ü Wyjdź"
@@ -329,7 +332,8 @@ const char TXT_PL_SAVE_POTATOES[] = {0x52, 0x01, 0x14, 0x15, 0x0a, 0x20, 0x0b, 0
 //      "pragma_label": LocationNames,
 //      "array_label": LOCATION_NAMES,
 //      "array_length": 550
-//      "indexes_count": 22
+//      "indexes_count": 
+//      "indexes_count2": 22
 
 
 //     "pl": "                        "
@@ -382,7 +386,8 @@ const char TXT_PL_WHARF[] = {0x20, 0x20, 0x20, 0x50, 0x0f, 0x0d, 0x0f, 0x13, 0x1
 //      "pragma_label": FieldSizes,
 //      "array_label": FIELD_SIZES,
 //      "array_length": 32
-//      "indexes_count": 4
+//      "indexes_count": 
+//      "indexes_count2": 4
 
 
 //     "pl": "Małe   "
@@ -401,6 +406,7 @@ const char TXT_PL_FIELD_VBIG[] = {0x57, 0x09, 0x05, 0x0c, 0x0b, 0x09, 0x05, 0x00
 //      "pragma_label": PlantTypes,
 //      "array_label": PLANT_TYPES_TXT,
 //      "indexes_count": 5
+//      "indexes_count2": 
 
 #pragma data ( txtPlPlantTypes )
 __export const char* PLANT_TYPES_TXT[] = {
@@ -415,6 +421,7 @@ __export const char* PLANT_TYPES_TXT[] = {
 //      "pragma_label": PlantStageNames,
 //      "array_label": PLANT_STAGE_NAMES,
 //      "indexes_count": 9
+//      "indexes_count2": 
 
 #pragma data ( txtPlPlantStageNames )
 __export const char* PLANT_STAGE_NAMES[] = {
@@ -433,6 +440,7 @@ __export const char* PLANT_STAGE_NAMES[] = {
 //      "pragma_label": MainArray,
 //      "array_label": TXT,
 //      "indexes_count": 123
+//      "indexes_count2": 
 
 #pragma data ( txtPlMainArray )
 __export const char* TXT[] = {
@@ -565,6 +573,7 @@ __export const char* TXT[] = {
 //      "pragma_label": LocationNames,
 //      "array_label": LOCATION_NAMES,
 //      "indexes_count": 22
+//      "indexes_count2": 
 
 #pragma data ( txtPlLocationNames )
 __export const char* LOCATION_NAMES[] = {
@@ -596,6 +605,7 @@ __export const char* LOCATION_NAMES[] = {
 //      "pragma_label": FieldSizes,
 //      "array_label": FIELD_SIZES,
 //      "indexes_count": 4
+//      "indexes_count2": 
 
 #pragma data ( txtPlFieldSizes )
 __export const char* FIELD_SIZES[] = {
