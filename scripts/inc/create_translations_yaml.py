@@ -23,7 +23,7 @@ def encode_charset( text ):
     return ", ".join( text )
 
 # convert ascii text into byte array + $80 ( underline charset )
-def underline_text_pl( text, mask ):
+def underline_text( text, mask ):
     text = list( text )
 
     for idx, c in enumerate( text ):
@@ -62,7 +62,7 @@ def generate_common_h_index_array_jinja2( config ):
                 if p.get( 'common' ):
                     text = p[ 'common' ]
                     if p.get( 'common_m' ):     # common text mask label
-                        text = underline_text_pl( text, p[ mask ] )
+                        text = underline_text( text, p[ mask ] )
                     else:
                         text = encode_charset( text )
                     if p.get( 'menu_opt' ):
@@ -80,6 +80,7 @@ def generate_c_file_index_arrays_jinja2( config, lang ):
         # if v.get( "pragma_label" ):
         #     section['pragma_label'] = v.get('pragma_label')
         section['pragma_label'] = k
+        section['indexes_count'] = len(v.get("contents"))
         if v.get( "array_label" ):
             section['array_label'] = v.get('array_label')
         for p in v.get( "contents" ):
@@ -96,6 +97,7 @@ def generate_c_file_text_arrays_jinja2( config, lang, text_filter ):
     text_arrays = []
     for k, v in config.items():
         section = {'pragma_label': k, 'array_label': v.get('array_label')}
+        array_length = 0
         contents = []
         for p in v.get( "contents" ):
             if p.get( "common" ):
@@ -116,14 +118,16 @@ def generate_c_file_text_arrays_jinja2( config, lang, text_filter ):
                     text = "".join( text )
                 mask = "%s_m" % lang
                 if p.get( mask ):
-                    text = underline_text_pl( text, p[ mask ] )
+                    text = underline_text( text, p[ mask ] )
                 else:
                     text = text_filter( text )
                 if p.get( "menu_opt" ):
                     text = menu_opt( p.get( "menu_opt" ) ) + text
                 label['bytearray'] = text
+                # print('bytearray length :  ', text.count('x'))
+                array_length += text.count('x') + 1
                 contents.append(label)
-        text_arrays.append({**section, 'contents': contents})
+        text_arrays.append({**section, 'contents': contents, 'array_length': array_length})
     return {'text_arrays': text_arrays, 'lang': lang}
 
 def write( filename, content ):

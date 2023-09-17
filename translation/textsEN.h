@@ -10,19 +10,17 @@
 // Sections and regions
 #pragma section( txtEnPlantTypes, 0 )
 #pragma section( txtEnFieldSizes, 0 )
-//#pragma section( txtEnPlantStateNames, 0 )
 #pragma section( txtEnPlantStageNames, 0 )
 #pragma section( txtEnLocationNames, 0 )
-#pragma section( txtEnMainArray, 0 )
-#pragma section( txtEnTxtData, 0 )
 #pragma region( bankTxtEn1, 0x8000, 0x8100, ,TRANSLATION_EN_BANK, {
     txtEnPlantTypes,
     txtEnFieldSizes,
-//    txtEnPlantStateNames,
     txtEnPlantStageNames,
     txtEnLocationNames
 }, 0x6000 )
 
+#pragma section( txtEnMainArray, 0 )
+#pragma section( txtEnTxtData, 0 )
 #pragma region( bankTxtEnArray, 0x8100, 0x8200, , TRANSLATION_EN_BANK, { txtEnMainArray }, 0x6100 )
 #pragma region( bankTxtEnData, 0x8200, 0x8fff, , TRANSLATION_EN_BANK, { txtEnTxtData }, 0x6200 )
 

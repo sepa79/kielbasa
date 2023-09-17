@@ -12,8 +12,9 @@
 
 
 
-//     "pragma_label": PlantTypes,
-//     "array_label": PLANT_TYPES_TXT,
+//      "pragma_label": PlantTypes,
+//      "array_label": PLANT_TYPES_TXT,
+//      "array_length": 55
 
 
 //     "en": "Empty     "
@@ -29,8 +30,9 @@ const char TXT_EN_PLANT_NAME_CORN[] = {0x43, 0x0f, 0x12, 0x0e, 0x20, 0x20, 0x20,
 
 
 
-//     "pragma_label": PlantStageNames,
-//     "array_label": PLANT_STAGE_NAMES,
+//      "pragma_label": PlantStageNames,
+//      "array_label": PLANT_STAGE_NAMES,
+//      "array_length": 81
 
 
 //     "en": "        "
@@ -54,8 +56,9 @@ const char TXT_EN_PLANT_STAGE_REAP_TASK_ASSIGNED[] = {0x54, 0x3a, 0x20, 0x52, 0x
 
 
 
-//     "pragma_label": MainArray,
-//     "array_label": TXT,
+//      "pragma_label": MainArray,
+//      "array_label": TXT,
+//      "array_length": 2616
 
 
 //     "en": "ü Exit "
@@ -320,8 +323,9 @@ const char TXT_EN_SAVE_POTATOES[] = {0x53, 0x01, 0x16, 0x05, 0x20, 0x10, 0x0f, 0
 
 
 
-//     "pragma_label": LocationNames,
-//     "array_label": LOCATION_NAMES,
+//      "pragma_label": LocationNames,
+//      "array_label": LOCATION_NAMES,
+//      "array_length": 550
 
 
 //     "en": "                        "
@@ -371,8 +375,9 @@ const char TXT_EN_WHARF[] = {0x20, 0x20, 0x20, 0x57, 0x08, 0x01, 0x12, 0x06, 0x2
 
 
 
-//     "pragma_label": FieldSizes,
-//     "array_label": FIELD_SIZES,
+//      "pragma_label": FieldSizes,
+//      "array_label": FIELD_SIZES,
+//      "array_length": 32
 
 
 //     "en": "Small  "
@@ -388,8 +393,9 @@ const char TXT_EN_FIELD_VBIG[] = {0x48, 0x15, 0x07, 0x05, 0x20, 0x20, 0x20, 0x00
 
 
 
-//     "pragma_label": PlantTypes,
-//     "array_label": PLANT_TYPES_TXT,
+//      "pragma_label": PlantTypes,
+//      "array_label": PLANT_TYPES_TXT,
+//      "indexes_count": 5
 
 #pragma data ( txtEnPlantTypes )
 __export const char* PLANT_TYPES_TXT_EN[] = {
@@ -402,8 +408,9 @@ __export const char* PLANT_TYPES_TXT_EN[] = {
 };
 
 
-//     "pragma_label": PlantStageNames,
-//     "array_label": PLANT_STAGE_NAMES,
+//      "pragma_label": PlantStageNames,
+//      "array_label": PLANT_STAGE_NAMES,
+//      "indexes_count": 9
 
 #pragma data ( txtEnPlantStageNames )
 __export const char* PLANT_STAGE_NAMES_EN[] = {
@@ -420,8 +427,9 @@ __export const char* PLANT_STAGE_NAMES_EN[] = {
 };
 
 
-//     "pragma_label": MainArray,
-//     "array_label": TXT,
+//      "pragma_label": MainArray,
+//      "array_label": TXT,
+//      "indexes_count": 123
 
 #pragma data ( txtEnMainArray )
 __export const char* TXT_EN[] = {
@@ -552,8 +560,9 @@ __export const char* TXT_EN[] = {
 };
 
 
-//     "pragma_label": LocationNames,
-//     "array_label": LOCATION_NAMES,
+//      "pragma_label": LocationNames,
+//      "array_label": LOCATION_NAMES,
+//      "indexes_count": 22
 
 #pragma data ( txtEnLocationNames )
 __export const char* LOCATION_NAMES_EN[] = {
@@ -583,8 +592,9 @@ __export const char* LOCATION_NAMES_EN[] = {
 };
 
 
-//     "pragma_label": FieldSizes,
-//     "array_label": FIELD_SIZES,
+//      "pragma_label": FieldSizes,
+//      "array_label": FIELD_SIZES,
+//      "indexes_count": 4
 
 #pragma data ( txtEnFieldSizes )
 __export const char* FIELD_SIZES_EN[] = {
@@ -594,6 +604,11 @@ __export const char* FIELD_SIZES_EN[] = {
     TXT_EN_FIELD_BIG,
     TXT_EN_FIELD_VBIG
 };
+
+
 // Switching code generation back to shared section
 #pragma code ( code )
 #pragma data ( data )
+
+
+

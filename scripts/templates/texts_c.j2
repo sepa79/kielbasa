@@ -12,8 +12,9 @@
 
 {% for section in text_arrays %}
 
-//     "pragma_label": {{ section.pragma_label }},
-//     "array_label": {{ section.array_label }},
+//      "pragma_label": {{ section.pragma_label }},
+//      "array_label": {{ section.array_label }},
+//      "array_length": {{ section.array_length }}
 
 {% for label in section.contents %}
 //     "{{ lang }}": "{{ label.comment }}"
@@ -24,8 +25,9 @@ const char {{ label.prefix }}_{{ lang | upper }}_{{ label.name }}[] = {{ '{' }}{
 
 {% for section in index_arrays %}
 
-//     "pragma_label": {{ section.pragma_label }},
-//     "array_label": {{ section.array_label }},
+//      "pragma_label": {{ section.pragma_label }},
+//      "array_label": {{ section.array_label }},
+//      "indexes_count": {{ section.indexes_count }}
 
 #pragma data ( txt{{ lang | capitalize }}{{ section.pragma_label }} )
 {%- if lang == 'pl' %}
@@ -39,19 +41,18 @@ __export const char* {{ section.array_label }}_{{ lang | upper }}[] = {
 };
 {% endfor %}
 
-{%- if lang == 'pl' %}
-// =============================================================================
-// Copy code
-// =============================================================================
-#pragma code ( code )
-#pragma data ( data )
-
-void loadTranslation(){
-    memcpy(TRANSLATION_DST, TRANSLATION_SRC, 0x1000);
-}
-{% endif -%}
-
 // Switching code generation back to shared section
 #pragma code ( code )
 #pragma data ( data )
+
+{% if lang == 'pl' -%}
+// =============================================================================
+// Copy code
+// =============================================================================
+void loadTranslation() {
+    memcpy(TRANSLATION_DST, TRANSLATION_SRC, 0x1000);
+};
+
+{%- endif %}
+
 
