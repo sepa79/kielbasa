@@ -149,7 +149,7 @@ def create_lang_files_jinja2( config, lang, dot_c_template, dot_h_template, dst_
     write( dst_filename + '.c', template.render( {**text_arrays, **index_arrays} ) )
     
     template     = environment.get_template( dot_h_template )
-    write( dst_filename + '.h', template.render( {'lang': lang} ) )
+    write( dst_filename + '.h', template.render( {**text_arrays, 'lang': lang} ) )
 
 # create 'common.h' file baseing on "config" data structure
 def create_common_h_file_jinja2( config, dot_h_template, dst_filename ):

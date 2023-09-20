@@ -19,6 +19,57 @@
     txtPlLocationNames
 }, 0x6000 )
 
+//      "pragma_label":  PlantTypes
+//      "array_label":   PLANT_TYPES_TXT
+//      "indexes_count": 5
+//      "array_length":  55
+
+// #pragma section( txtPlPlantTypesArray, 0 )
+// #pragma section( txtPlPlantTypesData, 0 )
+// #pragma region( bankTxtPlArray, 0x8000, 0x800a, , TRANSLATION_PL_BANK, { txtPlPlantTypesArray}, 0x6000 )
+// #pragma region( bankTxtPlData, 0x800a, 0x8041, , TRANSLATION_PL_BANK, { txtPlPlantTypesArray}, 0x600a )
+
+//      "pragma_label":  PlantStageNames
+//      "array_label":   PLANT_STAGE_NAMES
+//      "indexes_count": 9
+//      "array_length":  81
+
+// #pragma section( txtPlPlantStageNamesArray, 0 )
+// #pragma section( txtPlPlantStageNamesData, 0 )
+// #pragma region( bankTxtPlArray, 0x8040, 0x8052, , TRANSLATION_PL_BANK, { txtPlPlantStageNamesArray}, 0x6040 )
+// #pragma region( bankTxtPlData, 0x8052, 0x80a3, , TRANSLATION_PL_BANK, { txtPlPlantStageNamesArray}, 0x6052 )
+
+//      "pragma_label":  MainArray
+//      "array_label":   TXT
+//      "indexes_count": 123
+//      "array_length":  2635
+
+// #pragma section( txtPlMainArrayArray, 0 )
+// #pragma section( txtPlMainArrayData, 0 )
+// #pragma region( bankTxtPlArray, 0x80a2, 0x8198, , TRANSLATION_PL_BANK, { txtPlMainArrayArray}, 0x60a2 )
+// #pragma region( bankTxtPlData, 0x8198, 0x8be3, , TRANSLATION_PL_BANK, { txtPlMainArrayArray}, 0x6198 )
+
+//      "pragma_label":  LocationNames
+//      "array_label":   LOCATION_NAMES
+//      "indexes_count": 22
+//      "array_length":  550
+
+// #pragma section( txtPlLocationNamesArray, 0 )
+// #pragma section( txtPlLocationNamesData, 0 )
+// #pragma region( bankTxtPlArray, 0x8be2, 0x8c0e, , TRANSLATION_PL_BANK, { txtPlLocationNamesArray}, 0x6be2 )
+// #pragma region( bankTxtPlData, 0x8c0e, 0x8e34, , TRANSLATION_PL_BANK, { txtPlLocationNamesArray}, 0x6c0e )
+
+//      "pragma_label":  FieldSizes
+//      "array_label":   FIELD_SIZES
+//      "indexes_count": 4
+//      "array_length":  32
+
+// #pragma section( txtPlFieldSizesArray, 0 )
+// #pragma section( txtPlFieldSizesData, 0 )
+// #pragma region( bankTxtPlArray, 0x8e33, 0x8e3b, , TRANSLATION_PL_BANK, { txtPlFieldSizesArray}, 0x6e33 )
+// #pragma region( bankTxtPlData, 0x8e3b, 0x8e5b, , TRANSLATION_PL_BANK, { txtPlFieldSizesArray}, 0x6e3b )
+
+
 #pragma section( txtPlMainArray, 0 )
 #pragma section( txtPlTxtData, 0 )
 #pragma region( bankTxtPlArray, 0x8100, 0x8200, , TRANSLATION_PL_BANK, { txtPlMainArray }, 0x6100 )
