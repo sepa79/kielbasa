@@ -61,7 +61,7 @@ def generate_common_h_index_array_jinja2( config ):
                 # it will be common for all language files ( texts*.c )
                 if p.get( 'common' ):
                     text = p[ 'common' ]
-                    if p.get( 'common_m' ):     # common text mask label
+                    if p.get( 'common_m' ):     # if mask exists apply it to text
                         # print("common mask variable :  ", mask)
                         text = underline_text( text, p[ mask ] )
                     else:
@@ -72,7 +72,6 @@ def generate_common_h_index_array_jinja2( config ):
     return {**arrays_info, 'enum_labels': enum_labels, 'text_variables': text_variables}
 
 # generate index array for given 'lang'
-# def generate_texts_c_generic_lang_file_index_arrays( config, lang ):
 def generate_c_file_index_arrays_jinja2( config, lang ):
     index_arrays = []
     for k, v in config.items():
@@ -109,16 +108,16 @@ def generate_c_file_text_arrays_jinja2( config, lang, text_filter ):
                 else:
                     comment = f'{text}'
 
-                # merge text in to one single string if text is a 'list' type
+                # merge text into one single string if text is a 'list' type
                 if isinstance(text, list):
                     text = "".join( text )
 
                 # convert text into bytearray, with mask (+0x80) or without (+0x00)
                 mask = "%s_m" % lang
                 if p.get( mask ):
-                    text = underline_text( text, p[ mask ] )
+                    text = underline_text( text, p[ mask ] )    # text + 0x80
                 else:
-                    text = text_filter( text )
+                    text = text_filter( text )                  # text + 0x00
 
                 # add appropriate menu option symbol if this is menu option
                 if p.get( "menu_opt" ):
@@ -130,6 +129,8 @@ def generate_c_file_text_arrays_jinja2( config, lang, text_filter ):
                 contents.append(label)
 
                 # count text array size in bytes ( add 1 for zero terminated string )
+                # currenty 0x00 byte is added in templates and not here
+                # this can be misleading and create problems
                 array_length += text.count('x') + 1
 
         text_arrays.append({**section, 'contents': contents, 'array_length': array_length})
