@@ -33,6 +33,9 @@
 #include <tick/farmlandTick.h>
 #include <tick/kitchenTick.h>
 
+#include <miniGame/actor.cpp>
+
+
 // loads a TVScreen to display some news, keeps track of the current menu so it can be restored
 static char prvMenu = 0;
 void showTvScreen() {

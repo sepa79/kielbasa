@@ -329,6 +329,10 @@ void villiageMapDraw(){
         // sprintf(str, "%03d", framesUsed);
         // textToSprite(str, 4);
         textToSprite((char *)LOCATION_NAMES[locId], 4, SPR_TXT_BOTTOM_1);
+
+        // sprawdz w tabeli lokacji, czy jest callback. jak jest to go wolaj.
+        // callback sam sie wylaczy, jak bedzie 'zaliczony' czyli np. pies dostal mieso, strefa nieaktywna.
+        // calendar.c bedzie codziennie resetowal strefy czy co tam bedzie innego miala strefa w CalendarTick.
     }
 
     joyCursor.moveDelayCurrent = 0;
