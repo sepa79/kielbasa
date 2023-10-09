@@ -23,7 +23,7 @@ def encode_charset( text ):
     return ", ".join( text )
 
 # convert ascii text into byte array + $80 ( underline charset )
-def underline_text_pl( text, mask ):
+def underline_text( text, mask ):
     text = list( text )
 
     for idx, c in enumerate( text ):
@@ -61,8 +61,9 @@ def generate_common_h_index_array_jinja2( config ):
                 # it will be common for all language files ( texts*.c )
                 if p.get( 'common' ):
                     text = p[ 'common' ]
-                    if p.get( 'common_m' ):     # common text mask label
-                        text = underline_text_pl( text, p[ mask ] )
+                    if p.get( 'common_m' ):     # if mask exists apply it to text
+                        # print("common mask variable :  ", mask)
+                        text = underline_text( text, p[ mask ] )
                     else:
                         text = encode_charset( text )
                     if p.get( 'menu_opt' ):
@@ -71,21 +72,14 @@ def generate_common_h_index_array_jinja2( config ):
     return {**arrays_info, 'enum_labels': enum_labels, 'text_variables': text_variables}
 
 # generate index array for given 'lang'
-# def generate_texts_c_generic_lang_file_index_arrays( config, lang ):
 def generate_c_file_index_arrays_jinja2( config, lang ):
     index_arrays = []
     for k, v in config.items():
-        section = {}
+        section = {'pragma_label': k, 'array_label': v.get('array_label'), 'indexes_count': len(v.get("contents"))}
         contents = []
-        # if v.get( "pragma_label" ):
-        #     section['pragma_label'] = v.get('pragma_label')
-        section['pragma_label'] = k
-        if v.get( "array_label" ):
-            section['array_label'] = v.get('array_label')
         for p in v.get( "contents" ):
             prefix = "TXT" if not p.get("prefix") else p["prefix"]
             if p.get( "common" ):
-                print(lang + "   common from c file :  %s   %s" % (prefix, p['id']))
                 contents.append('%s_%s' % (prefix, p['id']))
             else:
                 contents.append('%s_%s_%s' % (prefix, lang.upper(), p['id']))
@@ -96,36 +90,50 @@ def generate_c_file_index_arrays_jinja2( config, lang ):
 def generate_c_file_text_arrays_jinja2( config, lang, text_filter ):
     text_arrays = []
     for k, v in config.items():
-        section = {'pragma_label': k, 'array_label': v.get('array_label')}
+        section = {'pragma_label': k, 'array_label': v.get('array_label'), 'indexes_count': len(v.get("contents"))}
+        array_length = 0
         contents = []
         for p in v.get( "contents" ):
             if p.get( "common" ):
-                print("%s   common :  " % lang, p.get( "common" ))
                 # "common" definition is already in common.h file
                 # so we will get index from common.h file
                 # in index array part
                 pass
             else:
-                prefix = "TXT" if not p.get("prefix") else p["prefix"]
-                label = {'prefix': prefix, 'name': p['id']}
                 text = p[ lang ]
+
+                # make human readable comment from text
                 if isinstance( text, list ):
-                    label['comment'] = '"\n//           "'.join(text)
+                    comment = '"\n//           "'.join(text)
                 else:
-                    label['comment'] = f'{text}'
-                # support for json (yaml ?) multiline values
+                    comment = f'{text}'
+
+                # merge text into one single string if text is a 'list' type
                 if isinstance(text, list):
                     text = "".join( text )
+
+                # convert text into bytearray, with mask (+0x80) or without (+0x00)
                 mask = "%s_m" % lang
                 if p.get( mask ):
-                    text = underline_text_pl( text, p[ mask ] )
+                    text = underline_text( text, p[ mask ] )    # text + 0x80
                 else:
-                    text = text_filter( text )
+                    text = text_filter( text )                  # text + 0x00
+
+                # add appropriate menu option symbol if this is menu option
                 if p.get( "menu_opt" ):
                     text = menu_opt( p.get( "menu_opt" ) ) + text
-                label['bytearray'] = text
+
+                # create and add label data, prefix and name as dictionary
+                prefix = "TXT" if not p.get("prefix") else p["prefix"]
+                label = {'prefix': prefix, 'name': p['id'], 'bytearray': text, 'comment': comment}
                 contents.append(label)
-        text_arrays.append({**section, 'contents': contents})
+
+                # count text array size in bytes ( add 1 for zero terminated string )
+                # currenty 0x00 byte is added in templates and not here
+                # this can be misleading and create problems
+                array_length += text.count('x') + 1
+
+        text_arrays.append({**section, 'contents': contents, 'array_length': array_length})
     return {'text_arrays': text_arrays, 'lang': lang}
 
 def write( filename, content ):
@@ -142,7 +150,7 @@ def create_lang_files_jinja2( config, lang, dot_c_template, dot_h_template, dst_
     write( dst_filename + '.c', template.render( {**text_arrays, **index_arrays} ) )
     
     template     = environment.get_template( dot_h_template )
-    write( dst_filename + '.h', template.render( {'lang': lang} ) )
+    write( dst_filename + '.h', template.render( {**text_arrays, 'lang': lang} ) )
 
 # create 'common.h' file baseing on "config" data structure
 def create_common_h_file_jinja2( config, dot_h_template, dst_filename ):
