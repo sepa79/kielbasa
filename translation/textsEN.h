@@ -19,26 +19,6 @@
     txtEnLocationNames
 }, 0x6000 )
 
-//      "pragma_label":  PlantTypes
-//      "array_label":   PLANT_TYPES_TXT
-//      "indexes_count": 5
-//      "array_length":  55
-
-// #pragma section( txtEnPlantTypesArray, 0 )
-// #pragma section( txtEnPlantTypesData, 0 )
-// #pragma region( bankTxtEnArray, 0x8000, 0x800a, , TRANSLATION_EN_BANK, { txtEnPlantTypesArray}, 0x6800 )
-// #pragma region( bankTxtEnData, 0x800a, 0x8041, , TRANSLATION_EN_BANK, { txtEnPlantTypesArray}, 0x680a )
-
-//      "pragma_label":  PlantStageNames
-//      "array_label":   PLANT_STAGE_NAMES
-//      "indexes_count": 9
-//      "array_length":  81
-
-// #pragma section( txtEnPlantStageNamesArray, 0 )
-// #pragma section( txtEnPlantStageNamesData, 0 )
-// #pragma region( bankTxtEnArray, 0x8042, 0x8054, , TRANSLATION_EN_BANK, { txtEnPlantStageNamesArray}, 0x6800 )
-// #pragma region( bankTxtEnData, 0x8054, 0x80a5, , TRANSLATION_EN_BANK, { txtEnPlantStageNamesArray}, 0x6812 )
-
 //      "pragma_label":  MainArray
 //      "array_label":   TXT
 //      "indexes_count": 123
@@ -46,18 +26,8 @@
 
 // #pragma section( txtEnMainArrayArray, 0 )
 // #pragma section( txtEnMainArrayData, 0 )
-// #pragma region( bankTxtEnArray, 0x80a6, 0x819c, , TRANSLATION_EN_BANK, { txtEnMainArrayArray}, 0x6800 )
-// #pragma region( bankTxtEnData, 0x819c, 0x8bd4, , TRANSLATION_EN_BANK, { txtEnMainArrayArray}, 0x68f6 )
-
-//      "pragma_label":  LocationNames
-//      "array_label":   LOCATION_NAMES
-//      "indexes_count": 22
-//      "array_length":  550
-
-// #pragma section( txtEnLocationNamesArray, 0 )
-// #pragma section( txtEnLocationNamesData, 0 )
-// #pragma region( bankTxtEnArray, 0x8bd5, 0x8c01, , TRANSLATION_EN_BANK, { txtEnLocationNamesArray}, 0x6800 )
-// #pragma region( bankTxtEnData, 0x8c01, 0x8e27, , TRANSLATION_EN_BANK, { txtEnLocationNamesArray}, 0x682c )
+// #pragma region( bankTxtEnArray, 0x8000, 0x80f6, , TRANSLATION_EN_BANK, { txtEnMainArrayArray}, 0x6800 )
+// #pragma region( bankTxtEnData, 0x80f6, 0x8b2e, , TRANSLATION_EN_BANK, { txtEnMainArrayArray}, 0x68f6 )
 
 //      "pragma_label":  FieldSizes
 //      "array_label":   FIELD_SIZES
@@ -66,8 +36,38 @@
 
 // #pragma section( txtEnFieldSizesArray, 0 )
 // #pragma section( txtEnFieldSizesData, 0 )
-// #pragma region( bankTxtEnArray, 0x8e28, 0x8e30, , TRANSLATION_EN_BANK, { txtEnFieldSizesArray}, 0x6800 )
-// #pragma region( bankTxtEnData, 0x8e30, 0x8e50, , TRANSLATION_EN_BANK, { txtEnFieldSizesArray}, 0x6808 )
+// #pragma region( bankTxtEnArray, 0x8b2f, 0x8b37, , TRANSLATION_EN_BANK, { txtEnFieldSizesArray}, 0x6800 )
+// #pragma region( bankTxtEnData, 0x8b37, 0x8b57, , TRANSLATION_EN_BANK, { txtEnFieldSizesArray}, 0x6808 )
+
+//      "pragma_label":  LocationNames
+//      "array_label":   LOCATION_NAMES
+//      "indexes_count": 22
+//      "array_length":  550
+
+// #pragma section( txtEnLocationNamesArray, 0 )
+// #pragma section( txtEnLocationNamesData, 0 )
+// #pragma region( bankTxtEnArray, 0x8b58, 0x8b84, , TRANSLATION_EN_BANK, { txtEnLocationNamesArray}, 0x6800 )
+// #pragma region( bankTxtEnData, 0x8b84, 0x8daa, , TRANSLATION_EN_BANK, { txtEnLocationNamesArray}, 0x682c )
+
+//      "pragma_label":  PlantStageNames
+//      "array_label":   PLANT_STAGE_NAMES
+//      "indexes_count": 9
+//      "array_length":  81
+
+// #pragma section( txtEnPlantStageNamesArray, 0 )
+// #pragma section( txtEnPlantStageNamesData, 0 )
+// #pragma region( bankTxtEnArray, 0x8dab, 0x8dbd, , TRANSLATION_EN_BANK, { txtEnPlantStageNamesArray}, 0x6800 )
+// #pragma region( bankTxtEnData, 0x8dbd, 0x8e0e, , TRANSLATION_EN_BANK, { txtEnPlantStageNamesArray}, 0x6812 )
+
+//      "pragma_label":  PlantTypes
+//      "array_label":   PLANT_TYPES_TXT
+//      "indexes_count": 5
+//      "array_length":  55
+
+// #pragma section( txtEnPlantTypesArray, 0 )
+// #pragma section( txtEnPlantTypesData, 0 )
+// #pragma region( bankTxtEnArray, 0x8e0f, 0x8e19, , TRANSLATION_EN_BANK, { txtEnPlantTypesArray}, 0x6800 )
+// #pragma region( bankTxtEnData, 0x8e19, 0x8e50, , TRANSLATION_EN_BANK, { txtEnPlantTypesArray}, 0x680a )
 
 // array_start, array_length, data_start, data_length
 
@@ -79,11 +79,11 @@
 //     CART_DATA_LENGTH
 // };
 
-// 0x8000, 0x000a, 0x800a, 0x0041
-// 0x8042, 0x0012, 0x8054, 0x0063
-// 0x80a6, 0x00f6, 0x819c, 0x0b2e
-// 0x8bd5, 0x002c, 0x8c01, 0x0252
-// 0x8e28, 0x0008, 0x8e30, 0x0028
+// 0x8000, 0x00f6, 0x80f6, 0x0b2e
+// 0x8b2f, 0x0008, 0x8b37, 0x0028
+// 0x8b58, 0x002c, 0x8b84, 0x0252
+// 0x8dab, 0x0012, 0x8dbd, 0x0063
+// 0x8e0f, 0x000a, 0x8e19, 0x0041
 
 #pragma section( txtEnMainArray, 0 )
 #pragma section( txtEnTxtData, 0 )

@@ -12,52 +12,6 @@
 
 
 
-//      "pragma_label": PlantTypes,
-//      "array_label": PLANT_TYPES_TXT,
-//      "indexes_count": 5
-//      "array_length": 55
-
-
-//     "pl": "Puste     "
-const char TXT_PL_PLANT_NAME_NONE[] = {0x50, 0x15, 0x13, 0x14, 0x05, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
-//     "pl": "Ziemniaki "
-const char TXT_PL_PLANT_NAME_POTATO[] = {0x5a, 0x09, 0x05, 0x0d, 0x0e, 0x09, 0x01, 0x0b, 0x09, 0x20, 0x00};
-//     "pl": "Łubin     "
-const char TXT_PL_PLANT_NAME_LUPINE[] = {0x67, 0x15, 0x02, 0x09, 0x0e, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
-//     "pl": "Pszenica  "
-const char TXT_PL_PLANT_NAME_WHEAT[] = {0x50, 0x13, 0x1a, 0x05, 0x0e, 0x09, 0x03, 0x01, 0x20, 0x20, 0x00};
-//     "pl": "Kukurydza "
-const char TXT_PL_PLANT_NAME_CORN[] = {0x4b, 0x15, 0x0b, 0x15, 0x12, 0x19, 0x04, 0x1a, 0x01, 0x20, 0x00};
-
-
-
-//      "pragma_label": PlantStageNames,
-//      "array_label": PLANT_STAGE_NAMES,
-//      "indexes_count": 9
-//      "array_length": 81
-
-
-//     "pl": "        "
-const char TXT_PL_PLANT_STAGE_NONE[] = {0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
-//     "pl": "Z: Orka "
-const char TXT_PL_PLANT_STAGE_PLOW_TASK_ASSIGNED[] = {0x5a, 0x3a, 0x20, 0x4f, 0x12, 0x0b, 0x01, 0x20, 0x00};
-//     "pl": "Zaorane "
-const char TXT_PL_PLANT_STAGE_PLOWED[] = {0x5a, 0x01, 0x0f, 0x12, 0x01, 0x0e, 0x05, 0x20, 0x00};
-//     "pl": "Z: Siew "
-const char TXT_PL_PLANT_STAGE_SOW_TASK_ASSIGNED[] = {0x5a, 0x3a, 0x20, 0x53, 0x09, 0x05, 0x17, 0x20, 0x00};
-//     "pl": "Kiełkuje"
-const char TXT_PL_PLANT_STAGE_SPROUT[] = {0x4b, 0x09, 0x05, 0x5e, 0x0b, 0x15, 0x0a, 0x05, 0x00};
-//     "pl": "Rośnie  "
-const char TXT_PL_PLANT_STAGE_GROWTH[] = {0x52, 0x0f, 0x61, 0x0e, 0x09, 0x05, 0x20, 0x20, 0x00};
-//     "pl": "Dojrzewa"
-const char TXT_PL_PLANT_STAGE_RIPEN[] = {0x44, 0x0f, 0x0a, 0x12, 0x1a, 0x05, 0x17, 0x01, 0x00};
-//     "pl": "Dojrzałe"
-const char TXT_PL_PLANT_STAGE_READY[] = {0x44, 0x0f, 0x0a, 0x12, 0x1a, 0x01, 0x5e, 0x05, 0x00};
-//     "pl": "Z: Zbiór"
-const char TXT_PL_PLANT_STAGE_REAP_TASK_ASSIGNED[] = {0x5a, 0x3a, 0x20, 0x5a, 0x02, 0x09, 0x60, 0x12, 0x00};
-
-
-
 //      "pragma_label": MainArray,
 //      "array_label": TXT,
 //      "indexes_count": 123
@@ -326,8 +280,10 @@ const char TV_PL_MENU_TV_SCREEN_BILLS[] = {0x20, 0x20, 0x42, 0x15, 0x04, 0x63, 0
 
 
 
-//     "pragma_label": FieldSizes,
-//     "array_label": FIELD_SIZES,
+//      "pragma_label": FieldSizes,
+//      "array_label": FIELD_SIZES,
+//      "indexes_count": 4
+//      "array_length": 32
 
 
 //     "pl": "Małe   "
@@ -394,12 +350,10 @@ const char TXT_PL_WHARF[] = {0x20, 0x20, 0x20, 0x50, 0x0f, 0x0d, 0x0f, 0x13, 0x1
 
 
 
-//      "pragma_label": FieldSizes,
-//      "array_label": FIELD_SIZES,
-//      "indexes_count": 4
-//      "array_length": 32
-//     "pragma_label": PlantStageNames,
-//     "array_label": PLANT_STAGE_NAMES,
+//      "pragma_label": PlantStageNames,
+//      "array_label": PLANT_STAGE_NAMES,
+//      "indexes_count": 9
+//      "array_length": 81
 
 
 //     "pl": "        "
@@ -423,8 +377,10 @@ const char TXT_PL_PLANT_STAGE_REAP_TASK_ASSIGNED[] = {0x5a, 0x3a, 0x20, 0x5a, 0x
 
 
 
-//     "pragma_label": PlantTypes,
-//     "array_label": PLANT_TYPES_TXT,
+//      "pragma_label": PlantTypes,
+//      "array_label": PLANT_TYPES_TXT,
+//      "indexes_count": 5
+//      "array_length": 55
 
 
 //     "pl": "Puste     "
@@ -439,9 +395,6 @@ const char TXT_PL_PLANT_NAME_WHEAT[] = {0x50, 0x13, 0x1a, 0x05, 0x0e, 0x09, 0x03
 const char TXT_PL_PLANT_NAME_CORN[] = {0x4b, 0x15, 0x0b, 0x15, 0x12, 0x19, 0x04, 0x1a, 0x01, 0x20, 0x00};
 
 
-//      "pragma_label": PlantStageNames,
-//      "array_label": PLANT_STAGE_NAMES,
-//      "indexes_count": 9
 
 
 
@@ -577,8 +530,9 @@ __export const char* TXT[] = {
 };
 
 
-//     "pragma_label": FieldSizes,
-//     "array_label": FIELD_SIZES,
+//      "pragma_label": FieldSizes,
+//      "array_label": FIELD_SIZES,
+//      "indexes_count": 4
 
 #pragma data ( txtPlFieldSizes )
 __export const char* FIELD_SIZES[] = {
@@ -620,8 +574,9 @@ __export const char* LOCATION_NAMES[] = {
 };
 
 
-//     "pragma_label": PlantStageNames,
-//     "array_label": PLANT_STAGE_NAMES,
+//      "pragma_label": PlantStageNames,
+//      "array_label": PLANT_STAGE_NAMES,
+//      "indexes_count": 9
 
 #pragma data ( txtPlPlantStageNames )
 __export const char* PLANT_STAGE_NAMES[] = {
@@ -637,8 +592,9 @@ __export const char* PLANT_STAGE_NAMES[] = {
 };
 
 
-//     "pragma_label": PlantTypes,
-//     "array_label": PLANT_TYPES_TXT,
+//      "pragma_label": PlantTypes,
+//      "array_label": PLANT_TYPES_TXT,
+//      "indexes_count": 5
 
 #pragma data ( txtPlPlantTypes )
 __export const char* PLANT_TYPES_TXT[] = {
