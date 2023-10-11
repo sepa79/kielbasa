@@ -8,7 +8,7 @@ BattleEngine::BattleEngine(const opp::vector<Actor*> & teamA, const opp::vector<
   // Initialize the allActors vector.
   allActors = opp::vector<Actor*>(teamA.size() + teamB.size());
   for (size_t i = 0; i < teamA.size(); i++) {
-    allActors.push_back(&teamA[i]);
+    allActors.push_back(teamA[i]);
   }
   for (size_t i = 0; i < teamB.size(); i++) {
     allActors.push_back(teamB[i]);

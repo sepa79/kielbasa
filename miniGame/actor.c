@@ -1,5 +1,9 @@
 #include "Actor.h"
 
+int getInitiative(Actor* actor) {
+  return actor->dexterity;
+}
+
 void Actor_Attack(Actor* attacker, Actor* defender) {
   // Default attack implementation
 

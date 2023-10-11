@@ -1,7 +1,7 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 
-typedef struct Actor {
+struct Actor {
   const char* name;
   char strength;
   char dexterity;
@@ -10,7 +10,11 @@ typedef struct Actor {
   char regenerationPoints;
   void (*Attack)(Actor* attacker, Actor* defender);
   void (*Defend)(Actor* actor);
-} Actor;
+};
+
+int getInitiative(Actor* actor);
+void Actor_Attack(Actor* attacker, Actor* defender);
+void Actor_Defend(Actor* actor);
 
 #pragma compile("actor.c")
 

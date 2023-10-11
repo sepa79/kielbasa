@@ -35,7 +35,7 @@
 
 #include <miniGame/actor.h>
 #include <miniGame/player.h>
-// #include <miniGame/battleEngine.h>
+#include <miniGame/battleEngine.h>
 
 
 // loads a TVScreen to display some news, keeps track of the current menu so it can be restored
@@ -142,41 +142,33 @@ void mainLoop(){
 
     // Initialize 2 actors with basic but different stats
 
-// struct Player player = {
-//   .name = "Player",
-//   .strength = 10,
-//   .dexterity = 10,
-//   .energy = 100,
-//   .regenerationPoints = 10,
-//   .experiencePoints = 0,
-//   .Attack = &Player_Attack,
-//   .Defend = &Player_Defend,
-// };
+struct Player player = {
+  .name = s"Player",
+  .strength = 10,
+  .dexterity = 10,
+  .energy = 100,
+  .regenerationPoints = 10,
+  .experiencePoints = 0,
+  .Attack = &Player_Attack,
+  .Defend = &Player_Defend
+};
 
-Player player;
+struct Actor enemy = {
+  .name = s"Dog",
+  .strength = 5,
+  .dexterity = 15,
+  .energy = 100,
+  .regenerationPoints = 5,
+  .Attack = &Actor_Attack,
+  .Defend = &Actor_Defend
+};
 
-player.name = s"Player";
-player.strength = 10;
-player.dexterity = 10;
-player.energy = 100;
-player.regenerationPoints = 10;
-player.Attack = &Player_Attack;
-player.Defend = &Player_Defend;
-// Actor* player = new Actor(10, 5, 100, 10);
-// Actor* enemy = new Actor(5, 10, 100, 10);
-
-// // Assign them to teams
-// opp::vector<Actor*> teamA;
-// teamA.push_back(player);
-// opp::vector<Actor*> teamB;
-// teamB.push_back(enemy);
-
-// // Initialize BattleEngine with these teams
-// BattleEngine battleEngine(teamA, teamB);
-// // BattleEngine battleEngine(opp::move(teamA), opp::move(teamB));
-
-// // // Start battle
-// battleEngine.startBattle();
+Actor* actors[2];
+actors[0] = &player;
+actors[1] = &enemy;
+char numActors = 2;
+BattleEngine battleEngine;
+BattleEngine_init(&battleEngine, actors, numActors);
 
     // END battle engine test
     // END battle engine test
