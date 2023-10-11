@@ -33,7 +33,9 @@
 #include <tick/farmlandTick.h>
 #include <tick/kitchenTick.h>
 
-#include <miniGame/actor.cpp>
+#include <miniGame/actor.h>
+#include <miniGame/player.h>
+// #include <miniGame/battleEngine.h>
 
 
 // loads a TVScreen to display some news, keeps track of the current menu so it can be restored
@@ -134,6 +136,52 @@ void mainLoop(){
     // TODO: change menu bank here to whatever comes back from save game
     loadMenu(MENU_BANK_MAIN_MENU);
     
+    // battle engine test
+    // battle engine test
+    // battle engine test
+
+    // Initialize 2 actors with basic but different stats
+
+// struct Player player = {
+//   .name = "Player",
+//   .strength = 10,
+//   .dexterity = 10,
+//   .energy = 100,
+//   .regenerationPoints = 10,
+//   .experiencePoints = 0,
+//   .Attack = &Player_Attack,
+//   .Defend = &Player_Defend,
+// };
+
+Player player;
+
+player.name = s"Player";
+player.strength = 10;
+player.dexterity = 10;
+player.energy = 100;
+player.regenerationPoints = 10;
+player.Attack = &Player_Attack;
+player.Defend = &Player_Defend;
+// Actor* player = new Actor(10, 5, 100, 10);
+// Actor* enemy = new Actor(5, 10, 100, 10);
+
+// // Assign them to teams
+// opp::vector<Actor*> teamA;
+// teamA.push_back(player);
+// opp::vector<Actor*> teamB;
+// teamB.push_back(enemy);
+
+// // Initialize BattleEngine with these teams
+// BattleEngine battleEngine(teamA, teamB);
+// // BattleEngine battleEngine(opp::move(teamA), opp::move(teamB));
+
+// // // Start battle
+// battleEngine.startBattle();
+
+    // END battle engine test
+    // END battle engine test
+    // END battle engine test
+
     // indicate frame position, as IRQs are stopped
     gms_framePos = FRAME_UNKNOWN;
     showMenu();

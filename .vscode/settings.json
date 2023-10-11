@@ -83,7 +83,10 @@
         "xmemory": "c",
         "xstddef": "c",
         "xtr1common": "c",
-        "xutility": "c"
+        "xutility": "c",
+        "battleengine.cpp": "c",
+        "battleengine.h": "c",
+        "vector.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }

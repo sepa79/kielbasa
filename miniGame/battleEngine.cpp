@@ -1,104 +1,84 @@
-class BattleEngine {
-public:
-  BattleEngine(vector<Actor*> teamA, vector<Actor*> teamB) {
-    this->teamA = teamA;
-    this->teamB = teamB;
+#include "battleEngine.h"
+#include <opp/algorithm.h>
 
-    // Initialize the allActors vector.
-    allActors = {};
-    allActors.insert(allActors.end(), teamA.begin(), teamA.end());
-    allActors.insert(allActors.end(), teamB.begin(), teamB.end());
+BattleEngine::BattleEngine(const opp::vector<Actor*> & teamA, const opp::vector<Actor*> & teamB) {
+  this->teamA = teamA;
+  this->teamB = teamB;
 
-    // Sort the actors by initiative.
-    sortActorsByInitiative();
+  // Initialize the allActors vector.
+  allActors = opp::vector<Actor*>(teamA.size() + teamB.size());
+  for (size_t i = 0; i < teamA.size(); i++) {
+    allActors.push_back(&teamA[i]);
+  }
+  for (size_t i = 0; i < teamB.size(); i++) {
+    allActors.push_back(teamB[i]);
+  }
+  // Sort the actors by initiative.
+  sortActorsByInitiative();
+}
+
+void BattleEngine::startBattle() {
+  // Start the battle loop.
+  while (!teamA.empty() && !teamB.empty()) {
+    // Get the current actor.
+    Actor* currentActor = allActors[0];
+
+    // Process the current actor's turn.
+    processTurn(currentActor);
+
+    // Remove the current actor from the allActors vector.
+    // allActors.erase(allActors.begin());
   }
 
-  void startBattle() {
-    // Start the battle loop.
-    while (!teamA.empty() && !teamB.empty()) {
-      // Get the current actor.
-      Actor* currentActor = allActors[0];
+  // Display the winner of the battle.
+  if (!teamA.empty()) {
+    // cout << "Team A wins!" << endl;
+  } else {
+    // cout << "Team B wins!" << endl;
+  }
+}
 
-      // Process the current actor's turn.
-      processTurn(currentActor);
+void BattleEngine::sortActorsByInitiative() {
+  opp::sort(allActors.begin(), allActors.end(), [](Actor* actor1, Actor* actor2) {
+    return actor1->getInitiative() < actor2->getInitiative();
+  });
+}
 
-      // Move the current actor to the end of the allActors vector.
-      allActors.push_back(allActors.front());
-      allActors.erase(allActors.begin());
-    }
+void BattleEngine::processTurn(Actor* currentActor) {
+  // Get the actor's action.
+  Action action = currentActor->getAction();
 
-    // Display the winner of the battle.
-    if (!teamA.empty()) {
-      cout << "Team A wins!" << endl;
-    } else {
-      cout << "Team B wins!" << endl;
-    }
+  // Execute the action.
+  switch (action) {
+    case ACTION_ATTACK:
+      attack(currentActor, currentActor->getSelectedOpponent());
+      break;
+    case ACTION_DEFEND:
+      defend(currentActor);
+      break;
+    default:
+      break;
   }
 
-private:
-  vector<Actor*> teamA;
-  vector<Actor*> teamB;
-  vector<Actor*> allActors;
+}
 
-  void sortActorsByInitiative() {
-    std::sort(allActors.begin(), allActors.end(), [](Actor* actor1, Actor* actor2) {
-      return actor1->getInitiative() < actor2->getInitiative();
-    });
+void BattleEngine::attack(Actor* attacker, Actor* defender) {
+  // Check if the defender is alive.
+  if (!defender->isAlive()) {
+    return;
   }
 
-  void processTurn(Actor* currentActor) {
-    // Get the actor's action.
-    Action action = currentActor->getAction();
+  // Calculate the damage.
+  // todo: add weapon damage when the time comes
+  int damage = attacker->getStrength() + attacker->getStrengthBonus() - defender->getDefense() - defender->getDexterityBonus() - defender->getDefenseBonus();
 
-    // Execute the action.
-    switch (action) {
-      case Action::Attack:
-        attack(currentActor, currentActor->getSelectedOpponent());
-        break;
-      case Action::Defend:
-        defend(currentActor);
-        break;
-      default:
-        break;
-    }
+  // Deal the damage.
+  defender->energy -= damage;
 
-    // Process the actor's Traits.
-    for (Trait* trait : currentActor->getTraits()) {
-      trait->onTurn(currentActor);
-    }
-  }
+  // Display the results of the attack.
+//   cout << attacker->getName() << " attacks " << defender->getName() << " for " << damage << " damage!" << endl;
+}
 
-  void attack(Actor* attacker, Actor* defender) {
-    // Check if the defender is alive.
-    if (!defender->isAlive()) {
-      return;
-    }
-
-    // Calculate the damage.
-    int damage = attacker->getStrength() + getWeaponDamage() + attacker->getStrengthBonus() - defender->getDefense() - defender->getDexterityBonus() - defender->getDefenceBonus();
-
-    // Deal the damage.
-    defender->energy -= damage;
-
-    // Display the results of the attack.
-    cout << attacker->getName() << " attacks " << defender->getName() << " for " << damage << " damage!" << endl;
-
-    // Check if the defender is still alive.
-    if (defender->isAlive()) {
-      // Process the actor's Traits after the defend.
-      for (Trait* trait : actor->getTraits()) {
-        trait->onDefend(actor);
-      }
-    } else {
-      // Remove actor from all vectors
-      removeActorFromAllVectors(defender);
-    }
-  }
-
-  void defend(Actor* actor) {
-    actor->setDefenceBonus(actor->getDexterity() * 2 + actor->getDexterityBonus());
-
-    // Display the results of the defend.
-    cout << actor->getName() << " defends!" << endl;
-  }
-};
+void BattleEngine::defend(Actor* actor) {
+  actor->setDefenseBonus(actor->getDexterity() * 2 + actor->getDexterityBonus());
+}

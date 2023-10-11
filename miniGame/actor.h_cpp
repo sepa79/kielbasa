@@ -1,0 +1,54 @@
+#ifndef ACTOR_H
+#define ACTOR_H
+
+enum Action {
+  ACTION_NONE,
+  ACTION_ATTACK,
+  ACTION_RANGED_ATTACK,
+  ACTION_DEFEND,
+  ACTION_RUN,
+};
+
+class Actor {
+private:
+  int strength;
+  int dexterity;
+  int action;
+  int regenerationPoints;
+  int maxEnergy;
+  int defense;
+  int regeneration;
+  int actionCallback;
+//   opp::function<Action()> actionCallback;
+  int defenseBonus;
+  Actor* selectedOpponent;
+//   vector<Trait*> traits;
+
+public:
+  int energy;
+
+  Actor(int strength, int dexterity, int energy, int regenerationPoints);
+
+  int getStrength() const { return strength; }
+  int getDexterity() const { return dexterity; }
+  int getAction() const { return action; }
+  int getEnergy() const { return energy; }
+  int getRegenerationPoints() const { return regenerationPoints; }
+  int getMaxEnergy() const { return maxEnergy; }
+  int getDefense() const { return defense; }
+  int getRegeneration() const { return regeneration; }
+  int getActionCallback() const { return actionCallback; }
+  int getDefenseBonus() const { return defenseBonus; }
+  int getStrengthBonus() const { return (strength - 10) / 2; }
+  int getDexterityBonus() const { return (dexterity - 10) / 2; }
+  int getInitiative() const { return dexterity; }
+  bool isAlive() const { return energy > 0; }
+  Actor* getSelectedOpponent() const { return selectedOpponent; }
+
+  void setActionCallback(int actionCallback) { this->actionCallback = actionCallback; }
+  void setDefenseBonus(int defenseBonus) { this->defenseBonus = defenseBonus; }
+  void setSelectedOpponent(Actor* selectedOpponent) { this->selectedOpponent = selectedOpponent; }
+};
+
+#pragma compile("actor.cpp")
+#endif // ACTOR_H

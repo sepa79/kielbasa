@@ -1,0 +1,28 @@
+#ifndef BATTLEENGINE_H
+#define BATTLEENGINE_H
+
+#include <opp/vector.h>
+
+#include "actor.h"
+
+class BattleEngine {
+public:
+  BattleEngine(const opp::vector<Actor*> & teamA, const opp::vector<Actor*> & teamB);
+
+  void startBattle();
+
+private:
+  opp::vector<Actor*> & allActors;
+  opp::vector<Actor*> & teamA;
+  opp::vector<Actor*> & teamB;
+
+  void sortActorsByInitiative();
+  // void startBattle();
+  void processTurn(Actor* currentActor);
+  void attack(Actor* attacker, Actor* defender);
+  void defend(Actor* actor);
+};
+
+#pragma compile("battleEngine.cpp")
+
+#endif // BATTLEENGINE_H
