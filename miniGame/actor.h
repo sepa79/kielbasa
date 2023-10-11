@@ -12,7 +12,8 @@ struct Actor {
   void (*Defend)(Actor* actor);
 };
 
-int getInitiative(Actor* actor);
+int  Actor_getInitiative(Actor* actor);
+bool Actor_isAlive(const Actor* actor);
 void Actor_Attack(Actor* attacker, Actor* defender);
 void Actor_Defend(Actor* actor);
 

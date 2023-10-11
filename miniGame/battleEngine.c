@@ -1,34 +1,34 @@
 #include "BattleEngine.h"
 
-static void sortActorsByInitiative(BattleEngine* battleEngine, Actor** actors, char numActors) {
-//   // Check if the input parameters are valid.
-//   if (!battleEngine || !actors || numActors <= 0) {
-//     return;
-//   }
-
-  // Use a selection sort algorithm to sort the actors in the BattleEngine's sorted actors array.
-  for (char i = 0; i < numActors - 1; i++) {
-    // Find the smallest element in the unsorted subarray.
-    char smallestIndex = i;
-    for (char j = i + 1; j < numActors; j++) {
-      if (getInitiative(actors[j]) < getInitiative(actors[smallestIndex])) {
-        smallestIndex = j;
+void sortActorsByInitiative(Actor** actors, int numElements) {
+  for (int i = 0; i < numElements - 1; i++) {
+    for (int j = 0; j < numElements - i - 1; j++) {
+      if (Actor_getInitiative(actors[j]) < Actor_getInitiative(actors[j + 1])) {
+        Actor* temp = actors[j];
+        actors[j] = actors[j + 1];
+        actors[j + 1] = temp;
       }
     }
-
-    // Swap the smallest element with the current element in the BattleEngine's sorted actors array.
-    Actor* temp = battleEngine->sortedActors[i];
-    battleEngine->sortedActors[i] = battleEngine->sortedActors[smallestIndex];
-    battleEngine->sortedActors[smallestIndex] = temp;
   }
 }
 
-void BattleEngine_init(BattleEngine* battleEngine, Actor** actors, char numActors) {
-  battleEngine->numActors = numActors;
+void BattleEngine_init(BattleEngine* battleEngine, Actor** teamA, Actor** teamB, char numActorsA, char numActorsB) {
+  // Calculate the total number of actors in the battle.
+  char numActors = numActorsA + numActorsB;
 
-  // Sort the actors by initiative.
-  sortActorsByInitiative(battleEngine, actors, numActors);
-  
+  // Copy the actors from the teamA and teamB arrays into the sortedActors array.
+  for (int i = 0; i < numActorsA; i++) {
+    battleEngine->sortedActors[i] = teamA[i];
+  }
+
+  for (int i = 0; i < numActorsB; i++) {
+    battleEngine->sortedActors[numActorsA + i] = teamB[i];
+  }
+
+  // Sort the sortedActors array by initiative score using the bubble sort algorithm.
+  sortActorsByInitiative(battleEngine->sortedActors, numActors);
+
+  battleEngine->numActors = numActors;
 }
 
 void BattleEngine_startBattle(BattleEngine* battleEngine) {
@@ -46,12 +46,26 @@ void BattleEngine_startBattle(BattleEngine* battleEngine) {
 }
 
 bool BattleEngine_isBattleOver(const BattleEngine* battleEngine) {
-//   for (char i = 0; i < battleEngine->numActors; i++) {
-//     if (Actor_isAlive(battleEngine->actors[i])) {
-//       return false;
-//     }
-//   }
-  return true;
+  // Check if teamA has all players dead.
+  bool isTeamADead = true;
+  for (int i = 0; i < battleEngine->numActorsA; i++) {
+    if (!Actor_isAlive(battleEngine->teamA[i])) {
+      isTeamADead = false;
+      break;
+    }
+  }
+
+  // Check if teamB has all players dead.
+  bool isTeamBDead = true;
+  for (int i = 0; i < battleEngine->numActorsB; i++) {
+    if (!Actor_isAlive(battleEngine->teamB[i])) {
+      isTeamBDead = false;
+      break;
+    }
+  }
+
+  // Return true if one of the teams has all players dead, false otherwise.
+  return isTeamADead || isTeamBDead;
 }
 
 Actor* BattleEngine_getWinner(const BattleEngine* battleEngine) {

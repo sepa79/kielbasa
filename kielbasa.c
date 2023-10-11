@@ -33,11 +33,6 @@
 #include <tick/farmlandTick.h>
 #include <tick/kitchenTick.h>
 
-#include <miniGame/actor.h>
-#include <miniGame/player.h>
-#include <miniGame/battleEngine.h>
-
-
 // loads a TVScreen to display some news, keeps track of the current menu so it can be restored
 static char prvMenu = 0;
 void showTvScreen() {
@@ -136,44 +131,6 @@ void mainLoop(){
     // TODO: change menu bank here to whatever comes back from save game
     loadMenu(MENU_BANK_MAIN_MENU);
     
-    // battle engine test
-    // battle engine test
-    // battle engine test
-
-    // Initialize 2 actors with basic but different stats
-
-struct Player player = {
-  .name = s"Player",
-  .strength = 10,
-  .dexterity = 10,
-  .energy = 100,
-  .regenerationPoints = 10,
-  .experiencePoints = 0,
-  .Attack = &Player_Attack,
-  .Defend = &Player_Defend
-};
-
-struct Actor enemy = {
-  .name = s"Dog",
-  .strength = 5,
-  .dexterity = 15,
-  .energy = 100,
-  .regenerationPoints = 5,
-  .Attack = &Actor_Attack,
-  .Defend = &Actor_Defend
-};
-
-Actor* actors[2];
-actors[0] = &player;
-actors[1] = &enemy;
-char numActors = 2;
-BattleEngine battleEngine;
-BattleEngine_init(&battleEngine, actors, numActors);
-
-    // END battle engine test
-    // END battle engine test
-    // END battle engine test
-
     // indicate frame position, as IRQs are stopped
     gms_framePos = FRAME_UNKNOWN;
     showMenu();

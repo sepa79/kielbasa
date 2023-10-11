@@ -1,7 +1,11 @@
 #include "Actor.h"
 
-int getInitiative(Actor* actor) {
+int Actor_getInitiative(Actor* actor) {
   return actor->dexterity;
+}
+
+bool Actor_isAlive(const Actor* actor) {
+  return actor->energy > 0;
 }
 
 void Actor_Attack(Actor* attacker, Actor* defender) {

@@ -8,6 +8,10 @@
 #include <assets/assetsSettings.h>
 #include <engine/uiHandler.h>
 
+#include <miniGame/actor.h>
+#include <miniGame/player.h>
+#include <miniGame/battleEngine.h>
+
 // Sections and regions
 #pragma section(battleMenuLoaderData, 0)
 #pragma section(battleMenuCode, 0)
@@ -42,6 +46,13 @@ const struct MenuOption BATTLE_MENU[] = {
     END_MENU_CHOICES
 };
 
+static void displaySortedActors(BattleEngine* battleEngine, CharWin* cw, int x, int y) {
+  cwin_putat_string_raw(cw, x, y, s"Sorted actors:", VCOL_LT_GREY);
+  for (int i = 0; i < battleEngine->numActors; i++) {
+    cwin_putat_string_raw(cw, x, y + i + 1, battleEngine->sortedActors[i]->name, VCOL_MED_GREY);
+  }
+}
+
 static void _menuHandler() {
     mnu_isGfxLoaded = false;
     loadMenuGfx();
@@ -51,8 +62,61 @@ static void _menuHandler() {
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);
     cwin_clear(&cw);
 
+    // Initialize 2 actors with basic but different stats
+
+    struct Player player = {
+    .name = s"Player",
+    .strength = 10,
+    .dexterity = 10,
+    .energy = 100,
+    .regenerationPoints = 10,
+    .experiencePoints = 0,
+    .Attack = &Player_Attack,
+    .Defend = &Player_Defend
+    };
+
+    struct Actor enemy1 = {
+    .name = s"Dog",
+    .strength = 5,
+    .dexterity = 15,
+    .energy = 100,
+    .regenerationPoints = 5,
+    .Attack = &Actor_Attack,
+    .Defend = &Actor_Defend
+    };
+
+    struct Actor enemy2 = {
+    .name = s"Fat Dog",
+    .strength = 7,
+    .dexterity = 12,
+    .energy = 100,
+    .regenerationPoints = 6,
+    .Attack = &Actor_Attack,
+    .Defend = &Actor_Defend
+    };
+
+    Actor* teamA[1];
+    Actor* teamB[2];
+
+    // Add the player actor to teamA.
+    teamA[0] = &player;
+
+    // Add the enemy actors to teamB.
+    teamB[0] = &enemy1;
+    teamB[1] = &enemy2;
+
+    // Calculate the number of actors in each team.
+    char numActorsA = 1;
+    char numActorsB = 2;
+
+    // Initialize the battle engine.
+    BattleEngine battleEngine;
+    BattleEngine_init(&battleEngine, teamA, teamB, numActorsA, numActorsB);
+
     displayMenu(BATTLE_MENU);
     switchScreenTo(SCREEN_SPLIT_MC_TXT);
+
+    displaySortedActors(&battleEngine, &cw, 0, 0);
 }
 
 #pragma data(battleMenuLoaderData)
