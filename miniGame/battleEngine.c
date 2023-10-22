@@ -1,78 +1,112 @@
 #include "BattleEngine.h"
 
 void sortActorsByInitiative(Actor** actors, int numElements) {
-  for (int i = 0; i < numElements - 1; i++) {
-    for (int j = 0; j < numElements - i - 1; j++) {
-      if (Actor_getInitiative(actors[j]) < Actor_getInitiative(actors[j + 1])) {
-        Actor* temp = actors[j];
-        actors[j] = actors[j + 1];
-        actors[j + 1] = temp;
-      }
+    for (int i = 0; i < numElements - 1; i++) {
+        for (int j = 0; j < numElements - i - 1; j++) {
+            if (Actor_getInitiative(actors[j]) < Actor_getInitiative(actors[j + 1])) {
+                Actor* temp = actors[j];
+                actors[j] = actors[j + 1];
+                actors[j + 1] = temp;
+            }
+        }
     }
-  }
 }
 
 void BattleEngine_init(BattleEngine* battleEngine, Actor** teamA, Actor** teamB, char numActorsA, char numActorsB) {
-  // Calculate the total number of actors in the battle.
-  char numActors = numActorsA + numActorsB;
+    // Initialize the currentTurnIndex field.
+    battleEngine->currentTurnIndex = 0;
 
-  // Copy the actors from the teamA and teamB arrays into the sortedActors array.
-  for (int i = 0; i < numActorsA; i++) {
-    battleEngine->sortedActors[i] = teamA[i];
-  }
+    // Copy the actors from the teamA and teamB arrays into the sortedActors array.
+    for (int i = 0; i < numActorsA; i++) {
+        battleEngine->sortedActors[i] = teamA[i];
+        teamA[i]->inPlayerTeam = true;
+    }
 
-  for (int i = 0; i < numActorsB; i++) {
-    battleEngine->sortedActors[numActorsA + i] = teamB[i];
-  }
+    for (int i = 0; i < numActorsB; i++) {
+        battleEngine->sortedActors[numActorsA + i] = teamB[i];
+        teamB[i]->inPlayerTeam = false;
+    }
 
-  // Sort the sortedActors array by initiative score using the bubble sort algorithm.
-  sortActorsByInitiative(battleEngine->sortedActors, numActors);
+    // keep track of the teams, so we can later select targets and friends as needed
+    battleEngine->teamA = teamA;
+    battleEngine->teamB = teamB;
+    battleEngine->numActorsA = numActorsA;
+    battleEngine->numActorsB = numActorsB;
+    battleEngine->numActors = numActorsA + numActorsB;
 
-  battleEngine->numActors = numActors;
+    // Sort the sortedActors array by initiative score using the bubble sort algorithm.
+    sortActorsByInitiative(battleEngine->sortedActors, battleEngine->numActors);
 }
 
-void BattleEngine_startBattle(BattleEngine* battleEngine) {
-  char currentActorIndex = 0;
-  while (!BattleEngine_isBattleOver(battleEngine)) {
-    Actor* currentActor = battleEngine->sortedActors[currentActorIndex];
-
-    // Take the current actor's turn.
-
-    currentActorIndex++;
-    if (currentActorIndex >= battleEngine->numActors) {
-      currentActorIndex = 0;
+static bool BattleEngine_isTeamDead(int numActors, Actor** team) {
+    // Check if all players on the given team are dead.
+    for (int i = 0; i < numActors; i++) {
+        if (!Actor_isAlive(team[i])) {
+        return true;
+        }
     }
-  }
+
+    // No players on the given team are dead.
+    return false;
 }
 
-bool BattleEngine_isBattleOver(const BattleEngine* battleEngine) {
-  // Check if teamA has all players dead.
-  bool isTeamADead = true;
-  for (int i = 0; i < battleEngine->numActorsA; i++) {
-    if (!Actor_isAlive(battleEngine->teamA[i])) {
-      isTeamADead = false;
-      break;
-    }
-  }
-
-  // Check if teamB has all players dead.
-  bool isTeamBDead = true;
-  for (int i = 0; i < battleEngine->numActorsB; i++) {
-    if (!Actor_isAlive(battleEngine->teamB[i])) {
-      isTeamBDead = false;
-      break;
-    }
-  }
-
-  // Return true if one of the teams has all players dead, false otherwise.
-  return isTeamADead || isTeamBDead;
+static bool BattleEngine_isBattleOver(const BattleEngine* battleEngine) {
+    // Check if either team has all players dead.
+    return BattleEngine_isTeamDead(battleEngine->numActorsA, battleEngine->teamA) || BattleEngine_isTeamDead(battleEngine->numActorsB, battleEngine->teamB);
 }
 
-Actor* BattleEngine_getWinner(const BattleEngine* battleEngine) {
-//   for (char i = 0; i < battleEngine->numActors; i++) {
-//     if (Actor_isAlive(battleEngine->actors[i])) {
-//       return battleEngine->actors[i];
-//     }
-//   }
-  return nullptr;
+void Actor_performAction(Actor* currentActor, Action action) {
+    switch (action) {
+        case ACTION_ATTACK:
+        // Attack the target.
+        Actor* target = currentActor->selectedTarget;
+        currentActor->Attack(currentActor, target);
+        break;
+        case ACTION_DEFEND:
+        // Defend.
+        currentActor->Defend(currentActor);
+        break;
+        default:
+        // Unknown action.
+        //   printf("Unknown action: %s\n", action.name);
+        break;
+    }
+}
+
+BattleStatus BattleEngine_mainLoop(BattleEngine* battleEngine) {
+    // While the battle is not over, process the turn of the current actor.
+    while (!BattleEngine_isBattleOver(battleEngine)) {
+        // Get the current actor.
+        Actor* currentActor = battleEngine->sortedActors[battleEngine->currentTurnIndex];
+
+        // If the actor is player controlled and has no action selected, then return a status indicating that the function is waiting for input.
+        if (currentActor->playerControlled && currentActor->selectedAction == ACTION_NONE) {
+            return BATTLE_STATUS_WAITING_FOR_INPUT;
+        }
+
+        // Call a routine in the actor that will return the action that the NPC should take - player will already have one set by now.
+        Action action;
+        if(currentActor->inPlayerTeam){
+            action = Actor_selectAction(currentActor, battleEngine->teamA, battleEngine->teamB);
+        } else {
+            action = Actor_selectAction(currentActor, battleEngine->teamB, battleEngine->teamA);
+        }
+
+        // Perform the action.
+        Actor_performAction(currentActor, action);
+
+        // Increment the current turn index.
+        battleEngine->currentTurnIndex++;
+     }
+
+    // The battle is over.
+    // Check which team won and return the appropriate status.
+    if (BattleEngine_isTeamDead(battleEngine->numActorsA, battleEngine->teamA)) {
+        return BATTLE_STATUS_TEAM_B_WIN;
+    } else if (BattleEngine_isTeamDead(battleEngine->numActorsB, battleEngine->teamB)) {
+        return BATTLE_STATUS_TEAM_A_WIN;
+    } else {
+        // Unknown battle state.
+        return BATTLE_STATUS_UNKNOWN;
+    }
 }

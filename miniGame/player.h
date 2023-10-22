@@ -7,7 +7,7 @@ struct Player : public Actor {
   int experiencePoints;
 };
 
-void Player_Attack(Actor* attacker, Actor* defender);
+void Player_Attack(Actor* attacker);
 void Player_Defend(Actor* actor);
 
 

@@ -46,11 +46,31 @@ const struct MenuOption BATTLE_MENU[] = {
     END_MENU_CHOICES
 };
 
-static void displaySortedActors(BattleEngine* battleEngine, CharWin* cw, int x, int y) {
-  cwin_putat_string_raw(cw, x, y, s"Sorted actors:", VCOL_LT_GREY);
+static void displaySortedActors(BattleEngine* battleEngine, int x, int y) {
+  cwin_putat_string_raw(&cw, x, y, s"Sorted actors:", VCOL_LT_GREY);
   for (int i = 0; i < battleEngine->numActors; i++) {
-    cwin_putat_string_raw(cw, x, y + i + 1, battleEngine->sortedActors[i]->name, VCOL_MED_GREY);
+    cwin_putat_string_raw(&cw, x, y + i + 1, battleEngine->sortedActors[i]->name, VCOL_MED_GREY);
   }
+}
+
+static void displaySelectedActorStats(int x, int y, Actor* selectedActor) {
+    // Display the actor's name.
+    cwin_putat_string_raw(&cw, x, y, selectedActor->name, VCOL_LT_GREY);
+
+    // Display the actor's stats.
+    char str[3];
+    sprintf(str, "%3d", selectedActor->energy);
+    cwin_putat_string_raw(&cw, x + 0, y + 2, "EN:", VCOL_LT_GREY);
+    cwin_putat_string_raw(&cw, x + 3, y + 2, str, VCOL_LT_GREY);
+    sprintf(str, "%2d", selectedActor->strength);
+    cwin_putat_string_raw(&cw, x + 0, y + 3, "STR:", VCOL_LT_GREY);
+    cwin_putat_string_raw(&cw, x + 4, y + 3, str, VCOL_LT_GREY);
+    sprintf(str, "%2d", selectedActor->dexterity);
+    cwin_putat_string_raw(&cw, x + 0, y + 4, "DEX:", VCOL_LT_GREY);
+    cwin_putat_string_raw(&cw, x + 4, y + 4, str, VCOL_LT_GREY);
+    sprintf(str, "%2d", selectedActor->regenerationPoints);
+    cwin_putat_string_raw(&cw, x + 0, y + 5, "REG:", VCOL_LT_GREY);
+    cwin_putat_string_raw(&cw, x + 4, y + 5, str, VCOL_LT_GREY);
 }
 
 static void _menuHandler() {
@@ -65,49 +85,53 @@ static void _menuHandler() {
     // Initialize 2 actors with basic but different stats
 
     struct Player player = {
-    .name = s"Player",
-    .strength = 10,
-    .dexterity = 10,
-    .energy = 100,
-    .regenerationPoints = 10,
-    .experiencePoints = 0,
-    .Attack = &Player_Attack,
-    .Defend = &Player_Defend
+        .name = s"Player",
+        .strength = 10,
+        .dexterity = 10,
+        .energy = 100,
+        .regenerationPoints = 10,
+        .playerControlled = true,
+        .selectedAction = ACTION_NONE,
+        .Attack = &Player_Attack,
+        .Defend = &Player_Defend,
+        .experiencePoints = 0,
     };
 
     struct Actor enemy1 = {
-    .name = s"Dog",
-    .strength = 5,
-    .dexterity = 15,
-    .energy = 100,
-    .regenerationPoints = 5,
-    .Attack = &Actor_Attack,
-    .Defend = &Actor_Defend
+        .name = s"Dog",
+        .strength = 5,
+        .dexterity = 15,
+        .energy = 100,
+        .regenerationPoints = 5,
+        .playerControlled = false,
+        .selectedAction = ACTION_NONE,
+        .Attack = &Actor_Attack,
+        .Defend = &Actor_Defend,
     };
 
-    struct Actor enemy2 = {
-    .name = s"Fat Dog",
-    .strength = 7,
-    .dexterity = 12,
-    .energy = 100,
-    .regenerationPoints = 6,
-    .Attack = &Actor_Attack,
-    .Defend = &Actor_Defend
-    };
+    // struct Actor enemy2 = {
+    // .name = s"Fat Dog",
+    // .strength = 7,
+    // .dexterity = 12,
+    // .energy = 100,
+    // .regenerationPoints = 6,
+    // .Attack = &Actor_Attack,
+    // .Defend = &Actor_Defend
+    // };
 
     Actor* teamA[1];
-    Actor* teamB[2];
+    Actor* teamB[1];
 
     // Add the player actor to teamA.
     teamA[0] = &player;
 
     // Add the enemy actors to teamB.
     teamB[0] = &enemy1;
-    teamB[1] = &enemy2;
+    // teamB[1] = &enemy2;
 
     // Calculate the number of actors in each team.
     char numActorsA = 1;
-    char numActorsB = 2;
+    char numActorsB = 1;
 
     // Initialize the battle engine.
     BattleEngine battleEngine;
@@ -116,7 +140,9 @@ static void _menuHandler() {
     displayMenu(BATTLE_MENU);
     switchScreenTo(SCREEN_SPLIT_MC_TXT);
 
-    displaySortedActors(&battleEngine, &cw, 0, 0);
+    displaySortedActors(&battleEngine, 15, 5);
+    displaySelectedActorStats(0, 0, &player);
+    displaySelectedActorStats(34, 0, &enemy1);
 }
 
 #pragma data(battleMenuLoaderData)
