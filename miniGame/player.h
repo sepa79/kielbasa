@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Actor.h"
+#include "actor.h"
 
 struct Player : public Actor {
   int experiencePoints;

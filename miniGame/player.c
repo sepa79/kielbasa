@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "player.h"
 
 #include <c64/vic.h>
 

@@ -1,4 +1,4 @@
-#include "BattleEngine.h"
+#include "battleEngine.h"
 
 static void sortActorsByInitiative(Actor** actors, int numElements) {
     for (int i = 0; i < numElements - 1; i++) {

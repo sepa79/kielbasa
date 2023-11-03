@@ -1,4 +1,4 @@
-#include "Actor.h"
+#include "actor.h"
 #include <c64/vic.h>
 
 int Actor_getInitiative(Actor* actor) {
