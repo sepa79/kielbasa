@@ -76,8 +76,8 @@ static void battleTurn() {
             // update screen
             break;
         // NPC turn
-        case BATTLE_STATUS_WAITING_FOR_INPUT:
-            cwin_putat_string_raw(&cw, 0, 8, "PLAYER TURN", VCOL_LT_GREY);
+        case BATTLE_STATUS_WAITING_FOR_SCREEN_UPDATE:
+            cwin_putat_string_raw(&cw, 0, 8, "NPC TURN", VCOL_LT_GREY);
 
             // update screen
             break;
@@ -98,7 +98,7 @@ static void battleTurn() {
         break;
     }
     displaySortedActors(&battleEngine, 15, 5);
-    displayActiveActorStats(&battleEngine);
+    // displayActiveActorStats(&battleEngine);
 }
 
 // Function declarations for battleMenu options
@@ -184,7 +184,7 @@ static void _menuHandler() {
     switchScreenTo(SCREEN_SPLIT_MC_TXT);
 
     displaySortedActors(&battleEngine, 15, 5);
-    displayAllActorStats();
+    // displayAllActorStats();
     // start battle
     battleTurn();
 }
