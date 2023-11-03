@@ -8,6 +8,7 @@
 
 enum BattleStatus {
   BATTLE_STATUS_WAITING_FOR_INPUT,
+  BATTLE_STATUS_WAITING_FOR_SCREEN_UPDATE,
   BATTLE_STATUS_TEAM_A_WIN,
   BATTLE_STATUS_TEAM_B_WIN,
   BATTLE_STATUS_UNKNOWN,
@@ -25,8 +26,8 @@ struct BattleEngine {
 
 void BattleEngine_init(BattleEngine* battleEngine, Actor** teamA, Actor** teamB, char numActorsA, char numActorsB);
 void BattleEngine_startBattle(BattleEngine* battleEngine);
-bool BattleEngine_isBattleOver(const BattleEngine* battleEngine);
-void displaySortedActors(BattleEngine* battleEngine, CharWin charWin, int x, int y);
+bool BattleEngine_isBattleOver(BattleEngine* battleEngine);
+BattleStatus BattleEngine_mainLoop(BattleEngine* battleEngine);
 
 #pragma compile("battleEngine.c")
 

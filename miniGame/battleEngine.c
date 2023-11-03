@@ -1,6 +1,6 @@
 #include "BattleEngine.h"
 
-void sortActorsByInitiative(Actor** actors, int numElements) {
+static void sortActorsByInitiative(Actor** actors, int numElements) {
     for (int i = 0; i < numElements - 1; i++) {
         for (int j = 0; j < numElements - i - 1; j++) {
             if (Actor_getInitiative(actors[j]) < Actor_getInitiative(actors[j + 1])) {
@@ -50,27 +50,9 @@ static bool BattleEngine_isTeamDead(int numActors, Actor** team) {
     return false;
 }
 
-static bool BattleEngine_isBattleOver(const BattleEngine* battleEngine) {
+static bool BattleEngine_isBattleOver(BattleEngine* battleEngine) {
     // Check if either team has all players dead.
     return BattleEngine_isTeamDead(battleEngine->numActorsA, battleEngine->teamA) || BattleEngine_isTeamDead(battleEngine->numActorsB, battleEngine->teamB);
-}
-
-void Actor_performAction(Actor* currentActor, Action action) {
-    switch (action) {
-        case ACTION_ATTACK:
-        // Attack the target.
-        Actor* target = currentActor->selectedTarget;
-        currentActor->Attack(currentActor, target);
-        break;
-        case ACTION_DEFEND:
-        // Defend.
-        currentActor->Defend(currentActor);
-        break;
-        default:
-        // Unknown action.
-        //   printf("Unknown action: %s\n", action.name);
-        break;
-    }
 }
 
 BattleStatus BattleEngine_mainLoop(BattleEngine* battleEngine) {
@@ -82,22 +64,25 @@ BattleStatus BattleEngine_mainLoop(BattleEngine* battleEngine) {
         // If the actor is player controlled and has no action selected, then return a status indicating that the function is waiting for input.
         if (currentActor->playerControlled && currentActor->selectedAction == ACTION_NONE) {
             return BATTLE_STATUS_WAITING_FOR_INPUT;
-        }
-
+        } else
         // Call a routine in the actor that will return the action that the NPC should take - player will already have one set by now.
-        Action action;
-        if(currentActor->inPlayerTeam){
-            action = Actor_selectAction(currentActor, battleEngine->teamA, battleEngine->teamB);
+        if (!currentActor->playerControlled && currentActor->inPlayerTeam){
+            Actor_selectAction(currentActor, battleEngine->teamA, battleEngine->teamB);
         } else {
-            action = Actor_selectAction(currentActor, battleEngine->teamB, battleEngine->teamA);
+            Actor_selectAction(currentActor, battleEngine->teamB, battleEngine->teamA);
         }
 
         // Perform the action.
-        Actor_performAction(currentActor, action);
+        Actor_performAction(currentActor);
 
         // Increment the current turn index.
         battleEngine->currentTurnIndex++;
-     }
+        if(battleEngine->currentTurnIndex == battleEngine->numActors){
+            battleEngine->currentTurnIndex = 0;
+        }
+
+        return BATTLE_STATUS_WAITING_FOR_SCREEN_UPDATE;
+    }
 
     // The battle is over.
     // Check which team won and return the appropriate status.

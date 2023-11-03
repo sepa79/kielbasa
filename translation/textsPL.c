@@ -14,10 +14,14 @@
 
 //      "pragma_label": MainArray,
 //      "array_label": TXT,
-//      "indexes_count": 123
-//      "array_length": 2635
+//      "indexes_count": 125
+//      "array_length": 2651
 
 
+//     "pl": "Atak  "
+const char TXT_PL_BATTLE_MENU_ATTACK[] = {0x71, 0x41, 0x14, 0x01, 0x0b, 0x20, 0x20, 0x00};
+//     "pl": "Obrona"
+const char TXT_PL_BATTLE_MENU_DEFEND[] = {0x72, 0x4f, 0x02, 0x12, 0x0f, 0x0e, 0x01, 0x00};
 //     "pl": "ü Wyjdź"
 const char TXT_PL_MENU_EXIT[] = {0x1f, 0x7c, 0x20, 0x57, 0x19, 0x0a, 0x04, 0x62, 0x00};
 //     "pl": "ü Mapa"
@@ -400,10 +404,12 @@ const char TXT_PL_PLANT_NAME_CORN[] = {0x4b, 0x15, 0x0b, 0x15, 0x12, 0x19, 0x04,
 
 //      "pragma_label": MainArray,
 //      "array_label": TXT,
-//      "indexes_count": 123
+//      "indexes_count": 125
 
 #pragma data ( txtPlMainArray )
 __export const char* TXT[] = {
+    TXT_PL_BATTLE_MENU_ATTACK,
+    TXT_PL_BATTLE_MENU_DEFEND,
     TXT_PL_MENU_EXIT,
     TXT_PL_EXIT_TO_MAP,
     TXT_PL_MENU_OPTIONS_LANG,
@@ -614,6 +620,6 @@ __export const char* PLANT_TYPES_TXT[] = {
 // Copy code
 // =============================================================================
 void loadTranslation() {
-    memcpy(TRANSLATION_DST, TRANSLATION_SRC, 0x1000);
+    memcpy(TRANSLATION_DST, TRANSLATION_SRC, 0x1400);
 };
 

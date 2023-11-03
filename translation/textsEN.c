@@ -14,10 +14,14 @@
 
 //      "pragma_label": MainArray,
 //      "array_label": TXT,
-//      "indexes_count": 123
-//      "array_length": 2616
+//      "indexes_count": 125
+//      "array_length": 2632
 
 
+//     "en": "Attack"
+const char TXT_EN_BATTLE_MENU_ATTACK[] = {0x71, 0x41, 0x14, 0x14, 0x01, 0x03, 0x0b, 0x00};
+//     "en": "Defend"
+const char TXT_EN_BATTLE_MENU_DEFEND[] = {0x72, 0x44, 0x05, 0x06, 0x05, 0x0e, 0x04, 0x00};
 //     "en": "ü Exit "
 const char TXT_EN_MENU_EXIT[] = {0x1f, 0x7c, 0x20, 0x45, 0x18, 0x09, 0x14, 0x20, 0x00};
 //     "en": "ü Map"
@@ -400,11 +404,13 @@ const char TXT_EN_PLANT_NAME_CORN[] = {0x43, 0x0f, 0x12, 0x0e, 0x20, 0x20, 0x20,
 
 //      "pragma_label": MainArray,
 //      "array_label": TXT,
-//      "indexes_count": 123
+//      "indexes_count": 125
 
 #pragma data ( txtEnMainArray )
 __export const char* TXT_EN[] = {
 
+    TXT_EN_BATTLE_MENU_ATTACK,
+    TXT_EN_BATTLE_MENU_DEFEND,
     TXT_EN_MENU_EXIT,
     TXT_EN_EXIT_TO_MAP,
     TXT_EN_MENU_OPTIONS_LANG,

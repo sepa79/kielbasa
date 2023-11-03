@@ -17,17 +17,17 @@
     txtPlFieldSizes,
     txtPlPlantStageNames,
     txtPlLocationNames
-}, 0x6000 )
+}, 0x5c00 )
 
 //      "pragma_label":  MainArray
 //      "array_label":   TXT
-//      "indexes_count": 123
-//      "array_length":  2635
+//      "indexes_count": 125
+//      "array_length":  2651
 
 // #pragma section( txtPlMainArrayArray, 0 )
 // #pragma section( txtPlMainArrayData, 0 )
-// #pragma region( bankTxtPlArray, 0x8000, 0x80f6, , TRANSLATION_PL_BANK, { txtPlMainArrayArray}, 0x6800 )
-// #pragma region( bankTxtPlData, 0x80f6, 0x8b41, , TRANSLATION_PL_BANK, { txtPlMainArrayArray}, 0x68f6 )
+// #pragma region( bankTxtPlArray, 0x8000, 0x80fa, , TRANSLATION_PL_BANK, { txtPlMainArrayArray}, 0x6800 )
+// #pragma region( bankTxtPlData, 0x80fa, 0x8b55, , TRANSLATION_PL_BANK, { txtPlMainArrayArray}, 0x68fa )
 
 //      "pragma_label":  FieldSizes
 //      "array_label":   FIELD_SIZES
@@ -36,8 +36,8 @@
 
 // #pragma section( txtPlFieldSizesArray, 0 )
 // #pragma section( txtPlFieldSizesData, 0 )
-// #pragma region( bankTxtPlArray, 0x8b42, 0x8b4a, , TRANSLATION_PL_BANK, { txtPlFieldSizesArray}, 0x6800 )
-// #pragma region( bankTxtPlData, 0x8b4a, 0x8b6a, , TRANSLATION_PL_BANK, { txtPlFieldSizesArray}, 0x6808 )
+// #pragma region( bankTxtPlArray, 0x8b56, 0x8b5e, , TRANSLATION_PL_BANK, { txtPlFieldSizesArray}, 0x6800 )
+// #pragma region( bankTxtPlData, 0x8b5e, 0x8b7e, , TRANSLATION_PL_BANK, { txtPlFieldSizesArray}, 0x6808 )
 
 //      "pragma_label":  LocationNames
 //      "array_label":   LOCATION_NAMES
@@ -46,8 +46,8 @@
 
 // #pragma section( txtPlLocationNamesArray, 0 )
 // #pragma section( txtPlLocationNamesData, 0 )
-// #pragma region( bankTxtPlArray, 0x8b6b, 0x8b97, , TRANSLATION_PL_BANK, { txtPlLocationNamesArray}, 0x6800 )
-// #pragma region( bankTxtPlData, 0x8b97, 0x8dbd, , TRANSLATION_PL_BANK, { txtPlLocationNamesArray}, 0x682c )
+// #pragma region( bankTxtPlArray, 0x8b7f, 0x8bab, , TRANSLATION_PL_BANK, { txtPlLocationNamesArray}, 0x6800 )
+// #pragma region( bankTxtPlData, 0x8bab, 0x8dd1, , TRANSLATION_PL_BANK, { txtPlLocationNamesArray}, 0x682c )
 
 //      "pragma_label":  PlantStageNames
 //      "array_label":   PLANT_STAGE_NAMES
@@ -56,8 +56,8 @@
 
 // #pragma section( txtPlPlantStageNamesArray, 0 )
 // #pragma section( txtPlPlantStageNamesData, 0 )
-// #pragma region( bankTxtPlArray, 0x8dbe, 0x8dd0, , TRANSLATION_PL_BANK, { txtPlPlantStageNamesArray}, 0x6800 )
-// #pragma region( bankTxtPlData, 0x8dd0, 0x8e21, , TRANSLATION_PL_BANK, { txtPlPlantStageNamesArray}, 0x6812 )
+// #pragma region( bankTxtPlArray, 0x8dd2, 0x8de4, , TRANSLATION_PL_BANK, { txtPlPlantStageNamesArray}, 0x6800 )
+// #pragma region( bankTxtPlData, 0x8de4, 0x8e35, , TRANSLATION_PL_BANK, { txtPlPlantStageNamesArray}, 0x6812 )
 
 //      "pragma_label":  PlantTypes
 //      "array_label":   PLANT_TYPES_TXT
@@ -66,8 +66,8 @@
 
 // #pragma section( txtPlPlantTypesArray, 0 )
 // #pragma section( txtPlPlantTypesData, 0 )
-// #pragma region( bankTxtPlArray, 0x8e22, 0x8e2c, , TRANSLATION_PL_BANK, { txtPlPlantTypesArray}, 0x6800 )
-// #pragma region( bankTxtPlData, 0x8e2c, 0x8e63, , TRANSLATION_PL_BANK, { txtPlPlantTypesArray}, 0x680a )
+// #pragma region( bankTxtPlArray, 0x8e36, 0x8e40, , TRANSLATION_PL_BANK, { txtPlPlantTypesArray}, 0x6800 )
+// #pragma region( bankTxtPlData, 0x8e40, 0x8e77, , TRANSLATION_PL_BANK, { txtPlPlantTypesArray}, 0x680a )
 
 // array_start, array_length, data_start, data_length
 
@@ -79,16 +79,16 @@
 //     CART_DATA_LENGTH
 // };
 
-// 0x8000, 0x00f6, 0x80f6, 0x0b41
-// 0x8b42, 0x0008, 0x8b4a, 0x0028
-// 0x8b6b, 0x002c, 0x8b97, 0x0252
-// 0x8dbe, 0x0012, 0x8dd0, 0x0063
-// 0x8e22, 0x000a, 0x8e2c, 0x0041
+// 0x8000, 0x00fa, 0x80fa, 0x0b55
+// 0x8b56, 0x0008, 0x8b5e, 0x0028
+// 0x8b7f, 0x002c, 0x8bab, 0x0252
+// 0x8dd2, 0x0012, 0x8de4, 0x0063
+// 0x8e36, 0x000a, 0x8e40, 0x0041
 
 #pragma section( txtPlMainArray, 0 )
 #pragma section( txtPlTxtData, 0 )
-#pragma region( bankTxtPlArray, 0x8100, 0x8200, , TRANSLATION_PL_BANK, { txtPlMainArray }, 0x6100 )
-#pragma region( bankTxtPlData, 0x8200, 0x8fff, , TRANSLATION_PL_BANK, { txtPlTxtData }, 0x6200 )
+#pragma region( bankTxtPlArray, 0x8100, 0x8200, , TRANSLATION_PL_BANK, { txtPlMainArray }, 0x5d00 )
+#pragma region( bankTxtPlData, 0x8200, 0x91ff, , TRANSLATION_PL_BANK, { txtPlTxtData }, 0x5e00 )
 
 // Switching code generation back to shared section
 #pragma code ( code )

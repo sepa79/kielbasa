@@ -51,7 +51,7 @@ __export const char* {{ section.array_label }}_{{ lang | upper }}[] = {
 // Copy code
 // =============================================================================
 void loadTranslation() {
-    memcpy(TRANSLATION_DST, TRANSLATION_SRC, 0x1000);
+    memcpy(TRANSLATION_DST, TRANSLATION_SRC, 0x1400);
 };
 
 {%- endif %}

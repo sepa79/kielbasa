@@ -106,7 +106,7 @@
 // *******************
 #define COLOR_RAM ((char *)0xd800)
 #define TRANSLATION_SRC ((char *)0x8000)
-#define TRANSLATION_DST ((char *)0x6000)
+#define TRANSLATION_DST ((char *)0x5c00)
 
 static char * const MENU_CODE_SRC = (char *)0x8000;
 static char * const MENU_CODE_DST = (char *)0x7000;

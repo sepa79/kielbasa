@@ -14,7 +14,7 @@
 #pragma heapsize( 0 )
 #pragma section( startup, 0 )
 #pragma region( startup, 0x0100, 0x0200, , , { startup } )
-#pragma region( main, 0x0400, 0x6000, , , { code, data, bss, heap, stack } )
+#pragma region( main, 0x0400, 0x5c00, , , { code, data, bss, heap, stack } )
 
 // Switching code generation back to shared section
 #pragma code ( code )

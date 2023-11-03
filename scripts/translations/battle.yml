@@ -1,0 +1,18 @@
+
+MainArray:
+  array_label: TXT
+  contents:
+  - id: BATTLE_MENU_ATTACK
+    menu_opt: '1'
+    en: 'Attack'
+    pl: 'Atak  '
+  - id: BATTLE_MENU_DEFEND
+    menu_opt: '2'
+    en: 'Defend'
+    pl: 'Obrona'
+
+
+
+
+
+

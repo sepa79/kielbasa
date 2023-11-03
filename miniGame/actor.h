@@ -29,6 +29,7 @@ void Actor_Attack(Actor* attacker);
 void Actor_Defend(Actor* actor);
 
 void Actor_selectAction(Actor* actor, Actor** friends, Actor** enemies);
+void Actor_performAction(Actor* currentActor);
 
 #pragma compile("actor.c")
 

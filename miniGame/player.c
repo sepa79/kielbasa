@@ -1,5 +1,7 @@
 #include "Player.h"
 
+#include <c64/vic.h>
+
 void Player_Attack(Actor* attacker) {
     // Player attack implementation
     Actor* defender = attacker->selectedTarget;
@@ -9,4 +11,5 @@ void Player_Attack(Actor* attacker) {
 void Player_Defend(Actor* actor) {
     // Player defend implementation
     actor->defenseBonus += 5;
+    vic.color_border--;
 }

@@ -31,29 +31,19 @@ __export const char battleMenuGfx1[] = {
 // menu code is in ROM - data in RAM
 #pragma code(battleMenuCode)
 #pragma data(data)
-
-// Function declarations for battleMenu options
-// static void _bmMenuAttack();
-// static void _bmMenuDefend();
-// static void _bmMenuItems();
-// static void _bmMenuFlee();
-
-const struct MenuOption BATTLE_MENU[] = {
-    // { TXT_IDX_BATTLE_MENU_ATTACK, KEY_ARROW_UP, SCREEN_SPLIT_MC_TXT, UI_SELECT, &_bmMenuAttack, 0, 1, 1 },
-    // { TXT_IDX_BATTLE_MENU_DEFEND, KEY_ARROW_DOWN, SCREEN_SPLIT_MC_TXT, UI_SELECT, &_bmMenuDefend, 0, 1, 2 },
-    // { TXT_IDX_BATTLE_MENU_ITEMS, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_SELECT, &_bmMenuItems, 0, 1, 3 },
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 11},
-    END_MENU_CHOICES
-};
+BattleEngine battleEngine;
+struct Player player;
+Actor* playerT[1];
+Actor* enemyT[1];
 
 static void displaySortedActors(BattleEngine* battleEngine, int x, int y) {
   cwin_putat_string_raw(&cw, x, y, s"Sorted actors:", VCOL_LT_GREY);
   for (int i = 0; i < battleEngine->numActors; i++) {
-    cwin_putat_string_raw(&cw, x, y + i + 1, battleEngine->sortedActors[i]->name, VCOL_MED_GREY);
+      cwin_putat_string_raw(&cw, x, y + i + 1, battleEngine->sortedActors[i]->name, VCOL_MED_GREY);
   }
 }
 
-static void displaySelectedActorStats(int x, int y, Actor* selectedActor) {
+static void displayActorStats(int x, int y, Actor* selectedActor) {
     // Display the actor's name.
     cwin_putat_string_raw(&cw, x, y, selectedActor->name, VCOL_LT_GREY);
 
@@ -73,6 +63,66 @@ static void displaySelectedActorStats(int x, int y, Actor* selectedActor) {
     cwin_putat_string_raw(&cw, x + 4, y + 5, str, VCOL_LT_GREY);
 }
 
+static void battleTurn() {
+    // Call the battle engine main loop
+    BattleStatus battleStatus = BattleEngine_mainLoop(&battleEngine);
+
+    // Check the battle status and take appropriate action
+    switch (battleStatus) {
+        // Player's turn
+        case BATTLE_STATUS_WAITING_FOR_INPUT:
+            cwin_putat_string_raw(&cw, 0, 8, "PLAYER TURN", VCOL_LT_GREY);
+
+            // update screen
+            break;
+        // NPC turn
+        case BATTLE_STATUS_WAITING_FOR_INPUT:
+            cwin_putat_string_raw(&cw, 0, 8, "PLAYER TURN", VCOL_LT_GREY);
+
+            // update screen
+            break;
+
+        // Battle over
+        case BATTLE_STATUS_TEAM_A_WIN:
+            cwin_putat_string_raw(&cw, 0, 8, "PLAYER WON ", VCOL_LT_GREY);
+
+            break;
+
+        // Battle over
+        case BATTLE_STATUS_TEAM_B_WIN:
+            cwin_putat_string_raw(&cw, 0, 8, "PLAYER LOST", VCOL_LT_GREY);
+            break;
+
+        default:
+        // Unknown battle status
+        break;
+    }
+    displaySortedActors(&battleEngine, 15, 5);
+    displayActiveActorStats(&battleEngine);
+}
+
+// Function declarations for battleMenu options
+static void _battleMenuAttack() {
+    player.selectedAction = ACTION_ATTACK;
+    player.selectedTarget = enemyT[0];
+    cwin_putat_string_raw(&cw, 0, 7, "ATTACK", VCOL_LT_GREY);
+    battleTurn();
+};
+
+static void _battleMenuDefend() {
+    player.selectedAction = ACTION_DEFEND;
+    player.selectedTarget = nullptr;
+    cwin_putat_string_raw(&cw, 0, 7, "DEFEND", VCOL_LT_GREY);
+    battleTurn();
+};
+
+const struct MenuOption BATTLE_MENU[] = {
+    { TXT_IDX_BATTLE_MENU_ATTACK, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_battleMenuAttack, 0, 16, 1 },
+    { TXT_IDX_BATTLE_MENU_DEFEND, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_battleMenuDefend, 0, 16, 2 },
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 16, 3},
+    END_MENU_CHOICES
+};
+
 static void _menuHandler() {
     mnu_isGfxLoaded = false;
     loadMenuGfx();
@@ -83,19 +133,16 @@ static void _menuHandler() {
     cwin_clear(&cw);
 
     // Initialize 2 actors with basic but different stats
-
-    struct Player player = {
-        .name = s"Player",
-        .strength = 10,
-        .dexterity = 10,
-        .energy = 100,
-        .regenerationPoints = 10,
-        .playerControlled = true,
-        .selectedAction = ACTION_NONE,
-        .Attack = &Player_Attack,
-        .Defend = &Player_Defend,
-        .experiencePoints = 0,
-    };
+    player.name = s"Player";
+    player.strength = 10;
+    player.dexterity = 10;
+    player.energy = 100;
+    player.regenerationPoints = 10;
+    player.playerControlled = true;
+    player.selectedAction = ACTION_NONE;
+    player.Attack = &Player_Attack;
+    player.Defend = &Player_Defend;
+    player.experiencePoints = 0;
 
     struct Actor enemy1 = {
         .name = s"Dog",
@@ -119,14 +166,11 @@ static void _menuHandler() {
     // .Defend = &Actor_Defend
     // };
 
-    Actor* teamA[1];
-    Actor* teamB[1];
-
     // Add the player actor to teamA.
-    teamA[0] = &player;
+    playerT[0] = &player;
 
     // Add the enemy actors to teamB.
-    teamB[0] = &enemy1;
+    enemyT[0] = &enemy1;
     // teamB[1] = &enemy2;
 
     // Calculate the number of actors in each team.
@@ -134,15 +178,15 @@ static void _menuHandler() {
     char numActorsB = 1;
 
     // Initialize the battle engine.
-    BattleEngine battleEngine;
-    BattleEngine_init(&battleEngine, teamA, teamB, numActorsA, numActorsB);
+    BattleEngine_init(&battleEngine, playerT, enemyT, numActorsA, numActorsB);
 
     displayMenu(BATTLE_MENU);
     switchScreenTo(SCREEN_SPLIT_MC_TXT);
 
     displaySortedActors(&battleEngine, 15, 5);
-    displaySelectedActorStats(0, 0, &player);
-    displaySelectedActorStats(34, 0, &enemy1);
+    displayAllActorStats();
+    // start battle
+    battleTurn();
 }
 
 #pragma data(battleMenuLoaderData)
