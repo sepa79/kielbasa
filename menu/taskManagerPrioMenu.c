@@ -21,16 +21,16 @@ static byte TASK_SHOW_LINE = 14;
 
 static void _showTaskPriorities(){
 
-    cwin_putat_string_raw(&cw, 0, 4, TXT[TXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_1], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 5, TXT[TXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_2], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 6, TXT[TXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_3], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 7, TXT[TXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_4], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 8, TXT[TXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_5], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 9, TXT[TXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_6], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 10, TXT[TXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_7], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 11, TXT[TXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_8], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 12, TXT[TXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_9], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 13, TXT[TXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_10], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0,  4, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_1], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0,  5, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_2], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0,  6, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_3], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0,  7, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_4], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0,  8, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_5], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0,  9, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_6], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0, 10, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_7], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0, 11, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_8], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0, 12, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_9], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0, 13, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_10], VCOL_YELLOW);
 
     char col1;
     char col2[4];
@@ -153,8 +153,11 @@ void showTaskManagerPrioMenu(){
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, BIG_SCREEN_Y_START, SCREEN_WIDTH, BIG_SCREEN_HEIGHT);
     cwin_clear(&cw);
 
+    // copy text task manager cache from cart to memory
+    loadCacheTxt(TXT_TASK_MANAGER_CACHE_INDEX);
+
     // static menu texts
-    cwin_putat_string_raw(&cw, 0, 0, TXT[TXT_IDX_TASK_MANAGER_PRIO_HEADER], VCOL_GREEN);
+    cwin_putat_string_raw(&cw, 0, 0, TXT_TASK_MANAGER[LTXT_IDX_TASK_MANAGER_PRIO_HEADER], VCOL_GREEN);
 
     displayMenu(TASK_MANAGER_PRIO_MENU);
     _showTaskPriorities();

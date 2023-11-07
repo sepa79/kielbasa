@@ -1,16 +1,16 @@
 
-MainArray:
+Txt:
   array_label: TXT
   contents:
   - id: MENU_PIGPEN1
     menu_opt: '1'
-    en: 'Feed'
+    en: 'Feed     '
     pl: 'Karmienie'
   - id: MENU_PIGPEN2
     menu_opt: '2'
-    en: 'Cleanup'
+    en: 'Cleanup   '
     pl: 'Sprzątanie'
   - id: MENU_PIGPEN3
     menu_opt: '3'
-    en: 'Upgrade'
+    en: 'Upgrade   '
     pl: 'Przebudowa'

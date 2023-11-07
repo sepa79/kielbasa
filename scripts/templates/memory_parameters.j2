@@ -1,0 +1,11 @@
+
+{# Text memory parameters #}
+{# - cartridge text arrays start address #}
+{# - RAM static text arrays start address #}
+{# - RAM dynamic text arrays start address #}
+
+{%- set ns2                         = namespace() -%}
+{%- set ns2.CARTRIDGE_ADDRESS_START = 0x8000 -%}
+{%- set ns2.ram_static_txt          = 0x5c00 -%}
+{%- set ns2.ram_dynamic_txt         = 0x6400 -%}
+

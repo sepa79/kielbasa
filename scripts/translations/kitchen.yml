@@ -1,10 +1,43 @@
 
-MainArray:
+# temporary texts - copied to memory only when scene is in use
+TxtKitchen:
+  array_label: TXT_KITCHEN
+  contents:
+  - id: KITCHEN_TASK_OFF
+    en: 'No                   '
+    pl: 'Nie                  '
+  - id: KITCHEN_TASK_ON
+    en: 'Yes                  '
+    pl: 'Tak                  '
+  - id: KITCHEN_EATING_STYLE_LIGHT
+    en: 'Bread                '
+    pl: 'Chleb                '
+  - id: KITCHEN_EATING_STYLE_MEDIUM
+    en: 'Bread, meat          '
+    pl: 'Chleb, mięso         '
+  - id: KITCHEN_EATING_STYLE_FULL
+    en: 'Bread, meat, veggies '
+    pl: 'Chleb, mięso, warzywa'
+  - id: KITCHEN_PREFER_SHOP
+    en: 'Shop food            '
+    pl: 'Sklepowe             '
+  - id: KITCHEN_PREFER_HOME
+    en: 'Home made            '
+    pl: 'Domowe               '
+  - id: KITCHEN_PREFER_POTATO
+    en: 'Potato               '
+    pl: 'Ziemniak             '
+  - id: KITCHEN_PREFER_CORN
+    en: 'Corn                 '
+    pl: 'Kukurydza            '
+
+# static text - always in memory
+Txt:
   array_label: TXT
   contents:
   - id: MENU_KITCHEN1
     menu_opt: '1'
-    en: 'Bake bread'
+    en: 'Bake bread  '
     pl: 'Upiecz chleb'
   - id: MENU_KITCHEN2
     menu_opt: '2'
@@ -13,7 +46,7 @@ MainArray:
   - id: MENU_KITCHEN3
     menu_opt: '3'
     en: 'For breakfast'
-    pl: 'Na śniadanie'
+    pl: 'Na śniadanie '
   - id: MENU_KITCHEN4
     menu_opt: '4'
     en: 'For supper have'
@@ -21,7 +54,7 @@ MainArray:
   - id: MENU_KITCHEN5
     menu_opt: '5'
     en: 'Food preferences'
-    pl: 'Preferuj żarcie'
+    pl: 'Preferuj żarcie '
   - id: MENU_KITCHEN6
     menu_opt: '6'
     en: 'Favourite veggie'
@@ -64,44 +97,17 @@ MainArray:
     en: 'Kitchen '
     pl: 'Kuchnia '
   - id: TASK_DSC_KITCHEN_BAKE_BREAD
-    en: 'Bake bread'
+    en: 'Bake bread  '
     pl: 'Upiecz chleb'
-  - id: KITCHEN_TASK_OFF
-    en: 'No                   '
-    pl: 'Nie                  '
-  - id: KITCHEN_TASK_ON
-    en: 'Yes                  '
-    pl: 'Tak                  '
-  - id: KITCHEN_EATING_STYLE_LIGHT
-    en: 'Bread                '
-    pl: 'Chleb                '
-  - id: KITCHEN_EATING_STYLE_MEDIUM
-    en: 'Bread, meat          '
-    pl: 'Chleb, mięso         '
-  - id: KITCHEN_EATING_STYLE_FULL
-    en: 'Bread, meat, veggies '
-    pl: 'Chleb, mięso, warzywa'
-  - id: KITCHEN_PREFER_SHOP
-    en: 'Shop food            '
-    pl: 'Sklepowe             '
-  - id: KITCHEN_PREFER_HOME
-    en: 'Home made            '
-    pl: 'Domowe               '
-  - id: KITCHEN_PREFER_POTATO
-    en: 'Potato               '
-    pl: 'Ziemniak             '
-  - id: KITCHEN_PREFER_CORN
-    en: 'Corn                 '
-    pl: 'Kukurydza            '
   - id: KITCHEN_MISSING
     en: 'Missing:    '
     pl: 'Brak:       '
   - id: KITCHEN_MISSING_BREAD
-    en: 'bread'
+    en: 'bread '
     pl: 'chleba'
   - id: KITCHEN_MISSING_MEAT
-    en: 'meat'
+    en: 'meat '
     pl: 'mięsa'
   - id: KITCHEN_MISSING_VEG
     en: 'veggies'
-    pl: 'warzyw'
+    pl: 'warzyw '

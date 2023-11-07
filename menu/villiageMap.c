@@ -220,6 +220,10 @@ static void _villiageMapLoadGfx(){
 }
 
 static void _villiageMapShowMenu(void){
+
+    // copy text village map cache from cart to memory
+    loadCacheTxt(TXT_VILLAGE_MAP_CACHE_INDEX);
+
     _villiageMapLoadGfx();
     // make screen visible
     switchScreenTo(SCREEN_HIRES_TXT);

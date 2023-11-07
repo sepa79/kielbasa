@@ -1,6 +1,6 @@
 
-LocationNames:
-  array_label: LOCATION_NAMES
+TxtVillageMap:
+  array_label: TXT_VILLAGE_MAP
   contents:
     # fixed width - 12x2
   - id: NOTHING

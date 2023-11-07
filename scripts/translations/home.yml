@@ -1,11 +1,11 @@
 
-MainArray:
+Txt:
   array_label: TXT
   contents:
   - id: TASK_LIST_HEADER
-    en: '  Task  |    Description    '
+    en:   '  Task  |    Description    '
     en_m: '----------------------------'
-    pl: 'Zadanie |       Opis        '
+    pl:   'Zadanie |       Opis        '
     pl_m: '----------------------------'
   - id: MENU_MAIN1
     menu_opt: '1'
@@ -13,7 +13,7 @@ MainArray:
     pl: 'Kuchnia'
   - id: MENU_MAIN2
     menu_opt: '2'
-    en: 'Crew'
+    en: 'Crew  '
     pl: 'Załoga'
   - id: MENU_MAIN3
     menu_opt: '3'

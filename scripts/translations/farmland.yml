@@ -1,7 +1,26 @@
 
-MainArray:
-  array_label: TXT
+TxtFarmland:
+  array_label: TXT_FARMLAND
   contents:
+  # CONFIRMATIONS
+  - id: CONFIRM_TXT
+    en: 'Confirm:'
+    pl: 'Wybierz:'
+  - id: CONFIRM_ERROR
+    en:
+    - '   Action   '
+    - '     not    '
+    - '  confirmed '
+    pl:
+    - '    Akcja   '
+    - '   wymaga   '
+    - ' akceptacji '
+  - id: CONFIRM_YES
+    en: '  Yes   '
+    pl: '  Tak   '
+  - id: CONFIRM_NO
+    en: '   No   '
+    pl: '  Nie   '
   - id: MENU_FARMLAND_PLOW
     en: '  ûý Plow field '
     pl: ' ûý Zaoraj pole '
@@ -20,6 +39,24 @@ MainArray:
   - id: DESC_FARMLAND_REAP
     en: '   Harvest the         crops      '
     pl: '   Zbierz plony                   '
+  - id: FARM_FIELD_TXT
+    en: 'Field: '
+    pl: 'Pole:  '
+  - id: FARM_PLANT_TXT
+    en: 'Growing:'
+    pl: 'Uprawa: '
+  - id: TASK_DSC_FARMLAND_FIELD
+    en: 'Field'
+    pl: 'Pole '
+  - id: FIELD_LIST_HEADER
+    en:   '¼#  Field  |  State   '
+    en_m: '----------------------'
+    pl:   '¼#  Pole   |   Stan   '
+    pl_m: '----------------------'
+
+Txt:
+  array_label: TXT
+  contents:
   - id: TASK_FARMLAND_PLOW
     en: 'Plow    '
     pl: 'Orka    '
@@ -29,18 +66,15 @@ MainArray:
   - id: TASK_FARMLAND_REAP
     en: 'Reap    '
     pl: 'Zbiory  '
-  - id: TASK_DSC_FARMLAND_FIELD
-    en: 'Field'
-    pl: 'Pole'
   - id: TASK_DSC_FARMLAND_POTATO
-    en: 'potatoes'
+    en: 'potatoes '
     pl: 'ziemniaki'
   - id: TASK_DSC_FARMLAND_LUPINE
     en: 'lupine'
-    pl: 'łubin'
+    pl: 'łubin '
   - id: TASK_DSC_FARMLAND_WHEAT
-    en: 'wheat'
+    en: 'wheat   '
     pl: 'pszenica'
   - id: TASK_DSC_FARMLAND_CORN
-    en: 'corn'
+    en: 'corn     '
     pl: 'kukurydza'

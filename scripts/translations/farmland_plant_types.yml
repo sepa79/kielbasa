@@ -1,7 +1,9 @@
 
-PlantTypes:
-  array_label: PLANT_TYPES_TXT
+
+TxtFarmland:
+  array_label: TXT_FARMLAND
   contents:
+  # PLANT TYPES
   - id: PLANT_NAME_NONE
     en: 'Empty     '
     pl: 'Puste     '

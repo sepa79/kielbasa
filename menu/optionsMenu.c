@@ -229,14 +229,17 @@ void showOptionsMenu(){
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, BIG_SCREEN_Y_START, SCREEN_WIDTH, BIG_SCREEN_HEIGHT);
     cwin_clear(&cw);
 
+    // copy text options menu cache from cart to memory
+    loadCacheTxt(TXT_OPTIONS_MENU_CACHE_INDEX);
+
     // static menu texts
     #define HELP_Y 6
-    cwin_putat_string_raw(&cw, 0, 0, TXT[TXT_IDX_OPTIONS_HEADER], VCOL_GREEN);
-    cwin_putat_string_raw(&cw, 0, HELP_Y, TXT[TXT_IDX_OPTIONS_HELP1], VCOL_LT_GREY);
-    cwin_putat_string_raw(&cw, 0, HELP_Y+2, TXT[TXT_IDX_OPTIONS_HELP2], VCOL_MED_GREY);
-    cwin_putat_string_raw(&cw, 0, HELP_Y+3, TXT[TXT_IDX_OPTIONS_HELP3], VCOL_MED_GREY);
-    cwin_putat_string_raw(&cw, 0, HELP_Y+4, TXT[TXT_IDX_OPTIONS_HELP4], VCOL_MED_GREY);
-    cwin_putat_string_raw(&cw, 0, HELP_Y+5, TXT[TXT_IDX_OPTIONS_HELP5], VCOL_MED_GREY);
+    cwin_putat_string_raw(&cw, 0, 0, TXT_CACHE[LTXT_IDX_OPTIONS_HEADER], VCOL_GREEN);
+    cwin_putat_string_raw(&cw, 0, HELP_Y+0, TXT_CACHE[LTXT_IDX_OPTIONS_HELP1], VCOL_LT_GREY);
+    cwin_putat_string_raw(&cw, 0, HELP_Y+2, TXT_CACHE[LTXT_IDX_OPTIONS_HELP2], VCOL_MED_GREY);
+    cwin_putat_string_raw(&cw, 0, HELP_Y+3, TXT_CACHE[LTXT_IDX_OPTIONS_HELP3], VCOL_MED_GREY);
+    cwin_putat_string_raw(&cw, 0, HELP_Y+4, TXT_CACHE[LTXT_IDX_OPTIONS_HELP4], VCOL_MED_GREY);
+    cwin_putat_string_raw(&cw, 0, HELP_Y+5, TXT_CACHE[LTXT_IDX_OPTIONS_HELP5], VCOL_MED_GREY);
 
     displayMenu(OPTIONS_MENU);
     switchScreenTo(SCREEN_FULL_TXT);

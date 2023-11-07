@@ -192,9 +192,9 @@ static void _showCharacterDetails(byte character){
     cwin_fill(&cStory, 32, VCOL_LT_GREY);
     cwin_write_string_raw(&cStory, TXT[allCharacters[character].storyTextIdx]);
 
-    cwin_putat_string_raw(&cd, 0, 7, TXT[TXT_IDX_STAT_INT], VCOL_LT_BLUE);
-    cwin_putat_string_raw(&cd, 0, 8, TXT[TXT_IDX_STAT_STR], VCOL_LT_BLUE);
-    cwin_putat_string_raw(&cd, 0, 9, TXT[TXT_IDX_STAT_CUN], VCOL_LT_BLUE);
+    cwin_putat_string_raw(&cd, 0, 7, TXT_CACHE[LTXT_IDX_CREW_STAT_INT], VCOL_LT_BLUE);
+    cwin_putat_string_raw(&cd, 0, 8, TXT_CACHE[LTXT_IDX_CREW_STAT_STR], VCOL_LT_BLUE);
+    cwin_putat_string_raw(&cd, 0, 9, TXT_CACHE[LTXT_IDX_CREW_STAT_CUN], VCOL_LT_BLUE);
 
     byte str[2];
     sprintf(str, "%u", allCharacters[character].stat[STAT_INT]);
@@ -204,10 +204,10 @@ static void _showCharacterDetails(byte character){
     sprintf(str, "%u", allCharacters[character].stat[STAT_CUN]);
     cwin_putat_string_raw(&cd, 9, 9, str, VCOL_GREEN);
 
-    cwin_putat_string_raw(&cd, 11,  7, TXT[TXT_IDX_SKILL_ANI], VCOL_LT_BLUE);
-    cwin_putat_string_raw(&cd, 11,  8, TXT[TXT_IDX_SKILL_FRM], VCOL_LT_BLUE);
-    cwin_putat_string_raw(&cd, 11,  9, TXT[TXT_IDX_SKILL_BTH], VCOL_LT_BLUE);
-    cwin_putat_string_raw(&cd, 11, 10, TXT[TXT_IDX_SKILL_TRD], VCOL_LT_BLUE);
+    cwin_putat_string_raw(&cd, 11,  7, TXT_CACHE[LTXT_IDX_CREW_SKILL_ANI], VCOL_LT_BLUE);
+    cwin_putat_string_raw(&cd, 11,  8, TXT_CACHE[LTXT_IDX_CREW_SKILL_FRM], VCOL_LT_BLUE);
+    cwin_putat_string_raw(&cd, 11,  9, TXT_CACHE[LTXT_IDX_CREW_SKILL_BTH], VCOL_LT_BLUE);
+    cwin_putat_string_raw(&cd, 11, 10, TXT_CACHE[LTXT_IDX_CREW_SKILL_TRD], VCOL_LT_BLUE);
 
     sprintf(str, "%u", allCharacters[character].skill[SKILL_ANIMALS]);
     cwin_putat_string_raw(&cd, 22,  7, str, VCOL_GREEN);
@@ -247,6 +247,9 @@ const struct MenuOption CREW_MENU[] = {
 static void _menuHandler(void){
     mnu_isGfxLoaded = false;
     loadMenuGfx();
+
+    // copy text crew cache from cat to memory
+    loadCacheTxt(TXT_CREW_CACHE_INDEX);
 
     // Bars and portrait
     _prepareBars();

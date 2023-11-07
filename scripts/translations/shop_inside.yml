@@ -1,14 +1,14 @@
 
-MainArray:
+Txt:
   array_label: TXT
   contents:
   - id: MENU_SHOPIN1
     menu_opt: '1'
     en: 'Buy gherkin'
-    pl: 'Kup ogóra'
+    pl: 'Kup ogóra  '
   - id: MENU_SHOPIN2
     menu_opt: '2'
-    en: 'Chat'
+    en: 'Chat   '
     pl: 'Rozmowa'
   - id: MENU_SHOPIN3
     menu_opt: '3'

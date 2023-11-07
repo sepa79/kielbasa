@@ -1,5 +1,5 @@
 
-MainArray:
+Txt:
   array_label: TXT
   contents:
   - id: TASK_EMPTY_NAME           # fixed width - 8

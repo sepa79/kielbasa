@@ -1,6 +1,6 @@
 
-PlantStageNames:
-  array_label: PLANT_STAGE_NAMES
+TxtFarmland:
+  array_label: TXT_FARMLAND
   contents:
   - id: PLANT_STAGE_NONE
     en: '        '

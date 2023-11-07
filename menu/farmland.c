@@ -259,7 +259,7 @@ __interrupt static void _menuShowSprites(){
 // Set the plant task
 static void _sowPlant(){
     if(_currentPlant == 0){
-        updateStatusBarError(TXT[TXT_IDX_CONFIRM_ERROR]);
+        updateStatusBarError(TXT_CACHE[LTXT_IDX_CONFIRM_ERROR]);
         return;
     }
     // // must be plowed
@@ -280,7 +280,7 @@ static void _sowPlant(){
 
     byte idx = plants[_currentPlant].taskDscIdx;
     // "Field 2, Potatoes"
-    sprintf(newTask.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
+    sprintf(newTask.desc, "%s %u, %s", TXT_CACHE[LTXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
     newTask.codeRef   = &sowFieldTask;
     newTask.nameIdx   = TXT_IDX_TASK_FARMLAND_FARM;
     newTask.params[0] = _currentPlant;
@@ -297,7 +297,7 @@ static void _sowPlant(){
 static void _reapPlant(){
     // don't allow to ruin growth in progress
     if(fields[_currentField].stage != PLANT_STAGE_READY || !_confirm){
-        updateStatusBarError(TXT[TXT_IDX_CONFIRM_ERROR]);
+        updateStatusBarError(TXT_CACHE[LTXT_IDX_CONFIRM_ERROR]);
         return;
     }
     // indicate task is assigned
@@ -306,7 +306,7 @@ static void _reapPlant(){
 
     byte idx = plants[fields[_currentField].plantId].taskDscIdx;
     // "Field 2, Potatoes"
-    sprintf(newTask.desc, "%s %u, %s", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
+    sprintf(newTask.desc, "%s %u, %s", TXT_CACHE[LTXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField+1, TXT[idx]);
     newTask.codeRef   = &reapFieldTask;
     newTask.nameIdx   = TXT_IDX_TASK_FARMLAND_REAP;
     newTask.params[0] = _currentField;
@@ -324,7 +324,7 @@ static void _reapPlant(){
 static void _plowField() {
     // don't allow to ruin growth in progress
     if(!_confirm){
-        updateStatusBarError(TXT[TXT_IDX_CONFIRM_ERROR]);
+        updateStatusBarError(TXT_CACHE[LTXT_IDX_CONFIRM_ERROR]);
         return;
     }
     // Indicate task is assigned
@@ -338,7 +338,7 @@ static void _plowField() {
     fields[_currentField].ready   = 0;
 
     // "Field 2"
-    sprintf(newTask.desc, "%s %u", TXT[TXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField + 1);
+    sprintf(newTask.desc, "%s %u", TXT_CACHE[LTXT_IDX_TASK_DSC_FARMLAND_FIELD], _currentField + 1);
     newTask.codeRef   = &plowFieldTask;
     newTask.nameIdx   = TXT_IDX_TASK_FARMLAND_PLOW;
     newTask.params[0] = _currentField;
@@ -360,7 +360,7 @@ static CharWin cd;
 static CharWin ht;
 
 static void _showField(){
-    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 1, TXT[TXT_IDX_FARM_FIELD_TXT], VCOL_MED_GREY);
+    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 1, TXT_CACHE[LTXT_IDX_FARM_FIELD_TXT], VCOL_MED_GREY);
     byte str[2];
     sprintf(str, "%u", _currentField+1);
     cwin_putat_string(&cw, FARM_CTX_MENU_X+4+7, 1, str, VCOL_LT_GREY);
@@ -368,12 +368,12 @@ static void _showField(){
 
 static void _showConfirmBox(){
     // Confirm:
-    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 2, TXT[TXT_IDX_CONFIRM_TXT], VCOL_MED_GREY);
+    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 2, TXT_CACHE[LTXT_IDX_CONFIRM_TXT], VCOL_MED_GREY);
     // yes/no
     if(_confirm){
-        cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 3, TXT[TXT_IDX_CONFIRM_YES], VCOL_LT_GREY);
+        cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 3, TXT_CACHE[LTXT_IDX_CONFIRM_YES], VCOL_LT_GREY);
     } else {
-        cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 3, TXT[TXT_IDX_CONFIRM_NO], VCOL_LT_GREY);
+        cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 3, TXT_CACHE[LTXT_IDX_CONFIRM_NO], VCOL_LT_GREY);
     }
     // arrows
     cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+2, 3, "\x1f", VCOL_MED_GREY);
@@ -382,22 +382,22 @@ static void _showConfirmBox(){
 
 static void _showOptionPlow(){
     // cwin_clear(&cd);
-    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X, FARM_CTX_MENU_Y, TXT[TXT_IDX_MENU_FARMLAND_PLOW], VCOL_DARK_GREY);
-    cwin_write_string_raw(&ht, TXT[TXT_IDX_DESC_FARMLAND_PLOW]);
+    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X, FARM_CTX_MENU_Y, TXT_CACHE[LTXT_IDX_MENU_FARMLAND_PLOW], VCOL_DARK_GREY);
+    cwin_write_string_raw(&ht, TXT_CACHE[LTXT_IDX_DESC_FARMLAND_PLOW]);
 
     _showField();
     _showConfirmBox();
 }
 static void _showOptionSow(){
-    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X, FARM_CTX_MENU_Y, TXT[TXT_IDX_MENU_FARMLAND_SOW], VCOL_DARK_GREY);
-    cwin_write_string_raw(&ht, TXT[TXT_IDX_DESC_FARMLAND_SOW]);
+    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X, FARM_CTX_MENU_Y, TXT_CACHE[LTXT_IDX_MENU_FARMLAND_SOW], VCOL_DARK_GREY);
+    cwin_write_string_raw(&ht, TXT_CACHE[LTXT_IDX_DESC_FARMLAND_SOW]);
 
     _showField();
 
     // Growing:
-    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 2, TXT[TXT_IDX_FARM_PLANT_TXT], VCOL_MED_GREY);
+    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 2, TXT_CACHE[LTXT_IDX_FARM_PLANT_TXT], VCOL_MED_GREY);
     // plantname
-    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 3, PLANT_TYPES_TXT[_currentPlant], VCOL_LT_GREY);
+    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+4, 3, TXT_CACHE[LTXT_IDX_PLANT_NAME_NONE + _currentPlant], VCOL_LT_GREY);
     // arrows
     cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+2, 3, "\x1f", VCOL_MED_GREY);
     cwin_putat_string_raw(&cw, FARM_CTX_MENU_X+14, 3, "$", VCOL_MED_GREY);
@@ -408,8 +408,8 @@ static void _showOptionReap(){
     _showField();
     _showConfirmBox();
 
-    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X, FARM_CTX_MENU_Y, TXT[TXT_IDX_MENU_FARMLAND_REAP], VCOL_DARK_GREY);
-    cwin_write_string_raw(&ht, TXT[TXT_IDX_DESC_FARMLAND_REAP]);
+    cwin_putat_string_raw(&cw, FARM_CTX_MENU_X, FARM_CTX_MENU_Y, TXT_CACHE[LTXT_IDX_MENU_FARMLAND_REAP], VCOL_DARK_GREY);
+    cwin_write_string_raw(&ht, TXT_CACHE[LTXT_IDX_DESC_FARMLAND_REAP]);
 }
 
 static void _showContextMenu(){
@@ -431,7 +431,7 @@ static void _showContextMenu(){
 static const char separator[23] = { 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x7f, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x0 };
 static void _displayFieldList(){
 
-    cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST, ROW_OFFSET_FIELDLIST, TXT[TXT_IDX_FIELD_LIST_HEADER], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST, ROW_OFFSET_FIELDLIST, TXT_CACHE[LTXT_IDX_FIELD_LIST_HEADER], VCOL_YELLOW);
 
     char str[10];
     char col;
@@ -448,14 +448,14 @@ static void _displayFieldList(){
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+11, ROW_OFFSET_FIELDLIST+1+i*3, TBL_V, VCOL_YELLOW);
         cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+11, ROW_OFFSET_FIELDLIST+2+i*3, TBL_V, VCOL_YELLOW);
         // field size
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST, ROW_OFFSET_FIELDLIST+1+i*3, FIELD_SIZES[fields[i].area-1], col);
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST, ROW_OFFSET_FIELDLIST+1+i*3, TXT_CACHE[LTXT_IDX_FIELD_SMALL + fields[i].area-1], col);
         // plant name
         char plantId = fields[i].plantId;
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+1, ROW_OFFSET_FIELDLIST+2+i*3, PLANT_TYPES_TXT[plantId], col);
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+1, ROW_OFFSET_FIELDLIST+2+i*3, TXT_CACHE[LTXT_IDX_PLANT_NAME_NONE + plantId], col);
 
         // stage
         char stage = fields[i].stage;
-        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+13, ROW_OFFSET_FIELDLIST+1+i*3, PLANT_STAGE_NAMES[stage], col);
+        cwin_putat_string_raw(&cw, COL_OFFSET_FIELDLIST+13, ROW_OFFSET_FIELDLIST+1+i*3, TXT_CACHE[LTXT_IDX_PLANT_STAGE_NONE + stage], col);
 
         // state
         switch (fields[i].stage) {
@@ -606,6 +606,9 @@ static void _menuHandler(void){
     mnu_isGfxLoaded = false;
     loadMenuGfx();
     loadMenuSprites();
+
+    // copy text farmland cache from cart to memory
+    loadCacheTxt(TXT_FARMLAND_CACHE_INDEX);
 
     _showFarmMenu();
 }

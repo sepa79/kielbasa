@@ -1,0 +1,23 @@
+
+TxtOptionsMenu:
+  array_label: TXT_OPTIONS_MENU
+  contents:
+  - id: OPTIONS_HEADER
+    en: 'Game settings '
+    pl: 'Ustawienia gry'
+  - id: OPTIONS_HELP1
+    en: 'UI items legend:  '
+    pl: 'Znaczenie ikon UI:'
+  - id: OPTIONS_HELP2
+    en: 'ü - Long Fire  (1s or more)   '
+    pl: 'ü - Długi fire (1s lub dłużej)'
+  - id: OPTIONS_HELP3
+    en: 'ý - Fire'
+    pl: 'ý - Fire'
+  - id: OPTIONS_HELP4
+    en: "û - 'Return' key    "
+    pl: "û - Klawisz 'Return'"
+  - id: OPTIONS_HELP5
+    en: "½ - 'Escape' key in menus and on map"
+    pl: "½ - 'Escape' w menu i na mapie      "
+

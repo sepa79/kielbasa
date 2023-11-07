@@ -9,29 +9,37 @@
 //
 //
 
+{%- for section in index_arrays %}
 
-// DrMortalWombat's magic spell to simplify using underlied chars (+$80 in Kielbasa's charset)
-#define underline(x) \
-""\
-#pragma charmap(1, 129, 127)\
-x\
-#pragma charmap(1, 1, 127)
+//      "pragma_label": {{ section.pragma_label }},
+//      "array_label": {{ section.array_label }},
+//      "indexes_count": {{ section.indexes_count }}
 
-enum TEXT_INDEXES {
-{%- for entry in enum_labels %}
-    {{ entry.prefix }}_IDX_{{ entry.label }}{{ "," if not loop.last }}
+enum {{ section.array_label }}_INDEXES {
+
+{%- for label in section.contents %}
+{%- if section.pragma_label == "Txt" %}
+    {{ label }}{{ "," if not loop.last }}
+{%- else %}
+    L{{ label }}{{ "," if not loop.last }}
+{%- endif %}
 {%- endfor %}
 };
-
+{%- endfor %}
 
 //      "pragma_label": {{ pragma_label }}
 //      "array_label": {{ array_label }}
-
 
 {% for entry in text_variables -%}
 //      common: '{{ entry.text }}'
 static const char {{ entry.prefix }}_{{ entry.label }}[] = {{ '{' + entry.bytearray + ', 0x00};' }}
 {% endfor %}
+
+enum TXT_CACHE_INDEXES {
+{%- for section in index_arrays %}
+    {{ section.array_label }}_CACHE_INDEX{{ "," if not loop.last }}
+{%- endfor %}
+};
 
 #endif
 

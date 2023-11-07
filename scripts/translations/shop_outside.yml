@@ -1,5 +1,5 @@
 
-MainArray:
+Txt:
   array_label: TXT
   contents:
   - id: SHOP_CLOSED
@@ -13,7 +13,7 @@ MainArray:
     - ' zamknięty  '
     - '            '
   - id: SHOP_DESCRIPTION
-    en: 'A general store, open 7-11, then 15-19, everyday.'
+    en: 'A general store, open 7-11, then 15-19, everyday.         '
     pl: "Sklep wielobranżowy 'GS', otwarty 7-11 i15-19, codziennie."
   - id: MENU_SHOPOUT1
     menu_opt: '1'
@@ -21,5 +21,5 @@ MainArray:
     pl: 'Wejdź'
   - id: MENU_SHOPOUT2
     menu_opt: '2'
-    en: 'Chat'
+    en: 'Chat   '
     pl: 'Rozmowa'

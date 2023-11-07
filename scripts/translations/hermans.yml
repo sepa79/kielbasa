@@ -1,11 +1,11 @@
 
-MainArray:
+Txt:
   array_label: TXT
   contents:
   - id: MENU_AIR_DEF
     menu_opt: '1'
     en: 'Air Defence (Warning: No return to    main game!)'
-    pl: 'Stonka (Uwaga: Bez powrotu do gry!)'
+    pl: 'Stonka (Uwaga: Bez powrotu do gry!)              '
   - id: SAVE_POTATOES
-    en: 'Save potatoes!'
+    en: 'Save potatoes! '
     pl: 'Ratuj kartofle!'

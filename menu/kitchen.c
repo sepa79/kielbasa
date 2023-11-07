@@ -86,14 +86,14 @@ static void _updateView(){
     byteToSprite(GS.kitchen.storage[FOOD_SOUSAGE], SPR_FOOD_4);
 
     if(GS.kitchen.bakeBreadDaily){
-        cwin_putat_string_raw(&cw, 19, 2, TXT[TXT_IDX_KITCHEN_TASK_ON], VCOL_GREEN);
+        cwin_putat_string_raw(&cw, 19, 2, TXT_CACHE[LTXT_IDX_KITCHEN_TASK_ON], VCOL_GREEN);
     } else {
-        cwin_putat_string_raw(&cw, 19, 2, TXT[TXT_IDX_KITCHEN_TASK_OFF], VCOL_DARK_GREY);
+        cwin_putat_string_raw(&cw, 19, 2, TXT_CACHE[LTXT_IDX_KITCHEN_TASK_OFF], VCOL_DARK_GREY);
     }
-    cwin_putat_string_raw(&cw, 19, 3, TXT[TXT_IDX_KITCHEN_EATING_STYLE_LIGHT + GS.kitchen.breakfastType], VCOL_DARK_GREY);
-    cwin_putat_string_raw(&cw, 19, 4, TXT[TXT_IDX_KITCHEN_EATING_STYLE_LIGHT + GS.kitchen.supperType], VCOL_DARK_GREY);
-    cwin_putat_string_raw(&cw, 19, 5, TXT[TXT_IDX_KITCHEN_PREFER_SHOP + GS.kitchen.preferHomeFood], VCOL_DARK_GREY);
-    cwin_putat_string_raw(&cw, 19, 6, TXT[TXT_IDX_KITCHEN_PREFER_POTATO + GS.kitchen.preferCorn], VCOL_DARK_GREY);
+    cwin_putat_string_raw(&cw, 19, 3, TXT_CACHE[LTXT_IDX_KITCHEN_EATING_STYLE_LIGHT + GS.kitchen.breakfastType], VCOL_DARK_GREY);
+    cwin_putat_string_raw(&cw, 19, 4, TXT_CACHE[LTXT_IDX_KITCHEN_EATING_STYLE_LIGHT + GS.kitchen.supperType], VCOL_DARK_GREY);
+    cwin_putat_string_raw(&cw, 19, 5, TXT_CACHE[LTXT_IDX_KITCHEN_PREFER_SHOP + GS.kitchen.preferHomeFood], VCOL_DARK_GREY);
+    cwin_putat_string_raw(&cw, 19, 6, TXT_CACHE[LTXT_IDX_KITCHEN_PREFER_POTATO + GS.kitchen.preferCorn], VCOL_DARK_GREY);
 
 }
 
@@ -154,6 +154,9 @@ static void _menuHandler(void){
     mnu_isGfxLoaded = false;
     loadMenuGfx();
     loadMenuSprites();
+
+    // copy text kitchen cache from cart to memory
+    loadCacheTxt(TXT_KITCHEN_CACHE_INDEX);
 
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);

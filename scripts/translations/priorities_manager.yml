@@ -1,9 +1,9 @@
 
-MainArray:
-  array_label: TXT
+TxtTaskManager:
+  array_label: TXT_TASK_MANAGER
   contents:
   - id: TASK_MANAGER_PRIO_HEADER
-    en: 'Task Priority Manager'
+    en: 'Task Priority Manager    '
     pl: 'Manager priorytetów zadań'
   - id: TASK_MANAGER_PRIO_TABLE_HEADER_1
     en:   '                     |Skill   | Task   '
@@ -39,6 +39,10 @@ MainArray:
     en_m: '---------------------------------------'
     pl:   'Postać               |a|o|e|l | a|o|e|l'
     pl_m: '---------------------------------------'
+
+Txt:
+  array_label: TXT
+  contents:
   - id: MENU_TASK_MANAGER_PLUS
     en: '+'
     pl: '+'

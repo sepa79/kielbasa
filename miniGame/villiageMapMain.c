@@ -255,6 +255,7 @@ volatile char moveCostTime = 0;
 volatile char moveCostEnergy = 0;
 
 void villiageMapScreenInit(void){
+
     // copy fonts
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
     char pport = setPort(MMAP_ROM);
@@ -328,7 +329,7 @@ void villiageMapDraw(){
         // char framesUsed = gms_frameCount - frameStart;
         // sprintf(str, "%03d", framesUsed);
         // textToSprite(str, 4);
-        textToSprite((char *)LOCATION_NAMES[locId], 4, SPR_TXT_BOTTOM_1);
+        textToSprite((char *)TXT_VILLAGE_MAP[LTXT_IDX_NOTHING + locId], 4, SPR_TXT_BOTTOM_1);
 
         // sprawdz w tabeli lokacji, czy jest callback. jak jest to go wolaj.
         // callback sam sie wylaczy, jak bedzie 'zaliczony' czyli np. pies dostal mieso, strefa nieaktywna.

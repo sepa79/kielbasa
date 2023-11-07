@@ -42,19 +42,19 @@ def menu_opt( option ):
         option = '0x%02x, ' % ( charset.index( option ) + 0x40 )
     return option
 
-# generate indexes for the 'c' language common.h file
+# generate indexes for the 'c' language common.h file and commont text arrays
 def generate_common_h_index_array_jinja2( config ):
     arrays_info = {}
     enum_labels = []
     text_variables = []
-    if config.get( 'MainArray' ):
+    if config.get( 'Txt' ):
         arrays_info = {
-                'pragma_label': 'MainArray',
-                'array_label' : config[ 'MainArray' ].get( 'array_label' )
+                'pragma_label': 'Txt',
+                'array_label' : config[ 'Txt' ].get( 'array_label' )
         }
-        if config[ 'MainArray' ].get( 'contents' ):
-            # if there is 'MainArray' and 'contents' in 'config'
-            for p in config[ 'MainArray' ][ 'contents' ]:
+        if config[ 'Txt' ].get( 'contents' ):
+            # if there is 'Txt' and 'contents' in 'config'
+            for p in config[ 'Txt' ][ 'contents' ]:
                 prefix = 'TXT' if not p.get( 'prefix' ) else p[ 'prefix' ]
                 enum_labels.append({'prefix': prefix, 'label': p['id']})
                 # if there is a 'common' in config database then create variable in common.h file
@@ -70,6 +70,18 @@ def generate_common_h_index_array_jinja2( config ):
                         text = menu_opt( p.get( 'menu_opt' ) ) + text
                     text_variables.append({'prefix': prefix, 'label': p['id'], 'text': p['common'], 'bytearray': text})
     return {**arrays_info, 'enum_labels': enum_labels, 'text_variables': text_variables}
+
+# generate index arrays for 'common.h' file
+def generate_common_h_file_index_arrays_jinja2( config ):
+    index_arrays = []
+    for k, v in config.items():
+        section = {'pragma_label': k, 'array_label': v.get('array_label'), 'indexes_count': len(v.get("contents"))}
+        contents = []
+        for p in v.get( "contents" ):
+            prefix = "TXT" if not p.get("prefix") else p["prefix"]
+            contents.append('%s_IDX_%s' % (prefix, p['id']))
+        index_arrays.append({**section, 'contents': contents})
+    return {'index_arrays': index_arrays }
 
 # generate index array for given 'lang'
 def generate_c_file_index_arrays_jinja2( config, lang ):
@@ -144,11 +156,13 @@ def create_lang_files_jinja2( config, lang, dot_c_template, dot_h_template, dst_
     
     environment  = Environment(loader=FileSystemLoader("templates/"))
 
+    # create dot_c_file
     text_arrays  = generate_c_file_text_arrays_jinja2( config, lang, encode_charset )
     index_arrays = generate_c_file_index_arrays_jinja2( config, lang )
     template     = environment.get_template( dot_c_template )
     write( dst_filename + '.c', template.render( {**text_arrays, **index_arrays} ) )
     
+    # create dot_h_file
     template     = environment.get_template( dot_h_template )
     write( dst_filename + '.h', template.render( {**text_arrays, 'lang': lang} ) )
 
@@ -157,9 +171,11 @@ def create_common_h_file_jinja2( config, dot_h_template, dst_filename ):
 
     environment      = Environment(loader=FileSystemLoader("templates/"))
 
+    # create common.h file
     common_h_content = generate_common_h_index_array_jinja2( config )
+    index_arrays     = generate_common_h_file_index_arrays_jinja2( config )
     template         = environment.get_template( dot_h_template )
-    write( dst_filename, template.render( common_h_content ) )
+    write( dst_filename, template.render( {**common_h_content, **index_arrays} ) )
 
 
 

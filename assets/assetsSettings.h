@@ -108,6 +108,15 @@
 #define TRANSLATION_SRC ((char *)0x8000)
 #define TRANSLATION_DST ((char *)0x5c00)
 
+// *********************
+// text cache address
+// *********************
+// old addresses :  0x6aa0, 0x6620
+#define TXT_CACHE_ADDR  ((char *)0x6400)
+#define TXT_CACHE       (char *)((unsigned *)0x6400)
+extern char _currentLang;
+
+
 static char * const MENU_CODE_SRC = (char *)0x8000;
 static char * const MENU_CODE_DST = (char *)0x7000;
 

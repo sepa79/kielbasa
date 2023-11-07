@@ -72,6 +72,7 @@ struct Loaders {
 extern bool mnu_isGfxLoaded;
 extern volatile char mnu_menuBank;
 
+void loadCacheTxt(char cache_index);
 void loadMenu(byte bank);
 void loadMenuGfx();
 void loadFullKoalaToBMP2();

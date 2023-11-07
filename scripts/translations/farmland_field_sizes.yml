@@ -1,7 +1,9 @@
 
-FieldSizes:
-  array_label: FIELD_SIZES
+
+TxtFarmland:
+  array_label: TXT_FARMLAND
   contents:
+  # FIELD SIZES
   - id: FIELD_SMALL
     en: 'Small  '
     pl: 'Małe   '

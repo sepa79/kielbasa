@@ -13,6 +13,15 @@
 bool mnu_isGfxLoaded = false;
 volatile char mnu_menuBank = 0;
 
+extern const char LANGUAGE_BANKS[];
+
+// Load text cache for current menu
+void loadCacheTxt(char cache_index) {
+    char pbank = setBank(LANGUAGE_BANKS[_currentLang]);
+    memcpy(TXT_CACHE_ADDR, (char *)txtCacheAddresses[cache_index].start, txtCacheAddresses[cache_index].length);
+    setBank(pbank);
+}
+
 // Switch bank, load any code into RAM if needed.
 // Default noop loader is _menuNoop().
 void loadMenu(char bank){

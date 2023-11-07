@@ -7,22 +7,12 @@
 //
 //
 
-// Sections and regions
-#pragma section( txt{{ lang | capitalize }}PlantTypes, 0 )
-#pragma section( txt{{ lang | capitalize }}FieldSizes, 0 )
-#pragma section( txt{{ lang | capitalize }}PlantStageNames, 0 )
-#pragma section( txt{{ lang | capitalize }}LocationNames, 0 )
-#pragma region( bankTxt{{ lang | capitalize }}1, 0x8000, 0x8100, ,TRANSLATION_{{ lang | upper }}_BANK, {
-    txt{{ lang | capitalize }}PlantTypes,
-    txt{{ lang | capitalize }}FieldSizes,
-    txt{{ lang | capitalize }}PlantStageNames,
-    txt{{ lang | capitalize }}LocationNames
-}, 0x5c00 )
+{%- from 'memory_parameters.j2' import ns2 -%}
+{%- set ns            = namespace() %}
+{%- set ns.cart       = ns2.CARTRIDGE_ADDRESS_START %}
+{%- set ns.static_txt = ns2.ram_static_txt %}
+{%- set ns.ram        = ns2.ram_dynamic_txt %}
 
-{%- set ns                          = namespace() %}
-{%- set ns.CARTRIDGE_ADDRESS_START  = 0x8000 %}
-{%- set ns.cart                     = ns.CARTRIDGE_ADDRESS_START %}
-{%- set ns.ram                      = 0x6800 %}
 {% for section in text_arrays %}
 //      "pragma_label":  {{ section.pragma_label }}
 //      "array_label":   {{ section.array_label }}
@@ -34,41 +24,21 @@
 {%- set array_end   = '{:#x}'.format( ns.cart + ( section.indexes_count * 2 ) ) %}
 {%- set data_start  = '{:#x}'.format( ns.cart + ( section.indexes_count * 2 ) ) %}
 {%- set data_end    = '{:#x}'.format( ns.cart + ( section.indexes_count * 2 ) + section.array_length ) %}
-{%- set ram_array  = '{:#x}'.format( ns.ram ) %}
-{%- set ram_data   = '{:#x}'.format( ns.ram + ( section.indexes_count * 2 ) ) %}
+{%- set ram_array   = '{:#x}'.format( ns.ram ) %}
+{%- set ram_data    = '{:#x}'.format( ns.ram + ( section.indexes_count * 2 ) ) %}
+
+{%- if section.pragma_label == 'Txt' %}
+{%- set ram_array   = '{:#x}'.format( ns.static_txt ) %}
+{%- set ram_data    = '{:#x}'.format( ns.static_txt + ( section.indexes_count * 2 ) ) %}
+{%- endif %}
 
 {%- set ns.cart      = ns.cart + section.array_length + ( section.indexes_count * 2 ) + 1 %}
 
-// #pragma section( txt{{ lang | capitalize }}{{ section.pragma_label }}Array, 0 )
-// #pragma section( txt{{ lang | capitalize }}{{ section.pragma_label }}Data, 0 )
-// #pragma region( bankTxt{{ lang | capitalize }}Array, {{ array_start }}, {{ array_end }}, , TRANSLATION_{{ lang | upper }}_BANK, { txt{{ lang | capitalize }}{{ section.pragma_label }}Array}, {{ ram_array }} )
-// #pragma region( bankTxt{{ lang | capitalize }}Data, {{ data_start }}, {{ data_end }}, , TRANSLATION_{{ lang | upper }}_BANK, { txt{{ lang | capitalize }}{{ section.pragma_label }}Array}, {{ ram_data }} )
+#pragma section( {{ lang | lower }}{{ section.pragma_label }}, 0 )
+#pragma section( {{ lang | lower }}{{ section.pragma_label }}Data, 0 )
+#pragma region( bank{{ lang | capitalize }}{{ section.pragma_label }}Array, {{ array_start }}, {{ array_end }}, , TRANSLATION_{{ lang | upper }}_BANK, { {{ lang | lower }}{{ section.pragma_label }}}, {{ ram_array }} )
+#pragma region( bank{{ lang | capitalize }}{{ section.pragma_label }}Data, {{ data_start }}, {{ data_end }}, , TRANSLATION_{{ lang | upper }}_BANK, { {{ lang | lower }}{{ section.pragma_label }}Data}, {{ ram_data }} )
 {% endfor %}
-
-{#- sections data #}
-{%- set ns.cart = ns.CARTRIDGE_ADDRESS_START %}
-// array_start, array_length, data_start, data_length
-
-// enum
-// {
-//     CART_ARRAY_START,
-//     CART_ARRAY_LENGTH,
-//     CART_DATA_START,
-//     CART_DATA_LENGTH
-// };
-{% for section in text_arrays %}
-{%- set array_start = '{:#06x}'.format( ns.cart ) %}
-{%- set array_len   = '{:#06x}'.format( section.indexes_count * 2 ) %}
-{%- set data_start  = '{:#06x}'.format( ns.cart + ( section.indexes_count * 2 ) ) %}
-{%- set data_len    = '{:#06x}'.format( ( section.indexes_count * 2 ) + section.array_length ) %}
-// {{ array_start }}, {{ array_len }}, {{ data_start }}, {{ data_len }}
-{%- set ns.cart      = ns.cart + section.array_length + ( section.indexes_count * 2 ) + 1 %}
-{%- endfor %}
-
-#pragma section( txt{{ lang | capitalize }}MainArray, 0 )
-#pragma section( txt{{ lang | capitalize }}TxtData, 0 )
-#pragma region( bankTxt{{ lang | capitalize }}Array, 0x8100, 0x8200, , TRANSLATION_{{ lang | upper }}_BANK, { txt{{ lang | capitalize }}MainArray }, 0x5d00 )
-#pragma region( bankTxt{{ lang | capitalize }}Data, 0x8200, 0x91ff, , TRANSLATION_{{ lang | upper }}_BANK, { txt{{ lang | capitalize }}TxtData }, 0x5e00 )
 
 {% if lang == 'pl' -%}
 // Switching code generation back to shared section

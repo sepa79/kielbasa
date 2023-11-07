@@ -7,88 +7,77 @@
 //
 //
 
-// Sections and regions
-#pragma section( txtPlPlantTypes, 0 )
-#pragma section( txtPlFieldSizes, 0 )
-#pragma section( txtPlPlantStageNames, 0 )
-#pragma section( txtPlLocationNames, 0 )
-#pragma region( bankTxtPl1, 0x8000, 0x8100, ,TRANSLATION_PL_BANK, {
-    txtPlPlantTypes,
-    txtPlFieldSizes,
-    txtPlPlantStageNames,
-    txtPlLocationNames
-}, 0x5c00 )
 
-//      "pragma_label":  MainArray
+//      "pragma_label":  Txt
 //      "array_label":   TXT
-//      "indexes_count": 125
-//      "array_length":  2651
+//      "indexes_count": 78
+//      "array_length":  1636
 
-// #pragma section( txtPlMainArrayArray, 0 )
-// #pragma section( txtPlMainArrayData, 0 )
-// #pragma region( bankTxtPlArray, 0x8000, 0x80fa, , TRANSLATION_PL_BANK, { txtPlMainArrayArray}, 0x6800 )
-// #pragma region( bankTxtPlData, 0x80fa, 0x8b55, , TRANSLATION_PL_BANK, { txtPlMainArrayArray}, 0x68fa )
+#pragma section( plTxt, 0 )
+#pragma section( plTxtData, 0 )
+#pragma region( bankPlTxtArray, 0x8000, 0x809c, , TRANSLATION_PL_BANK, { plTxt}, 0x5c00 )
+#pragma region( bankPlTxtData, 0x809c, 0x8700, , TRANSLATION_PL_BANK, { plTxtData}, 0x5c9c )
 
-//      "pragma_label":  FieldSizes
-//      "array_label":   FIELD_SIZES
-//      "indexes_count": 4
-//      "array_length":  32
+//      "pragma_label":  TxtFarmland
+//      "array_label":   TXT_FARMLAND
+//      "indexes_count": 32
+//      "array_length":  434
 
-// #pragma section( txtPlFieldSizesArray, 0 )
-// #pragma section( txtPlFieldSizesData, 0 )
-// #pragma region( bankTxtPlArray, 0x8b56, 0x8b5e, , TRANSLATION_PL_BANK, { txtPlFieldSizesArray}, 0x6800 )
-// #pragma region( bankTxtPlData, 0x8b5e, 0x8b7e, , TRANSLATION_PL_BANK, { txtPlFieldSizesArray}, 0x6808 )
+#pragma section( plTxtFarmland, 0 )
+#pragma section( plTxtFarmlandData, 0 )
+#pragma region( bankPlTxtFarmlandArray, 0x8701, 0x8741, , TRANSLATION_PL_BANK, { plTxtFarmland}, 0x6400 )
+#pragma region( bankPlTxtFarmlandData, 0x8741, 0x88f3, , TRANSLATION_PL_BANK, { plTxtFarmlandData}, 0x6440 )
 
-//      "pragma_label":  LocationNames
-//      "array_label":   LOCATION_NAMES
+//      "pragma_label":  TxtCrew
+//      "array_label":   TXT_CREW
+//      "indexes_count": 7
+//      "array_length":  69
+
+#pragma section( plTxtCrew, 0 )
+#pragma section( plTxtCrewData, 0 )
+#pragma region( bankPlTxtCrewArray, 0x88f4, 0x8902, , TRANSLATION_PL_BANK, { plTxtCrew}, 0x6400 )
+#pragma region( bankPlTxtCrewData, 0x8902, 0x8947, , TRANSLATION_PL_BANK, { plTxtCrewData}, 0x640e )
+
+//      "pragma_label":  TxtVillageMap
+//      "array_label":   TXT_VILLAGE_MAP
 //      "indexes_count": 22
 //      "array_length":  550
 
-// #pragma section( txtPlLocationNamesArray, 0 )
-// #pragma section( txtPlLocationNamesData, 0 )
-// #pragma region( bankTxtPlArray, 0x8b7f, 0x8bab, , TRANSLATION_PL_BANK, { txtPlLocationNamesArray}, 0x6800 )
-// #pragma region( bankTxtPlData, 0x8bab, 0x8dd1, , TRANSLATION_PL_BANK, { txtPlLocationNamesArray}, 0x682c )
+#pragma section( plTxtVillageMap, 0 )
+#pragma section( plTxtVillageMapData, 0 )
+#pragma region( bankPlTxtVillageMapArray, 0x8948, 0x8974, , TRANSLATION_PL_BANK, { plTxtVillageMap}, 0x6400 )
+#pragma region( bankPlTxtVillageMapData, 0x8974, 0x8b9a, , TRANSLATION_PL_BANK, { plTxtVillageMapData}, 0x642c )
 
-//      "pragma_label":  PlantStageNames
-//      "array_label":   PLANT_STAGE_NAMES
+//      "pragma_label":  TxtTaskManager
+//      "array_label":   TXT_TASK_MANAGER
+//      "indexes_count": 11
+//      "array_length":  426
+
+#pragma section( plTxtTaskManager, 0 )
+#pragma section( plTxtTaskManagerData, 0 )
+#pragma region( bankPlTxtTaskManagerArray, 0x8b9b, 0x8bb1, , TRANSLATION_PL_BANK, { plTxtTaskManager}, 0x6400 )
+#pragma region( bankPlTxtTaskManagerData, 0x8bb1, 0x8d5b, , TRANSLATION_PL_BANK, { plTxtTaskManagerData}, 0x6416 )
+
+//      "pragma_label":  TxtOptionsMenu
+//      "array_label":   TXT_OPTIONS_MENU
+//      "indexes_count": 6
+//      "array_length":  132
+
+#pragma section( plTxtOptionsMenu, 0 )
+#pragma section( plTxtOptionsMenuData, 0 )
+#pragma region( bankPlTxtOptionsMenuArray, 0x8d5c, 0x8d68, , TRANSLATION_PL_BANK, { plTxtOptionsMenu}, 0x6400 )
+#pragma region( bankPlTxtOptionsMenuData, 0x8d68, 0x8dec, , TRANSLATION_PL_BANK, { plTxtOptionsMenuData}, 0x640c )
+
+//      "pragma_label":  TxtKitchen
+//      "array_label":   TXT_KITCHEN
 //      "indexes_count": 9
-//      "array_length":  81
+//      "array_length":  198
 
-// #pragma section( txtPlPlantStageNamesArray, 0 )
-// #pragma section( txtPlPlantStageNamesData, 0 )
-// #pragma region( bankTxtPlArray, 0x8dd2, 0x8de4, , TRANSLATION_PL_BANK, { txtPlPlantStageNamesArray}, 0x6800 )
-// #pragma region( bankTxtPlData, 0x8de4, 0x8e35, , TRANSLATION_PL_BANK, { txtPlPlantStageNamesArray}, 0x6812 )
+#pragma section( plTxtKitchen, 0 )
+#pragma section( plTxtKitchenData, 0 )
+#pragma region( bankPlTxtKitchenArray, 0x8ded, 0x8dff, , TRANSLATION_PL_BANK, { plTxtKitchen}, 0x6400 )
+#pragma region( bankPlTxtKitchenData, 0x8dff, 0x8ec5, , TRANSLATION_PL_BANK, { plTxtKitchenData}, 0x6412 )
 
-//      "pragma_label":  PlantTypes
-//      "array_label":   PLANT_TYPES_TXT
-//      "indexes_count": 5
-//      "array_length":  55
-
-// #pragma section( txtPlPlantTypesArray, 0 )
-// #pragma section( txtPlPlantTypesData, 0 )
-// #pragma region( bankTxtPlArray, 0x8e36, 0x8e40, , TRANSLATION_PL_BANK, { txtPlPlantTypesArray}, 0x6800 )
-// #pragma region( bankTxtPlData, 0x8e40, 0x8e77, , TRANSLATION_PL_BANK, { txtPlPlantTypesArray}, 0x680a )
-
-// array_start, array_length, data_start, data_length
-
-// enum
-// {
-//     CART_ARRAY_START,
-//     CART_ARRAY_LENGTH,
-//     CART_DATA_START,
-//     CART_DATA_LENGTH
-// };
-
-// 0x8000, 0x00fa, 0x80fa, 0x0b55
-// 0x8b56, 0x0008, 0x8b5e, 0x0028
-// 0x8b7f, 0x002c, 0x8bab, 0x0252
-// 0x8dd2, 0x0012, 0x8de4, 0x0063
-// 0x8e36, 0x000a, 0x8e40, 0x0041
-
-#pragma section( txtPlMainArray, 0 )
-#pragma section( txtPlTxtData, 0 )
-#pragma region( bankTxtPlArray, 0x8100, 0x8200, , TRANSLATION_PL_BANK, { txtPlMainArray }, 0x5d00 )
-#pragma region( bankTxtPlData, 0x8200, 0x91ff, , TRANSLATION_PL_BANK, { txtPlTxtData }, 0x5e00 )
 
 // Switching code generation back to shared section
 #pragma code ( code )

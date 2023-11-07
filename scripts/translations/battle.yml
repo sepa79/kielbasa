@@ -1,5 +1,5 @@
 
-MainArray:
+Txt:
   array_label: TXT
   contents:
   - id: BATTLE_MENU_ATTACK

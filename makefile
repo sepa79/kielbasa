@@ -8,5 +8,6 @@ lang:
 
 clean: 
 	$(RM) -f loader.asm loader.crt loader.int loader.lbl loader.map
-	cd translation/ && $(RM) -f common.h texts*
+	# cd translation/ && $(RM) -f common.h texts*
+
 

@@ -8,50 +8,82 @@
 //
 //
 
-#pragma data ( txt{{ lang | capitalize }}TxtData )
+{%- set ns          = namespace() %}
+{%- set ns.txt_size = '{:#x}'.format( 0xfff ) %}
+{%- for section in text_arrays %}
 
-{% for section in text_arrays %}
+{%- if section.pragma_label == 'Txt' %}
+{%- set ns.txt_size = '{:#x}'.format( section.array_length + section.indexes_count * 2 ) %}
+{%- endif %}
 
 //      "pragma_label": {{ section.pragma_label }},
 //      "array_label": {{ section.array_label }},
 //      "indexes_count": {{ section.indexes_count }}
 //      "array_length": {{ section.array_length }}
 
-{% for label in section.contents %}
+#pragma data ( {{ lang | lower }}{{ section.pragma_label }}Data )
+
+{% for label in section.contents -%}
 //     "{{ lang }}": "{{ label.comment }}"
 const char {{ label.prefix }}_{{ lang | upper }}_{{ label.name }}[] = {{ '{' }}{{ label.bytearray }}{{ ', 0x00};' }}
-{%- endfor %}
+{% endfor -%}
 
 {% endfor %}
 
-{% for section in index_arrays %}
+{%- for section in index_arrays %}
 
 //      "pragma_label": {{ section.pragma_label }},
 //      "array_label": {{ section.array_label }},
 //      "indexes_count": {{ section.indexes_count }}
 
-#pragma data ( txt{{ lang | capitalize }}{{ section.pragma_label }} )
+#pragma data ( {{ lang | lower }}{{ section.pragma_label }} )
+
 {%- if lang == 'pl' %}
 __export const char* {{ section.array_label }}[] = {
 {%- else %}
-__export const char* {{ section.array_label }}_{{ lang | upper }}[] = {
+__export const char* {{ lang | upper }}_{{ section.array_label }}[] = {
 {% endif %}
     {%- for label in section.contents %}
     {{ label }}{{ "," if not loop.last }}
     {%- endfor %}
 };
-{% endfor %}
+{%- endfor %}
 
 // Switching code generation back to shared section
+
 #pragma code ( code )
 #pragma data ( data )
 
 {% if lang == 'pl' -%}
+
+//  TXT_CACHE_START, TXT_CACHE_LENGTH
+
+{%- from 'memory_parameters.j2' import ns2 -%}
+{%- set ns.cart       = ns2.CARTRIDGE_ADDRESS_START %}
+{%- set ns.static_txt = ns2.ram_static_txt %}
+{%- set ns.ram        = ns2.ram_dynamic_txt %}
+
+struct chunk_data {
+    unsigned start;
+    unsigned length;
+};
+
+struct chunk_data txtCacheAddresses[] = {
+
+{%- for section in text_arrays %}
+{%- set array_start = '{:#06x}'.format( ns.cart ) %}
+{%- set array_len   = '{:#06x}'.format( ( section.indexes_count * 2 ) + section.array_length ) %}
+    { {{ array_start }}, {{ array_len }} }{{ "," if not loop.last }}
+{%- set ns.cart      = ns.cart + section.array_length + ( section.indexes_count * 2 ) + 1 %}
+{%- endfor %}
+};
+
 // =============================================================================
 // Copy code
 // =============================================================================
+
 void loadTranslation() {
-    memcpy(TRANSLATION_DST, TRANSLATION_SRC, 0x1400);
+    memcpy(TRANSLATION_DST, TRANSLATION_SRC, {{ ns.txt_size }});
 };
 
 {%- endif %}
