@@ -44,7 +44,7 @@ void initTaskList() {
     for(char i=0;i<TASK_ARRAY_SIZE;i++){
         taskRef[i] = i;
         task_codeRef[i]   = nullptr;
-        task_nameIdx[i]   = TXT_IDX_TASK_EMPTY_NAME;
+        // task_nameIdx[i]   = TXT_TASK_EMPTY_NAME;   // TXT_PL_ARRAY
         task_params[i][0] = 0;
         task_params[i][1] = 0;
         task_params[i][2] = 0;
@@ -52,7 +52,7 @@ void initTaskList() {
         task_params[i][4] = 0;
         task_reqType[i]   = NO_TASK;
         task_worker[i]    = NO_SLOT;
-        strcpy(task_desc[i], TXT[TXT_IDX_TASK_EMPTY_DESCRIPTION]);
+        strcpy(task_desc[i], (char *)TXT_TASK_EMPTY_DESCRIPTION);
         task_icon[i]      = SPR_TASK_MIA;
         task_status[i]    = TASK_STATUS_NOTASK;
     }
@@ -84,7 +84,7 @@ static bool _addTask(){
         memcpy(LOG_DATA, p"Tasks full", 10);
         logger(LOG_INFO | LOG_MSG_TEXT);
 
-        updateStatusBarError(TXT[SB_IDX_TASKS_FULL]);
+        updateStatusBarError(SB_TASKS_FULL);
         return false;
     }
 
@@ -111,7 +111,7 @@ static bool _addTask(){
     setTaskLogMsg(nextFreeTask);
     logger(LOG_INFO | LOG_MSG_TASK);
 
-    updateStatusBar(TXT[SB_IDX_TASK_ADDED]);
+    updateStatusBar(SB_TASK_ADDED);
 
     return true;
 }
@@ -135,8 +135,8 @@ static void _removeTaskByRef(char taskRefId){
 
     // wipe the task in task_ array (just the task_reqType + text fields is enough)
     task_reqType[taskId] = NO_TASK;
-    task_nameIdx[taskId] = TXT_IDX_TASK_EMPTY_NAME;
-    strcpy(task_desc[taskId], TXT[TXT_IDX_TASK_EMPTY_DESCRIPTION]);
+    // task_nameIdx[taskId] = TXT_TASK_EMPTY_NAME;   // TXT_PL_ARRAY
+    // strcpy(task_desc[taskId], TXT_TASK_EMPTY_DESCRIPTION);   // TXT_PL_ARRAY
 
     // check if the task is done, if so - no need to call task handler.
     if(task_status[taskId] != TASK_STATUS_DONE){

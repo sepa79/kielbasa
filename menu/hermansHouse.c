@@ -50,8 +50,8 @@ const struct MenuOption HERMANS_HOUSE_MENU[] = {
     // { TXT_IDX_MENU_HERMANS_HOUSE1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_hhMenu1, 0, 1, 1 },
     // { TXT_IDX_MENU_HERMANS_HOUSE2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_hhMenu2, 0, 1, 2 },
     // { TXT_IDX_MENU_HERMANS_HOUSE3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_hhMenu3, 0, 1, 3 },
-    { TXT_IDX_MENU_AIR_DEF, '1', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_PIGSLE_COMMAND_1, 1, 2 },
-    { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF + UI_SELECT, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 2, 5 },
+    { TXT_MENU_AIR_DEF, '1', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_PIGSLE_COMMAND_1, 1, 2 },
+    { TXT_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF + UI_SELECT, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 2, 5 },
     END_MENU_CHOICES
 };
 
@@ -59,6 +59,9 @@ static void _menuHandler() {
     mnu_isGfxLoaded = false;
     loadMenuGfx();
     // loadMenuSprites();
+
+    // copy text crew cache from cat to memory
+    // loadCacheTxt(TXT_HERMANS_CACHE_INDEX);
 
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);

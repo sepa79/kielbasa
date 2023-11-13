@@ -36,7 +36,7 @@ enum UI_MAP {
 /* Represents a single menu option */
 struct MenuOption {
     /* Text to display */
-    byte textIdx;
+    char * textIdx;
     /* Key that will call the option if pressed */
     byte key;
     // what screen type IRQs to use

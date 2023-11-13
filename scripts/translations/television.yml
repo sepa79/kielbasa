@@ -1,6 +1,6 @@
 
-Txt:
-  array_label: TXT
+TxtTelevision:
+  array_label: TXT_TELEVISION
   contents:
   - id: MENU_TV_SCREEN
     prefix: SB

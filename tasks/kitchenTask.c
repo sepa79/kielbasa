@@ -72,10 +72,10 @@ static void _execBakeBreadTask(char taskId){
             task_status[taskId] = TASK_STATUS_DONE;
             // task done - not enough space for bread, set status & remove
             if(GS.kitchen.storage[FOOD_HOME_BREAD] >= GS.kitchen.maxStorage){
-                updateStatusBarError(TXT[SB_IDX_TASK_KITCHEN_BAKE_BREAD_STORAGE_FULL]);
+                updateStatusBarError(SB_TASK_KITCHEN_BAKE_BREAD_STORAGE_FULL);
             // task done - not enough wheat, set status & remove
             } else {
-                updateStatusBarError(TXT[SB_IDX_TASK_KITCHEN_BAKE_BREAD_NO_WHEAT]);
+                updateStatusBarError(SB_TASK_KITCHEN_BAKE_BREAD_NO_WHEAT);
             }
             // LOG_MSG.LOG_DATA_CONTEXT = LOG_DATA_CONTEXT_TASK_FARM_SOW_NOT_ENOUGH_SEEDS;
             // setTaskLogMsg(taskId);
@@ -110,9 +110,9 @@ static void _execBakeBreadTask(char taskId){
 
 void _addBakeBreadTask(){
     // 'Bake bread' string
-    sprintf(newTask.desc, "%s",TXT[TXT_IDX_TASK_DSC_KITCHEN_BAKE_BREAD]);
+    sprintf(newTask.desc, "%s", TXT_TASK_DSC_KITCHEN_BAKE_BREAD);
     newTask.codeRef   = &execBakeBreadTask;
-    newTask.nameIdx   = TXT_IDX_TASK_KITCHEN;
+    // newTask.nameIdx   = TXT_TASK_KITCHEN;   // TXT_PL_ARRAY
     newTask.params[0] = 0;
     newTask.params[1] = 0;
     newTask.params[2] = 0;
@@ -149,6 +149,6 @@ bool addKitchenItem(FOOD_ITEMS item){
         updateStatusBar(s"Food added                          ");
         return true;
     }
-    updateStatusBarError(TXT[SB_IDX_TASK_KITCHEN_BAKE_BREAD_STORAGE_FULL]);
+    updateStatusBarError(SB_TASK_KITCHEN_BAKE_BREAD_STORAGE_FULL);
     return false;
 }

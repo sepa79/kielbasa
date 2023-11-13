@@ -79,6 +79,21 @@ __interrupt static void _menuShowSprites(){
 
 }
 
+const char * breakfastType[] = {
+    TXT_KITCHEN_EATING_STYLE_LIGHT,
+    TXT_KITCHEN_EATING_STYLE_MEDIUM,
+    TXT_KITCHEN_EATING_STYLE_FULL
+};
+
+const char * preferHomeFood[] = {
+    TXT_KITCHEN_PREFER_SHOP,
+    TXT_KITCHEN_PREFER_HOME
+};
+
+const char * preferPotato[] = {
+    TXT_KITCHEN_PREFER_POTATO,
+    TXT_KITCHEN_PREFER_CORN
+};
 static void _updateView(){
     byteToSprite(GS.kitchen.storage[FOOD_SHOP_BREAD], SPR_FOOD_1);
     byteToSprite(GS.kitchen.storage[FOOD_HOME_BREAD], SPR_FOOD_2);
@@ -86,14 +101,14 @@ static void _updateView(){
     byteToSprite(GS.kitchen.storage[FOOD_SOUSAGE], SPR_FOOD_4);
 
     if(GS.kitchen.bakeBreadDaily){
-        cwin_putat_string_raw(&cw, 19, 2, TXT_CACHE[LTXT_IDX_KITCHEN_TASK_ON], VCOL_GREEN);
+        cwin_putat_string_raw(&cw, 19, 2, TXT_KITCHEN_TASK_ON, VCOL_GREEN);
     } else {
-        cwin_putat_string_raw(&cw, 19, 2, TXT_CACHE[LTXT_IDX_KITCHEN_TASK_OFF], VCOL_DARK_GREY);
+        cwin_putat_string_raw(&cw, 19, 2, TXT_KITCHEN_TASK_OFF, VCOL_DARK_GREY);
     }
-    cwin_putat_string_raw(&cw, 19, 3, TXT_CACHE[LTXT_IDX_KITCHEN_EATING_STYLE_LIGHT + GS.kitchen.breakfastType], VCOL_DARK_GREY);
-    cwin_putat_string_raw(&cw, 19, 4, TXT_CACHE[LTXT_IDX_KITCHEN_EATING_STYLE_LIGHT + GS.kitchen.supperType], VCOL_DARK_GREY);
-    cwin_putat_string_raw(&cw, 19, 5, TXT_CACHE[LTXT_IDX_KITCHEN_PREFER_SHOP + GS.kitchen.preferHomeFood], VCOL_DARK_GREY);
-    cwin_putat_string_raw(&cw, 19, 6, TXT_CACHE[LTXT_IDX_KITCHEN_PREFER_POTATO + GS.kitchen.preferCorn], VCOL_DARK_GREY);
+    cwin_putat_string_raw(&cw, 19, 3, breakfastType[GS.kitchen.breakfastType], VCOL_DARK_GREY);   // TXT_PL_ARRAY
+    cwin_putat_string_raw(&cw, 19, 4, breakfastType[GS.kitchen.supperType], VCOL_DARK_GREY);   // TXT_PL_ARRAY
+    cwin_putat_string_raw(&cw, 19, 5, preferHomeFood[GS.kitchen.preferHomeFood], VCOL_DARK_GREY);   // TXT_PL_ARRAY
+    cwin_putat_string_raw(&cw, 19, 6, preferPotato[GS.kitchen.preferCorn], VCOL_DARK_GREY);   // TXT_PL_ARRAY
 
 }
 
@@ -139,14 +154,14 @@ static void _kitchenEatNow(){
 }
 
 const struct MenuOption KITCHEN_MENU[] = {
-    { TXT_IDX_MENU_KITCHEN1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenBakeBread, 0, 1, 1},
-    { TXT_IDX_MENU_KITCHEN2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenBakeBreadDaily, 0, 1, 2},
-    { TXT_IDX_MENU_KITCHEN3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenBreakfastType, 0, 1, 3},
-    { TXT_IDX_MENU_KITCHEN4, '4', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenSupperType, 0, 1, 4},
-    { TXT_IDX_MENU_KITCHEN5, '5', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenFoodPreferrence, 0, 1, 5},
-    { TXT_IDX_MENU_KITCHEN6, '6', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenVegPreferrence, 0, 1, 6},
-    { TXT_IDX_MENU_KITCHEN7, '7', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenEatNow, 0, 1, 8},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 11},
+    { TXT_MENU_KITCHEN1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenBakeBread, 0, 1, 1},
+    { TXT_MENU_KITCHEN2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenBakeBreadDaily, 0, 1, 2},
+    { TXT_MENU_KITCHEN3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenBreakfastType, 0, 1, 3},
+    { TXT_MENU_KITCHEN4, '4', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenSupperType, 0, 1, 4},
+    { TXT_MENU_KITCHEN5, '5', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenFoodPreferrence, 0, 1, 5},
+    { TXT_MENU_KITCHEN6, '6', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenVegPreferrence, 0, 1, 6},
+    { TXT_MENU_KITCHEN7, '7', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_kitchenEatNow, 0, 1, 8},
+    { TXT_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 11},
     END_MENU_CHOICES
 };
 

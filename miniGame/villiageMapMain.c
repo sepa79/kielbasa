@@ -293,6 +293,31 @@ static void _drawPlayer(){
     setBank(pbank);
 }
 
+const char * mapLocation[] = {
+    TXT_NOTHING,
+    TXT_FARM_HOUSE,
+    TXT_FARM_BARN,
+    TXT_FARM_PIGPEN,
+    TXT_FARM_EMPTY,
+    TXT_FARM_GARAGE,
+    TXT_FARM_VBIG_FIELD,
+    TXT_FARM_SMALL_FIELD_1,
+    TXT_FARM_SMALL_FIELD_2,
+    TXT_FARM_MEDIUM_FIELD,
+    TXT_SHOP,
+    TXT_CHURCH,
+    TXT_HERMAN,
+    TXT_SULEJUKOWA,
+    TXT_HOUSE_1,
+    TXT_HOUSE_2,
+    TXT_MAIN_ROAD,
+    TXT_VILLIAGE_ROAD,
+    TXT_DIRT_ROAD,
+    TXT_WELL,
+    TXT_TOILET,
+    TXT_WHARF
+};
+
 void villiageMapDraw(){
     // performance metrics
     char frameStart = gms_frameCount;
@@ -329,7 +354,7 @@ void villiageMapDraw(){
         // char framesUsed = gms_frameCount - frameStart;
         // sprintf(str, "%03d", framesUsed);
         // textToSprite(str, 4);
-        textToSprite((char *)TXT_VILLAGE_MAP[LTXT_IDX_NOTHING + locId], 4, SPR_TXT_BOTTOM_1);
+        textToSprite((char *)mapLocation[locId], 4, SPR_TXT_BOTTOM_1); // TXT_PL_ARRAY
 
         // sprawdz w tabeli lokacji, czy jest callback. jak jest to go wolaj.
         // callback sam sie wylaczy, jak bedzie 'zaliczony' czyli np. pies dostal mieso, strefa nieaktywna.

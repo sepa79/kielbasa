@@ -1,6 +1,6 @@
 
-Txt:
-  array_label: TXT
+TxtShopOutside:
+  array_label: TXT_SHOP_OUTSIDE
   contents:
   - id: SHOP_CLOSED
     prefix: SB

@@ -185,16 +185,16 @@ static void _showCharacterDetails(byte character){
     CharWin cd;
     cwin_init(&cd, GFX_1_SCR, COL_OFFSET_CHARACTERDATA, SCREEN_Y_START, SCREEN_WIDTH-COL_OFFSET_CHARACTERDATA, SCREEN_HEIGHT);
     cwin_clear(&cd);
-    cwin_putat_string_raw(&cd, 0, 0, TXT[allCharacters[character].nameIdx], VCOL_YELLOW);
+    cwin_putat_string_raw(&cd, 0, 0, allCharacters[character].nameIdx, VCOL_YELLOW);    // TXT_PL_ARRAY
 
     CharWin cStory;
     cwin_init(&cStory, GFX_1_SCR, COL_OFFSET_CHARACTERDATA, SCREEN_Y_START+1, SCREEN_WIDTH-COL_OFFSET_CHARACTERDATA, 6);
     cwin_fill(&cStory, 32, VCOL_LT_GREY);
-    cwin_write_string_raw(&cStory, TXT[allCharacters[character].storyTextIdx]);
+    cwin_write_string_raw(&cStory, allCharacters[character].storyTextIdx);  // TXT_PL_ARRAY
 
-    cwin_putat_string_raw(&cd, 0, 7, TXT_CACHE[LTXT_IDX_CREW_STAT_INT], VCOL_LT_BLUE);
-    cwin_putat_string_raw(&cd, 0, 8, TXT_CACHE[LTXT_IDX_CREW_STAT_STR], VCOL_LT_BLUE);
-    cwin_putat_string_raw(&cd, 0, 9, TXT_CACHE[LTXT_IDX_CREW_STAT_CUN], VCOL_LT_BLUE);
+    cwin_putat_string_raw(&cd, 0, 7, TXT_CREW_STAT_INT, VCOL_LT_BLUE);
+    cwin_putat_string_raw(&cd, 0, 8, TXT_CREW_STAT_STR, VCOL_LT_BLUE);
+    cwin_putat_string_raw(&cd, 0, 9, TXT_CREW_STAT_CUN, VCOL_LT_BLUE);
 
     byte str[2];
     sprintf(str, "%u", allCharacters[character].stat[STAT_INT]);
@@ -204,10 +204,10 @@ static void _showCharacterDetails(byte character){
     sprintf(str, "%u", allCharacters[character].stat[STAT_CUN]);
     cwin_putat_string_raw(&cd, 9, 9, str, VCOL_GREEN);
 
-    cwin_putat_string_raw(&cd, 11,  7, TXT_CACHE[LTXT_IDX_CREW_SKILL_ANI], VCOL_LT_BLUE);
-    cwin_putat_string_raw(&cd, 11,  8, TXT_CACHE[LTXT_IDX_CREW_SKILL_FRM], VCOL_LT_BLUE);
-    cwin_putat_string_raw(&cd, 11,  9, TXT_CACHE[LTXT_IDX_CREW_SKILL_BTH], VCOL_LT_BLUE);
-    cwin_putat_string_raw(&cd, 11, 10, TXT_CACHE[LTXT_IDX_CREW_SKILL_TRD], VCOL_LT_BLUE);
+    cwin_putat_string_raw(&cd, 11,  7, TXT_CREW_SKILL_ANI, VCOL_LT_BLUE);
+    cwin_putat_string_raw(&cd, 11,  8, TXT_CREW_SKILL_FRM, VCOL_LT_BLUE);
+    cwin_putat_string_raw(&cd, 11,  9, TXT_CREW_SKILL_BTH, VCOL_LT_BLUE);
+    cwin_putat_string_raw(&cd, 11, 10, TXT_CREW_SKILL_TRD, VCOL_LT_BLUE);
 
     sprintf(str, "%u", allCharacters[character].skill[SKILL_ANIMALS]);
     cwin_putat_string_raw(&cd, 22,  7, str, VCOL_GREEN);
@@ -236,11 +236,11 @@ static void _crewMenu4(){
 }
 
 const struct MenuOption CREW_MENU[] = {
-    { TXT_IDX_MENU_CREW1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_crewMenu1, 0, 1, 1},
-    { TXT_IDX_MENU_CREW2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_crewMenu2, 0, 1, 2},
-    { TXT_IDX_MENU_CREW3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_crewMenu3, 0, 1, 3},
-    { TXT_IDX_MENU_CREW4, '4', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_crewMenu4, 0, 1, 4},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
+    { TXT_MENU_CREW1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_crewMenu1, 0, 1, 1},
+    { TXT_MENU_CREW2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_crewMenu2, 0, 1, 2},
+    { TXT_MENU_CREW3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_crewMenu3, 0, 1, 3},
+    { TXT_MENU_CREW4, '4', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_crewMenu4, 0, 1, 4},
+    { TXT_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
     END_MENU_CHOICES
 };
 

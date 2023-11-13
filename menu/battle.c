@@ -117,9 +117,9 @@ static void _battleMenuDefend() {
 };
 
 const struct MenuOption BATTLE_MENU[] = {
-    { TXT_IDX_BATTLE_MENU_ATTACK, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_battleMenuAttack, 0, 16, 1 },
-    { TXT_IDX_BATTLE_MENU_DEFEND, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_battleMenuDefend, 0, 16, 2 },
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 16, 3},
+    { TXT_BATTLE_MENU_ATTACK, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_battleMenuAttack, 0, 16, 1 },
+    { TXT_BATTLE_MENU_DEFEND, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_battleMenuDefend, 0, 16, 2 },
+    { TXT_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 16, 3},
     END_MENU_CHOICES
 };
 
@@ -127,6 +127,9 @@ static void _menuHandler() {
     mnu_isGfxLoaded = false;
     loadMenuGfx();
     // loadMenuSprites();
+
+    // copy text crew cache from cat to memory
+    loadCacheTxt(TXT_BATTLE_CACHE_INDEX);
 
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);

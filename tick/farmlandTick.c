@@ -17,11 +17,11 @@
 
 __striped struct FieldStruct fields[FIELDS_COUNT];
 __striped const struct PlantStruct plants[PLANTS_COUNT+1] = {
-    {TXT_IDX_TASK_EMPTY_DESCRIPTION, 0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0 },
-    {TXT_IDX_TASK_DSC_FARMLAND_POTATO, 10,  8,20,18,40, 15,  18,23,10,30,60, 15,22, 5,20,25 }, // Plant 1st May, high yeld, but fragile, 100 days to mature
-    {TXT_IDX_TASK_DSC_FARMLAND_LUPINE,  8,  1,15,18,40, 20,  13,18,15,40,70, 15,20,15,40,20 }, // Plant end of April, high yeld, fragile, 110 days to mature
-    {TXT_IDX_TASK_DSC_FARMLAND_WHEAT,   7, -5,15, 5,60,180,   8,25,10,40,90, 20,30, 5,20,45 }, // Plant September, medium yeld, long growth, robust, 315 days to mature
-    {TXT_IDX_TASK_DSC_FARMLAND_CORN,    4, -5,30, 5,40, 30,   5,30,10,40,40, 20,30,10,50,30 }, // Plant end of winter, low yeld, very robust, 100 days to mature
+    {TXT_TASK_EMPTY_DESCRIPTION,    0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0 },
+    {TXT_TASK_DSC_FARMLAND_POTATO, 10,  8,20,18,40, 15,  18,23,10,30,60, 15,22, 5,20,25 }, // Plant 1st May, high yeld, but fragile, 100 days to mature
+    {TXT_TASK_DSC_FARMLAND_LUPINE,  8,  1,15,18,40, 20,  13,18,15,40,70, 15,20,15,40,20 }, // Plant end of April, high yeld, fragile, 110 days to mature
+    {TXT_TASK_DSC_FARMLAND_WHEAT,   7, -5,15, 5,60,180,   8,25,10,40,90, 20,30, 5,20,45 }, // Plant September, medium yeld, long growth, robust, 315 days to mature
+    {TXT_TASK_DSC_FARMLAND_CORN,    4, -5,30, 5,40, 30,   5,30,10,40,40, 20,30,10,50,30 }, // Plant end of winter, low yeld, very robust, 100 days to mature
 };
 
 // =============================================================================

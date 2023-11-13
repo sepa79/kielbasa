@@ -2,6 +2,14 @@
 TxtOptionsMenu:
   array_label: TXT_OPTIONS_MENU
   contents:
+  - id: MENU_OPTIONS_LANG
+    menu_opt: '1'
+    en: 'Language / Język'
+    pl: 'Język / Language'
+  - id: MENU_OPTIONS_MSX
+    menu_opt: '2'
+    en: 'Music settings   '
+    pl: 'Ustawienia muzyki'
   - id: OPTIONS_HEADER
     en: 'Game settings '
     pl: 'Ustawienia gry'

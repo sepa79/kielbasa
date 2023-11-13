@@ -1,6 +1,6 @@
 
-Txt:
-  array_label: TXT
+TxtShopInside:
+  array_label: TXT_SHOP_INSIDE
   contents:
   - id: MENU_SHOPIN1
     menu_opt: '1'

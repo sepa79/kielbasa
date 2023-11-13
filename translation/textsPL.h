@@ -10,73 +10,107 @@
 
 //      "pragma_label":  Txt
 //      "array_label":   TXT
-//      "indexes_count": 78
-//      "array_length":  1636
+//      "indexes_count": 42
+//      "array_length":  597
 
-#pragma section( plTxt, 0 )
 #pragma section( plTxtData, 0 )
-#pragma region( bankPlTxtArray, 0x8000, 0x809c, , TRANSLATION_PL_BANK, { plTxt}, 0x5c00 )
-#pragma region( bankPlTxtData, 0x809c, 0x8700, , TRANSLATION_PL_BANK, { plTxtData}, 0x5c9c )
-
-//      "pragma_label":  TxtCrew
-//      "array_label":   TXT_CREW
-//      "indexes_count": 7
-//      "array_length":  69
-
-#pragma section( plTxtCrew, 0 )
-#pragma section( plTxtCrewData, 0 )
-#pragma region( bankPlTxtCrewArray, 0x8701, 0x870f, , TRANSLATION_PL_BANK, { plTxtCrew}, 0x6400 )
-#pragma region( bankPlTxtCrewData, 0x870f, 0x8754, , TRANSLATION_PL_BANK, { plTxtCrewData}, 0x640e )
+#pragma region( bankPlTxtData, 0x8000, 0x8255, , TRANSLATION_PL_BANK, { plTxtData}, 0x5c00 )
 
 //      "pragma_label":  TxtFarmland
 //      "array_label":   TXT_FARMLAND
 //      "indexes_count": 32
 //      "array_length":  434
 
-#pragma section( plTxtFarmland, 0 )
 #pragma section( plTxtFarmlandData, 0 )
-#pragma region( bankPlTxtFarmlandArray, 0x8755, 0x8795, , TRANSLATION_PL_BANK, { plTxtFarmland}, 0x6400 )
-#pragma region( bankPlTxtFarmlandData, 0x8795, 0x8947, , TRANSLATION_PL_BANK, { plTxtFarmlandData}, 0x6440 )
+#pragma region( bankPlTxtFarmlandData, 0x8256, 0x8408, , TRANSLATION_PL_BANK, { plTxtFarmlandData}, 0x6400 )
 
-//      "pragma_label":  TxtKitchen
-//      "array_label":   TXT_KITCHEN
-//      "indexes_count": 9
-//      "array_length":  198
+//      "pragma_label":  TxtPigpen
+//      "array_label":   TXT_PIGPEN
+//      "indexes_count": 3
+//      "array_length":  35
 
-#pragma section( plTxtKitchen, 0 )
-#pragma section( plTxtKitchenData, 0 )
-#pragma region( bankPlTxtKitchenArray, 0x8948, 0x895a, , TRANSLATION_PL_BANK, { plTxtKitchen}, 0x6400 )
-#pragma region( bankPlTxtKitchenData, 0x895a, 0x8a20, , TRANSLATION_PL_BANK, { plTxtKitchenData}, 0x6412 )
+#pragma section( plTxtPigpenData, 0 )
+#pragma region( bankPlTxtPigpenData, 0x8409, 0x842c, , TRANSLATION_PL_BANK, { plTxtPigpenData}, 0x6400 )
+
+//      "pragma_label":  TxtTelevision
+//      "array_label":   TXT_TELEVISION
+//      "indexes_count": 2
+//      "array_length":  92
+
+#pragma section( plTxtTelevisionData, 0 )
+#pragma region( bankPlTxtTelevisionData, 0x842d, 0x8489, , TRANSLATION_PL_BANK, { plTxtTelevisionData}, 0x6400 )
+
+//      "pragma_label":  TxtCrew
+//      "array_label":   TXT_CREW
+//      "indexes_count": 15
+//      "array_length":  578
+
+#pragma section( plTxtCrewData, 0 )
+#pragma region( bankPlTxtCrewData, 0x848a, 0x86cc, , TRANSLATION_PL_BANK, { plTxtCrewData}, 0x6400 )
+
+//      "pragma_label":  TxtBattle
+//      "array_label":   TXT_BATTLE
+//      "indexes_count": 2
+//      "array_length":  16
+
+#pragma section( plTxtBattleData, 0 )
+#pragma region( bankPlTxtBattleData, 0x86cd, 0x86dd, , TRANSLATION_PL_BANK, { plTxtBattleData}, 0x6400 )
 
 //      "pragma_label":  TxtVillageMap
 //      "array_label":   TXT_VILLAGE_MAP
 //      "indexes_count": 22
 //      "array_length":  550
 
-#pragma section( plTxtVillageMap, 0 )
 #pragma section( plTxtVillageMapData, 0 )
-#pragma region( bankPlTxtVillageMapArray, 0x8a21, 0x8a4d, , TRANSLATION_PL_BANK, { plTxtVillageMap}, 0x6400 )
-#pragma region( bankPlTxtVillageMapData, 0x8a4d, 0x8c73, , TRANSLATION_PL_BANK, { plTxtVillageMapData}, 0x642c )
+#pragma region( bankPlTxtVillageMapData, 0x86de, 0x8904, , TRANSLATION_PL_BANK, { plTxtVillageMapData}, 0x6400 )
 
-//      "pragma_label":  TxtOptionsMenu
-//      "array_label":   TXT_OPTIONS_MENU
-//      "indexes_count": 6
-//      "array_length":  132
+//      "pragma_label":  TxtHome
+//      "array_label":   TXT_HOME
+//      "indexes_count": 5
+//      "array_length":  67
 
-#pragma section( plTxtOptionsMenu, 0 )
-#pragma section( plTxtOptionsMenuData, 0 )
-#pragma region( bankPlTxtOptionsMenuArray, 0x8c74, 0x8c80, , TRANSLATION_PL_BANK, { plTxtOptionsMenu}, 0x6400 )
-#pragma region( bankPlTxtOptionsMenuData, 0x8c80, 0x8d04, , TRANSLATION_PL_BANK, { plTxtOptionsMenuData}, 0x640c )
+#pragma section( plTxtHomeData, 0 )
+#pragma region( bankPlTxtHomeData, 0x8905, 0x8948, , TRANSLATION_PL_BANK, { plTxtHomeData}, 0x6400 )
 
 //      "pragma_label":  TxtTaskManager
 //      "array_label":   TXT_TASK_MANAGER
 //      "indexes_count": 11
 //      "array_length":  426
 
-#pragma section( plTxtTaskManager, 0 )
 #pragma section( plTxtTaskManagerData, 0 )
-#pragma region( bankPlTxtTaskManagerArray, 0x8d05, 0x8d1b, , TRANSLATION_PL_BANK, { plTxtTaskManager}, 0x6400 )
-#pragma region( bankPlTxtTaskManagerData, 0x8d1b, 0x8ec5, , TRANSLATION_PL_BANK, { plTxtTaskManagerData}, 0x6416 )
+#pragma region( bankPlTxtTaskManagerData, 0x8949, 0x8af3, , TRANSLATION_PL_BANK, { plTxtTaskManagerData}, 0x6400 )
+
+//      "pragma_label":  TxtShopInside
+//      "array_label":   TXT_SHOP_INSIDE
+//      "indexes_count": 4
+//      "array_length":  50
+
+#pragma section( plTxtShopInsideData, 0 )
+#pragma region( bankPlTxtShopInsideData, 0x8af4, 0x8b26, , TRANSLATION_PL_BANK, { plTxtShopInsideData}, 0x6400 )
+
+//      "pragma_label":  TxtShopOutside
+//      "array_label":   TXT_SHOP_OUTSIDE
+//      "indexes_count": 4
+//      "array_length":  112
+
+#pragma section( plTxtShopOutsideData, 0 )
+#pragma region( bankPlTxtShopOutsideData, 0x8b27, 0x8b97, , TRANSLATION_PL_BANK, { plTxtShopOutsideData}, 0x6400 )
+
+//      "pragma_label":  TxtOptionsMenu
+//      "array_label":   TXT_OPTIONS_MENU
+//      "indexes_count": 8
+//      "array_length":  169
+
+#pragma section( plTxtOptionsMenuData, 0 )
+#pragma region( bankPlTxtOptionsMenuData, 0x8b98, 0x8c41, , TRANSLATION_PL_BANK, { plTxtOptionsMenuData}, 0x6400 )
+
+//      "pragma_label":  TxtKitchen
+//      "array_label":   TXT_KITCHEN
+//      "indexes_count": 16
+//      "array_length":  328
+
+#pragma section( plTxtKitchenData, 0 )
+#pragma region( bankPlTxtKitchenData, 0x8c42, 0x8d8a, , TRANSLATION_PL_BANK, { plTxtKitchenData}, 0x6400 )
 
 
 // Switching code generation back to shared section

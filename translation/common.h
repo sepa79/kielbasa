@@ -11,221 +11,236 @@
 
 //      "pragma_label": Txt,
 //      "array_label": TXT,
-//      "indexes_count": 78
+//      "indexes_count": 42
 
-enum TXT_INDEXES {
-    TXT_IDX_BATTLE_MENU_ATTACK,
-    TXT_IDX_BATTLE_MENU_DEFEND,
-    TXT_IDX_MENU_EXIT,
-    TXT_IDX_EXIT_TO_MAP,
-    TXT_IDX_MENU_OPTIONS_LANG,
-    TXT_IDX_MENU_OPTIONS_MSX,
-    TXT_IDX_MUSIC_OPTIONS_HEADER,
-    SB_IDX_MENU_OPTIONS_MSX_MENU,
-    TXT_IDX_LOG_MENU_HEADER,
-    TXT_IDX_LOG_MENU_LOG_TABLE_HEADER,
-    TXT_IDX_MENU_SELECT,
-    TXT_IDX_MENU_W,
-    TXT_IDX_MENU_S,
-    TXT_IDX_MENU_A,
-    TXT_IDX_MENU_D,
-    TXT_IDX_TASK_MANAGER_HEADER,
-    TXT_IDX_TASK_MANAGER_TABLE_HEADER,
-    SB_IDX_TASK_ADDED,
-    SB_IDX_TASKS_FULL,
-    SB_IDX_WELCOME,
-    TXT_IDX_MENU_CREW1,
-    TXT_IDX_MENU_CREW2,
-    TXT_IDX_MENU_CREW3,
-    TXT_IDX_MENU_CREW4,
-    TXT_IDX_CHAR_1_NAME,
-    TXT_IDX_CHAR_1_STORY,
-    TXT_IDX_CHAR_2_NAME,
-    TXT_IDX_CHAR_2_STORY,
-    TXT_IDX_CHAR_3_NAME,
-    TXT_IDX_CHAR_3_STORY,
-    TXT_IDX_CHAR_4_NAME,
-    TXT_IDX_CHAR_4_STORY,
-    TXT_IDX_TASK_FARMLAND_PLOW,
-    TXT_IDX_TASK_FARMLAND_FARM,
-    TXT_IDX_TASK_FARMLAND_REAP,
-    TXT_IDX_TASK_DSC_FARMLAND_POTATO,
-    TXT_IDX_TASK_DSC_FARMLAND_LUPINE,
-    TXT_IDX_TASK_DSC_FARMLAND_WHEAT,
-    TXT_IDX_TASK_DSC_FARMLAND_CORN,
-    TXT_IDX_MENU_AIR_DEF,
-    TXT_IDX_SAVE_POTATOES,
-    TXT_IDX_TASK_LIST_HEADER,
-    TXT_IDX_MENU_MAIN1,
-    TXT_IDX_MENU_MAIN2,
-    TXT_IDX_MENU_MAIN3,
-    TXT_IDX_MENU_KITCHEN1,
-    TXT_IDX_MENU_KITCHEN2,
-    TXT_IDX_MENU_KITCHEN3,
-    TXT_IDX_MENU_KITCHEN4,
-    TXT_IDX_MENU_KITCHEN5,
-    TXT_IDX_MENU_KITCHEN6,
-    TXT_IDX_MENU_KITCHEN7,
-    SB_IDX_KITCHEN_CANNOT_EAT,
-    SB_IDX_TASK_KITCHEN_BAKE_BREAD_STORAGE_FULL,
-    SB_IDX_TASK_KITCHEN_BAKE_BREAD_NO_WHEAT,
-    TXT_IDX_TASK_KITCHEN,
-    TXT_IDX_TASK_DSC_KITCHEN_BAKE_BREAD,
-    TXT_IDX_KITCHEN_MISSING,
-    TXT_IDX_KITCHEN_MISSING_BREAD,
-    TXT_IDX_KITCHEN_MISSING_MEAT,
-    TXT_IDX_KITCHEN_MISSING_VEG,
-    TXT_IDX_MENU_PIGPEN1,
-    TXT_IDX_MENU_PIGPEN2,
-    TXT_IDX_MENU_PIGPEN3,
-    TXT_IDX_MENU_TASK_MANAGER_PLUS,
-    TXT_IDX_MENU_TASK_MANAGER_MINUS,
-    TXT_IDX_MENU_SHOPIN1,
-    TXT_IDX_MENU_SHOPIN2,
-    TXT_IDX_MENU_SHOPIN3,
-    TXT_IDX_MENU_SHOPIN4,
-    SB_IDX_SHOP_CLOSED,
-    TXT_IDX_SHOP_DESCRIPTION,
-    TXT_IDX_MENU_SHOPOUT1,
-    TXT_IDX_MENU_SHOPOUT2,
-    TXT_IDX_TASK_EMPTY_NAME,
-    TXT_IDX_TASK_EMPTY_DESCRIPTION,
-    SB_IDX_MENU_TV_SCREEN,
-    TV_IDX_MENU_TV_SCREEN_BILLS
-};
-
-//      "pragma_label": TxtCrew,
-//      "array_label": TXT_CREW,
-//      "indexes_count": 7
-
-enum TXT_CREW_INDEXES {
-    LTXT_IDX_CREW_STAT_INT,
-    LTXT_IDX_CREW_STAT_STR,
-    LTXT_IDX_CREW_STAT_CUN,
-    LTXT_IDX_CREW_SKILL_ANI,
-    LTXT_IDX_CREW_SKILL_FRM,
-    LTXT_IDX_CREW_SKILL_BTH,
-    LTXT_IDX_CREW_SKILL_TRD
-};
+#define TXT_MENU_AIR_DEF                                     (char *)(TXT_PL + 0)
+#define TXT_SAVE_POTATOES                                    (char *)(TXT_PL + 51)
+#define TXT_TASK_FARMLAND_PLOW                               (char *)(TXT_PL + 67)
+#define TXT_TASK_FARMLAND_FARM                               (char *)(TXT_PL + 76)
+#define TXT_TASK_FARMLAND_REAP                               (char *)(TXT_PL + 85)
+#define TXT_TASK_DSC_FARMLAND_POTATO                         (char *)(TXT_PL + 94)
+#define TXT_TASK_DSC_FARMLAND_LUPINE                         (char *)(TXT_PL + 104)
+#define TXT_TASK_DSC_FARMLAND_WHEAT                          (char *)(TXT_PL + 111)
+#define TXT_TASK_DSC_FARMLAND_CORN                           (char *)(TXT_PL + 120)
+#define TXT_MENU_TASK_MANAGER_PLUS                           (char *)(TXT_PL + 130)
+#define TXT_MENU_TASK_MANAGER_MINUS                          (char *)(TXT_PL + 132)
+#define SB_KITCHEN_CANNOT_EAT                               (char *)(TXT_PL + 134)
+#define SB_TASK_KITCHEN_BAKE_BREAD_STORAGE_FULL             (char *)(TXT_PL + 171)
+#define SB_TASK_KITCHEN_BAKE_BREAD_NO_WHEAT                 (char *)(TXT_PL + 208)
+#define TXT_TASK_KITCHEN                                     (char *)(TXT_PL + 245)
+#define TXT_TASK_DSC_KITCHEN_BAKE_BREAD                      (char *)(TXT_PL + 254)
+#define TXT_KITCHEN_MISSING                                  (char *)(TXT_PL + 267)
+#define TXT_KITCHEN_MISSING_BREAD                            (char *)(TXT_PL + 280)
+#define TXT_KITCHEN_MISSING_MEAT                             (char *)(TXT_PL + 287)
+#define TXT_KITCHEN_MISSING_VEG                              (char *)(TXT_PL + 293)
+#define TXT_MENU_EXIT                                        (char *)(TXT_PL + 301)
+#define TXT_EXIT_TO_MAP                                      (char *)(TXT_PL + 310)
+#define TXT_MUSIC_OPTIONS_HEADER                             (char *)(TXT_PL + 318)
+#define SB_MENU_OPTIONS_MSX_MENU                            (char *)(TXT_PL + 336)
+#define TXT_LOG_MENU_HEADER                                  (char *)(TXT_PL + 373)
+#define TXT_LOG_MENU_LOG_TABLE_HEADER                        (char *)(TXT_PL + 391)
+#define TXT_MENU_SELECT                                      (char *)(TXT_PL + 432)
+#define TXT_MENU_W                                           (char *)(TXT_PL + 435)
+#define TXT_MENU_S                                           (char *)(TXT_PL + 437)
+#define TXT_MENU_A                                           (char *)(TXT_PL + 439)
+#define TXT_MENU_D                                           (char *)(TXT_PL + 441)
+#define TXT_TASK_MANAGER_HEADER                              (char *)(TXT_PL + 443)
+#define TXT_TASK_MANAGER_TABLE_HEADER                        (char *)(TXT_PL + 457)
+#define SB_TASK_ADDED                                       (char *)(TXT_PL + 486)
+#define SB_TASKS_FULL                                       (char *)(TXT_PL + 523)
+#define SB_WELCOME                                          (char *)(TXT_PL + 560)
 
 //      "pragma_label": TxtFarmland,
 //      "array_label": TXT_FARMLAND,
 //      "indexes_count": 32
 
-enum TXT_FARMLAND_INDEXES {
-    LTXT_IDX_CONFIRM_TXT,
-    LTXT_IDX_CONFIRM_ERROR,
-    LTXT_IDX_CONFIRM_YES,
-    LTXT_IDX_CONFIRM_NO,
-    LTXT_IDX_MENU_FARMLAND_PLOW,
-    LTXT_IDX_MENU_FARMLAND_SOW,
-    LTXT_IDX_MENU_FARMLAND_REAP,
-    LTXT_IDX_DESC_FARMLAND_PLOW,
-    LTXT_IDX_DESC_FARMLAND_SOW,
-    LTXT_IDX_DESC_FARMLAND_REAP,
-    LTXT_IDX_FARM_FIELD_TXT,
-    LTXT_IDX_FARM_PLANT_TXT,
-    LTXT_IDX_TASK_DSC_FARMLAND_FIELD,
-    LTXT_IDX_FIELD_LIST_HEADER,
-    LTXT_IDX_FIELD_SMALL,
-    LTXT_IDX_FIELD_MEDIUM,
-    LTXT_IDX_FIELD_BIG,
-    LTXT_IDX_FIELD_VBIG,
-    LTXT_IDX_PLANT_STAGE_NONE,
-    LTXT_IDX_PLANT_STAGE_PLOW_TASK_ASSIGNED,
-    LTXT_IDX_PLANT_STAGE_PLOWED,
-    LTXT_IDX_PLANT_STAGE_SOW_TASK_ASSIGNED,
-    LTXT_IDX_PLANT_STAGE_SPROUT,
-    LTXT_IDX_PLANT_STAGE_GROWTH,
-    LTXT_IDX_PLANT_STAGE_RIPEN,
-    LTXT_IDX_PLANT_STAGE_READY,
-    LTXT_IDX_PLANT_STAGE_REAP_TASK_ASSIGNED,
-    LTXT_IDX_PLANT_NAME_NONE,
-    LTXT_IDX_PLANT_NAME_POTATO,
-    LTXT_IDX_PLANT_NAME_LUPINE,
-    LTXT_IDX_PLANT_NAME_WHEAT,
-    LTXT_IDX_PLANT_NAME_CORN
-};
+#define TXT_PLANT_NAME_NONE                                  (char *)(TXT_FARMLAND_PL + 0)
+#define TXT_PLANT_NAME_POTATO                                (char *)(TXT_FARMLAND_PL + 11)
+#define TXT_PLANT_NAME_LUPINE                                (char *)(TXT_FARMLAND_PL + 22)
+#define TXT_PLANT_NAME_WHEAT                                 (char *)(TXT_FARMLAND_PL + 33)
+#define TXT_PLANT_NAME_CORN                                  (char *)(TXT_FARMLAND_PL + 44)
+#define TXT_FIELD_SMALL                                      (char *)(TXT_FARMLAND_PL + 55)
+#define TXT_FIELD_MEDIUM                                     (char *)(TXT_FARMLAND_PL + 63)
+#define TXT_FIELD_BIG                                        (char *)(TXT_FARMLAND_PL + 71)
+#define TXT_FIELD_VBIG                                       (char *)(TXT_FARMLAND_PL + 79)
+#define TXT_PLANT_STAGE_NONE                                 (char *)(TXT_FARMLAND_PL + 87)
+#define TXT_PLANT_STAGE_PLOW_TASK_ASSIGNED                   (char *)(TXT_FARMLAND_PL + 96)
+#define TXT_PLANT_STAGE_PLOWED                               (char *)(TXT_FARMLAND_PL + 105)
+#define TXT_PLANT_STAGE_SOW_TASK_ASSIGNED                    (char *)(TXT_FARMLAND_PL + 114)
+#define TXT_PLANT_STAGE_SPROUT                               (char *)(TXT_FARMLAND_PL + 123)
+#define TXT_PLANT_STAGE_GROWTH                               (char *)(TXT_FARMLAND_PL + 132)
+#define TXT_PLANT_STAGE_RIPEN                                (char *)(TXT_FARMLAND_PL + 141)
+#define TXT_PLANT_STAGE_READY                                (char *)(TXT_FARMLAND_PL + 150)
+#define TXT_PLANT_STAGE_REAP_TASK_ASSIGNED                   (char *)(TXT_FARMLAND_PL + 159)
+#define TXT_CONFIRM_TXT                                      (char *)(TXT_FARMLAND_PL + 168)
+#define TXT_CONFIRM_ERROR                                    (char *)(TXT_FARMLAND_PL + 177)
+#define TXT_CONFIRM_YES                                      (char *)(TXT_FARMLAND_PL + 214)
+#define TXT_CONFIRM_NO                                       (char *)(TXT_FARMLAND_PL + 223)
+#define TXT_MENU_FARMLAND_PLOW                               (char *)(TXT_FARMLAND_PL + 232)
+#define TXT_MENU_FARMLAND_SOW                                (char *)(TXT_FARMLAND_PL + 249)
+#define TXT_MENU_FARMLAND_REAP                               (char *)(TXT_FARMLAND_PL + 266)
+#define TXT_DESC_FARMLAND_PLOW                               (char *)(TXT_FARMLAND_PL + 283)
+#define TXT_DESC_FARMLAND_SOW                                (char *)(TXT_FARMLAND_PL + 318)
+#define TXT_DESC_FARMLAND_REAP                               (char *)(TXT_FARMLAND_PL + 353)
+#define TXT_FARM_FIELD_TXT                                   (char *)(TXT_FARMLAND_PL + 388)
+#define TXT_FARM_PLANT_TXT                                   (char *)(TXT_FARMLAND_PL + 396)
+#define TXT_TASK_DSC_FARMLAND_FIELD                          (char *)(TXT_FARMLAND_PL + 405)
+#define TXT_FIELD_LIST_HEADER                                (char *)(TXT_FARMLAND_PL + 411)
 
-//      "pragma_label": TxtKitchen,
-//      "array_label": TXT_KITCHEN,
-//      "indexes_count": 9
+//      "pragma_label": TxtPigpen,
+//      "array_label": TXT_PIGPEN,
+//      "indexes_count": 3
 
-enum TXT_KITCHEN_INDEXES {
-    LTXT_IDX_KITCHEN_TASK_OFF,
-    LTXT_IDX_KITCHEN_TASK_ON,
-    LTXT_IDX_KITCHEN_EATING_STYLE_LIGHT,
-    LTXT_IDX_KITCHEN_EATING_STYLE_MEDIUM,
-    LTXT_IDX_KITCHEN_EATING_STYLE_FULL,
-    LTXT_IDX_KITCHEN_PREFER_SHOP,
-    LTXT_IDX_KITCHEN_PREFER_HOME,
-    LTXT_IDX_KITCHEN_PREFER_POTATO,
-    LTXT_IDX_KITCHEN_PREFER_CORN
-};
+#define TXT_MENU_PIGPEN1                                     (char *)(TXT_PIGPEN_PL + 0)
+#define TXT_MENU_PIGPEN2                                     (char *)(TXT_PIGPEN_PL + 11)
+#define TXT_MENU_PIGPEN3                                     (char *)(TXT_PIGPEN_PL + 23)
+
+//      "pragma_label": TxtTelevision,
+//      "array_label": TXT_TELEVISION,
+//      "indexes_count": 2
+
+#define SB_MENU_TV_SCREEN                                   (char *)(TXT_TELEVISION_PL + 0)
+#define TV_MENU_TV_SCREEN_BILLS                             (char *)(TXT_TELEVISION_PL + 37)
+
+//      "pragma_label": TxtCrew,
+//      "array_label": TXT_CREW,
+//      "indexes_count": 15
+
+#define TXT_CREW_STAT_INT                                    (char *)(TXT_CREW_PL + 0)
+#define TXT_CREW_STAT_STR                                    (char *)(TXT_CREW_PL + 8)
+#define TXT_CREW_STAT_CUN                                    (char *)(TXT_CREW_PL + 17)
+#define TXT_CREW_SKILL_ANI                                   (char *)(TXT_CREW_PL + 25)
+#define TXT_CREW_SKILL_FRM                                   (char *)(TXT_CREW_PL + 36)
+#define TXT_CREW_SKILL_BTH                                   (char *)(TXT_CREW_PL + 47)
+#define TXT_CREW_SKILL_TRD                                   (char *)(TXT_CREW_PL + 58)
+#define TXT_CHAR_1_STORY                                     (char *)(TXT_CREW_PL + 69)
+#define TXT_CHAR_2_STORY                                     (char *)(TXT_CREW_PL + 225)
+#define TXT_CHAR_3_STORY                                     (char *)(TXT_CREW_PL + 386)
+#define TXT_CHAR_4_STORY                                     (char *)(TXT_CREW_PL + 421)
+#define TXT_MENU_CREW1                                       (char *)(TXT_CREW_PL + 546)
+#define TXT_MENU_CREW2                                       (char *)(TXT_CREW_PL + 554)
+#define TXT_MENU_CREW3                                       (char *)(TXT_CREW_PL + 562)
+#define TXT_MENU_CREW4                                       (char *)(TXT_CREW_PL + 570)
+
+//      "pragma_label": TxtBattle,
+//      "array_label": TXT_BATTLE,
+//      "indexes_count": 2
+
+#define TXT_BATTLE_MENU_ATTACK                               (char *)(TXT_BATTLE_PL + 0)
+#define TXT_BATTLE_MENU_DEFEND                               (char *)(TXT_BATTLE_PL + 8)
 
 //      "pragma_label": TxtVillageMap,
 //      "array_label": TXT_VILLAGE_MAP,
 //      "indexes_count": 22
 
-enum TXT_VILLAGE_MAP_INDEXES {
-    LTXT_IDX_NOTHING,
-    LTXT_IDX_FARM_HOUSE,
-    LTXT_IDX_FARM_BARN,
-    LTXT_IDX_FARM_PIGPEN,
-    LTXT_IDX_FARM_EMPTY,
-    LTXT_IDX_FARM_GARAGE,
-    LTXT_IDX_FARM_VBIG_FIELD,
-    LTXT_IDX_FARM_SMALL_FIELD_1,
-    LTXT_IDX_FARM_SMALL_FIELD_2,
-    LTXT_IDX_FARM_MEDIUM_FIELD,
-    LTXT_IDX_SHOP,
-    LTXT_IDX_CHURCH,
-    LTXT_IDX_HERMAN,
-    LTXT_IDX_SULEJUKOWA,
-    LTXT_IDX_HOUSE_1,
-    LTXT_IDX_HOUSE_2,
-    LTXT_IDX_MAIN_ROAD,
-    LTXT_IDX_VILLIAGE_ROAD,
-    LTXT_IDX_DIRT_ROAD,
-    LTXT_IDX_WELL,
-    LTXT_IDX_TOILET,
-    LTXT_IDX_WHARF
-};
+#define TXT_NOTHING                                          (char *)(TXT_VILLAGE_MAP_PL + 0)
+#define TXT_FARM_HOUSE                                       (char *)(TXT_VILLAGE_MAP_PL + 25)
+#define TXT_FARM_BARN                                        (char *)(TXT_VILLAGE_MAP_PL + 50)
+#define TXT_FARM_PIGPEN                                      (char *)(TXT_VILLAGE_MAP_PL + 75)
+#define TXT_FARM_EMPTY                                       (char *)(TXT_VILLAGE_MAP_PL + 100)
+#define TXT_FARM_GARAGE                                      (char *)(TXT_VILLAGE_MAP_PL + 125)
+#define TXT_FARM_VBIG_FIELD                                  (char *)(TXT_VILLAGE_MAP_PL + 150)
+#define TXT_FARM_SMALL_FIELD_1                               (char *)(TXT_VILLAGE_MAP_PL + 175)
+#define TXT_FARM_SMALL_FIELD_2                               (char *)(TXT_VILLAGE_MAP_PL + 200)
+#define TXT_FARM_MEDIUM_FIELD                                (char *)(TXT_VILLAGE_MAP_PL + 225)
+#define TXT_SHOP                                             (char *)(TXT_VILLAGE_MAP_PL + 250)
+#define TXT_CHURCH                                           (char *)(TXT_VILLAGE_MAP_PL + 275)
+#define TXT_HERMAN                                           (char *)(TXT_VILLAGE_MAP_PL + 300)
+#define TXT_SULEJUKOWA                                       (char *)(TXT_VILLAGE_MAP_PL + 325)
+#define TXT_HOUSE_1                                          (char *)(TXT_VILLAGE_MAP_PL + 350)
+#define TXT_HOUSE_2                                          (char *)(TXT_VILLAGE_MAP_PL + 375)
+#define TXT_MAIN_ROAD                                        (char *)(TXT_VILLAGE_MAP_PL + 400)
+#define TXT_VILLIAGE_ROAD                                    (char *)(TXT_VILLAGE_MAP_PL + 425)
+#define TXT_DIRT_ROAD                                        (char *)(TXT_VILLAGE_MAP_PL + 450)
+#define TXT_WELL                                             (char *)(TXT_VILLAGE_MAP_PL + 475)
+#define TXT_TOILET                                           (char *)(TXT_VILLAGE_MAP_PL + 500)
+#define TXT_WHARF                                            (char *)(TXT_VILLAGE_MAP_PL + 525)
 
-//      "pragma_label": TxtOptionsMenu,
-//      "array_label": TXT_OPTIONS_MENU,
-//      "indexes_count": 6
+//      "pragma_label": TxtHome,
+//      "array_label": TXT_HOME,
+//      "indexes_count": 5
 
-enum TXT_OPTIONS_MENU_INDEXES {
-    LTXT_IDX_OPTIONS_HEADER,
-    LTXT_IDX_OPTIONS_HELP1,
-    LTXT_IDX_OPTIONS_HELP2,
-    LTXT_IDX_OPTIONS_HELP3,
-    LTXT_IDX_OPTIONS_HELP4,
-    LTXT_IDX_OPTIONS_HELP5
-};
+#define TXT_TASK_LIST_HEADER                                 (char *)(TXT_HOME_PL + 0)
+#define TXT_MENU_MAIN1                                       (char *)(TXT_HOME_PL + 29)
+#define TXT_MENU_MAIN2                                       (char *)(TXT_HOME_PL + 38)
+#define TXT_MENU_MAIN3                                       (char *)(TXT_HOME_PL + 46)
+#define TXT_MENU_MAIN4                                       (char *)(TXT_HOME_PL + 58)
 
 //      "pragma_label": TxtTaskManager,
 //      "array_label": TXT_TASK_MANAGER,
 //      "indexes_count": 11
 
-enum TXT_TASK_MANAGER_INDEXES {
-    LTXT_IDX_TASK_MANAGER_PRIO_HEADER,
-    LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_1,
-    LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_2,
-    LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_3,
-    LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_4,
-    LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_5,
-    LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_6,
-    LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_7,
-    LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_8,
-    LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_9,
-    LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_10
-};
+#define TXT_TASK_MANAGER_PRIO_HEADER                         (char *)(TXT_TASK_MANAGER_PL + 0)
+#define TXT_TASK_MANAGER_PRIO_TABLE_HEADER_1                 (char *)(TXT_TASK_MANAGER_PL + 26)
+#define TXT_TASK_MANAGER_PRIO_TABLE_HEADER_2                 (char *)(TXT_TASK_MANAGER_PL + 66)
+#define TXT_TASK_MANAGER_PRIO_TABLE_HEADER_3                 (char *)(TXT_TASK_MANAGER_PL + 106)
+#define TXT_TASK_MANAGER_PRIO_TABLE_HEADER_4                 (char *)(TXT_TASK_MANAGER_PL + 146)
+#define TXT_TASK_MANAGER_PRIO_TABLE_HEADER_5                 (char *)(TXT_TASK_MANAGER_PL + 186)
+#define TXT_TASK_MANAGER_PRIO_TABLE_HEADER_6                 (char *)(TXT_TASK_MANAGER_PL + 226)
+#define TXT_TASK_MANAGER_PRIO_TABLE_HEADER_7                 (char *)(TXT_TASK_MANAGER_PL + 266)
+#define TXT_TASK_MANAGER_PRIO_TABLE_HEADER_8                 (char *)(TXT_TASK_MANAGER_PL + 306)
+#define TXT_TASK_MANAGER_PRIO_TABLE_HEADER_9                 (char *)(TXT_TASK_MANAGER_PL + 346)
+#define TXT_TASK_MANAGER_PRIO_TABLE_HEADER_10                (char *)(TXT_TASK_MANAGER_PL + 386)
+
+//      "pragma_label": TxtShopInside,
+//      "array_label": TXT_SHOP_INSIDE,
+//      "indexes_count": 4
+
+#define TXT_MENU_SHOPIN1                                     (char *)(TXT_SHOP_INSIDE_PL + 0)
+#define TXT_MENU_SHOPIN2                                     (char *)(TXT_SHOP_INSIDE_PL + 13)
+#define TXT_MENU_SHOPIN3                                     (char *)(TXT_SHOP_INSIDE_PL + 22)
+#define TXT_MENU_SHOPIN4                                     (char *)(TXT_SHOP_INSIDE_PL + 33)
+
+//      "pragma_label": TxtShopOutside,
+//      "array_label": TXT_SHOP_OUTSIDE,
+//      "indexes_count": 4
+
+#define SB_SHOP_CLOSED                                      (char *)(TXT_SHOP_OUTSIDE_PL + 0)
+#define TXT_SHOP_DESCRIPTION                                 (char *)(TXT_SHOP_OUTSIDE_PL + 37)
+#define TXT_MENU_SHOPOUT1                                    (char *)(TXT_SHOP_OUTSIDE_PL + 96)
+#define TXT_MENU_SHOPOUT2                                    (char *)(TXT_SHOP_OUTSIDE_PL + 103)
+
+//      "pragma_label": TxtOptionsMenu,
+//      "array_label": TXT_OPTIONS_MENU,
+//      "indexes_count": 8
+
+#define TXT_MENU_OPTIONS_LANG                                (char *)(TXT_OPTIONS_MENU_PL + 0)
+#define TXT_MENU_OPTIONS_MSX                                 (char *)(TXT_OPTIONS_MENU_PL + 18)
+#define TXT_OPTIONS_HEADER                                   (char *)(TXT_OPTIONS_MENU_PL + 37)
+#define TXT_OPTIONS_HELP1                                    (char *)(TXT_OPTIONS_MENU_PL + 52)
+#define TXT_OPTIONS_HELP2                                    (char *)(TXT_OPTIONS_MENU_PL + 71)
+#define TXT_OPTIONS_HELP3                                    (char *)(TXT_OPTIONS_MENU_PL + 102)
+#define TXT_OPTIONS_HELP4                                    (char *)(TXT_OPTIONS_MENU_PL + 111)
+#define TXT_OPTIONS_HELP5                                    (char *)(TXT_OPTIONS_MENU_PL + 132)
+
+//      "pragma_label": TxtKitchen,
+//      "array_label": TXT_KITCHEN,
+//      "indexes_count": 16
+
+#define TXT_KITCHEN_TASK_OFF                                 (char *)(TXT_KITCHEN_PL + 0)
+#define TXT_KITCHEN_TASK_ON                                  (char *)(TXT_KITCHEN_PL + 22)
+#define TXT_KITCHEN_EATING_STYLE_LIGHT                       (char *)(TXT_KITCHEN_PL + 44)
+#define TXT_KITCHEN_EATING_STYLE_MEDIUM                      (char *)(TXT_KITCHEN_PL + 66)
+#define TXT_KITCHEN_EATING_STYLE_FULL                        (char *)(TXT_KITCHEN_PL + 88)
+#define TXT_KITCHEN_PREFER_SHOP                              (char *)(TXT_KITCHEN_PL + 110)
+#define TXT_KITCHEN_PREFER_HOME                              (char *)(TXT_KITCHEN_PL + 132)
+#define TXT_KITCHEN_PREFER_POTATO                            (char *)(TXT_KITCHEN_PL + 154)
+#define TXT_KITCHEN_PREFER_CORN                              (char *)(TXT_KITCHEN_PL + 176)
+#define TXT_MENU_KITCHEN1                                    (char *)(TXT_KITCHEN_PL + 198)
+#define TXT_MENU_KITCHEN2                                    (char *)(TXT_KITCHEN_PL + 212)
+#define TXT_MENU_KITCHEN3                                    (char *)(TXT_KITCHEN_PL + 230)
+#define TXT_MENU_KITCHEN4                                    (char *)(TXT_KITCHEN_PL + 245)
+#define TXT_MENU_KITCHEN5                                    (char *)(TXT_KITCHEN_PL + 262)
+#define TXT_MENU_KITCHEN6                                    (char *)(TXT_KITCHEN_PL + 280)
+#define TXT_MENU_KITCHEN7                                    (char *)(TXT_KITCHEN_PL + 298)
 
 //      "pragma_label": Txt
 //      "array_label": TXT
 
+//      common: '        '
+static const char TXT_TASK_EMPTY_NAME[] = {0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
+//      common: '                  '
+static const char TXT_TASK_EMPTY_DESCRIPTION[] = {0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
 //      common: 'Janusz Dobrowolski'
 static const char TXT_CHAR_1_NAME[] = {0x4a, 0x01, 0x0e, 0x15, 0x13, 0x1a, 0x20, 0x44, 0x0f, 0x02, 0x12, 0x0f, 0x17, 0x0f, 0x0c, 0x13, 0x0b, 0x09, 0x00};
 //      common: 'Zdzisław Hermann'
@@ -234,20 +249,22 @@ static const char TXT_CHAR_2_NAME[] = {0x5a, 0x04, 0x1a, 0x09, 0x13, 0x5e, 0x01,
 static const char TXT_CHAR_3_NAME[] = {0x57, 0x09, 0x05, 0x13, 0x5e, 0x01, 0x17, 0x20, 0x43, 0x2e, 0x00};
 //      common: 'Józef Kołodziej'
 static const char TXT_CHAR_4_NAME[] = {0x4a, 0x60, 0x1a, 0x05, 0x06, 0x20, 0x4b, 0x0f, 0x5e, 0x0f, 0x04, 0x1a, 0x09, 0x05, 0x0a, 0x00};
-//      common: '        '
-static const char TXT_TASK_EMPTY_NAME[] = {0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
-//      common: '                  '
-static const char TXT_TASK_EMPTY_DESCRIPTION[] = {0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
 
 
 enum TXT_CACHE_INDEXES {
     TXT_CACHE_INDEX,
-    TXT_CREW_CACHE_INDEX,
     TXT_FARMLAND_CACHE_INDEX,
-    TXT_KITCHEN_CACHE_INDEX,
+    TXT_PIGPEN_CACHE_INDEX,
+    TXT_TELEVISION_CACHE_INDEX,
+    TXT_CREW_CACHE_INDEX,
+    TXT_BATTLE_CACHE_INDEX,
     TXT_VILLAGE_MAP_CACHE_INDEX,
+    TXT_HOME_CACHE_INDEX,
+    TXT_TASK_MANAGER_CACHE_INDEX,
+    TXT_SHOP_INSIDE_CACHE_INDEX,
+    TXT_SHOP_OUTSIDE_CACHE_INDEX,
     TXT_OPTIONS_MENU_CACHE_INDEX,
-    TXT_TASK_MANAGER_CACHE_INDEX
+    TXT_KITCHEN_CACHE_INDEX
 };
 
 #endif

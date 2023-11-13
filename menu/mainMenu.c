@@ -333,22 +333,22 @@ __interrupt static void _menuShowSprites(){
 }
 
 const struct MenuOption MAIN_MENU[] = {
-    {TXT_IDX_MENU_MAIN1, '1', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_KITCHEN, 1, 1},
-    {TXT_IDX_MENU_MAIN2, '2', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_CREW, 1, 2},
-    {TXT_IDX_MENU_MAIN3, '3', SCREEN_TRANSITION, UI_SELECT, &showTvScreen, 0, 1, 3},
-    {TXT_IDX_MENU_AIR_DEF, '4', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_BATTLE_MENU, 1, 7 },
-    {TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 1, 6},
+    {TXT_MENU_MAIN1, '1', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_KITCHEN, 1, 1},
+    {TXT_MENU_MAIN2, '2', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_CREW, 1, 2},
+    {TXT_MENU_MAIN3, '3', SCREEN_TRANSITION, UI_SELECT, &showTvScreen, 0, 1, 3},
+    {TXT_MENU_MAIN4, '4', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_BATTLE_MENU, 1, 7 },
+    {TXT_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 1, 6},
     END_MENU_CHOICES
 };
 
 static void _displayTaskList(){
     // header
-    cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST, 1, TXT[TXT_IDX_TASK_LIST_HEADER], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST, 1, TXT_TASK_LIST_HEADER, VCOL_YELLOW);
 
     // tasks list
     for(byte i=0;i<TASK_ARRAY_SIZE;i++){
         byte taskId = taskRef[i];
-        cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST, 2+i, TXT[task_nameIdx[taskId]], VCOL_GREEN);
+        // cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST, 2+i, TXT[task_nameIdx[taskId]], VCOL_GREEN); // TXT_PL_ARRAY
         cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST+8, 2+i, TBL_V, VCOL_YELLOW);
         cwin_putat_string_raw(&cw, COL_OFFSET_TASKLIST+9, 2+i, task_desc[taskId], VCOL_GREEN);
     }
@@ -361,6 +361,9 @@ static void _menuHandler(){
     loadMenuGfx();
     loadMenuSprites();
 
+    // copy text crew cache from cat to memory
+    loadCacheTxt(TXT_HOME_CACHE_INDEX);
+
     // zero fill sprites
     char i = 0;
     do {
@@ -372,6 +375,10 @@ static void _menuHandler(){
         i++;
     } while (i != 0);
 
+
+    // copy text kitchen cache from cart to memory
+    // loadCacheTxt(TXT_HOME_CACHE_INDEX);
+
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);
     cwin_clear(&cw);
@@ -381,7 +388,7 @@ static void _menuHandler(){
     displayMenu(MAIN_MENU);
     switchScreenTo(SCREEN_SPLIT_MC_TXT);
     _displayTaskList();
-    updateStatusBar(TXT[SB_IDX_WELCOME]);
+    updateStatusBar(SB_WELCOME);
 }
 
 #pragma data ( mainMenuLoaderData )

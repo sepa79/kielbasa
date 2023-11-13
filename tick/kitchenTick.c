@@ -150,19 +150,19 @@ static void _mealTickPlayer(MEAL_TYPE mealType){
         char row3[13] = s"            ";
         bool needRow3 = true;
         if(noBread && noMeat){
-            sprintf(row2, "%s %s", TXT[TXT_IDX_KITCHEN_MISSING_BREAD], TXT[TXT_IDX_KITCHEN_MISSING_MEAT]);
+            sprintf(row2, "%s %s", TXT_KITCHEN_MISSING_BREAD, TXT_KITCHEN_MISSING_MEAT);
         } else if (noBread) {
-            sprintf(row2, "%s", TXT[TXT_IDX_KITCHEN_MISSING_BREAD]);
+            sprintf(row2, "%s", TXT_KITCHEN_MISSING_BREAD);
         } else if (noMeat) {
-            sprintf(row2, "%s", TXT[TXT_IDX_KITCHEN_MISSING_MEAT]);
+            sprintf(row2, "%s", TXT_KITCHEN_MISSING_MEAT);
         } else if (noVeg){
-            sprintf(row2, "%s", TXT[TXT_IDX_KITCHEN_MISSING_VEG]);
+            sprintf(row2, "%s", TXT_KITCHEN_MISSING_VEG);
             needRow3 = false;
         }
         if(needRow3 && noVeg){
-            sprintf(row3, "%s", TXT[TXT_IDX_KITCHEN_MISSING_VEG]);
+            sprintf(row3, "%s", TXT_KITCHEN_MISSING_VEG);
         }
-        sprintf(str, "%s%12s%12s", TXT[TXT_IDX_KITCHEN_MISSING], row2, row3);
+        sprintf(str, "%s%12s%12s", TXT_KITCHEN_MISSING, row2, row3);
         updateStatusBarError(str);
     }
     // debug
@@ -183,7 +183,7 @@ void _secondBreakfastNow(){
     if(allCharacters[0].regenTime < 3){
         _mealTickPlayer(GS.kitchen.breakfastType);
     } else {
-        updateStatusBarError(TXT[SB_IDX_KITCHEN_CANNOT_EAT]);
+        updateStatusBarError(SB_KITCHEN_CANNOT_EAT);
     }
 }
 

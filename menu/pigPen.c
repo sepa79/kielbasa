@@ -76,11 +76,11 @@ static void _ppMenu3(){
 }
 
 const struct MenuOption PIG_PEN_MENU[] = {
-    { TXT_IDX_MENU_PIGPEN1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_ppMenu1, 0, 1, 1},
-    { TXT_IDX_MENU_PIGPEN2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_ppMenu2, 0, 1, 2},
-    { TXT_IDX_MENU_PIGPEN3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_ppMenu3, 0, 1, 3},
-    { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_SELECT, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 2, 5},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
+    { TXT_MENU_PIGPEN1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_ppMenu1, 0, 1, 1},
+    { TXT_MENU_PIGPEN2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_ppMenu2, 0, 1, 2},
+    { TXT_MENU_PIGPEN3, '3', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_ppMenu3, 0, 1, 3},
+    { TXT_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_SELECT, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 2, 5},
+    { TXT_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
     END_MENU_CHOICES
 };
 
@@ -88,6 +88,9 @@ static void _menuHandler(void){
     mnu_isGfxLoaded = false;
     loadMenuGfx();
     loadMenuSprites();
+
+    // copy text crew cache from cat to memory
+    loadCacheTxt(TXT_PIGPEN_CACHE_INDEX);
 
     sprBankPointer = ((char *)GFX_1_BASE + 64*(SPR_BANK_PIG_ANIM1+1));
     copyCharToSprite('0', 0, 0, sprBankPointer);

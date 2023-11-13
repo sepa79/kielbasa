@@ -9,22 +9,17 @@
 //
 //
 
-{%- for section in index_arrays %}
+{%- for section in text_arrays %}
 
 //      "pragma_label": {{ section.pragma_label }},
 //      "array_label": {{ section.array_label }},
 //      "indexes_count": {{ section.indexes_count }}
-
-enum {{ section.array_label }}_INDEXES {
-
-{%- for label in section.contents %}
-{%- if section.pragma_label == "Txt" %}
-    {{ label }}{{ "," if not loop.last }}
-{%- else %}
-    L{{ label }}{{ "," if not loop.last }}
-{%- endif %}
+{%- set ns          = namespace() %}
+{%- set ns.section_text_len = 0 %}
+{% for label in section.contents %}
+#define {{ label.prefix }}_{{ label.name.ljust(40) }}         (char *)({{ section.array_label }}_PL + {{ ns.section_text_len }})
+{%- set ns.section_text_len = ns.section_text_len + label.raw_text_len + 1 %}
 {%- endfor %}
-};
 {%- endfor %}
 
 //      "pragma_label": {{ pragma_label }}

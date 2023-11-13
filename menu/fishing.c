@@ -138,7 +138,7 @@ void fishingMenuSpriteLoader(){
 
 const struct MenuOption FISHING_MENU[] = {
     // Add the "Exit to Map" option as shown in the example
-    { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF + UI_HIDE, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 2, 5 },
+    { TXT_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF + UI_HIDE, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 2, 5 },
     END_MENU_CHOICES
 };
 

@@ -127,7 +127,7 @@ __interrupt static void _shopOutsideShowSprites(){
 #pragma data ( data )
 static void _getInside(){
     if(!_checkIfOpen()){
-        updateStatusBar(TXT[SB_IDX_SHOP_CLOSED]);
+        updateStatusBar(SB_SHOP_CLOSED);
         setErrorCursor();
         return;
     }
@@ -152,9 +152,9 @@ static void _getInside(){
 // }
 
 const struct MenuOption SHOP_OUTSIDE_MENU[] = {
-    { TXT_IDX_MENU_SHOPOUT1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_getInside, 0, 1, 4},
+    { TXT_MENU_SHOPOUT1, '1', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_getInside, 0, 1, 4},
     // { TXT_IDX_MENU_SHOPOUT2, '2', SCREEN_SPLIT_MC_TXT, UI_SELECT, &_soMenu2, 0, 1, 5},
-    { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_SELECT, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 1, 8},
+    { TXT_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_SELECT, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 1, 8},
     // { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF, &showMenu, MENU_BANK_MAIN_MENU, 2, 7},
     END_MENU_CHOICES
 };
@@ -162,10 +162,14 @@ const struct MenuOption SHOP_OUTSIDE_MENU[] = {
 static void _menuHandler(void){
     loadMenuGfx();
     loadMenuSprites();
+
+    // copy text crew cache from cat to memory
+    loadCacheTxt(TXT_SHOP_OUTSIDE_CACHE_INDEX);
+
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, SCREEN_X_START, SCREEN_Y_START, SCREEN_WIDTH, SCREEN_HEIGHT);
     cwin_clear(&cw);
-    cwin_putat_string_raw(&cw, 0, 0, TXT[TXT_IDX_SHOP_DESCRIPTION], VCOL_GREEN);
+    cwin_putat_string_raw(&cw, 0, 0, TXT_SHOP_DESCRIPTION, VCOL_GREEN);
     
     gms_disableTimeControls = false;
     displayMenu(SHOP_OUTSIDE_MENU);

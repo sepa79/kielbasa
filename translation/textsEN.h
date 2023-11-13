@@ -10,73 +10,107 @@
 
 //      "pragma_label":  Txt
 //      "array_label":   TXT
-//      "indexes_count": 78
-//      "array_length":  1636
+//      "indexes_count": 42
+//      "array_length":  597
 
-#pragma section( enTxt, 0 )
 #pragma section( enTxtData, 0 )
-#pragma region( bankEnTxtArray, 0x8000, 0x809c, , TRANSLATION_EN_BANK, { enTxt}, 0x5c00 )
-#pragma region( bankEnTxtData, 0x809c, 0x8700, , TRANSLATION_EN_BANK, { enTxtData}, 0x5c9c )
-
-//      "pragma_label":  TxtCrew
-//      "array_label":   TXT_CREW
-//      "indexes_count": 7
-//      "array_length":  69
-
-#pragma section( enTxtCrew, 0 )
-#pragma section( enTxtCrewData, 0 )
-#pragma region( bankEnTxtCrewArray, 0x8701, 0x870f, , TRANSLATION_EN_BANK, { enTxtCrew}, 0x6400 )
-#pragma region( bankEnTxtCrewData, 0x870f, 0x8754, , TRANSLATION_EN_BANK, { enTxtCrewData}, 0x640e )
+#pragma region( bankEnTxtData, 0x8000, 0x8255, , TRANSLATION_EN_BANK, { enTxtData}, 0x5c00 )
 
 //      "pragma_label":  TxtFarmland
 //      "array_label":   TXT_FARMLAND
 //      "indexes_count": 32
 //      "array_length":  434
 
-#pragma section( enTxtFarmland, 0 )
 #pragma section( enTxtFarmlandData, 0 )
-#pragma region( bankEnTxtFarmlandArray, 0x8755, 0x8795, , TRANSLATION_EN_BANK, { enTxtFarmland}, 0x6400 )
-#pragma region( bankEnTxtFarmlandData, 0x8795, 0x8947, , TRANSLATION_EN_BANK, { enTxtFarmlandData}, 0x6440 )
+#pragma region( bankEnTxtFarmlandData, 0x8256, 0x8408, , TRANSLATION_EN_BANK, { enTxtFarmlandData}, 0x6400 )
 
-//      "pragma_label":  TxtKitchen
-//      "array_label":   TXT_KITCHEN
-//      "indexes_count": 9
-//      "array_length":  198
+//      "pragma_label":  TxtPigpen
+//      "array_label":   TXT_PIGPEN
+//      "indexes_count": 3
+//      "array_length":  35
 
-#pragma section( enTxtKitchen, 0 )
-#pragma section( enTxtKitchenData, 0 )
-#pragma region( bankEnTxtKitchenArray, 0x8948, 0x895a, , TRANSLATION_EN_BANK, { enTxtKitchen}, 0x6400 )
-#pragma region( bankEnTxtKitchenData, 0x895a, 0x8a20, , TRANSLATION_EN_BANK, { enTxtKitchenData}, 0x6412 )
+#pragma section( enTxtPigpenData, 0 )
+#pragma region( bankEnTxtPigpenData, 0x8409, 0x842c, , TRANSLATION_EN_BANK, { enTxtPigpenData}, 0x6400 )
+
+//      "pragma_label":  TxtTelevision
+//      "array_label":   TXT_TELEVISION
+//      "indexes_count": 2
+//      "array_length":  92
+
+#pragma section( enTxtTelevisionData, 0 )
+#pragma region( bankEnTxtTelevisionData, 0x842d, 0x8489, , TRANSLATION_EN_BANK, { enTxtTelevisionData}, 0x6400 )
+
+//      "pragma_label":  TxtCrew
+//      "array_label":   TXT_CREW
+//      "indexes_count": 15
+//      "array_length":  578
+
+#pragma section( enTxtCrewData, 0 )
+#pragma region( bankEnTxtCrewData, 0x848a, 0x86cc, , TRANSLATION_EN_BANK, { enTxtCrewData}, 0x6400 )
+
+//      "pragma_label":  TxtBattle
+//      "array_label":   TXT_BATTLE
+//      "indexes_count": 2
+//      "array_length":  16
+
+#pragma section( enTxtBattleData, 0 )
+#pragma region( bankEnTxtBattleData, 0x86cd, 0x86dd, , TRANSLATION_EN_BANK, { enTxtBattleData}, 0x6400 )
 
 //      "pragma_label":  TxtVillageMap
 //      "array_label":   TXT_VILLAGE_MAP
 //      "indexes_count": 22
 //      "array_length":  550
 
-#pragma section( enTxtVillageMap, 0 )
 #pragma section( enTxtVillageMapData, 0 )
-#pragma region( bankEnTxtVillageMapArray, 0x8a21, 0x8a4d, , TRANSLATION_EN_BANK, { enTxtVillageMap}, 0x6400 )
-#pragma region( bankEnTxtVillageMapData, 0x8a4d, 0x8c73, , TRANSLATION_EN_BANK, { enTxtVillageMapData}, 0x642c )
+#pragma region( bankEnTxtVillageMapData, 0x86de, 0x8904, , TRANSLATION_EN_BANK, { enTxtVillageMapData}, 0x6400 )
 
-//      "pragma_label":  TxtOptionsMenu
-//      "array_label":   TXT_OPTIONS_MENU
-//      "indexes_count": 6
-//      "array_length":  132
+//      "pragma_label":  TxtHome
+//      "array_label":   TXT_HOME
+//      "indexes_count": 5
+//      "array_length":  67
 
-#pragma section( enTxtOptionsMenu, 0 )
-#pragma section( enTxtOptionsMenuData, 0 )
-#pragma region( bankEnTxtOptionsMenuArray, 0x8c74, 0x8c80, , TRANSLATION_EN_BANK, { enTxtOptionsMenu}, 0x6400 )
-#pragma region( bankEnTxtOptionsMenuData, 0x8c80, 0x8d04, , TRANSLATION_EN_BANK, { enTxtOptionsMenuData}, 0x640c )
+#pragma section( enTxtHomeData, 0 )
+#pragma region( bankEnTxtHomeData, 0x8905, 0x8948, , TRANSLATION_EN_BANK, { enTxtHomeData}, 0x6400 )
 
 //      "pragma_label":  TxtTaskManager
 //      "array_label":   TXT_TASK_MANAGER
 //      "indexes_count": 11
 //      "array_length":  426
 
-#pragma section( enTxtTaskManager, 0 )
 #pragma section( enTxtTaskManagerData, 0 )
-#pragma region( bankEnTxtTaskManagerArray, 0x8d05, 0x8d1b, , TRANSLATION_EN_BANK, { enTxtTaskManager}, 0x6400 )
-#pragma region( bankEnTxtTaskManagerData, 0x8d1b, 0x8ec5, , TRANSLATION_EN_BANK, { enTxtTaskManagerData}, 0x6416 )
+#pragma region( bankEnTxtTaskManagerData, 0x8949, 0x8af3, , TRANSLATION_EN_BANK, { enTxtTaskManagerData}, 0x6400 )
+
+//      "pragma_label":  TxtShopInside
+//      "array_label":   TXT_SHOP_INSIDE
+//      "indexes_count": 4
+//      "array_length":  50
+
+#pragma section( enTxtShopInsideData, 0 )
+#pragma region( bankEnTxtShopInsideData, 0x8af4, 0x8b26, , TRANSLATION_EN_BANK, { enTxtShopInsideData}, 0x6400 )
+
+//      "pragma_label":  TxtShopOutside
+//      "array_label":   TXT_SHOP_OUTSIDE
+//      "indexes_count": 4
+//      "array_length":  112
+
+#pragma section( enTxtShopOutsideData, 0 )
+#pragma region( bankEnTxtShopOutsideData, 0x8b27, 0x8b97, , TRANSLATION_EN_BANK, { enTxtShopOutsideData}, 0x6400 )
+
+//      "pragma_label":  TxtOptionsMenu
+//      "array_label":   TXT_OPTIONS_MENU
+//      "indexes_count": 8
+//      "array_length":  169
+
+#pragma section( enTxtOptionsMenuData, 0 )
+#pragma region( bankEnTxtOptionsMenuData, 0x8b98, 0x8c41, , TRANSLATION_EN_BANK, { enTxtOptionsMenuData}, 0x6400 )
+
+//      "pragma_label":  TxtKitchen
+//      "array_label":   TXT_KITCHEN
+//      "indexes_count": 16
+//      "array_length":  328
+
+#pragma section( enTxtKitchenData, 0 )
+#pragma region( bankEnTxtKitchenData, 0x8c42, 0x8d8a, , TRANSLATION_EN_BANK, { enTxtKitchenData}, 0x6400 )
 
 
 

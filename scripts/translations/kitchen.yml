@@ -30,11 +30,6 @@ TxtKitchen:
   - id: KITCHEN_PREFER_CORN
     en: 'Corn                 '
     pl: 'Kukurydza            '
-
-# static text - always in memory
-Txt:
-  array_label: TXT
-  contents:
   - id: MENU_KITCHEN1
     menu_opt: '1'
     en: 'Bake bread  '
@@ -63,6 +58,11 @@ Txt:
     menu_opt: '7'
     en: 'Eat second breakfast now    '
     pl: 'Zjedz teraz drugie śniadanie'
+
+# static text - always in memory
+Txt:
+  array_label: TXT
+  contents:
   - id: KITCHEN_CANNOT_EAT
     prefix: SB
     en:

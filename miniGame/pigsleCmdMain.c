@@ -602,7 +602,7 @@ void gameState(GameState state){
         memset(COLOR_RAM+7*40, 2, 3*40);
         memset(GFX_1_BMP+7*40*8, 0, 3*40*8);
         // TODO: add txt to translations
-        charWrite(60, TXT[TXT_IDX_SAVE_POTATOES]);
+        charWrite(60, TXT_SAVE_POTATOES);
         TheGame.count = 50;
         break;
 

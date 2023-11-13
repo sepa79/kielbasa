@@ -64,7 +64,7 @@ __interrupt static void _menuShowSprites(){
 }
 
 const struct MenuOption TV_SCREEN_MENU[] = {
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &revertPreviousMenu, 0, 2, 11},
+    { TXT_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &revertPreviousMenu, 0, 2, 11},
     END_MENU_CHOICES
 };
 
@@ -75,8 +75,11 @@ static void _menuHandler(void) {
     
     loadMenuGfx();
 
+    // copy text crew cache from cat to memory
+    loadCacheTxt(TXT_TELEVISION_CACHE_INDEX);
+
     memset(SPRITE_BLOCK_POINTER, 0, 0x40*8);
-    textToSprite((char*)TXT[TV_IDX_MENU_TV_SCREEN_BILLS], 3, SPRITE_BLOCK_POINTER);
+    textToSprite(TV_MENU_TV_SCREEN_BILLS, 3, SPRITE_BLOCK_POINTER);
 
     char str[10] = "";
     sprintf(str, "%8d", GS.bills);
@@ -91,7 +94,7 @@ static void _menuHandler(void) {
 
     switchScreenTo(SCREEN_MC_GFX);
     displayMenu(TV_SCREEN_MENU);
-    updateStatusBar(TXT[SB_IDX_MENU_TV_SCREEN]);
+    updateStatusBar(SB_MENU_TV_SCREEN);
 }
 
 #pragma data(tvScreenLoaderData)

@@ -75,16 +75,16 @@ static void _prepareReportLogData(){
 static void _prepareTaskLogData(){
     switch(currentLogMsg.LOG_DATA_CONTEXT) {
         case LOG_DATA_CONTEXT_TASK_ASSIGNED_TO_WORKER:
-            sprintf(_str, p"Task [""%s"p"] assigned to char [""%u""]", TXT[currentLogMsg.LOG_DATA_TASK_NAMEIDX], currentLogMsg.LOG_DATA_TASK_WORKER);
+            sprintf(_str, p"Task [""%s"p"] assigned to char [""%u""]", TXT_TASK_EMPTY_NAME, currentLogMsg.LOG_DATA_TASK_WORKER);
             break;
         case LOG_DATA_CONTEXT_TASK_NEW_TASK:
-            sprintf(_str, p"New task created [""%s""]", TXT[currentLogMsg.LOG_DATA_TASK_NAMEIDX]);
+            sprintf(_str, p"New task created [""%s""]", TXT_TASK_EMPTY_NAME);
             break;
         case LOG_DATA_CONTEXT_TASK_REMOVE_TASK:
-            sprintf(_str, p"Task [""%s"p"] removed, status [""%u"p"]", TXT[currentLogMsg.LOG_DATA_TASK_NAMEIDX], currentLogMsg.LOG_DATA_TASK_STATUS);
+            sprintf(_str, p"Task [""%s"p"] removed, status [""%u"p"]", TXT_TASK_EMPTY_NAME, currentLogMsg.LOG_DATA_TASK_STATUS);
             break;
         case LOG_DATA_CONTEXT_TASK_STATUS_UNKNOWN:
-            sprintf(_str, p"UNHANDLED STATUS: Task [""%s"p"] char[""%u"p"] status [""%u"p"]", TXT[currentLogMsg.LOG_DATA_TASK_NAMEIDX], currentLogMsg.LOG_DATA_TASK_WORKER, currentLogMsg.LOG_DATA_TASK_STATUS);
+            sprintf(_str, p"UNHANDLED STATUS: Task [""%s"p"] char[""%u"p"] status [""%u"p"]", TXT_TASK_EMPTY_NAME, currentLogMsg.LOG_DATA_TASK_WORKER, currentLogMsg.LOG_DATA_TASK_STATUS);
             break;
 
         // farm tasks
@@ -123,13 +123,13 @@ static void _showLogs(){
     cwin_clear(&cw);
 
     // static menu texts
-    cwin_putat_string_raw(&cw, 0, 0, TXT[TXT_IDX_LOG_MENU_HEADER], VCOL_GREEN);
+    cwin_putat_string_raw(&cw, 0, 0, TXT_LOG_MENU_HEADER, VCOL_GREEN);
     sprintf(_str, s"Page"" %02u/%02u", _currentPage+1, LOG_PAGES_COUNT);
     cwin_putat_string_raw(&cw, 30, 0, _str, VCOL_GREEN);
 
     displayMenu(LOG_MENU);
     // header
-    cwin_putat_string_raw(&cw, COL_OFFSET_LOGS, ROW_OFFSET_LOGS-1, TXT[TXT_IDX_LOG_MENU_LOG_TABLE_HEADER], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, COL_OFFSET_LOGS, ROW_OFFSET_LOGS-1, TXT_LOG_MENU_LOG_TABLE_HEADER, VCOL_YELLOW);
 
     byte logIndex = _currentPage * LOG_MSGS_PER_PAGE;
     byte row = 0;
@@ -192,9 +192,9 @@ static void _downPage(){
 #pragma data ( LogMenuData )
 
 const struct MenuOption LOG_MENU[] = {
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &backToPreviousMenu, 0, 1, 21 },
-    { TXT_IDX_MENU_W, 'w', SCREEN_FULL_TXT, UI_U+UI_HIDE, &_upPage, 0, 0, ROW_OFFSET_LOGS-1 },
-    { TXT_IDX_MENU_S, 's', SCREEN_FULL_TXT, UI_D+UI_HIDE, &_downPage, 0, 0, ROW_OFFSET_LOGS+10 },
+    { TXT_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &backToPreviousMenu, 0, 1, 21 },
+    { TXT_MENU_W, 'w', SCREEN_FULL_TXT, UI_U+UI_HIDE, &_upPage, 0, 0, ROW_OFFSET_LOGS-1 },
+    { TXT_MENU_S, 's', SCREEN_FULL_TXT, UI_D+UI_HIDE, &_downPage, 0, 0, ROW_OFFSET_LOGS+10 },
 
     END_MENU_CHOICES
 };

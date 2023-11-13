@@ -83,21 +83,6 @@ def generate_common_h_file_index_arrays_jinja2( config ):
         index_arrays.append({**section, 'contents': contents})
     return {'index_arrays': index_arrays }
 
-# generate index array for given 'lang'
-def generate_c_file_index_arrays_jinja2( config, lang ):
-    index_arrays = []
-    for k, v in config.items():
-        section = {'pragma_label': k, 'array_label': v.get('array_label'), 'indexes_count': len(v.get("contents"))}
-        contents = []
-        for p in v.get( "contents" ):
-            prefix = "TXT" if not p.get("prefix") else p["prefix"]
-            if p.get( "common" ):
-                contents.append('%s_%s' % (prefix, p['id']))
-            else:
-                contents.append('%s_%s_%s' % (prefix, lang.upper(), p['id']))
-        index_arrays.append({**section, 'contents': contents})
-    return {'index_arrays': index_arrays, 'lang': lang}
-
 # generate text arrays for texts*.c file, with given 'lang' and apply text_filter
 def generate_c_file_text_arrays_jinja2( config, lang, text_filter ):
     text_arrays = []
@@ -113,12 +98,15 @@ def generate_c_file_text_arrays_jinja2( config, lang, text_filter ):
                 pass
             else:
                 text = p[ lang ]
+                raw_text_len = 0
 
                 # make human readable comment from text
                 if isinstance( text, list ):
-                    comment = '"\n//           "'.join(text)
+                    comment = '"\n    //       "'.join(text)
+                    raw_text_len = len(''.join(text))
                 else:
                     comment = f'{text}'
+                    raw_text_len = len(text)
 
                 # merge text into one single string if text is a 'list' type
                 if isinstance(text, list):
@@ -134,10 +122,11 @@ def generate_c_file_text_arrays_jinja2( config, lang, text_filter ):
                 # add appropriate menu option symbol if this is menu option
                 if p.get( "menu_opt" ):
                     text = menu_opt( p.get( "menu_opt" ) ) + text
+                    raw_text_len += 1
 
                 # create and add label data, prefix and name as dictionary
                 prefix = "TXT" if not p.get("prefix") else p["prefix"]
-                label = {'prefix': prefix, 'name': p['id'], 'bytearray': text, 'comment': comment}
+                label = {'prefix': prefix, 'name': p['id'], 'bytearray': text, 'comment': comment, 'raw_text_len': raw_text_len}
                 contents.append(label)
 
                 # count text array size in bytes ( add 1 for zero terminated string )
@@ -158,9 +147,8 @@ def create_lang_files_jinja2( config, lang, dot_c_template, dot_h_template, dst_
 
     # create dot_c_file
     text_arrays  = generate_c_file_text_arrays_jinja2( config, lang, encode_charset )
-    index_arrays = generate_c_file_index_arrays_jinja2( config, lang )
     template     = environment.get_template( dot_c_template )
-    write( dst_filename + '.c', template.render( {**text_arrays, **index_arrays} ) )
+    write( dst_filename + '.c', template.render( text_arrays ) )
     
     # create dot_h_file
     template     = environment.get_template( dot_h_template )
@@ -174,8 +162,9 @@ def create_common_h_file_jinja2( config, dot_h_template, dst_filename ):
     # create common.h file
     common_h_content = generate_common_h_index_array_jinja2( config )
     index_arrays     = generate_common_h_file_index_arrays_jinja2( config )
+    text_arrays      = generate_c_file_text_arrays_jinja2( config, "pl", encode_charset )
     template         = environment.get_template( dot_h_template )
-    write( dst_filename, template.render( {**common_h_content, **index_arrays} ) )
+    write( dst_filename, template.render( {**common_h_content, **index_arrays, **text_arrays} ) )
 
 
 

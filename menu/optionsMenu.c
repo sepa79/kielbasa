@@ -221,7 +221,7 @@ static void _showMusicMenu(){
     displayMenu(MUSIC_MENU);
     _displayPlaylist();
     // static menu texts
-    updateStatusBar(TXT[SB_IDX_MENU_OPTIONS_MSX_MENU]);
+    updateStatusBar(SB_MENU_OPTIONS_MSX_MENU);
     switchScreenTo(SCREEN_MC_TXT_BOOMBOX);
 }
 
@@ -234,12 +234,12 @@ void showOptionsMenu(){
 
     // static menu texts
     #define HELP_Y 6
-    cwin_putat_string_raw(&cw, 0, 0, TXT_CACHE[LTXT_IDX_OPTIONS_HEADER], VCOL_GREEN);
-    cwin_putat_string_raw(&cw, 0, HELP_Y+0, TXT_CACHE[LTXT_IDX_OPTIONS_HELP1], VCOL_LT_GREY);
-    cwin_putat_string_raw(&cw, 0, HELP_Y+2, TXT_CACHE[LTXT_IDX_OPTIONS_HELP2], VCOL_MED_GREY);
-    cwin_putat_string_raw(&cw, 0, HELP_Y+3, TXT_CACHE[LTXT_IDX_OPTIONS_HELP3], VCOL_MED_GREY);
-    cwin_putat_string_raw(&cw, 0, HELP_Y+4, TXT_CACHE[LTXT_IDX_OPTIONS_HELP4], VCOL_MED_GREY);
-    cwin_putat_string_raw(&cw, 0, HELP_Y+5, TXT_CACHE[LTXT_IDX_OPTIONS_HELP5], VCOL_MED_GREY);
+    cwin_putat_string_raw(&cw, 0, 0, TXT_OPTIONS_HEADER, VCOL_GREEN);
+    cwin_putat_string_raw(&cw, 0, HELP_Y+0, TXT_OPTIONS_HELP1, VCOL_LT_GREY);
+    cwin_putat_string_raw(&cw, 0, HELP_Y+2, TXT_OPTIONS_HELP2, VCOL_MED_GREY);
+    cwin_putat_string_raw(&cw, 0, HELP_Y+3, TXT_OPTIONS_HELP3, VCOL_MED_GREY);
+    cwin_putat_string_raw(&cw, 0, HELP_Y+4, TXT_OPTIONS_HELP4, VCOL_MED_GREY);
+    cwin_putat_string_raw(&cw, 0, HELP_Y+5, TXT_OPTIONS_HELP5, VCOL_MED_GREY);
 
     displayMenu(OPTIONS_MENU);
     switchScreenTo(SCREEN_FULL_TXT);
@@ -280,18 +280,18 @@ void playSong(char song){
 }
 
 const struct MenuOption MUSIC_MENU[] = {
-    { TXT_IDX_MENU_SELECT, KEY_RETURN, SCREEN_MC_TXT_BOOMBOX, UI_SELECT+UI_HIDE, &_loadMsx, 0, 1, 1},
-    { TXT_IDX_MENU_A, 'm', SCREEN_MC_TXT_BOOMBOX, UI_HIDE, &_toggleMusic, 0, 1, 1},
-    { TXT_IDX_MENU_A, 'a', SCREEN_MC_TXT_BOOMBOX, UI_L+UI_HIDE, &_left, 0, 1, 1},
-    { TXT_IDX_MENU_D, 'd', SCREEN_MC_TXT_BOOMBOX, UI_R+UI_HIDE, &_right, 0, 1, 1},
-    { TXT_IDX_MENU_W, 'w', SCREEN_MC_TXT_BOOMBOX, UI_U+UI_HIDE, &_upRow, 0, 1, 1 },
-    { TXT_IDX_MENU_S, 's', SCREEN_MC_TXT_BOOMBOX, UI_D+UI_HIDE, &_downRow, 0, 1, 1 },
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &closeMsxMenu, 0, 1, 1},
+    { TXT_MENU_SELECT, KEY_RETURN, SCREEN_MC_TXT_BOOMBOX, UI_SELECT+UI_HIDE, &_loadMsx, 0, 1, 1},
+    { TXT_MENU_A, 'm', SCREEN_MC_TXT_BOOMBOX, UI_HIDE, &_toggleMusic, 0, 1, 1},
+    { TXT_MENU_A, 'a', SCREEN_MC_TXT_BOOMBOX, UI_L+UI_HIDE, &_left, 0, 1, 1},
+    { TXT_MENU_D, 'd', SCREEN_MC_TXT_BOOMBOX, UI_R+UI_HIDE, &_right, 0, 1, 1},
+    { TXT_MENU_W, 'w', SCREEN_MC_TXT_BOOMBOX, UI_U+UI_HIDE, &_upRow, 0, 1, 1 },
+    { TXT_MENU_S, 's', SCREEN_MC_TXT_BOOMBOX, UI_D+UI_HIDE, &_downRow, 0, 1, 1 },
+    { TXT_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &closeMsxMenu, 0, 1, 1},
     END_MENU_CHOICES
 };
 const struct MenuOption OPTIONS_MENU[] = {
-    { TXT_IDX_MENU_OPTIONS_LANG, '1', SCREEN_FULL_TXT, UI_SELECT, &_changeLanguage, 0, 2, 1},
-    { TXT_IDX_MENU_OPTIONS_MSX, '2', SCREEN_TRANSITION, UI_SELECT, &_showMusicMenu, 0, 2, 2},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &backToPreviousMenu, 0, 2, 3},
+    { TXT_MENU_OPTIONS_LANG, '1', SCREEN_FULL_TXT, UI_SELECT, &_changeLanguage, 0, 2, 1},
+    { TXT_MENU_OPTIONS_MSX, '2', SCREEN_TRANSITION, UI_SELECT, &_showMusicMenu, 0, 2, 2},
+    { TXT_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &backToPreviousMenu, 0, 2, 3},
     END_MENU_CHOICES
 };

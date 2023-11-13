@@ -1,6 +1,6 @@
 
-Txt:
-  array_label: TXT
+TxtBattle:
+  array_label: TXT_BATTLE
   contents:
   - id: BATTLE_MENU_ATTACK
     menu_opt: '1'

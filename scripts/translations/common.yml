@@ -10,14 +10,6 @@ Txt:
     menu_opt: '<'
     en: 'ü Map '
     pl: 'ü Mapa'
-  - id: MENU_OPTIONS_LANG
-    menu_opt: '1'
-    en: 'Language / Język'
-    pl: 'Język / Language'
-  - id: MENU_OPTIONS_MSX
-    menu_opt: '2'
-    en: 'Music settings   '
-    pl: 'Ustawienia muzyki'
   - id: MUSIC_OPTIONS_HEADER
     en: 'Music settings   '
     pl: 'Ustawienia muzyki'

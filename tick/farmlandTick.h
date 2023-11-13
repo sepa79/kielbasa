@@ -72,7 +72,7 @@ extern __striped struct FieldStruct fields[FIELDS_COUNT];
 
 struct PlantStruct {
     // Text used in task description, usualy lower case plant name
-    const char        taskDscIdx;
+    const char *      taskDscIdx;
     const char        maxYeldFactor;
 
     const signed char stage1minTemp;

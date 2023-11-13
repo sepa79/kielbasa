@@ -72,8 +72,8 @@ static void _displayMenuText(){
     while (currentMenu[i].key != 0){
         if(!(currentMenu[i].uiMode & UI_HIDE)){
             // display text
-            byte idx = currentMenu[i].textIdx;
-            cwin_putat_string_raw(&cw, currentMenu[i].x, currentMenu[i].y, TXT[idx], VCOL_MED_GREY);
+            char * option_text = currentMenu[i].textIdx;
+            cwin_putat_string_raw(&cw, currentMenu[i].x, currentMenu[i].y, option_text, VCOL_MED_GREY); // TXT_PL_ARRAY
         }
 
         // Map joystick to keys

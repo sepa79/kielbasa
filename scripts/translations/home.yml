@@ -1,6 +1,6 @@
 
-Txt:
-  array_label: TXT
+TxtHome:
+  array_label: TXT_HOME
   contents:
   - id: TASK_LIST_HEADER
     en:   '  Task  |    Description    '
@@ -19,9 +19,10 @@ Txt:
     menu_opt: '3'
     en: 'TV News   '
     pl: 'Wiadomości'
-
-
-
+  - id: MENU_MAIN4
+    menu_opt: '4'
+    en: 'Battle '
+    pl: 'Bitwa  '
 
 
 

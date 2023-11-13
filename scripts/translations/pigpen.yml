@@ -1,6 +1,6 @@
 
-Txt:
-  array_label: TXT
+TxtPigpen:
+  array_label: TXT_PIGPEN
   contents:
   - id: MENU_PIGPEN1
     menu_opt: '1'

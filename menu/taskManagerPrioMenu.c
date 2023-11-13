@@ -21,16 +21,16 @@ static byte TASK_SHOW_LINE = 14;
 
 static void _showTaskPriorities(){
 
-    cwin_putat_string_raw(&cw, 0,  4, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_1], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0,  5, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_2], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0,  6, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_3], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0,  7, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_4], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0,  8, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_5], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0,  9, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_6], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 10, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_7], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 11, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_8], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 12, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_9], VCOL_YELLOW);
-    cwin_putat_string_raw(&cw, 0, 13, TXT_CACHE[LTXT_IDX_TASK_MANAGER_PRIO_TABLE_HEADER_10], VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0,  4, TXT_TASK_MANAGER_PRIO_TABLE_HEADER_1, VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0,  5, TXT_TASK_MANAGER_PRIO_TABLE_HEADER_2, VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0,  6, TXT_TASK_MANAGER_PRIO_TABLE_HEADER_3, VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0,  7, TXT_TASK_MANAGER_PRIO_TABLE_HEADER_4, VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0,  8, TXT_TASK_MANAGER_PRIO_TABLE_HEADER_5, VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0,  9, TXT_TASK_MANAGER_PRIO_TABLE_HEADER_6, VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0, 10, TXT_TASK_MANAGER_PRIO_TABLE_HEADER_7, VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0, 11, TXT_TASK_MANAGER_PRIO_TABLE_HEADER_8, VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0, 12, TXT_TASK_MANAGER_PRIO_TABLE_HEADER_9, VCOL_YELLOW);
+    cwin_putat_string_raw(&cw, 0, 13, TXT_TASK_MANAGER_PRIO_TABLE_HEADER_10, VCOL_YELLOW);
 
     char col1;
     char col2[4];
@@ -58,7 +58,8 @@ static void _showTaskPriorities(){
                 col2[3] = VCOL_MED_GREY;
             }
 
-            cwin_putat_string_raw(&cw, 0, line, TXT[allCharacters[charIdx].nameIdx], col1);
+            // cwin_putat_string_raw(&cw, 0, line, TXT[allCharacters[charIdx].nameIdx], col1);  // TXT_PL_ARRAY
+            cwin_putat_string_raw(&cw, 0, line, allCharacters[charIdx].nameIdx, col1);  // TXT_PL_ARRAY
 
             cwin_putat_string_raw(&cw, 21, line, TBL_V, VCOL_YELLOW);
 
@@ -157,7 +158,7 @@ void showTaskManagerPrioMenu(){
     loadCacheTxt(TXT_TASK_MANAGER_CACHE_INDEX);
 
     // static menu texts
-    cwin_putat_string_raw(&cw, 0, 0, TXT_TASK_MANAGER[LTXT_IDX_TASK_MANAGER_PRIO_HEADER], VCOL_GREEN);
+    cwin_putat_string_raw(&cw, 0, 0, TXT_TASK_MANAGER_PRIO_HEADER, VCOL_GREEN);
 
     displayMenu(TASK_MANAGER_PRIO_MENU);
     _showTaskPriorities();
@@ -165,13 +166,13 @@ void showTaskManagerPrioMenu(){
 }
 
 const struct MenuOption TASK_MANAGER_PRIO_MENU[] = {
-    { TXT_IDX_MENU_TASK_MANAGER_PLUS, '+', SCREEN_FULL_TXT, UI_SELECT, &_prioDown, 0, 10, 1},
-    { TXT_IDX_MENU_TASK_MANAGER_MINUS, '-', SCREEN_FULL_TXT, UI_SELECT, &_prioUp, 0, 10, 3},
-    { TXT_IDX_MENU_W, 'w', SCREEN_FULL_TXT, UI_SELECT, &_upChar, 0, 2, 1},
-    { TXT_IDX_MENU_A, 'a', SCREEN_FULL_TXT, UI_L+UI_HIDE, &_skillLeft, 0, 1, 2},
-    { TXT_IDX_MENU_S, 's', SCREEN_FULL_TXT, UI_SELECT, &_downChar, 0, 2, 3},
-    { TXT_IDX_MENU_D, 'd', SCREEN_FULL_TXT, UI_R+UI_HIDE, &_skillRight, 0, 3, 2},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &backToPreviousMenu, 0, 1, 20},
+    { TXT_MENU_TASK_MANAGER_PLUS, '+', SCREEN_FULL_TXT, UI_SELECT, &_prioDown, 0, 10, 1},
+    { TXT_MENU_TASK_MANAGER_MINUS, '-', SCREEN_FULL_TXT, UI_SELECT, &_prioUp, 0, 10, 3},
+    { TXT_MENU_W, 'w', SCREEN_FULL_TXT, UI_SELECT, &_upChar, 0, 2, 1},
+    { TXT_MENU_A, 'a', SCREEN_FULL_TXT, UI_L+UI_HIDE, &_skillLeft, 0, 1, 2},
+    { TXT_MENU_S, 's', SCREEN_FULL_TXT, UI_SELECT, &_downChar, 0, 2, 3},
+    { TXT_MENU_D, 'd', SCREEN_FULL_TXT, UI_R+UI_HIDE, &_skillRight, 0, 3, 2},
+    { TXT_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &backToPreviousMenu, 0, 1, 20},
 
     END_MENU_CHOICES
 };

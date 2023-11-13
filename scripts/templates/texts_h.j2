@@ -20,23 +20,17 @@
 //      "array_length":  {{ section.array_length }}
 
 {#- 'array_start' 'array_end' 'data_start' 'data_end' are variables describeing data regions in cart #}
-{%- set array_start = '{:#x}'.format( ns.cart ) %}
-{%- set array_end   = '{:#x}'.format( ns.cart + ( section.indexes_count * 2 ) ) %}
-{%- set data_start  = '{:#x}'.format( ns.cart + ( section.indexes_count * 2 ) ) %}
-{%- set data_end    = '{:#x}'.format( ns.cart + ( section.indexes_count * 2 ) + section.array_length ) %}
-{%- set ram_array   = '{:#x}'.format( ns.ram ) %}
-{%- set ram_data    = '{:#x}'.format( ns.ram + ( section.indexes_count * 2 ) ) %}
+{%- set data_start  = '{:#x}'.format( ns.cart ) %}
+{%- set data_end    = '{:#x}'.format( ns.cart + section.array_length ) %}
+{%- set ram_data   = '{:#x}'.format( ns.ram ) %}
 
 {%- if section.pragma_label == 'Txt' %}
-{%- set ram_array   = '{:#x}'.format( ns.static_txt ) %}
-{%- set ram_data    = '{:#x}'.format( ns.static_txt + ( section.indexes_count * 2 ) ) %}
+{%- set ram_data    = '{:#x}'.format( ns.static_txt ) %}
 {%- endif %}
 
-{%- set ns.cart      = ns.cart + section.array_length + ( section.indexes_count * 2 ) + 1 %}
+{%- set ns.cart      = ns.cart + section.array_length + 1 %}
 
-#pragma section( {{ lang | lower }}{{ section.pragma_label }}, 0 )
 #pragma section( {{ lang | lower }}{{ section.pragma_label }}Data, 0 )
-#pragma region( bank{{ lang | capitalize }}{{ section.pragma_label }}Array, {{ array_start }}, {{ array_end }}, , TRANSLATION_{{ lang | upper }}_BANK, { {{ lang | lower }}{{ section.pragma_label }}}, {{ ram_array }} )
 #pragma region( bank{{ lang | capitalize }}{{ section.pragma_label }}Data, {{ data_start }}, {{ data_end }}, , TRANSLATION_{{ lang | upper }}_BANK, { {{ lang | lower }}{{ section.pragma_label }}Data}, {{ ram_data }} )
 {% endfor %}
 

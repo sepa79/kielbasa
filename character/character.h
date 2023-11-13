@@ -32,8 +32,8 @@ enum CHAR_SKILLS {
 
 struct Character {
     /* Pointer to text to display, max 5 x 28, should have newlines */
-    char storyTextIdx;
-    char nameIdx;
+    char * storyTextIdx;
+    char * nameIdx;
     /* How much energy char has, starts with 100, max 100, min 0 */
     unsigned int energy;
     // /* How much food char has, starts with 100, max 100, min 0 */
