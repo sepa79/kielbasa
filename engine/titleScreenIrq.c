@@ -1,6 +1,11 @@
 #include <assets/assetsSettings.h>
 #include <c64/vic.h>
 
+//-----------------------------------------------------------------------------------------
+#pragma code ( gameInitRAMCode )
+#pragma data ( gameInitData )
+//-----------------------------------------------------------------------------------------
+
 #define IRQ1RAS 50
 #define IRQ2RAS IRQ1RAS + 152
 
@@ -48,3 +53,7 @@ __interrupt void titleScreenIrq2(){
         jmp $ea81   // System IRQ routine
     }
 }
+//-----------------------------------------------------------------------------------------
+#pragma code ( code )
+#pragma data ( data )
+//-----------------------------------------------------------------------------------------

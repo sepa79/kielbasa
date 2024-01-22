@@ -64,6 +64,7 @@ void initTaskList() {
 #pragma data ( data )
 //-----------------------------------------------------------------------------------------
 Task newTask = {0};
+#pragma code ( code )
 
 // definitons in logger.h
 void setTaskLogMsg(char taskId){
@@ -77,6 +78,7 @@ void setTaskLogMsg(char taskId){
     LOG_MSG.LOG_DATA_TASK_PARAMS4 = task_params[taskId][3];
     LOG_MSG.LOG_DATA_TASK_PARAMS5 = task_params[taskId][4];
 }
+#pragma code ( tasksCode )
 
 static bool _addTask(){
     // find entry in the task arrays

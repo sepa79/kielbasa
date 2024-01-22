@@ -69,8 +69,9 @@ __export const char boomboxAtr[] = {
 // store this song data in shared section, so we can safely switch banks to load SIDs and this data is always available
 #pragma code ( musicCode )
 #pragma data ( musicData )
-// #pragma code ( code )
-// #pragma data ( data )
+// TODO: TEMOPORARY WORKAROUND for C:/Games/c64/kielbasa/assets/music.c(108, 19) : error 3033: Could not place object 'RADIO_PLAYLIST'
+#pragma code ( code )
+#pragma data ( data )
 __export const char* sidIndex[] ={
     msxMain,
     msxFightIntro,

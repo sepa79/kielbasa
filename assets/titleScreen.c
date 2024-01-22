@@ -27,7 +27,7 @@ __export const char titleScreen[] = {
 #pragma code ( titleScreenCRTCode )
 #pragma data ( gameInitData )
 
-static void _loadFullKoalaToBMP2(){
+static void _loadFullKoalaToBMP2_title(){
     // load colors
     char i = 0;
     do {
@@ -58,7 +58,7 @@ void loadTitleScreen(){
     vic.color_border  = VCOL_BLACK;
     vic.color_back  = VCOL_BLACK;
 
-    _loadFullKoalaToBMP2();
+    _loadFullKoalaToBMP2_title();
 
     // vic_setmode(VICM_HIRES_MC, GFX_2_SCR, GFX_2_BMP);
     vic.ctrl2 = VIC_CTRL2_MCM | VIC_CTRL2_CSEL | 0;

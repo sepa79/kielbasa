@@ -61,6 +61,25 @@ __interrupt static void _menuShowSprites(){
             sprId++;
         }
     }
+
+    // vic_sprxy(0, xPos + 0*48, yPos);
+    // vic_sprxy(1, xPos + 1*48, yPos);
+    // vic_sprxy(2, xPos + 2*48, yPos);
+    // vic_sprxy(3, xPos + 0*48, yPos + 42);
+    // vic_sprxy(4, xPos + 1*48, yPos + 42);
+    // vic_sprxy(5, xPos + 2*48, yPos + 42);
+    // vic.spr_color[0] = VCOL_BLUE ;
+    // vic.spr_color[1] = VCOL_BLUE ;
+    // vic.spr_color[2] = VCOL_BLUE ;
+    // vic.spr_color[3] = VCOL_BLUE ;
+    // vic.spr_color[4] = VCOL_BLUE ;
+    // vic.spr_color[5] = VCOL_BLUE ;
+    // GFX_2_SCR[OFFSET_SPRITE_PTRS+0] = SPRITE_BLOCK + 0;
+    // GFX_2_SCR[OFFSET_SPRITE_PTRS+1] = SPRITE_BLOCK + 1;
+    // GFX_2_SCR[OFFSET_SPRITE_PTRS+2] = SPRITE_BLOCK + 2;
+    // GFX_2_SCR[OFFSET_SPRITE_PTRS+3] = SPRITE_BLOCK + 3;
+    // GFX_2_SCR[OFFSET_SPRITE_PTRS+4] = SPRITE_BLOCK + 4;
+    // GFX_2_SCR[OFFSET_SPRITE_PTRS+5] = SPRITE_BLOCK + 5;
 }
 
 const struct MenuOption TV_SCREEN_MENU[] = {

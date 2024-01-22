@@ -60,10 +60,20 @@ extern const byte WEEKLY_SUNSET[53];
 #pragma code ( ticksCode )
 void hourTick();
 void timeTick();
-#pragma code ( code )
+//-----------------------------------------------------------------------------------------
+// In Init bank
+#pragma code ( gameInitRAMCode )
+#pragma data ( gameInitData )
+
 void initCalendar(Calendar * cal);
 void initCalendarAfterLoad();
+//-----------------------------------------------------------------------------------------
 
+//-----------------------------------------------------------------------------------------
+// Switching code generation back to shared section
+#pragma code ( code )
+#pragma data ( data )
+//-----------------------------------------------------------------------------------------
 #pragma compile("calendar.c")
 
 #endif

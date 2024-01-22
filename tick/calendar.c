@@ -316,3 +316,8 @@ void initCalendarAfterLoad() {
     }
     setBank(pbank);
 }
+//-----------------------------------------------------------------------------------------
+// Switching code generation back to shared section
+#pragma code ( code )
+#pragma data ( data )
+//-----------------------------------------------------------------------------------------
