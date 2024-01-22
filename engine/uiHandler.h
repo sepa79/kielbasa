@@ -23,7 +23,7 @@ struct JOY_CURSOR {
 extern volatile struct JOY_CURSOR joyCursor;
 
 void initUI();
-void displayMenu(struct MenuOption * menu);
+void displayMenu(const struct MenuOption * menu);
 void backToPreviousMenu();
 void checkKeys();
 void updateStatusBar(const char * text);

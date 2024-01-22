@@ -86,7 +86,8 @@
         "xutility": "c",
         "battleengine.cpp": "c",
         "battleengine.h": "c",
-        "vector.h": "c"
+        "vector.h": "c",
+        "optionsmenu.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }

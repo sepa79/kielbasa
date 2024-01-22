@@ -142,7 +142,7 @@ char curBank    = 0;
 char curSidIdx  = 0;
 char curSongIdx = 0;
 
-static void _playMsx(struct Song * song, bool restart){
+static void _playMsx(const struct Song * song, bool restart){
     joyCursor.enabled = false;
     if(gms_enableMusic) {
         // stop music

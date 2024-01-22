@@ -34,7 +34,7 @@ CharWin cw;
 
 // static bool _fullScreenMenuOpen = false;
 static byte _lastElementInMenu = 0;
-struct MenuOption *currentMenu;
+const struct MenuOption *currentMenu;
 static byte _menuUiMode = 0;
 static byte _key = 0;
 #define NOT_ATTACHED 0xff
@@ -101,7 +101,7 @@ static void _displayMenuText(){
 }
 
 /* Display menu on bottom screen half */
-void displayMenu(struct MenuOption * menu){
+void displayMenu(const struct MenuOption * menu){
     currentMenu = menu;
     // clearing screen is the responsibility of each menu
 

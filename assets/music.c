@@ -144,7 +144,7 @@ const struct Song PLAYLIST[PLAYLIST_SIZE] = {
 };
 
 // this better be called when music IRQs are not trying to use the player...
-void loadMusic(struct Song * song){
+void loadMusic(const struct Song * song){
     // vic.color_back++;
     memcpy((volatile char*)MSX_DST_ADR, sidIndex[song->sidIdx], song->size);
     // int i = 0;

@@ -20,7 +20,7 @@ struct Song {
 
 extern const struct Song PLAYLIST[];
 
-void loadMusic(struct Song * song);
+void loadMusic(const struct Song * song);
 
 #pragma compile("music.c")
 
