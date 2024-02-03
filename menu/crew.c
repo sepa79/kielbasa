@@ -252,10 +252,10 @@ static void _menuHandler(void){
     loadCacheTxt(TXT_CREW_CACHE_INDEX);
 
     // Bars and portrait
-    _prepareBars();
-    char select_character = character_old;
-    character_old = NO_CHARACTER;       // fix bars drawing bug
-    _showCharacterDetails(select_character);
+    // _prepareBars();
+    // char select_character = character_old;
+    // character_old = NO_CHARACTER;       // fix bars drawing bug
+    // _showCharacterDetails(select_character);
 
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, 0, 13, 40, 11);

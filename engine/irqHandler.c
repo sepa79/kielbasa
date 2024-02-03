@@ -535,6 +535,11 @@ void initRasterIRQ_MCGfxMode(){
 
 // main init raster must be called first, this one just remaps some IRQs
 void initRasterIRQ_Transition(){
+    // Top UI
+    rirq_build(&rirqc_topUISprites, 1);
+    rirq_call(&rirqc_topUISprites, 0, IRQ_topUISprites);
+    rirq_set(0, IRQ_RASTER_TOP_UI_SPRITES, &rirqc_topUISprites);
+
     // Top - switch to blank
     rirq_build(&rirqc_topScreen, 1);
     rirq_call(&rirqc_topScreen, 0, IRQ_topNoScreen);
@@ -551,19 +556,16 @@ void initRasterIRQ_Transition(){
     // Place it into the last line of the screen
     rirq_set(3, IRQ_RASTER_BOTTOM_UI, &rirqc_bottomUI);
 
+    for( char i=4; i<16;i++){
+        rirq_clear(i);
+    }
+
     // sort the raster IRQs
     rirq_sort();
 }
 
 // main IRQ routine
 void initRasterIRQ_SplitMCTxt(){
-    // Top UI
-    rirq_build(&rirqc_topUISprites, 1);
-    // rirq_write(&topUISprites, 0, &vic.ctrl1, VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3 );
-    // rirq_write(&topUISprites, 1, &vic.ctrl2, VIC_CTRL2_CSEL | VIC_CTRL2_MCM );
-    rirq_call(&rirqc_topUISprites, 0, IRQ_topUISprites);
-    rirq_set(0, IRQ_RASTER_TOP_UI_SPRITES, &rirqc_topUISprites);
-
     // Top - switch to MC GFX
     rirq_build(&rirqc_topScreen, 1);
     rirq_call(&rirqc_topScreen, 0, IRQ_topMCGfxScreen);
@@ -610,6 +612,7 @@ void initRasterIRQ(){
     rirq_init(true);
 
     // load standard IRQ routine
+    initRasterIRQ_Transition();
     initRasterIRQ_SplitMCTxt();
     currentScreenMode = SCREEN_SPLIT_MC_TXT;
     
