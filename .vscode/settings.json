@@ -87,7 +87,8 @@
         "battleengine.cpp": "c",
         "battleengine.h": "c",
         "vector.h": "c",
-        "optionsmenu.h": "c"
+        "optionsmenu.h": "c",
+        "fishing.cpp": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }

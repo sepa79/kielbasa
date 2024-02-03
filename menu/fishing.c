@@ -48,13 +48,13 @@ __interrupt static void IRQ_rowFishing() {
     vic.spr_priority = 0b00000000;
     vic.spr_multi    = 0b00000000;
     
-    vic.spr_msbx = 0b00000000;
+    // vic.spr_msbx = 0b00000000;
     vic.spr_enable = 0b11111111;
 
     Fish fish = allFish[0];
     char sprId = 0;
 
-    vic_sprxy(sprId, fish.posX, fish.posY);
+    vic_sprxy(sprId, 100, fish.posY);
     vic.spr_color[sprId] = VCOL_MED_GREY;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+sprId] = fish.baseSprBank;
 
@@ -149,11 +149,12 @@ void initRasterIRQ_Fishing(){
 #pragma data(data)
 
 static Fish _initFish(char level){
-    Fish* fish = new Fish();
-    fish->posX = 100;
-    fish->posY = fishLevel[level];
-    fish->baseSprBank = 0x10;
-    fish->frame = 0;
+    Fish fish;
+    fish.posX = 100;
+    fish.posY = fishLevel[level];
+    fish.baseSprBank = 0x10;
+    fish.frame = 0;
+    return fish;
 }
 
 static void _initAllFish(){
