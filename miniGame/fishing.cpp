@@ -1,7 +1,7 @@
 class Fish {
     public:
-        char posY;
         unsigned int posX;
+        char posY;
         char baseSprBank;
         char frame;
 };

@@ -150,10 +150,10 @@ void initRasterIRQ_Fishing(){
 
 static Fish _initFish(char level){
     Fish fish;
-    fish.posX = 100;
     fish.posY = fishLevel[level];
-    fish.baseSprBank = 0x10;
-    fish.frame = 0;
+    fish.posX = fishLevel[1];
+    fish.baseSprBank = fishLevel[level]+1;
+    fish.frame = fishLevel[2];
     return fish;
 }
 
