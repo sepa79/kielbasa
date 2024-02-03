@@ -27,6 +27,8 @@ __export const char fishingMenuSprites[] = {
 #pragma code(fishingMenuRAMCode)
 #pragma data(fishingMenuRAMData)
 
+Fish allFish[9];
+
 RIRQCode rirqc_frow1, rirqc_frow2, rirqc_frow3;
 #define IRQ_RASTER_FROW1 0x90
 #define IRQ_RASTER_FROW2 0xb0
@@ -41,9 +43,14 @@ const char fishLevel[3] =
 
 __interrupt static void IRQ_rowFishing() {
     vic.color_border--;
-    for(char x=0;x<220;x++){}
-    vic.color_border++;
+    Fish fish = allFish[0];
+    char sprId = 0;
 
+    vic_sprxy(sprId, fish.posX, fish.posY);
+    vic.spr_color[sprId] = VCOL_MED_GREY;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+sprId] = fish.baseSprBank;
+
+    vic.color_border++;
 }
 
 __interrupt static void IRQ_topFishing() {
@@ -133,12 +140,12 @@ void initRasterIRQ_Fishing(){
 #pragma code(fishingMenuCode)
 #pragma data(data)
 
-Fish allFish[9];
-
 static Fish _initFish(char level){
     Fish* fish = new Fish();
     fish->posX = 100;
     fish->posY = fishLevel[level];
+    fish->baseSprBank = 0x10;
+    fish->frame = 0;
 }
 
 static void _initAllFish(){
@@ -154,7 +161,7 @@ static void _fishingMenuCodeLoader(){
 
 void fishingMenuSpriteLoader(){
     // save us some trouble, don't overwrite main cursor (+64 below)
-    // memcpy((char *)GFX_1_SPR_DST_ADR+64, fishingMenuSprites, 0x0a80);
+    memcpy((char *)GFX_1_SPR_DST_ADR+64, fishingMenuSprites, 0x0a80);
 }
 
 const struct MenuOption FISHING_MENU[] = {
