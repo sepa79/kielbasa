@@ -28,9 +28,16 @@ __export const char fishingMenuSprites[] = {
 #pragma data(fishingMenuRAMData)
 
 RIRQCode rirqc_frow1, rirqc_frow2, rirqc_frow3;
-#define IRQ_RASTER_FROW1 0x80
-#define IRQ_RASTER_FROW2 0xa0
-#define IRQ_RASTER_FROW3 0xc0
+#define IRQ_RASTER_FROW1 0x90
+#define IRQ_RASTER_FROW2 0xb0
+#define IRQ_RASTER_FROW3 0xd0
+#define FISH_LEVEL_OFFSET 4
+const char fishLevel[3] = 
+{
+    IRQ_RASTER_FROW1+FISH_LEVEL_OFFSET,
+    IRQ_RASTER_FROW2+FISH_LEVEL_OFFSET,
+    IRQ_RASTER_FROW3+FISH_LEVEL_OFFSET,
+};
 
 __interrupt static void IRQ_rowFishing() {
     vic.color_border--;
@@ -126,6 +133,20 @@ void initRasterIRQ_Fishing(){
 #pragma code(fishingMenuCode)
 #pragma data(data)
 
+Fish allFish[9];
+
+static Fish _initFish(char level){
+    Fish* fish = new Fish();
+    fish->posX = 100;
+    fish->posY = fishLevel[level];
+}
+
+static void _initAllFish(){
+    for(char fi=0;fi<9;fi++){
+        allFish[fi] = _initFish(fi/3);
+    }
+}
+
 // copy fishingMenuRAMCode
 static void _fishingMenuCodeLoader(){
     memcpy(MENU_CODE_DST, (char *)0x8800, 0x0800);
@@ -148,6 +169,7 @@ static void _menuHandler() {
 
     displayMenu(FISHING_MENU);
     switchScreenTo(SCREEN_FISHING);
+    _initAllFish();
 }
 
 #pragma data(fishingMenuLoaderData)

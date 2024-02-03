@@ -556,9 +556,11 @@ void initRasterIRQ_Transition(){
     // Place it into the last line of the screen
     rirq_set(3, IRQ_RASTER_BOTTOM_UI, &rirqc_bottomUI);
 
+    vic.color_border--;
     for( char i=4; i<16;i++){
         rirq_clear(i);
     }
+    vic.color_border++;
 
     // sort the raster IRQs
     rirq_sort();
@@ -623,7 +625,7 @@ void initRasterIRQ(){
 void switchScreenTo(byte screenMode){
     if(currentScreenMode != screenMode){
         currentScreenMode = screenMode;
-        vic_waitLine(180);
+        vic_waitLine(0);
         // rirq_stop();
         // vic.color_border++;
         
