@@ -43,6 +43,14 @@ const char fishLevel[3] =
 
 __interrupt static void IRQ_rowFishing() {
     vic.color_border--;
+    vic.spr_expand_x = 0b00000000;
+    vic.spr_expand_y = 0b00000000;
+    vic.spr_priority = 0b00000000;
+    vic.spr_multi    = 0b00000000;
+    
+    vic.spr_msbx = 0b00000000;
+    vic.spr_enable = 0b11111111;
+
     Fish fish = allFish[0];
     char sprId = 0;
 
