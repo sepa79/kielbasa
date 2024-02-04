@@ -31,10 +31,10 @@ volatile Fish allFish[9];
 volatile char fishLevelIt = 0;
 
 RIRQCode rirqc_frow1, rirqc_frow2, rirqc_frow3;
-#define IRQ_RASTER_FROW1 0x90
+#define IRQ_RASTER_FROW1 0x88
 #define IRQ_RASTER_FROW2 0xb0
-#define IRQ_RASTER_FROW3 0xd0
-#define FISH_LEVEL_OFFSET 4
+#define IRQ_RASTER_FROW3 0xd8
+#define FISH_LEVEL_OFFSET 6
 const char fishLevel[3] = 
 {
     IRQ_RASTER_FROW1+FISH_LEVEL_OFFSET,
@@ -65,7 +65,7 @@ __interrupt static void IRQ_rowFishing() {
     vic.spr_enable   = 0b11111111;
 
     char fishId = fishLevelIt * 3;
-    // #pragma unroll(full)
+    #pragma unroll(full)
     for(char sprId=0;sprId<6;sprId+=2){
         int x = allFish[fishId].posX;
         char y = allFish[fishId].posY;
@@ -146,25 +146,21 @@ void initRasterIRQ_Fishing(){
 
     rirq_build(&rirqc_bottomUI, 1);
     rirq_call(&rirqc_bottomUI, 0, IRQ_bottomUI);
-    // Place it into the last line of the screen
     rirq_set(3, IRQ_RASTER_BOTTOM_UI, &rirqc_bottomUI);
 
     // 1st row of fish
     rirq_build(&rirqc_frow1, 1);
     rirq_call(&rirqc_frow1, 0, IRQ_rowFishing);
-    // Place it into the last line of the screen
     rirq_set(10, IRQ_RASTER_FROW1, &rirqc_frow1);
 
     // 2nd row of fish
     rirq_build(&rirqc_frow2, 1);
     rirq_call(&rirqc_frow2, 0, IRQ_rowFishing);
-    // Place it into the last line of the screen
     rirq_set(11, IRQ_RASTER_FROW2, &rirqc_frow2);
 
     // 3rd row of fish
     rirq_build(&rirqc_frow3, 1);
     rirq_call(&rirqc_frow3, 0, IRQ_rowFishing);
-    // Place it into the last line of the screen
     rirq_set(12, IRQ_RASTER_FROW3, &rirqc_frow3);
 
     // sort the raster IRQs
@@ -174,6 +170,18 @@ void initRasterIRQ_Fishing(){
 
 #pragma code(fishingMenuCode)
 #pragma data(data)
+
+static void _fishLoop(){
+    vic.color_border++;
+    for(char fi=0;fi<9;fi++){
+        if(allFish[fi].posX > 0){
+            allFish[fi].posX--;
+        } else {
+            allFish[fi].posX = 350;
+        }
+    }
+    vic.color_border--;
+}
 
 static Fish _initFish(char level){
     unsigned int rnd = rand();
@@ -213,8 +221,8 @@ static void _menuHandler() {
     loadMenuSprites();
 
     displayMenu(FISHING_MENU);
-    switchScreenTo(SCREEN_FISHING);
     _initAllFish();
+    switchScreenTo(SCREEN_FISHING);
 }
 
 #pragma data(fishingMenuLoaderData)
@@ -226,7 +234,7 @@ __export static const Loaders menuLoaders = {
     .showMenu        = &_menuHandler,
     .showSprites     = &spriteNoop,
     .updateMenu      = &menuNoop,
-    .runMenuLoop     = &menuNoop,
+    .runMenuLoop     = &_fishLoop,
 };
 
 // Switching code generation back to shared section
