@@ -27,7 +27,8 @@ __export const char fishingMenuSprites[] = {
 #pragma code(fishingMenuRAMCode)
 #pragma data(fishingMenuRAMData)
 
-Fish allFish[9];
+volatile Fish allFish[9];
+volatile char fishLevelIt = 0;
 
 RIRQCode rirqc_frow1, rirqc_frow2, rirqc_frow3;
 #define IRQ_RASTER_FROW1 0x90
@@ -41,22 +42,48 @@ const char fishLevel[3] =
     IRQ_RASTER_FROW3+FISH_LEVEL_OFFSET,
 };
 
+// Thanks Blumba!
+inline void _vic_sprxy2(byte s, int x, int y)
+{
+    vic.spr_pos[s].y = y;
+    vic.spr_pos[s + 1].y = y;
+    vic.spr_pos[s].x = x & 0xff;
+    vic.spr_pos[s + 1].x = x & 0xff;
+    if (x & 0x100)
+        vic.spr_msbx |= 3 << s;
+    else
+        vic.spr_msbx &= ~(3 << s);
+}
+
 __interrupt static void IRQ_rowFishing() {
     vic.color_border--;
+    // TODO: set sprites on once somewhere
     vic.spr_expand_x = 0b00000000;
     vic.spr_expand_y = 0b00000000;
     vic.spr_priority = 0b00000000;
-    vic.spr_multi    = 0b00000000;
-    
-    // vic.spr_msbx = 0b00000000;
-    vic.spr_enable = 0b11111111;
+    vic.spr_multi    = 0b10101010;
+    vic.spr_enable   = 0b11111111;
 
-    Fish fish = allFish[0];
-    char sprId = 0;
+    char fishId = fishLevelIt * 3;
+    // #pragma unroll(full)
+    for(char sprId=0;sprId<6;sprId+=2){
+        int x = allFish[fishId].posX;
+        char y = allFish[fishId].posY;
+        char b = allFish[fishId].baseSprBank + allFish[fishId].frame;
 
-    vic_sprxy(sprId, 100, fish.posY);
-    vic.spr_color[sprId] = VCOL_MED_GREY;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+sprId] = fish.baseSprBank;
+        _vic_sprxy2(sprId, x, y);
+
+        vic.spr_color[sprId] = VCOL_BLACK;
+        vic.spr_color[sprId+1] = VCOL_YELLOW;
+        GFX_2_SCR[OFFSET_SPRITE_PTRS+sprId] = b+1;
+        GFX_2_SCR[OFFSET_SPRITE_PTRS+sprId+1] = b;
+        fishId++;
+    }
+
+    fishLevelIt++;
+    if(fishLevelIt > 2){
+        fishLevelIt = 0;
+    }
 
     vic.color_border++;
 }
@@ -149,11 +176,12 @@ void initRasterIRQ_Fishing(){
 #pragma data(data)
 
 static Fish _initFish(char level){
+    unsigned int rnd = rand();
     Fish fish;
-    fish.posY = fishLevel[level];
-    fish.posX = fishLevel[1];
-    fish.baseSprBank = fishLevel[level]+1;
-    fish.frame = fishLevel[2];
+    fish.posY = fishLevel[level] + (rnd & 7);
+    fish.posX = 50 + (rnd & 255);
+    fish.baseSprBank = 0x11;
+    fish.frame = 0;
     return fish;
 }
 
@@ -161,6 +189,7 @@ static void _initAllFish(){
     for(char fi=0;fi<9;fi++){
         allFish[fi] = _initFish(fi/3);
     }
+    fishLevelIt = 0;
 }
 
 // copy fishingMenuRAMCode
@@ -170,7 +199,7 @@ static void _fishingMenuCodeLoader(){
 
 void fishingMenuSpriteLoader(){
     // save us some trouble, don't overwrite main cursor (+64 below)
-    memcpy((char *)GFX_1_SPR_DST_ADR+64, fishingMenuSprites, 0x0a80);
+    memcpy((char *)GFX_1_SPR_DST_ADR+64, fishingMenuSprites, 12*64);
 }
 
 const struct MenuOption FISHING_MENU[] = {
