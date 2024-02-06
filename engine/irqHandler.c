@@ -223,6 +223,7 @@ char register1_value = 0;
 char register2_value = 0;
 char cassette_anim_delay = 0;
 
+// used in Music Menu, displays Boombox anims
 __interrupt void IRQ_middleMCTxtScreen(){
     // run after playMsx so that we have player visible in RAM
     IRQ_middleScreenMsx();

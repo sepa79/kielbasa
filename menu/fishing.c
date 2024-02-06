@@ -17,7 +17,7 @@
 
 #pragma data(fishingMenuGfxDay)
 __export const char fishingMenuGfx1[] = {
-    #embed 0xffff 2 "assets/multicolorGfx/fishing_210823.kla"
+    #embed 0xffff 2 "assets/multicolorGfx/fishing_060224a.kla"
 };
 #pragma data(fishingMenuSprites)
 __export const char fishingMenuSprites[] = {
@@ -33,11 +33,12 @@ __export const char fishingMenuSprites[] = {
 volatile Fish allFish[FISH_COUNT];
 
 RIRQCode rirqc_frow0, rirqc_frow1, rirqc_frow2, rirqc_frow3;
-#define IRQ_RASTER_FROW0 0x60
+#define IRQ_RASTER_FROW0 0x70
 #define IRQ_RASTER_FROW1 0x80
 #define IRQ_RASTER_FROW2 0xa8
 #define IRQ_RASTER_FROW3 0xd0
-#define FISH_LEVEL_OFFSET 6
+#define FISH_LEVEL_OFFSET 7
+#define FISH_Y_SPREAD 16
 const char fishLevel[3] = 
 {
     IRQ_RASTER_FROW1+FISH_LEVEL_OFFSET,
@@ -62,69 +63,75 @@ __interrupt static void IRQ_initFishingRows() {
     vic.color_border--;
     vic.spr_expand_x = 0b00000000;
     vic.spr_expand_y = 0b00000000;
-    vic.spr_priority = 0b00000000;
+    vic.spr_priority = 0b11110000;
     vic.spr_multi    = 0b10101010;
     vic.spr_enable   = 0b11111111;
     vic.color_border++;
+    vic.color_back = VCOL_CYAN;
+
 }
 
 __interrupt static void IRQ_fishingRow1() {
     vic.color_border--;
 
-    _vic_sprxy2(0, allFish[0].posX, allFish[0].posY);
-    _vic_sprxy2(2, allFish[1].posX, allFish[1].posY);
-    _vic_sprxy2(4, allFish[2].posX, allFish[2].posY);
+    _vic_sprxy2(2, allFish[0].posX, allFish[0].posY);
+    _vic_sprxy2(4, allFish[1].posX, allFish[1].posY);
+    _vic_sprxy2(6, allFish[2].posX, allFish[2].posY);
 
-    vic.spr_color[0] = VCOL_BLACK;
     vic.spr_color[2] = VCOL_BLACK;
     vic.spr_color[4] = VCOL_BLACK;
-    vic.spr_color[1] = allFish[0].color;
-    vic.spr_color[3] = allFish[1].color;
-    vic.spr_color[5] = allFish[2].color;
+    vic.spr_color[6] = VCOL_BLACK;
+    vic.spr_color[3] = allFish[0].color;
+    vic.spr_color[5] = allFish[1].color;
+    vic.spr_color[7] = allFish[2].color;
 
     char b = allFish[0].baseSprBank + allFish[0].frame;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+0] = b+1;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+1] = b;
-    b = allFish[1].baseSprBank + allFish[1].frame;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+2] = b+1;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+3] = b;
-    b = allFish[2].baseSprBank + allFish[2].frame;
+    b = allFish[1].baseSprBank + allFish[1].frame;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+4] = b+1;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+5] = b;
+    b = allFish[2].baseSprBank + allFish[2].frame;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+6] = b+1;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+7] = b;
 
     vic.color_border++;
 }
 __interrupt static void IRQ_fishingRow2() {
     vic.color_border--;
 
-    _vic_sprxy2(0, allFish[3].posX, allFish[3].posY);
-    _vic_sprxy2(2, allFish[4].posX, allFish[4].posY);
+    _vic_sprxy2(2, allFish[3].posX, allFish[3].posY);
+    _vic_sprxy2(4, allFish[4].posX, allFish[4].posY);
 
-    vic.spr_color[0] = VCOL_BLACK;
     vic.spr_color[2] = VCOL_BLACK;
-    vic.spr_color[1] = allFish[3].color;
-    vic.spr_color[3] = allFish[4].color;
+    vic.spr_color[4] = VCOL_BLACK;
+    vic.spr_color[3] = allFish[3].color;
+    vic.spr_color[5] = allFish[4].color;
 
     char b = allFish[3].baseSprBank + allFish[3].frame;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+0] = b+1;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+1] = b;
-    b = allFish[4].baseSprBank + allFish[4].frame;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+2] = b+1;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+3] = b;
+    b = allFish[4].baseSprBank + allFish[4].frame;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+4] = b+1;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+5] = b;
+
+    vic.spr_priority = 0b11111100;
 
     vic.color_border++;
 }
 __interrupt static void IRQ_fishingRow3() {
     vic.color_border--;
 
-    _vic_sprxy2(0, allFish[5].posX, allFish[5].posY);
+    _vic_sprxy2(2, allFish[5].posX, allFish[5].posY);
 
-    vic.spr_color[0] = VCOL_BLACK;
-    vic.spr_color[1] = allFish[5].color;
+    vic.spr_color[2] = VCOL_BLACK;
+    vic.spr_color[3] = allFish[5].color;
 
     char b = allFish[5].baseSprBank + allFish[5].frame;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+0] = b+1;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+1] = b;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+2] = b+1;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+3] = b;
+
+    vic.spr_priority = 0b11111100;
 
     vic.color_border++;
 }
@@ -150,6 +157,8 @@ __interrupt static void IRQ_topFishing() {
 }
 
 __interrupt static void IRQ_bottomUI() {
+    // revert color
+    vic.color_back = VCOL_BLACK;
     // Set screen height to 24 lines - this is done after the border should have started drawing - so it wont start
     vic.ctrl1 &= (0xff^VIC_CTRL1_RSEL);
     while (vic.raster != 0xfc){}
@@ -226,7 +235,7 @@ __striped char * const yDstT[200] = {
 
 // source table
 __striped char * const ySrcT[200] = {
-#for(i,200) MENU_FULL_KOALA_SCR + 40 * (i & ~7)  + (i & 7),
+#for(i,200) MENU_FULL_KOALA_BMP + 40 * (i & ~7)  + (i & 7),
 };
 
 const char maskT[] = {0b00111111,0b00111111, 0b11001111,0b11001111, 0b11110011,0b11110011, 0b11111100,0b11111100};
@@ -249,7 +258,7 @@ static char _rnd(char num){
 
 static Fish _initFish(char level, int x){
     Fish fish;
-    fish.posY = fishLevel[level] + _rnd(18);
+    fish.posY = fishLevel[level] + _rnd(FISH_Y_SPREAD);
     fish.posX = 50 + x;
     fish.baseSprBank = 0x11 + _rnd(6)*2;
     fish.color = fishColors[_rnd(5)];
@@ -270,13 +279,20 @@ static void _initAllFish(){
 }
 
 static void _fishLoop(){
-    vic.color_border++;
-    _drawPoint(100,100);
-    vic.color_border--;
+    // vic.color_border--;
+    // char x=50;
+    // for(char y=50;y<100;y++){
+    //     // x++;
+    //     _drawPoint(y, y);
+    // }
+    // vic.color_border++;
+
     vic.color_border++;
     for(char fi=0;fi<FISH_COUNT;fi++){
         if(allFish[fi].posX > 3){
             allFish[fi].posX -= allFish[fi].speed;
+
+
             allFish[fi].speedCounter--;
             // check if fish should change speed
             if(!allFish[fi].speedCounter){
