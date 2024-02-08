@@ -238,18 +238,21 @@ __striped char * const ySrcT[200] = {
 #for(i,200) MENU_FULL_KOALA_BMP + 40 * (i & ~7)  + (i & 7),
 };
 
-const char maskT[] = {0b00111111,0b00111111, 0b11001111,0b11001111, 0b11110011,0b11110011, 0b11111100,0b11111100};
+const char maskT[] = {0b00111111,0b00111111, 0b11001111,0b11001111, 0b11110011,0b11110011, 0b11111100,0b11111100}; // background color - under
+// const char setT[] =  {0b01000000,0b01000000, 0b00010000,0b00010000, 0b00000100,0b00000100, 0b00000001,0b00000001}; // under
+const char setT[] =  {0b11000000,0b11000000, 0b00110000,0b00110000, 0b00001100,0b00001100, 0b00000011,0b00000011}; // over
+// const char setT[] =  {0b10000000,0b10000000, 0b00100000,0b00100000, 0b00001000,0b00001000, 0b00000010,0b00000010}; // over
 
 static void _drawPoint(char x, char y) {
     char m = x & 7;
     // x must be > 7 and < 256, don't draw near edge of screen
-    char xo = (x & ~ 7) - 8;
+    char xo = (x & ~ 7);// - 8;
 
-    yDstT[y][xo] = ySrcT[y][xo];
-    xo += 8;
-    yDstT[y][xo] = ySrcT[y][xo] & maskT[m];
-    xo += 8;
-    yDstT[y][xo] = ySrcT[y][xo];
+    // yDstT[y][xo] = ySrcT[y][xo];
+    // xo += 8;
+    yDstT[y][xo] = ySrcT[y][xo] & maskT[m] | setT[m];
+    // xo += 8;
+    // yDstT[y][xo] = ySrcT[y][xo];
 }
 
 static char _rnd(char num){
@@ -260,7 +263,7 @@ static Fish _initFish(char level, int x){
     Fish fish;
     fish.posY = fishLevel[level] + _rnd(FISH_Y_SPREAD);
     fish.posX = 50 + x;
-    fish.baseSprBank = 0x11 + _rnd(6)*2;
+    fish.baseSprBank = 0x12 + _rnd(6)*2;
     fish.color = fishColors[_rnd(5)];
     fish.frame = 0;
     fish.speed = _rnd(FISH_MAX_SPEED) + 1;
@@ -279,13 +282,13 @@ static void _initAllFish(){
 }
 
 static void _fishLoop(){
-    // vic.color_border--;
-    // char x=50;
-    // for(char y=50;y<100;y++){
-    //     // x++;
-    //     _drawPoint(y, y);
-    // }
-    // vic.color_border++;
+    vic.color_border--;
+    char x=84*2;
+    for(char y=30;y<180;y+=8){
+        // x++;
+        _drawPoint(x, y);
+    }
+    vic.color_border++;
 
     vic.color_border++;
     for(char fi=0;fi<FISH_COUNT;fi++){
@@ -315,7 +318,7 @@ static void _fishingMenuCodeLoader(){
 
 void fishingMenuSpriteLoader(){
     // save us some trouble, don't overwrite main cursor (+64 below)
-    memcpy((char *)GFX_1_SPR_DST_ADR+64, fishingMenuSprites, 12*64);
+    memcpy((char *)GFX_1_SPR_DST_ADR+64, fishingMenuSprites, 13*64);
 }
 
 const struct MenuOption FISHING_MENU[] = {
