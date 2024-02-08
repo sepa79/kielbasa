@@ -11,7 +11,7 @@
 #pragma region(bankFishingMenuC, 0x8000, 0x8800, , MENU_BANK_FISHING_MENU, { fishingMenuLoaderData, fishingMenuCode })
 #pragma region(bankFishingMenuRAM, 0x8800, 0x9000, , MENU_BANK_FISHING_MENU, { fishingMenuRAMCode, fishingMenuRAMData }, 0x7000 )
 #pragma region(bankFishingMenuG1, DAY_GFX_BMP, DAY_GFX_BMP + 0x2711, , MENU_BANK_FISHING_MENU, { fishingMenuGfxDay })
-#pragma region(bankFishingMenuG2, MENU_SPRITE_SRC, MENU_SPRITE_SRC + 0x0a80, , MENU_BANK_FISHING_MENU, { fishingMenuSprites })
+#pragma region(bankFishingMenuG2, 0x8000, 0xC000, , MENU_BANK_FISHING_MENU_2, { fishingMenuSprites })
 
 extern const struct MenuOption FISHING_MENU[];
 

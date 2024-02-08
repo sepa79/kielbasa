@@ -5,6 +5,7 @@ class Fish {
         char baseSprBank;
         char color;
         char frame;
+        char animDelay;
         char speed;
         char level;
         char speedCounter;
