@@ -31,19 +31,19 @@ __export const char fishingMenuSprites[] = {
 #define FISH_MAX_SPEED 2
 
 volatile Fish allFish[FISH_COUNT];
+// hook sprite coordinates
+unsigned int hx = 0;
+char hy = 0;
 
-RIRQCode rirqc_frow0, rirqc_frow1, rirqc_frow2, rirqc_frow3;
-#define IRQ_RASTER_FROW0 0x70
-#define IRQ_RASTER_FROW1 0x80
-#define IRQ_RASTER_FROW2 0xa8
-#define IRQ_RASTER_FROW3 0xd0
-#define FISH_LEVEL_OFFSET 7
-#define FISH_Y_SPREAD 14
-const char fishLevel[3] = 
+RIRQCode rirqc_frow1, rirqc_frow2;
+#define IRQ_RASTER_FROW1 0x70
+#define IRQ_RASTER_FROW2 0xb0
+#define FISH_LEVEL_OFFSET 8
+#define FISH_Y_SPREAD IRQ_RASTER_FROW2-IRQ_RASTER_FROW1-FISH_LEVEL_OFFSET-21
+const char fishLevel[2] = 
 {
     IRQ_RASTER_FROW1+FISH_LEVEL_OFFSET,
     IRQ_RASTER_FROW2+FISH_LEVEL_OFFSET,
-    IRQ_RASTER_FROW3+FISH_LEVEL_OFFSET,
 };
 
 void fishingMenuSpriteLoader(){
@@ -77,25 +77,22 @@ inline void _vic_sprxy2(byte s, int x, int y)
         vic.spr_msbx &= ~(3 << s);
 }
 
-__interrupt static void IRQ_initFishingRows() {
+__interrupt static void IRQ_fishingRow1() {
     vic.color_border--;
+    vic.color_back   = VCOL_CYAN;
     vic.spr_expand_x = 0b00000000;
     vic.spr_expand_y = 0b00000000;
     vic.spr_priority = 0b11110000;
     vic.spr_multi    = 0b10101010;
     vic.spr_enable   = 0b11111111;
-    vic.color_border++;
-    vic.color_back = VCOL_CYAN;
 
-}
-
-__interrupt static void IRQ_fishingRow1() {
-    vic.color_border--;
+    vic_sprxy(0, hx, hy);
 
     _vic_sprxy2(2, allFish[0].posX, allFish[0].posY);
     _vic_sprxy2(4, allFish[1].posX, allFish[1].posY);
     _vic_sprxy2(6, allFish[2].posX, allFish[2].posY);
 
+    vic.spr_color[0] = VCOL_DARK_GREY;
     vic.spr_color[2] = VCOL_BLACK;
     vic.spr_color[4] = VCOL_BLACK;
     vic.spr_color[6] = VCOL_BLACK;
@@ -103,6 +100,7 @@ __interrupt static void IRQ_fishingRow1() {
     vic.spr_color[5] = allFish[1].color;
     vic.spr_color[7] = allFish[2].color;
 
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+0] = 0x11;
     char b = allFish[0].baseSprBank + allFish[0].frame;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+2] = b+1;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+3] = b;
@@ -115,16 +113,19 @@ __interrupt static void IRQ_fishingRow1() {
 
     vic.color_border++;
 }
+
 __interrupt static void IRQ_fishingRow2() {
     vic.color_border--;
-
     _vic_sprxy2(2, allFish[3].posX, allFish[3].posY);
     _vic_sprxy2(4, allFish[4].posX, allFish[4].posY);
+    _vic_sprxy2(6, allFish[5].posX, allFish[5].posY);
 
     vic.spr_color[2] = VCOL_BLACK;
     vic.spr_color[4] = VCOL_BLACK;
+    vic.spr_color[6] = VCOL_BLACK;
     vic.spr_color[3] = allFish[3].color;
     vic.spr_color[5] = allFish[4].color;
+    vic.spr_color[7] = allFish[5].color;
 
     char b = allFish[3].baseSprBank + allFish[3].frame;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+2] = b+1;
@@ -132,28 +133,14 @@ __interrupt static void IRQ_fishingRow2() {
     b = allFish[4].baseSprBank + allFish[4].frame;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+4] = b+1;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+5] = b;
+    b = allFish[5].baseSprBank + allFish[5].frame;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+6] = b+1;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+7] = b;
 
     vic.spr_priority = 0b11111100;
 
     vic.color_border++;
 }
-__interrupt static void IRQ_fishingRow3() {
-    vic.color_border--;
-
-    _vic_sprxy2(2, allFish[5].posX, allFish[5].posY);
-
-    vic.spr_color[2] = VCOL_BLACK;
-    vic.spr_color[3] = allFish[5].color;
-
-    char b = allFish[5].baseSprBank + allFish[5].frame;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+2] = b+1;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+3] = b;
-
-    vic.spr_priority = 0b11111100;
-
-    vic.color_border++;
-}
-
 
 __interrupt static void IRQ_topFishing() {
     // vic.color_border++;
@@ -218,9 +205,9 @@ void initRasterIRQ_Fishing(){
     rirq_set(3, IRQ_RASTER_BOTTOM_UI, &rirqc_bottomUI);
 
     // Init all fish sprites
-    rirq_build(&rirqc_frow0, 1);
-    rirq_call(&rirqc_frow0, 0, IRQ_initFishingRows);
-    rirq_set(10, IRQ_RASTER_FROW0, &rirqc_frow0);
+    // rirq_build(&rirqc_frow0, 1);
+    // rirq_call(&rirqc_frow0, 0, IRQ_initFishingRows);
+    // rirq_set(10, IRQ_RASTER_FROW0, &rirqc_frow0);
 
     // 1st row of fish
     rirq_build(&rirqc_frow1, 1);
@@ -233,9 +220,9 @@ void initRasterIRQ_Fishing(){
     rirq_set(12, IRQ_RASTER_FROW2, &rirqc_frow2);
 
     // 3rd row of fish
-    rirq_build(&rirqc_frow3, 1);
-    rirq_call(&rirqc_frow3, 0, IRQ_fishingRow3);
-    rirq_set(13, IRQ_RASTER_FROW3, &rirqc_frow3);
+    // rirq_build(&rirqc_frow3, 1);
+    // rirq_call(&rirqc_frow3, 0, IRQ_fishingRow3);
+    // rirq_set(13, IRQ_RASTER_FROW3, &rirqc_frow3);
 
     // sort the raster IRQs
     rirq_sort();
@@ -252,15 +239,24 @@ static char _rnd(char num){
 const char fishColors[5] = {3, 7, 13, 10, 14};
 
 // destination table
-__striped char * const yDstT[200] = {
-#for(i,200) GFX_1_BMP + 40 * (i & ~7)  + (i & 7),
+__striped char * const yDstT[256] = {
+#for(i,256) GFX_1_BMP + 40 * (i & ~7) + (i & 7),
 };
 
 // source table
-__striped char * const ySrcT[200] = {
-#for(i,200) MENU_FULL_KOALA_BMP + 40 * (i & ~7)  + (i & 7),
+__striped char * const ySrcT[256] = {
+#for(i,256) MENU_FULL_KOALA_BMP + 40 * (i & ~7)  + (i & 7),
 };
 
+// x & ~7 table
+__striped char const xan7[256] = {
+#for(i,256) i & ~7,
+};
+
+const signed char xSin[128] = {-126,-125,-125,-124,-124,-123,-122,-122,-121,-120,-119,-118,-117,-116,-115,-114,-113,-112,-111,-110,-108,-107,-106,-104,-103,-101,-100,-98,-97,-95,-94,-92,-90,-89,-87,-85,-83,-81,-79,-78,-76,-74,-72,-70,-68,-65,-63,-61,-59,-57,-55,-53,-50,-48,-46,-44,-41,-39,-37,-34,-32,-30,-27,-25,-23,-20,-18,-15,-13,-11,-8,-6,-3,-1,2,4,6,9,11,14,16,18,21,23,26,28,30,33,35,37,40,42,44,46,49,51,53,55,58,60,62,64,66,68,70,72,74,76,78,80,82,83,85,87,89,91,92,94,95,97,99,100,102,103,104,106,107,108};
+const signed char yCos[128] = {23,25,27,30,32,34,37,39,41,44,46,48,50,53,55,57,59,61,63,65,68,70,72,74,76,78,79,81,83,85,87,89,90,92,94,95,97,98,100,101,103,104,106,107,108,110,111,112,113,114,115,116,117,118,119,120,121,122,122,123,124,124,125,125,126,126,126,127,127,127,127,127,127,127,127,127,127,127,127,127,126,126,126,125,125,124,124,123,122,122,121,120,119,118,118,117,116,115,113,112,111,110,109,107,106,105,103,102,100,99,97,96,94,92,91,89,87,86,84,82,80,78,76,74,72,70,68,66};
+// const char xTable[160] = {0,0,0,0,0,0,0,0,0,0,1,1,1,2,2,2,3,3,3,4,4,5,5,6,6,7,8,8,9,10,10,11,12,12,13,14,15,16,17,17,18,19,20,21,22,23,24,25,26,28,29,30,31,32,33,35,36,37,38,40,41,42,44,45,46,48,49,51,52,54,55,56,58,60,61,63,64,66,67,69,71,72,74,76,77,79,81,82,84,86,88,89,91,93,95,96,98,100,102,104,106,107,109,111,113,115,117,119,121,123,124,126,128,130,132,134,136,138,140,142,144,146,148,150,152,154,156,158,159};
+// const char yTable[160] = {64,66,68,69,71,72,74,75,77,79,80,82,83,85,86,88,89,91,93,94,96,97,99,100,102,103,105,106,108,109,111,112,113,115,116,118,119,121,122,123,125,126,128,129,130,132,133,134,136,137,138,139,141,142,143,144,146,147,148,149,150,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,173,174,175,176,177,177,178,179,180,180,181,182,182,183,183,184,184,185,186,186,187,187,187,188,188,189,189,189,190,190,190,191,191,191,191,192,192,192,192,192,192,192,192,192,192,192};
 // const char maskT[] = {0b00111111,0b00111111, 0b11001111,0b11001111, 0b11110011,0b11110011, 0b11111100,0b11111100}; // background color - under
 // const char setT[] =  {0b01000000,0b01000000, 0b00010000,0b00010000, 0b00000100,0b00000100, 0b00000001,0b00000001}; // under
 const char setT[] =  {0b11000000,0b11000000, 0b00110000,0b00110000, 0b00001100,0b00001100, 0b00000011,0b00000011}; // over
@@ -268,13 +264,13 @@ const char setT[] =  {0b11000000,0b11000000, 0b00110000,0b00110000, 0b00001100,0
 
 static void _drawPoint(char x, char y) {
     char m = x & 7;
-    char xo = (x & ~ 7);
+    char xo = xan7[x];
 
     yDstT[y][xo] = ySrcT[y][xo] | setT[m];
 }
 
 static void _deletePoint(char x, char y) {
-    char xo = (x & ~ 7);
+    char xo = xan7[x];
     yDstT[y][xo] = ySrcT[y][xo];
 }
 
@@ -299,86 +295,82 @@ static void _initAllFish(){
     allFish[2] = _initFish(0, _rnd(255));
     allFish[3] = _initFish(1, _rnd(255));
     allFish[4] = _initFish(1, _rnd(255));
-    allFish[5] = _initFish(2, _rnd(255));
+    allFish[5] = _initFish(1, _rnd(255));
 }
 
-#define LINE_STEP 8
-static void _drawLine(char x0, char y0, char x1, char y1){
-    // find if we go X or Y
+#define LINE_STEP 2
+static void _drawLine(char x0, char y0, unsigned int x1, char y1){
     // assumptions:
     // x0 > x1
     // y1 > y0
 
     int dx =  abs (x1 - x0), sx = x0 < x1 ? LINE_STEP : -LINE_STEP;
     int dy = -abs (y1 - y0), sy = y0 < y1 ? LINE_STEP : -LINE_STEP;
-    int err = dx + dy, e2; /* error value e_xy */
+    int err = dx + dy, e2;
     
-    for (;;){  /* loop */
-        _drawPoint (x0,y0);
-        if (x0 <= x1 && y0 >= y1) break;
+    for (;;){
+        _drawPoint(x0,y0);
+        if (x0 == x1 && y0 >= y1) break;
         e2 = 2 * err;
-        if (e2 >= dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
-        if (e2 <= dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
+        if (e2 >= dy) { err += dy; x0 += sx; }
+        if (e2 <= dx) { err += dx; y0 += sy; }
     }
 
 }
 
-static void _deleteLine(char x0, char y0, char x1, char y1){
-    // find if we go X or Y
+static void _deleteLine(char x0, char y0, unsigned int x1, char y1){
     // assumptions:
     // x0 > x1
     // y1 > y0
 
     int dx =  abs (x1 - x0), sx = x0 < x1 ? LINE_STEP : -LINE_STEP;
     int dy = -abs (y1 - y0), sy = y0 < y1 ? LINE_STEP : -LINE_STEP;
-    int err = dx + dy, e2; /* error value e_xy */
+    int err = dx + dy, e2;
     
-    for (;;){  /* loop */
-        _deletePoint (x0,y0);
-        if (x0 <= x1 && y0 >= y1) break;
+    for (;;){
+        _deletePoint(x0,y0);
+        if (x0 == x1 && y0 >= y1) break;
         e2 = 2 * err;
-        if (e2 >= dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
-        if (e2 <= dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
+        if (e2 >= dy) { err += dy; x0 += sx; }
+        if (e2 <= dx) { err += dx; y0 += sy; }
     }
 
 }
 
-char xs = 80*2;
-char ys = 22;
-char xe = 40;
+char xs = 166;
+char ys = 23;
+unsigned int xe = 40;
 char ye = 160;
+char r = 100;
+char ang = 0; // angle, 0-127 for 0-89.xx
 
 static void _fishLoop(){
     vic.color_border--;
-    // for(char y=30;y<180;y+=8){
-    //     x--;
-        // _drawPoint(xe, ye);
-    // }
+
     _deleteLine(xs,ys, xe,ye);
     vic.color_border++;
-    vic.color_border++;
 
-    xs+=2;
-    if(xs > 84*2){
-        xs = 82*2;
+    r--;
+    if(r < 50){
+        r = 130;
     }
-    ys++;
-    if(ys > 23){
-        ys = 22;
-    }
-    // xe+=2;
-    // if(xe > 80*2){
-    //     xe = 40;
-    // }
-    // ye+=7;
-    // if(ye > 175){
-    //     ye = 30;
-    // }
 
-    _drawLine(xs,ys, xe,ye);
+    ang++;
+    if(ang > 127){
+        ang = 0;
+    }
+    xe = (lmuldiv16s(xSin[ang], r, 128)+160) & 254;
+    ye = lmuldiv16s(yCos[ang], r, 128)+64-22;
+    // xe = xTable[ang];
+    // ye = yTable[ang];
+    hx = xe + 24 - 12;
+    hy = ye + 50 - 10;
+
     vic.color_border--;
-
+    _drawLine(xs,ys, xe,ye);
     vic.color_border++;
+
+    vic.color_border+=4;
     for(char fi=0;fi<FISH_COUNT;fi++){
         if(allFish[fi].posX > 3){
             allFish[fi].posX -= allFish[fi].speed;
@@ -402,7 +394,7 @@ static void _fishLoop(){
             allFish[fi] = _initFish(allFish[fi].level, 300);
         }
     }
-    vic.color_border--;
+    vic.color_border-=4;
 }
 
 
