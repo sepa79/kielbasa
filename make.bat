@@ -1,5 +1,5 @@
 @ECHO OFF
-set OSCAR_HOME="c:\Program Files (x86)\oscar64\bin"
+set OSCAR_HOME="c:\Program Files\oscar64\bin"
 cd .\scripts\
 python3.exe .\create_translations_yaml_jinja2.py
 @REM cd ..\other\
