@@ -256,7 +256,7 @@ __export const char tantab[64] =
 
 __export const char costab[64] =
 {
-#for(i, 64) (char)(cos(i * PI / 256) * 120),
+#for(i, 64) (char)(cos(i * PI / 256) * 128),
 };
 
 
@@ -268,7 +268,7 @@ const char setT[] =  {0b11000000,0b11000000, 0b00110000,0b00110000, 0b00001100,0
 // const char setT[] =  {0b10000000,0b10000000, 0b00100000,0b00100000, 0b00001000,0b00001000, 0b00000010,0b00000010}; // over
 
 void _drawLine(char n, char d){
-    unsigned x = 160;
+    unsigned x = 168;
 
     const char * sp = fishingMenuGfx1 + 320 * 3 + (x & ~7);
     char * dp = GFX_1_BMP + 320 * 3 + (x & ~7);
@@ -317,7 +317,7 @@ void _drawLine(char n, char d){
 }
 
 void _deleteLine(char n, char d){
-    unsigned x = 160;
+    unsigned x = 168;
 
     const char * sp = fishingMenuGfx1 + 320 * 3 + (x & ~7);
     char * dp = GFX_1_BMP + 320 * 3 + (x & ~7);
@@ -337,8 +337,7 @@ void _deleteLine(char n, char d){
 
             if (s & 0xff00){
                 m >>= 2;
-                if (!m)
-                {
+                if (!m){
                     m = 0xc0;
                     y += 8;
                 }
@@ -399,7 +398,7 @@ char r = 100;
 // char ang = 0; // angle, 0-127 for 0-89.xx
 char n = 0;
 char d = 0;
-char i=0;
+char i = 0;
 
 static void _fishLoop(){
     vic.color_border--;
@@ -407,10 +406,10 @@ static void _fishLoop(){
     _deleteLine(n, d);
     vic.color_border++;
 
-    // r--;
-    // if(r < 50){
-    //     r = 130;
-    // }
+    r--;
+    if(r < 50){
+        r = 130;
+    }
 
     i++;
     if(i > 64){
@@ -421,7 +420,7 @@ static void _fishLoop(){
 
     // hx = xe + 24 - 12;
     // hy = ye + 50 - 10;
-    n = costab[i];
+    n = lmuldiv16s(costab[i], r, 128);
     d = tantab[i];
 
     vic.color_border--;
