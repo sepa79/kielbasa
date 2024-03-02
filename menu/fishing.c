@@ -4,6 +4,7 @@
 #include <string.h>
 #include <c64/keyboard.h>
 #include <c64/rasterirq.h>
+#include <math.h>
 
 #include <menu/menuSystem.h>
 #include <translation/common.h>
@@ -248,23 +249,123 @@ __striped char * const ySrcT[256] = {
 #for(i,200) MENU_FULL_KOALA_BMP + 40 * (i & ~7)  + (i & 7),
 };
 
-const signed char xSin[128] = {-126,-125,-125,-124,-124,-123,-122,-122,-121,-120,-119,-118,-117,-116,-115,-114,-113,-112,-111,-110,-108,-107,-106,-104,-103,-101,-100,-98,-97,-95,-94,-92,-90,-89,-87,-85,-83,-81,-79,-78,-76,-74,-72,-70,-68,-65,-63,-61,-59,-57,-55,-53,-50,-48,-46,-44,-41,-39,-37,-34,-32,-30,-27,-25,-23,-20,-18,-15,-13,-11,-8,-6,-3,-1,2,4,6,9,11,14,16,18,21,23,26,28,30,33,35,37,40,42,44,46,49,51,53,55,58,60,62,64,66,68,70,72,74,76,78,80,82,83,85,87,89,91,92,94,95,97,99,100,102,103,104,106,107,108};
-const signed char yCos[128] = {23,25,27,30,32,34,37,39,41,44,46,48,50,53,55,57,59,61,63,65,68,70,72,74,76,78,79,81,83,85,87,89,90,92,94,95,97,98,100,101,103,104,106,107,108,110,111,112,113,114,115,116,117,118,119,120,121,122,122,123,124,124,125,125,126,126,126,127,127,127,127,127,127,127,127,127,127,127,127,127,126,126,126,125,125,124,124,123,122,122,121,120,119,118,118,117,116,115,113,112,111,110,109,107,106,105,103,102,100,99,97,96,94,92,91,89,87,86,84,82,80,78,76,74,72,70,68,66};
+__export const char tantab[64] =
+{
+#for(i, 64) (char)(tan(i * PI / 256) * 128),
+};
+
+__export const char costab[64] =
+{
+#for(i, 64) (char)(cos(i * PI / 256) * 120),
+};
+
+
+// const signed char xSin[128] = {-126,-125,-125,-124,-124,-123,-122,-122,-121,-120,-119,-118,-117,-116,-115,-114,-113,-112,-111,-110,-108,-107,-106,-104,-103,-101,-100,-98,-97,-95,-94,-92,-90,-89,-87,-85,-83,-81,-79,-78,-76,-74,-72,-70,-68,-65,-63,-61,-59,-57,-55,-53,-50,-48,-46,-44,-41,-39,-37,-34,-32,-30,-27,-25,-23,-20,-18,-15,-13,-11,-8,-6,-3,-1,2,4,6,9,11,14,16,18,21,23,26,28,30,33,35,37,40,42,44,46,49,51,53,55,58,60,62,64,66,68,70,72,74,76,78,80,82,83,85,87,89,91,92,94,95,97,99,100,102,103,104,106,107,108};
+// const signed char yCos[128] = {23,25,27,30,32,34,37,39,41,44,46,48,50,53,55,57,59,61,63,65,68,70,72,74,76,78,79,81,83,85,87,89,90,92,94,95,97,98,100,101,103,104,106,107,108,110,111,112,113,114,115,116,117,118,119,120,121,122,122,123,124,124,125,125,126,126,126,127,127,127,127,127,127,127,127,127,127,127,127,127,126,126,126,125,125,124,124,123,122,122,121,120,119,118,118,117,116,115,113,112,111,110,109,107,106,105,103,102,100,99,97,96,94,92,91,89,87,86,84,82,80,78,76,74,72,70,68,66};
 // const char maskT[] = {0b00111111,0b00111111, 0b11001111,0b11001111, 0b11110011,0b11110011, 0b11111100,0b11111100}; // background color - under
 // const char setT[] =  {0b01000000,0b01000000, 0b00010000,0b00010000, 0b00000100,0b00000100, 0b00000001,0b00000001}; // under
 const char setT[] =  {0b11000000,0b11000000, 0b00110000,0b00110000, 0b00001100,0b00001100, 0b00000011,0b00000011}; // over
 // const char setT[] =  {0b10000000,0b10000000, 0b00100000,0b00100000, 0b00001000,0b00001000, 0b00000010,0b00000010}; // over
 
-static void _drawPoint(char x, char y) {
-    char m = x & 7;
-    char xo = x & ~7;
+void _drawLine(char n, char d){
+    unsigned x = 160;
 
-    yDstT[y][xo] = ySrcT[y][xo] | setT[m];
+    const char * sp = fishingMenuGfx1 + 320 * 3 + (x & ~7);
+    char * dp = GFX_1_BMP + 320 * 3 + (x & ~7);
+
+    char i = 0;
+    char m = setT[x & 7];
+    char xl = 0;
+
+    char y = 0;
+    for(; i+8<n; i+=8){
+        #pragma unroll(full)
+        for(char j=0; j<8; j++){
+            dp[y] = sp[y] | m;
+            y++;
+
+            unsigned s = xl + d;
+            xl = s;
+
+            if (s & 0xff00){
+                m >>= 2;
+                if (!m){
+                    m = 0xc0;
+                    y += 8;
+                }
+            }
+        }
+        sp += 320; dp += 320;
+        y -= 8;
+    }
+
+    for(;i<n; i++){
+        dp[y] = sp[y] | m;
+        y++;
+
+        unsigned s = xl + d;
+        xl = s;
+
+        if (s & 0xff00){
+            m >>= 2;
+            if (!m){
+                m = 0xc0;
+                y += 8;
+            }
+        }
+    }
 }
 
-static void _deletePoint(char x, char y) {
-    char xo = x & ~7;
-    yDstT[y][xo] = ySrcT[y][xo];
+void _deleteLine(char n, char d){
+    unsigned x = 160;
+
+    const char * sp = fishingMenuGfx1 + 320 * 3 + (x & ~7);
+    char * dp = GFX_1_BMP + 320 * 3 + (x & ~7);
+
+    char i = 0;
+    char m = setT[x & 7];
+    char xl = 0;
+
+    char y = 0;
+    for(; i+8<n; i+=8){
+        #pragma unroll(full)
+        for(char j=0; j<8; j++){
+            dp[y] = sp[y];
+
+            unsigned s = xl + d;
+            xl = s;
+
+            if (s & 0xff00){
+                m >>= 2;
+                if (!m)
+                {
+                    m = 0xc0;
+                    y += 8;
+                }
+            }
+
+            y++;
+        }
+        y -= 8;
+        sp += 320; dp += 320;
+    }
+
+    for(;i<n; i++) {
+        dp[y] = sp[y];
+
+        unsigned s = xl + d;
+        xl = s;
+
+        if (s & 0xff00){
+            m >>= 2;
+            if (!m){
+                m = 0xc0;
+                y += 8;
+            }
+        }
+
+        y++;
+    }
 }
 
 static Fish _initFish(char level, int x){
@@ -290,75 +391,41 @@ static void _initAllFish(){
     allFish[5] = _initFish(1, _rnd(255));
 }
 
-#define LINE_STEP 2
-static void _drawLine(char x0, char y0, unsigned int x1, char y1){
-    // assumptions:
-    // x0 > x1
-    // y1 > y0
-
-    int dx =  abs (x1 - x0), sx = x0 < x1 ? LINE_STEP : -LINE_STEP;
-    int dy = -abs (y1 - y0), sy = y0 < y1 ? LINE_STEP : -LINE_STEP;
-    int err = dx + dy, e2;
-    
-    for (;;){
-        _drawPoint(x0,y0);
-        if (x0 == x1 && y0 >= y1) break;
-        e2 = 2 * err;
-        if (e2 >= dy) { err += dy; x0 += sx; }
-        if (e2 <= dx) { err += dx; y0 += sy; }
-    }
-
-}
-
-static void _deleteLine(char x0, char y0, unsigned int x1, char y1){
-    // assumptions:
-    // x0 > x1
-    // y1 > y0
-
-    int dx =  abs (x1 - x0), sx = x0 < x1 ? LINE_STEP : -LINE_STEP;
-    int dy = -abs (y1 - y0), sy = y0 < y1 ? LINE_STEP : -LINE_STEP;
-    int err = dx + dy, e2;
-    
-    for (;;){
-        _deletePoint(x0,y0);
-        if (x0 == x1 && y0 >= y1) break;
-        e2 = 2 * err;
-        if (e2 >= dy) { err += dy; x0 += sx; }
-        if (e2 <= dx) { err += dx; y0 += sy; }
-    }
-
-}
-
-char xs = 166;
-char ys = 23;
-char xe = 40;
-char ye = 160;
+// char xs = 166;
+// char ys = 23;
+// char xe = 40;
+// char ye = 160;
 char r = 100;
-char ang = 0; // angle, 0-127 for 0-89.xx
+// char ang = 0; // angle, 0-127 for 0-89.xx
+char n = 0;
+char d = 0;
+char i=0;
 
 static void _fishLoop(){
     vic.color_border--;
 
-    _deleteLine(xs,ys, xe,ye);
+    _deleteLine(n, d);
     vic.color_border++;
 
     // r--;
-    if(r < 50){
-        r = 130;
-    }
+    // if(r < 50){
+    //     r = 130;
+    // }
 
-    ang++;
-    if(ang > 127){
-        ang = 0;
+    i++;
+    if(i > 64){
+        i = 0;
     }
-    xe = (lmuldiv16s(xSin[ang], r, 128)+160) & 254;
-    ye = lmuldiv16s(yCos[ang], r, 128)+64-22;
+    // xe = (lmuldiv16s(xSin[ang], r, 128)+160) & 254;
+    // ye = lmuldiv16s(yCos[ang], r, 128)+64-22;
 
-    hx = xe + 24 - 12;
-    hy = ye + 50 - 10;
+    // hx = xe + 24 - 12;
+    // hy = ye + 50 - 10;
+    n = costab[i];
+    d = tantab[i];
 
     vic.color_border--;
-    _drawLine(xs,ys, xe,ye);
+    _drawLine(n, d);
     vic.color_border++;
 
     vic.color_border+=4;

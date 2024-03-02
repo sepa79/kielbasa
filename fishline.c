@@ -26,23 +26,6 @@ __striped char const xan7[256] = {
 
 const char setT[] =  {0b11000000,0b11000000, 0b00110000,0b00110000, 0b00001100,0b00001100, 0b00000011,0b00000011};
 
-
-inline void drawPointAnd(char x, char y) 
-{
-    char m = x & 7;
-    char xo = x & ~7;
-
-    yDstT[y][xo] = ySrcT[y][xo] | setT[m];
-}
-
-void drawPointTab(char x, char y) 
-{
-    char m = x & 7;
-    char xo = xan7[x];
-
-    yDstT[y][xo] = ySrcT[y][xo] | setT[m];
-}
-
 __export const char tantab[64] =
 {
 #for(i, 64) (char)(tan(i * PI / 256) * 128),
