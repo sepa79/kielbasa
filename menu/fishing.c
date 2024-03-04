@@ -35,7 +35,20 @@ volatile Fish allFish[FISH_COUNT];
 unsigned int hx = 0;
 char hy = 0;
 
+enum JOY_EXPECTED_POS {
+    JOY_NONE=0,
+    JOY_UP=1,
+    JOY_DOWN=2,
+    JOY_LEFT=3,
+    JOY_RIGHT=4,
+    JOY_FIRE=5
+};
+volatile char expectedJoyPos = JOY_UP;
+
 RIRQCode rirqc_frow1, rirqc_frow2;
+#define HOOK_SPRITE_BANK 0x11
+#define JOY_SPRITE_BANK 0x12
+#define FISH_SPRITE_BANK 0x18
 #define IRQ_RASTER_FROW1 0x70
 #define IRQ_RASTER_FROW2 0xb0
 #define FISH_LEVEL_OFFSET 8
@@ -46,6 +59,7 @@ const char fishLevel[2] =
     IRQ_RASTER_FROW2+FISH_LEVEL_OFFSET,
 };
 
+// total sprites: 67
 void fishingMenuSpriteLoader(){
     char pbank = setBank(MENU_BANK_FISHING_MENU_2);
     // easy part - from rom to c400-cfff
@@ -54,11 +68,20 @@ void fishingMenuSpriteLoader(){
     // now the tricky part - to buffer -> to $d000
     char pport = setPort(MMAP_ROM);
     // CRT rom to buffer -> GFX_1_SCR
-    memcpy(GFX_1_SCR, fishingMenuSprites+47*64, (61-47)*64);
+    memcpy(GFX_1_SCR, fishingMenuSprites+47*64, 15*64);
     // switch IO off
     setPort(MMAP_RAM);
     // // buffer to RAM under IO
-    memcpy(GFX_1_FNT2, GFX_1_SCR, (61-47)*64);
+    memcpy(GFX_1_FNT2, GFX_1_SCR, 15*64);
+
+    // and one more time, the remaining few
+    setPort(MMAP_ROM);
+    // CRT rom to buffer -> GFX_1_SCR
+    memcpy(GFX_1_SCR, fishingMenuSprites+(47+15)*64, 5*64);
+    // switch IO off
+    setPort(MMAP_RAM);
+    // // buffer to RAM under IO
+    memcpy(GFX_1_FNT2+15*64, GFX_1_SCR, 5*64);
 
     setPort(pport);
     setBank(pbank);
@@ -100,7 +123,7 @@ __interrupt static void IRQ_fishingRow1() {
     vic.spr_color[5] = allFish[1].color;
     vic.spr_color[7] = allFish[2].color;
 
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+0] = 0x11;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+0] = HOOK_SPRITE_BANK;
     char b = allFish[0].baseSprBank + allFish[0].frame;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+2] = b+1;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+3] = b;
@@ -161,6 +184,7 @@ __interrupt static void IRQ_topFishing() {
     // vic.color_border--;
 }
 
+
 __interrupt static void IRQ_bottomUI() {
     // revert color
     vic.color_back = VCOL_BLACK;
@@ -169,10 +193,38 @@ __interrupt static void IRQ_bottomUI() {
     while (vic.raster != 0xfc){}
     // reset to normal screen height
     vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
-    showUiSpritesBottom();
-    // UI sprite bank
-    vic.memptr = d018_UI;
-    cia2.pra = dd00_UI;
+
+
+    // vic.color_border--;
+    vic.spr_expand_x = 0b00000000;
+    vic.spr_expand_y = 0b00000000;
+    vic.spr_priority = 0b00000000;
+    vic.spr_multi    = 0b00000000;
+    
+    vic.spr_mcolor0  = VCOL_MED_GREY;
+    vic.spr_mcolor1  = VCOL_LT_GREY;
+
+    vic.spr_msbx = 0b11000000;
+
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+0] = JOY_SPRITE_BANK+JOY_FIRE;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+1] = JOY_SPRITE_BANK+expectedJoyPos;
+
+    #define SPACER_WIDTH 16
+    #define SPRITE_WIDTH 24
+
+    vic.spr_pos[0].x = 24 + SPACER_WIDTH*1 + SPRITE_WIDTH;
+    vic.spr_pos[1].x = 24 + SPACER_WIDTH*1 + SPRITE_WIDTH;
+
+    vic.spr_pos[0].y = 2;
+    vic.spr_pos[1].y = 2;
+
+    vic.spr_color[0] = VCOL_DARK_GREY;
+    vic.spr_color[1] = VCOL_MED_GREY;
+
+    vic.spr_enable = 0b00000011;
+    // indicate frame position
+    gms_framePos = FRAME_BOTTOM;
+    // vic.color_border++;
 
     // vic.color_border++;
     playMsx();
@@ -271,7 +323,7 @@ static Fish _initFish(char level, int x){
     Fish fish;
     fish.posY = fishLevel[level] + _rnd(FISH_Y_SPREAD);
     fish.posX = 50 + x;
-    fish.baseSprBank = 0x12 + _rnd(6)*10;
+    fish.baseSprBank = 0x18 + _rnd(6)*10;
     fish.color = fishColors[_rnd(5)];
     fish.frame = 0;
     fish.speed = _rnd(FISH_MAX_SPEED) + 1;
@@ -356,14 +408,13 @@ char ang = 0; // angle, 0-127 for 0-89.xx
 
 static void _fishLoop(){
     vic.color_border--;
-
-    _deleteLine(xs,ys, xe,ye);
-    vic.color_border++;
-
-    // r--;
+    // check line length
     if(r < 50){
         r = 130;
     }
+
+    _deleteLine(xs,ys, xe,ye);
+    vic.color_border++;
 
     ang++;
     if(ang > 127){
@@ -406,6 +457,31 @@ static void _fishLoop(){
     vic.color_border-=4;
 }
 
+static void _lineUpJoyUp(){
+    if(expectedJoyPos == JOY_UP){
+        r-=2;
+        expectedJoyPos = JOY_RIGHT;
+    }
+}
+static void _lineUpJoyRight(){
+    if(expectedJoyPos == JOY_RIGHT){
+        r-=2;
+        expectedJoyPos = JOY_DOWN;
+    }
+}
+static void _lineUpJoyDown(){
+    if(expectedJoyPos == JOY_DOWN){
+        r-=2;
+        expectedJoyPos = JOY_LEFT;
+    }
+}
+static void _lineUpJoyLeft(){
+    if(expectedJoyPos == JOY_LEFT){
+        r-=2;
+        expectedJoyPos = JOY_UP;
+    }
+}
+
 
 // copy fishingMenuRAMCode
 static void _fishingMenuCodeLoader(){
@@ -415,6 +491,11 @@ static void _fishingMenuCodeLoader(){
 const struct MenuOption FISHING_MENU[] = {
     // Add the "Exit to Map" option as shown in the example
     { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF + UI_HIDE, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 2, 5 },
+    { TXT_IDX_MENU_W, 'w', SCREEN_FISHING, UI_U+UI_HIDE, &_lineUpJoyUp, 0, 1, 1 },
+    { TXT_IDX_MENU_S, 's', SCREEN_FISHING, UI_D+UI_HIDE, &_lineUpJoyDown, 0, 1, 1 },
+    { TXT_IDX_MENU_A, 'a', SCREEN_FISHING, UI_L+UI_HIDE, &_lineUpJoyLeft, 0, 1, 1 },
+    { TXT_IDX_MENU_D, 'd', SCREEN_FISHING, UI_R+UI_HIDE, &_lineUpJoyRight, 0, 1, 1 },
+
     END_MENU_CHOICES
 };
 
