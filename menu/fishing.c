@@ -457,27 +457,30 @@ static void _fishLoop(){
     vic.color_border-=4;
 }
 
+static void _lineUpFire(){
+    r-=3;
+}
 static void _lineUpJoyUp(){
     if(expectedJoyPos == JOY_UP){
-        r-=2;
+        r-=1;
         expectedJoyPos = JOY_RIGHT;
     }
 }
 static void _lineUpJoyRight(){
     if(expectedJoyPos == JOY_RIGHT){
-        r-=2;
+        r-=1;
         expectedJoyPos = JOY_DOWN;
     }
 }
 static void _lineUpJoyDown(){
     if(expectedJoyPos == JOY_DOWN){
-        r-=2;
+        r-=1;
         expectedJoyPos = JOY_LEFT;
     }
 }
 static void _lineUpJoyLeft(){
     if(expectedJoyPos == JOY_LEFT){
-        r-=2;
+        r-=1;
         expectedJoyPos = JOY_UP;
     }
 }
@@ -490,7 +493,8 @@ static void _fishingMenuCodeLoader(){
 
 const struct MenuOption FISHING_MENU[] = {
     // Add the "Exit to Map" option as shown in the example
-    { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF + UI_HIDE, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 2, 5 },
+    { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_HIDE, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 2, 5 },
+    { TXT_IDX_MENU_SELECT, KEY_RETURN, SCREEN_FISHING, UI_F+UI_HIDE, &_lineUpFire, 0, 1, 1 },
     { TXT_IDX_MENU_W, 'w', SCREEN_FISHING, UI_U+UI_HIDE, &_lineUpJoyUp, 0, 1, 1 },
     { TXT_IDX_MENU_S, 's', SCREEN_FISHING, UI_D+UI_HIDE, &_lineUpJoyDown, 0, 1, 1 },
     { TXT_IDX_MENU_A, 'a', SCREEN_FISHING, UI_L+UI_HIDE, &_lineUpJoyLeft, 0, 1, 1 },

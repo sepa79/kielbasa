@@ -15,8 +15,8 @@ struct Song {
 };
 
 #define TITLE_ONLY 0xff
-#define RADIO_PLAYLIST_SIZE 9
-#define PLAYLIST_SIZE 12 + RADIO_PLAYLIST_SIZE
+#define RADIO_PLAYLIST_SIZE 0
+#define PLAYLIST_SIZE 0 + RADIO_PLAYLIST_SIZE
 
 extern const struct Song PLAYLIST[];
 

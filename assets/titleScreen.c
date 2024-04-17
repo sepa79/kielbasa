@@ -104,7 +104,7 @@ void initGameStartScreen(){
         lda #MSX_ROM
         sta $01
         lda #$00
-        jsr MSX_INIT
+        // jsr MSX_INIT
     }
     *(void **)0x0314 = titleScreenIrq1;     // Install interrupt routine
     vic.intr_enable = 1;             // Enable raster interrupt
