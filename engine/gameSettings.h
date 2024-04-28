@@ -54,8 +54,8 @@ extern volatile bool gms_enableMusic;
 // Bank for Weather Sprite, handled by irqSpriteController
 extern volatile byte isc_weatherSprite;
 
-//TODO: make a variable
-#define JOY_CURSOR_MOVE_DELAY_INIT 8
+// breaking naming convention as it used to be a #define
+extern volatile char JOY_CURSOR_MOVE_DELAY_INIT;
 
 // debug variable, counts frames (showUiSpritesTop() increases it every time it is called)
 extern volatile char gms_frameCount;

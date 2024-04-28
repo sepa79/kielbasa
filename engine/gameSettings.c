@@ -17,4 +17,6 @@ volatile bool gms_enableMenuSprites = true;
 volatile bool gms_enableMusic = false;
 volatile char gms_frameCount = 0;
 
+volatile char JOY_CURSOR_MOVE_DELAY_INIT = 8;
+
 Events gms_event = EVENT_NONE;
