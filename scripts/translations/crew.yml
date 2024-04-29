@@ -3,14 +3,14 @@ TxtCrew:
   array_label: TXT_CREW
   contents:
   - id: CREW_STAT_INT
-    en: 'Wisdom '
-    pl: 'Mądrość'
+    en: 'Int: '
+    pl: 'Int: '
   - id: CREW_STAT_STR
-    en: 'Strength'
-    pl: 'Siła    '
+    en: 'Str: '
+    pl: 'Sił: '
   - id: CREW_STAT_CUN
-    en: 'Cunning'
-    pl: 'Spryt  '
+    en: 'Agi: '
+    pl: 'Zre: '
   - id: CREW_SKILL_ANI
     en: 'Animal C. '
     pl: 'Hodowla   '

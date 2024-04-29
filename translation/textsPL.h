@@ -21,12 +21,12 @@
 //      "pragma_label":  TxtCrew
 //      "array_label":   TXT_CREW
 //      "indexes_count": 7
-//      "array_length":  69
+//      "array_length":  62
 
 #pragma section( plTxtCrew, 0 )
 #pragma section( plTxtCrewData, 0 )
 #pragma region( bankPlTxtCrewArray, 0x8701, 0x870f, , TRANSLATION_PL_BANK, { plTxtCrew}, 0x6400 )
-#pragma region( bankPlTxtCrewData, 0x870f, 0x8754, , TRANSLATION_PL_BANK, { plTxtCrewData}, 0x640e )
+#pragma region( bankPlTxtCrewData, 0x870f, 0x874d, , TRANSLATION_PL_BANK, { plTxtCrewData}, 0x640e )
 
 //      "pragma_label":  TxtFarmland
 //      "array_label":   TXT_FARMLAND
@@ -35,8 +35,8 @@
 
 #pragma section( plTxtFarmland, 0 )
 #pragma section( plTxtFarmlandData, 0 )
-#pragma region( bankPlTxtFarmlandArray, 0x8755, 0x8795, , TRANSLATION_PL_BANK, { plTxtFarmland}, 0x6400 )
-#pragma region( bankPlTxtFarmlandData, 0x8795, 0x8947, , TRANSLATION_PL_BANK, { plTxtFarmlandData}, 0x6440 )
+#pragma region( bankPlTxtFarmlandArray, 0x874e, 0x878e, , TRANSLATION_PL_BANK, { plTxtFarmland}, 0x6400 )
+#pragma region( bankPlTxtFarmlandData, 0x878e, 0x8940, , TRANSLATION_PL_BANK, { plTxtFarmlandData}, 0x6440 )
 
 //      "pragma_label":  TxtKitchen
 //      "array_label":   TXT_KITCHEN
@@ -45,8 +45,8 @@
 
 #pragma section( plTxtKitchen, 0 )
 #pragma section( plTxtKitchenData, 0 )
-#pragma region( bankPlTxtKitchenArray, 0x8948, 0x895a, , TRANSLATION_PL_BANK, { plTxtKitchen}, 0x6400 )
-#pragma region( bankPlTxtKitchenData, 0x895a, 0x8a20, , TRANSLATION_PL_BANK, { plTxtKitchenData}, 0x6412 )
+#pragma region( bankPlTxtKitchenArray, 0x8941, 0x8953, , TRANSLATION_PL_BANK, { plTxtKitchen}, 0x6400 )
+#pragma region( bankPlTxtKitchenData, 0x8953, 0x8a19, , TRANSLATION_PL_BANK, { plTxtKitchenData}, 0x6412 )
 
 //      "pragma_label":  TxtVillageMap
 //      "array_label":   TXT_VILLAGE_MAP
@@ -55,8 +55,8 @@
 
 #pragma section( plTxtVillageMap, 0 )
 #pragma section( plTxtVillageMapData, 0 )
-#pragma region( bankPlTxtVillageMapArray, 0x8a21, 0x8a4d, , TRANSLATION_PL_BANK, { plTxtVillageMap}, 0x6400 )
-#pragma region( bankPlTxtVillageMapData, 0x8a4d, 0x8c73, , TRANSLATION_PL_BANK, { plTxtVillageMapData}, 0x642c )
+#pragma region( bankPlTxtVillageMapArray, 0x8a1a, 0x8a46, , TRANSLATION_PL_BANK, { plTxtVillageMap}, 0x6400 )
+#pragma region( bankPlTxtVillageMapData, 0x8a46, 0x8c6c, , TRANSLATION_PL_BANK, { plTxtVillageMapData}, 0x642c )
 
 //      "pragma_label":  TxtOptionsMenu
 //      "array_label":   TXT_OPTIONS_MENU
@@ -65,8 +65,8 @@
 
 #pragma section( plTxtOptionsMenu, 0 )
 #pragma section( plTxtOptionsMenuData, 0 )
-#pragma region( bankPlTxtOptionsMenuArray, 0x8c74, 0x8c80, , TRANSLATION_PL_BANK, { plTxtOptionsMenu}, 0x6400 )
-#pragma region( bankPlTxtOptionsMenuData, 0x8c80, 0x8d04, , TRANSLATION_PL_BANK, { plTxtOptionsMenuData}, 0x640c )
+#pragma region( bankPlTxtOptionsMenuArray, 0x8c6d, 0x8c79, , TRANSLATION_PL_BANK, { plTxtOptionsMenu}, 0x6400 )
+#pragma region( bankPlTxtOptionsMenuData, 0x8c79, 0x8cfd, , TRANSLATION_PL_BANK, { plTxtOptionsMenuData}, 0x640c )
 
 //      "pragma_label":  TxtTaskManager
 //      "array_label":   TXT_TASK_MANAGER
@@ -75,8 +75,8 @@
 
 #pragma section( plTxtTaskManager, 0 )
 #pragma section( plTxtTaskManagerData, 0 )
-#pragma region( bankPlTxtTaskManagerArray, 0x8d05, 0x8d1b, , TRANSLATION_PL_BANK, { plTxtTaskManager}, 0x6400 )
-#pragma region( bankPlTxtTaskManagerData, 0x8d1b, 0x8ec5, , TRANSLATION_PL_BANK, { plTxtTaskManagerData}, 0x6416 )
+#pragma region( bankPlTxtTaskManagerArray, 0x8cfe, 0x8d14, , TRANSLATION_PL_BANK, { plTxtTaskManager}, 0x6400 )
+#pragma region( bankPlTxtTaskManagerData, 0x8d14, 0x8ebe, , TRANSLATION_PL_BANK, { plTxtTaskManagerData}, 0x6416 )
 
 
 // Switching code generation back to shared section

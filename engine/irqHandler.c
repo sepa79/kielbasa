@@ -155,6 +155,27 @@ __interrupt static void IRQ_topMCTxtScreen() {
     vic.memptr = d018_txt1;
     cia2.pra = dd00_gfx1;
 
+    // show any sprites the menu might have
+    setSpritesTopScr();
+    // tick the game
+    _timeControl();
+
+    // indicate frame position
+    gms_framePos = FRAME_TOP;
+
+    // vic.color_back--;
+    // vic.color_border--;
+}
+
+__interrupt static void IRQ_topMCTxtBoomBoxScreen() {
+    // vic.color_back++;
+    // vic.color_border++;
+    // Select TEXT screen
+    vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
+    vic.ctrl2 = VIC_CTRL2_CSEL | VIC_CTRL2_MCM;
+    vic.memptr = d018_txt1;
+    cia2.pra = dd00_gfx1;
+
     // tick the game
     _timeControl();
 
@@ -224,7 +245,7 @@ char register2_value = 0;
 char cassette_anim_delay = 0;
 
 // used in Music Menu, displays Boombox anims
-__interrupt void IRQ_middleMCTxtScreen(){
+__interrupt void IRQ_middleMCTxtBoomBoxScreen(){
     // run after playMsx so that we have player visible in RAM
     IRQ_middleScreenMsx();
 
@@ -421,6 +442,8 @@ __interrupt static void IRQ_bottomUI() {
     // wait for right line
     // while (vic.raster != 0xfa){}
     // Set screen height to 24 lines - this is done after the border should have started drawing - so it wont start
+    //reset scrreen color
+    vic.color_back = VCOL_BLACK;
     vic.ctrl1 &= (0xff^VIC_CTRL1_RSEL);
     while (vic.raster != 0xfc){}
     // reset to normal screen height
@@ -481,7 +504,23 @@ void initRasterIRQ_MCTxtMode(){
 
     // Middle - play msx
     rirq_build(&rirqc_middleScreen, 1);
-    rirq_call(&rirqc_middleScreen, 0, IRQ_middleMCTxtScreen);
+    rirq_call(&rirqc_middleScreen, 0, IRQ_middleScreenMsx);
+    rirq_set(2, IRQ_RASTER_MIDDLE_TXT_SCREEN, &rirqc_middleScreen);
+
+    // sort the raster IRQs
+    rirq_sort();
+}
+
+// main init raster must be called first, this one just remaps some IRQs
+void initRasterIRQ_MCTxtBoomBoxMode(){
+    // Top - switch to txt
+    rirq_build(&rirqc_topScreen, 1);
+    rirq_call(&rirqc_topScreen, 0, IRQ_topMCTxtBoomBoxScreen);
+    rirq_set(1, IRQ_RASTER_TOP_MC_SCREEN, &rirqc_topScreen);
+
+    // Middle - play msx
+    rirq_build(&rirqc_middleScreen, 1);
+    rirq_call(&rirqc_middleScreen, 0, IRQ_middleMCTxtBoomBoxScreen);
     rirq_set(2, IRQ_RASTER_MIDDLE_TXT_SCREEN, &rirqc_middleScreen);
 
     // sort the raster IRQs
@@ -637,8 +676,11 @@ void switchScreenTo(byte screenMode){
             case SCREEN_FULL_TXT:
                 initRasterIRQ_TxtMode();
                 break;
-            case SCREEN_MC_TXT_BOOMBOX:
+            case SCREEN_FULL_MC_TXT:
                 initRasterIRQ_MCTxtMode();
+                break;
+            case SCREEN_MC_TXT_BOOMBOX:
+                initRasterIRQ_MCTxtBoomBoxMode();
                 break;
             case SCREEN_HIRES_TXT:
                 initRasterIRQ_HiresTxtMode();

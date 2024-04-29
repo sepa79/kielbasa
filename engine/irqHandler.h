@@ -25,6 +25,9 @@ enum SCREEN_MODE {
 // Partial IRQ init - full TXT mode, with regular UI on top & bottom, MSX, normal txt screen sprite handlers used.
     SCREEN_FULL_TXT,
 
+// Partial IRQ init - full MC TXT mode, with regular UI on top & bottom, MSX and sprite handlers.
+    SCREEN_FULL_MC_TXT,
+
 // Partial IRQ init - full MC TXT mode, with regular UI on top & bottom, MSX, no sprite handlers.
     SCREEN_MC_TXT_BOOMBOX,
 
