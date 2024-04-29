@@ -186,7 +186,6 @@ static void _displayBackground(){
 }
 
 __interrupt static void _showStatsSprites() {
-    vic.color_back   = VCOL_ORANGE;
     vic.spr_enable   = 0b00000001;
     vic.spr_expand_x = 0b00000001;
     vic.spr_expand_y = 0b00000001;
@@ -208,12 +207,12 @@ __interrupt static void _showStatsSprites() {
 static void _showCharacterDetails(byte character){
     // Prepare output window
     CharWin cd;
-    cwin_init(&cd, GFX_1_SCR, 9, 2, 28, 5);
+    cwin_init(&cd, GFX_1_SCR, CHARACTER_DATA_X, CHARACTER_DATA_Y, CHARACTER_DATA_W, CHARACTER_DATA_H);
     // cwin_clear(&cd);
     cwin_putat_string_raw(&cd, 11, 1, TXT[allCharacters[character].nameIdx], VCOL_YELLOW);
 
     CharWin cStory;
-    cwin_init(&cStory, GFX_1_SCR, CHARACTERDATA_X, CHARACTERDATA_Y, CHARACTERDATA_W, CHARACTERDATA_H);
+    cwin_init(&cStory, GFX_1_SCR, CHARACTER_STORY_X, CHARACTER_STORY_Y, CHARACTER_STORY_W, CHARACTER_STORY_H);
     cwin_fill(&cStory, 32, VCOL_BLUE);
     cwin_write_string_raw(&cStory, TXT[allCharacters[character].storyTextIdx]);
 
@@ -243,7 +242,7 @@ static void _showCharacterDetails(byte character){
     // sprintf(str, "%u", allCharacters[character].skill[SKILL_TRADE]);
     // cwin_putat_string_raw(&cd, 22, 10, str, VCOL_GREEN);
 
-    _drawBarsFor(character);
+    // _drawBarsFor(character);
     _setCharacterPic(character);
 }
 
@@ -286,9 +285,12 @@ static void _menuHandler(void){
     cwin_init(&cw, GFX_1_SCR, 0, 13, 40, 11);
     cwin_clear(&cw);
     displayMenu(CREW_MENU);
+    mcScrBackground = VCOL_ORANGE;
     _displayBackground();
+
     _crewMenu1();
     switchScreenTo(SCREEN_FULL_MC_TXT);
+    updateStatusBar(TXT[SB_IDX_MENU_CREW]);
 }
 
 #pragma data ( crewLoaderData )

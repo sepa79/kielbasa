@@ -27,6 +27,16 @@ TxtCrew:
 Txt:
   array_label: TXT
   contents:
+  - id: MENU_CREW
+    prefix: SB
+    en:
+    - '    Crew    '
+    - '            '
+    - '   ½ü Exit  '
+    pl:
+    - '   Załoga   '
+    - '            '
+    - '  ½ü Wyjdź  '
   - id: MENU_CREW1
     menu_opt: '1'
     en: 'Char 1'
@@ -46,10 +56,27 @@ Txt:
   - id: CHAR_1_NAME
     common: 'Janusz Dobrowolski'
   - id: CHAR_1_STORY
-    en: 'Janusz spent his whole life working in PGR. He does not really excel in anything,   but
-        thankfully he is lazy   and an addict. He is your   main character.'
-    pl: 'Janusz całe życie pracował wPGR. Na niczym się tak      naprawdę nie zna,
-        ale za to ma nałogi i jest leniwy.    Janusz to postać startowa.                 '
+    en: 
+    - ' Janusz spent his'
+    - 'whole life work- '
+    - 'ing in PGR.      '
+    - 'He doesn't really'
+    - 'excel in anything'
+    - 'but thankfully he'
+    - 'is lazy and an   '
+    - 'addict.          '
+    - 'He is your main  '
+    - 'character.       '
+    pl: 
+    - 'Janusz całe życie'
+    - 'pracował wPGR. Na'
+    - 'niczym się tak   '
+    - 'naprawdę nie zna,'
+    - 'ale za to ma     '
+    - 'nałogi i jest    '
+    - 'leniwy.          '
+    - 'Janusz to postać '
+    - 'startowa.        '
   - id: CHAR_2_NAME
     common: 'Zdzisław Hermann'
   - id: CHAR_2_STORY

@@ -17,6 +17,7 @@
 #define IRQ_RASTER_BOTTOM_UI 0xf9
 #define IRQ_RASTER_TOP_UI_SPRITES 0x01
 
+volatile char mcScrBackground = VCOL_BLACK;
 volatile bool map_2ndScreen = true;
 
 // used to check if move to given tile is possible
@@ -149,14 +150,21 @@ __interrupt static void IRQ_topHiresTxtScreen() {
 __interrupt static void IRQ_topMCTxtScreen() {
     // vic.color_back++;
     // vic.color_border++;
+    
     // Select TEXT screen
     vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
     vic.ctrl2 = VIC_CTRL2_CSEL | VIC_CTRL2_MCM;
     vic.memptr = d018_txt1;
     cia2.pra = dd00_gfx1;
 
+    while (vic.raster != 50){}
+    
     // show any sprites the menu might have
     setSpritesTopScr();
+
+    // set desired background color
+    vic.color_back = mcScrBackground;
+
     // tick the game
     _timeControl();
 

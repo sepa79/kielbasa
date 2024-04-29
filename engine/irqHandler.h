@@ -8,8 +8,8 @@
 #define IRQ_RASTER_BOTTOM_UI 0xf9
 #define IRQ_RASTER_TOP_UI_SPRITES 0x01
 
-// scroll text pointer
-extern const char * SB_TEXT;
+// background color for MC TXT screens
+extern volatile char mcScrBackground;
 
 // used by villiage map, for double buffering and loading fonts seamlesly
 extern volatile bool map_2ndScreen;

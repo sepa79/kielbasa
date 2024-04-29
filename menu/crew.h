@@ -13,10 +13,15 @@
 #pragma region( regionCrewRam, NIGHT_GFX_BMP, NIGHT_GFX_BMP+0x1000, , MENU_BANK_CREW, { crewCodeRam }, 0x7000 )
 
 // column offset for printing character data
-#define CHARACTERDATA_X 2
-#define CHARACTERDATA_Y 9
-#define CHARACTERDATA_W 17
-#define CHARACTERDATA_H 15
+#define CHARACTER_DATA_X 9
+#define CHARACTER_DATA_Y 2
+#define CHARACTER_DATA_W 28
+#define CHARACTER_DATA_H 5
+
+#define CHARACTER_STORY_X 2
+#define CHARACTER_STORY_Y 9
+#define CHARACTER_STORY_W 17
+#define CHARACTER_STORY_H 15
 
 #define SPR_BANK_CREW_SCREEN_CHARACTER_PORTRAIT 0xbc
 
