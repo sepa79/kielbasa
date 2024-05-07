@@ -78,26 +78,62 @@ Txt:
     - 'Janusz to postać '
     - 'startowa.        '
     - '                 '
+
   - id: CHAR_2_NAME
     common: 'Zdzisław Hermann'
   - id: CHAR_2_STORY
-    en: 'Zdzisiek is not very popularin the villiage. Folks reme-mber that his father
-        was a  volksdeustch. He is bright -like his father - and that  makes him stand
-        out.'
-    pl: 'Zdzisiek nie jest popularny we wsi. Ludziska pamiętają, że jego ojciec był
-        folks-   dojczem. Zdzisia wyróżnia   inteligencja po tacie.                          '
+    en: 
+    - ' Zdzisiek is not '
+    - 'very popular in  '
+    - 'the villiage.    '
+    - 'Folks remember   '
+    - 'that his father  '
+    - 'was a traitor. He'
+    - 'is bright - like '
+    - 'his father - and '
+    - 'that  makes him  '
+    - 'stand out.       '
+    pl:
+    - 'Zdzisiek nie jest'
+    - 'popularny we wsi.'
+    - 'Ludziska pamięta-'
+    - 'ją, że jego tata '
+    - 'był folksdojczem.'
+    - 'Zdzisia wyróżnia '
+    - 'inteligencja po  '
+    - 'ojcu.            '
+    - '                 '
+    - '                 '
   - id: CHAR_3_NAME
     common: 'Wiesław C.'
   - id: CHAR_3_STORY
-    en: "Wiesiek's story will be here      "
-    pl: 'Tutaj będzie historia       Wieśka'
+    en:
+    - " Wiesiek's story "
+    - 'will be here     '
+    pl:
+    - ' Tutaj będzie    '
+    - 'historia Wieśka  '
   - id: CHAR_4_NAME
     common: 'Józef Kołodziej'
   - id: CHAR_4_STORY
-    en: "Józek is Janusz's uncle. It is his farm, really. One dayit might belong to
-        Janusz,  if he proves worthy.                    "
-    pl: 'Józek jest wujkiem Janusza. Tak właściwie to jego       gospodarstwo. Janusz
-        musi   się wykazać, to może je     odziedziczy.'
+    en: 
+    - "Józek is Janusz's"
+    - 'uncle. It is his '
+    - 'farm in fact. One'
+    - 'day it might     '
+    - 'belong to Janusz,'
+    - 'if he proves     '
+    - 'worthy.          '
+    - '                 '
+    pl:
+    - ' Józek jest      '
+    - 'wujkiem Janusza. '
+    - 'Tak właściwie to '
+    - 'jest jego gospo- '
+    - 'darstwo. Janusz  '
+    - 'musi się wykazać,'
+    - 'to może je odzie-'
+    - 'dziczy.          '
 
 
 
