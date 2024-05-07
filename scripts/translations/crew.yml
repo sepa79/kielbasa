@@ -60,7 +60,7 @@ Txt:
     - ' Janusz spent his'
     - 'whole life work- '
     - 'ing in PGR.      '
-    - 'He doesn't really'
+    - "He doesn't really"
     - 'excel in anything'
     - 'but thankfully he'
     - 'is lazy and an   '
@@ -69,14 +69,15 @@ Txt:
     - 'character.       '
     pl: 
     - 'Janusz całe życie'
-    - 'pracował wPGR. Na'
-    - 'niczym się tak   '
+    - 'pracował w PGR.  '
+    - 'Na niczym się tak'
     - 'naprawdę nie zna,'
     - 'ale za to ma     '
     - 'nałogi i jest    '
     - 'leniwy.          '
     - 'Janusz to postać '
     - 'startowa.        '
+    - '                 '
   - id: CHAR_2_NAME
     common: 'Zdzisław Hermann'
   - id: CHAR_2_STORY

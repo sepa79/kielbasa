@@ -673,10 +673,11 @@ void initRasterIRQ(){
 void switchScreenTo(byte screenMode){
     if(currentScreenMode != screenMode){
         currentScreenMode = screenMode;
-        vic_waitLine(0);
+        // used to be 0, but without music it tends to hang menus - waits forever
+        vic_waitLine(10);
         // rirq_stop();
         // vic.color_border++;
-        
+
         switch (screenMode) {
             case SCREEN_SPLIT_MC_TXT:
                 initRasterIRQ_SplitMCTxt();

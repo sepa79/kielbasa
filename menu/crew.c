@@ -66,6 +66,25 @@ static void _fontLoader(){
     setPort(pport);
 }
 
+static void _closeMenu(){
+    // reload fonts
+    char pBank = setBank(MAIN_GFX_BANK);
+    char pport = setPort(MMAP_ROM);
+
+    // rom to buffer -> GFX_1_SCR
+    memcpy(GFX_1_SCR, GFX_1_FNT_SRC+0x400, 0x400);
+    // switch IO off
+    setPort(MMAP_RAM);
+    // buffer to RAM under IO
+    memcpy(GFX_1_FNT+0x400, GFX_1_SCR, 0x400);
+    setPort(pport);
+    setBank(pBank);
+
+    // switchScreenTo(SCREEN_TRANSITION);
+    loadMenu(MENU_BANK_MAIN_MENU);
+    showMenu();
+}
+
 #pragma data ( crewData )
 // bars height table
 static const char bar_height[101] =   {
@@ -264,7 +283,7 @@ const struct MenuOption CREW_MENU[] = {
     { TXT_IDX_MENU_CREW2, '2', SCREEN_FULL_MC_TXT, UI_SELECT & UI_HIDE, &_crewMenu2, 0, 1, 2},
     { TXT_IDX_MENU_CREW3, '3', SCREEN_FULL_MC_TXT, UI_SELECT & UI_HIDE, &_crewMenu3, 0, 1, 3},
     { TXT_IDX_MENU_CREW4, '4', SCREEN_FULL_MC_TXT, UI_SELECT & UI_HIDE, &_crewMenu4, 0, 1, 4},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF & UI_HIDE, &showMenu, MENU_BANK_MAIN_MENU, 2, 5},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF & UI_HIDE, &_closeMenu, 0, 2, 5},
     END_MENU_CHOICES
 };
 
