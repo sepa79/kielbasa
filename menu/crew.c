@@ -15,8 +15,6 @@
 
 #pragma data ( data )
 
-// remember previous character; mandatory for optimized bars drawing
-static char character_old = 0;
 static volatile char charPicColor = 0;
 #pragma data ( crewGfxDay )
 
@@ -92,33 +90,9 @@ static void _closeMenu(){
 #define BAR_0 0xb5
 
 static void _drawBarsFor(char character_new) {
-
-    // PREPARE FOR DRAWING BARS
-
-    char params_old[] = { 0, 0, 0, 0};
-    char params_new[] = { 0, 0, 0, 0};
-
-    // if there was character choosen previously
-    if ( character_old != NO_CHARACTER ) {
-        // get old character bars data
-        params_old[0] = allCharacters[character_old].skill[0];
-        params_old[1] = allCharacters[character_old].skill[1];
-        params_old[2] = allCharacters[character_old].skill[2];
-        params_old[3] = allCharacters[character_old].skill[3];
-    }
-
-    // get new character bars data
-    params_new[0] = allCharacters[character_new].skill[0];
-    params_new[1] = allCharacters[character_new].skill[1];
-    params_new[2] = allCharacters[character_new].skill[2];
-    params_new[3] = allCharacters[character_new].skill[3];
-
-    // DRAW BARS
     for ( char i=0; i<SKILL_COUNT; i++ ) {
 
-        // drawStatBar(params_new[i]);
-
-        char heightPixels = lmuldiv16s(params_new[i], 48, 100);
+        char heightPixels = lmuldiv16s(allCharacters[character_new].skill[i], 48, 100);
         char heightChars = heightPixels/8;
         char reminder = heightPixels - heightChars*8;
 
@@ -135,14 +109,12 @@ static void _drawBarsFor(char character_new) {
         }
 
     }
-
-    // remember character, so we can later draw/clear only difference on the bar
-    character_old = character_new;
 }
 
 // menu code is in ROM - data in RAM
 #pragma code ( crewCode )
 #pragma data ( data )
+static char _selectedChar = 0;
 
 static void _crewCodeLoader() {
     memcpy(MENU_CODE_DST, (char *)NIGHT_GFX_BMP, 0x1000);
@@ -242,24 +214,35 @@ static void _showCharacterDetails(byte character){
     _setCharacterPic(character);
 }
 
-static void _crewMenu1(){
+static void _left(){
     _showCharacterDetails(0);
 }
-static void _crewMenu2(){
+static void _right(){
     _showCharacterDetails(1);
 }
-static void _crewMenu3(){
-    _showCharacterDetails(2);
+static void _up(){
+    if(_selectedChar > 0){
+        _selectedChar--;
+    } else {
+        _selectedChar = CHARACTER_COUNT-1;
+    }
+    _showCharacterDetails(_selectedChar);
 }
-static void _crewMenu4(){
-    _showCharacterDetails(3);
+static void _down(){
+    if(_selectedChar < CHARACTER_COUNT-1){
+        _selectedChar++;
+    } else {
+        _selectedChar = 0;
+    }
+    _showCharacterDetails(_selectedChar);
 }
 
 const struct MenuOption CREW_MENU[] = {
-    { TXT_IDX_MENU_CREW1, '1', SCREEN_FULL_MC_TXT, UI_SELECT & UI_HIDE, &_crewMenu1, 0, 1, 1},
-    { TXT_IDX_MENU_CREW2, '2', SCREEN_FULL_MC_TXT, UI_SELECT & UI_HIDE, &_crewMenu2, 0, 1, 2},
-    { TXT_IDX_MENU_CREW3, '3', SCREEN_FULL_MC_TXT, UI_SELECT & UI_HIDE, &_crewMenu3, 0, 1, 3},
-    { TXT_IDX_MENU_CREW4, '4', SCREEN_FULL_MC_TXT, UI_SELECT & UI_HIDE, &_crewMenu4, 0, 1, 4},
+//     { TXT_IDX_MENU_A, 'a', SCREEN_FULL_MC_TXT, UI_L+UI_HIDE, &_left, 0, 1, 2},
+//     { TXT_IDX_MENU_D, 'd', SCREEN_FULL_MC_TXT, UI_R+UI_HIDE, &_right, 0, 1, 2},
+    { TXT_IDX_MENU_W, 'w', SCREEN_FULL_MC_TXT, UI_U+UI_HIDE, &_up, 0, 7, 2},
+    { TXT_IDX_MENU_S, 's', SCREEN_FULL_MC_TXT, UI_D+UI_HIDE, &_down, 0, 9, 2},
+
     { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF & UI_HIDE, &_closeMenu, 0, 2, 5},
     END_MENU_CHOICES
 };
@@ -271,12 +254,6 @@ static void _menuHandler(void){
     // copy text crew cache from cat to memory
     loadCacheTxt(TXT_CREW_CACHE_INDEX);
 
-    // Bars and portrait
-    // _prepareBars();
-    // char select_character = character_old;
-    // character_old = NO_CHARACTER;       // fix bars drawing bug
-    // _showCharacterDetails(select_character);
-
     // Prepare output window
     cwin_init(&cw, GFX_1_SCR, 0, 13, 40, 11);
     cwin_clear(&cw);
@@ -285,7 +262,8 @@ static void _menuHandler(void){
     mcScrBackground = VCOL_ORANGE;
     _displayBackground();
 
-    _crewMenu1();
+    _selectedChar = 0;
+    _showCharacterDetails(_selectedChar);
     switchScreenTo(SCREEN_FULL_MC_TXT);
     updateStatusBar(TXT[SB_IDX_MENU_CREW]);
 }
