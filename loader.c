@@ -75,6 +75,6 @@ void cwin_write_string_raw(CharWin * win, const char * buffer)
                 dp[x] = ' ';
         }
         dp += 40;
-    }	
+    }
 
 }

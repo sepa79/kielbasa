@@ -10,7 +10,7 @@
 
 //      "pragma_label": Txt,
 //      "array_label": TXT,
-//      "indexes_count": 79
+//      "indexes_count": 83
 //      "array_length": 1710
 
 #pragma data ( plTxtData )
@@ -226,7 +226,7 @@ const char TXT_PL_CREW_STAT_INT[] = {0x49, 0x0e, 0x14, 0x3a, 0x20, 0x00};
 //     "pl": "Sił: "
 const char TXT_PL_CREW_STAT_STR[] = {0x53, 0x09, 0x5e, 0x3a, 0x20, 0x00};
 //     "pl": "Zre: "
-const char TXT_PL_CREW_STAT_CUN[] = {0x5a, 0x12, 0x05, 0x3a, 0x20, 0x00};
+const char TXT_PL_CREW_STAT_AGI[] = {0x5a, 0x12, 0x05, 0x3a, 0x20, 0x00};
 //     "pl": "Hodowla   "
 const char TXT_PL_CREW_SKILL_ANI[] = {0x48, 0x0f, 0x04, 0x0f, 0x17, 0x0c, 0x01, 0x20, 0x20, 0x20, 0x00};
 //     "pl": "Rolnictwo "
@@ -446,7 +446,7 @@ const char TXT_PL_TASK_MANAGER_PRIO_TABLE_HEADER_10[] = {0xd0, 0x8f, 0x93, 0x94,
 
 //      "pragma_label": Txt,
 //      "array_label": TXT,
-//      "indexes_count": 79
+//      "indexes_count": 83
 
 #pragma data ( plTxt )
 __export const char* TXT[] = {
@@ -476,12 +476,16 @@ __export const char* TXT[] = {
     TXT_PL_MENU_CREW3,
     TXT_PL_MENU_CREW4,
     TXT_CHAR_1_NAME,
+    TXT_CHAR_1_SURNAME,
     TXT_PL_CHAR_1_STORY,
     TXT_CHAR_2_NAME,
+    TXT_CHAR_2_SURNAME,
     TXT_PL_CHAR_2_STORY,
     TXT_CHAR_3_NAME,
+    TXT_CHAR_3_SURNAME,
     TXT_PL_CHAR_3_STORY,
     TXT_CHAR_4_NAME,
+    TXT_CHAR_4_SURNAME,
     TXT_PL_CHAR_4_STORY,
     TXT_PL_TASK_FARMLAND_PLOW,
     TXT_PL_TASK_FARMLAND_FARM,
@@ -539,7 +543,7 @@ __export const char* TXT[] = {
 __export const char* TXT_CREW[] = {
     TXT_PL_CREW_STAT_INT,
     TXT_PL_CREW_STAT_STR,
-    TXT_PL_CREW_STAT_CUN,
+    TXT_PL_CREW_STAT_AGI,
     TXT_PL_CREW_SKILL_ANI,
     TXT_PL_CREW_SKILL_FRM,
     TXT_PL_CREW_SKILL_BTH,
@@ -679,13 +683,13 @@ struct chunk_data {
 };
 
 struct chunk_data txtCacheAddresses[] = {
-    { 0x8000, 0x074c },
-    { 0x874d, 0x004c },
-    { 0x879a, 0x01f2 },
-    { 0x898d, 0x00d8 },
-    { 0x8a66, 0x0252 },
-    { 0x8cb9, 0x0090 },
-    { 0x8d4a, 0x01c0 }
+    { 0x8000, 0x0754 },
+    { 0x8755, 0x004c },
+    { 0x87a2, 0x01f2 },
+    { 0x8995, 0x00d8 },
+    { 0x8a6e, 0x0252 },
+    { 0x8cc1, 0x0090 },
+    { 0x8d52, 0x01c0 }
 };
 
 // =============================================================================
@@ -693,6 +697,6 @@ struct chunk_data txtCacheAddresses[] = {
 // =============================================================================
 
 void loadTranslation() {
-    memcpy(TRANSLATION_DST, TRANSLATION_SRC, 0x74c);
+    memcpy(TRANSLATION_DST, TRANSLATION_SRC, 0x754);
 };
 

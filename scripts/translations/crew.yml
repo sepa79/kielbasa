@@ -8,7 +8,7 @@ TxtCrew:
   - id: CREW_STAT_STR
     en: 'Str: '
     pl: 'Sił: '
-  - id: CREW_STAT_CUN
+  - id: CREW_STAT_AGI
     en: 'Agi: '
     pl: 'Zre: '
   - id: CREW_SKILL_ANI
@@ -54,7 +54,9 @@ Txt:
     en: 'Char 4'
     pl: 'Slot 4'
   - id: CHAR_1_NAME
-    common: 'Janusz Dobrowolski'
+    common: 'Janusz  '
+  - id: CHAR_1_SURNAME
+    common: 'Dobrowolski'
   - id: CHAR_1_STORY
     en: 
     - ' Janusz spent his'
@@ -80,7 +82,9 @@ Txt:
     - '                 '
 
   - id: CHAR_2_NAME
-    common: 'Zdzisław Hermann'
+    common: 'Zdzisław'
+  - id: CHAR_2_SURNAME
+    common: 'Hermann    '
   - id: CHAR_2_STORY
     en: 
     - ' Zdzisiek is not '
@@ -105,7 +109,9 @@ Txt:
     - '                 '
     - '                 '
   - id: CHAR_3_NAME
-    common: 'Wiesław C.'
+    common: 'Wiesław '
+  - id: CHAR_3_SURNAME
+    common: 'Czajka     '
   - id: CHAR_3_STORY
     en:
     - " Wiesiek's story "
@@ -114,7 +120,9 @@ Txt:
     - ' Tutaj będzie    '
     - 'historia Wieśka  '
   - id: CHAR_4_NAME
-    common: 'Józef Kołodziej'
+    common: 'Józef   '
+  - id: CHAR_4_SURNAME
+    common: 'Kołodziej  '
   - id: CHAR_4_STORY
     en: 
     - "Józek is Janusz's"

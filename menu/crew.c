@@ -86,103 +86,58 @@ static void _closeMenu(){
 }
 
 #pragma data ( crewData )
-// bars height table
-static const char bar_height[101] =   {
-    BARS_Y_POSITION_MAX - 0,
-    BARS_Y_POSITION_MAX - 1,
-    BARS_Y_POSITION_MAX - 1,
-    BARS_Y_POSITION_MAX - 1,
-    #assign ry 4
-    #repeat
-        BARS_Y_POSITION_MAX - ((ry * BAR_PART_HEIGHT) / 2),
-    #assign ry ry + 1
-    #until ry == 101
-    #undef ry
-};
+
+#define BARS_X_POSITION 26
+#define BARS_Y_POSITION 16
+#define BAR_0 0xb5
 
 static void _drawBarsFor(char character_new) {
 
-    //
-    // we drawing from this data (two structures):
-    //
-    // const byte allCharacters[CHARACTER_COUNT].stat[3]              = { {3,3,3}, {2,3,2}, {4,2,4}, {3,3,4}};
-    // const byte allCharacters[CHARACTER_COUNT].skill[SKILL_COUNT]   = { {3,3,4,3}, {2,6,1,1}, {1,1,1,7}, {6,2,1,1}};
-    //
-
     // PREPARE FOR DRAWING BARS
 
-    char params_old[] = { 0, 0, 0, 0, 0, 0, 0 };
-    char params_new[] = { 0, 0, 0, 0, 0, 0, 0 };
+    char params_old[] = { 0, 0, 0, 0};
+    char params_new[] = { 0, 0, 0, 0};
 
     // if there was character choosen previously
     if ( character_old != NO_CHARACTER ) {
         // get old character bars data
-        params_old[0] = allCharacters[character_old].stat[0]*10;
-        params_old[1] = allCharacters[character_old].stat[1]*10;
-        params_old[2] = allCharacters[character_old].stat[2]*10;
-
-        params_old[3] = allCharacters[character_old].skill[0];
-        params_old[4] = allCharacters[character_old].skill[1];
-        params_old[5] = allCharacters[character_old].skill[2];
-        params_old[6] = allCharacters[character_old].skill[3];
+        params_old[0] = allCharacters[character_old].skill[0];
+        params_old[1] = allCharacters[character_old].skill[1];
+        params_old[2] = allCharacters[character_old].skill[2];
+        params_old[3] = allCharacters[character_old].skill[3];
     }
 
     // get new character bars data
-    params_new[0] = allCharacters[character_new].stat[0]*10;
-    params_new[1] = allCharacters[character_new].stat[1]*10;
-    params_new[2] = allCharacters[character_new].stat[2]*10;
-
-    params_new[3] = allCharacters[character_new].skill[0];
-    params_new[4] = allCharacters[character_new].skill[1];
-    params_new[5] = allCharacters[character_new].skill[2];
-    params_new[6] = allCharacters[character_new].skill[3];
+    params_new[0] = allCharacters[character_new].skill[0];
+    params_new[1] = allCharacters[character_new].skill[1];
+    params_new[2] = allCharacters[character_new].skill[2];
+    params_new[3] = allCharacters[character_new].skill[3];
 
     // DRAW BARS
+    for ( char i=0; i<SKILL_COUNT; i++ ) {
 
-    // bar x position
-    char x_draw = BARS_X_POSITION;
+        // drawStatBar(params_new[i]);
 
-    for ( char i=0; i<PARAMS_COUNT; i++ ) {
+        char heightPixels = lmuldiv16s(params_new[i], 48, 100);
+        char heightChars = heightPixels/8;
+        char reminder = heightPixels - heightChars*8;
 
-        // invert coords
-        // char bar_level_old = bar_height[ params_old[i] ];
-        // char bar_level_new = bar_height[ params_new[i] ];
+        char * barPlace = GFX_1_SCR + 40*BARS_Y_POSITION+BARS_X_POSITION + (i*3);
+        for ( char ci=0; ci<6; ci++ ) {
+            if(heightChars > ci){
+                barPlace[0] = BAR_0+8;
+            } else if(heightChars == ci){
+                barPlace[0] = BAR_0+reminder;
+            } else {
+                barPlace[0] = BAR_0;
+            }
+            barPlace -= 40;
+        }
 
-        // // draw or erase bar or bar part
-        // int diff = bar_level_new - bar_level_old;
-        // if ( diff < 0 ) {
-        //     for ( char y=bar_level_old; y>=bar_level_new; y-- ) {
-        //         _drawByteK( x_draw, y, BAR_PATTERN );
-        //     }
-        // } else if ( diff > 0 ) {
-        //     for ( char y=bar_level_old; y<bar_level_new; y++ ) {
-        //         _drawByteK( x_draw, y, BAR_PATTERN_CLEAR );
-        //     }
-        // }
-
-        // // next bar x position
-        // if(i == 2){
-        //     // make a gap between Skills and Stats
-        //     x_draw += BARS_X_COORDS_GAP;
-        //     x_draw += BARS_X_COORDS_GAP;
-        // }
-        // x_draw += BARS_X_COORDS_GAP;
     }
 
     // remember character, so we can later draw/clear only difference on the bar
     character_old = character_new;
-}
-
-static void _prepareBars(){
-    // // set screen colors under bars
-    // for ( unsigned y=3; y<11; y++ ) {
-    //     for ( unsigned x=15; x<20; x+=2 ) { 
-    //         GFX_1_SCR[y*40+x] = 0x96;
-    //     }
-    //     for ( unsigned x=21; x<33; x+=2 ) { 
-    //         GFX_1_SCR[y*40+x] = 0x97;
-    //     }
-    // }
 }
 
 // menu code is in ROM - data in RAM
@@ -222,13 +177,32 @@ __interrupt static void _showStatsSprites() {
     // vic.color_border--;
 }
 
+
+#define CHAR_0 0x20
+#define CHAR_1 0xee
+#define CHAR_2 0xef
+#define CHAR_3 0xf0
+const char NUM_BAR[10][4] = {
+    {CHAR_0, CHAR_0, CHAR_0, 0},
+    {CHAR_1, CHAR_0, CHAR_0, 0},
+    {CHAR_2, CHAR_0, CHAR_0, 0},
+    {CHAR_3, CHAR_0, CHAR_0, 0},
+    {CHAR_3, CHAR_1, CHAR_0, 0},
+    {CHAR_3, CHAR_2, CHAR_0, 0},
+    {CHAR_3, CHAR_3, CHAR_0, 0},
+    {CHAR_3, CHAR_3, CHAR_1, 0},
+    {CHAR_3, CHAR_3, CHAR_2, 0},
+    {CHAR_3, CHAR_3, CHAR_3, 0},
+};
+
 // Shows character data on the left side of the screen.
 static void _showCharacterDetails(byte character){
     // Prepare output window
     CharWin cd;
     cwin_init(&cd, GFX_1_SCR, CHARACTER_DATA_X, CHARACTER_DATA_Y, CHARACTER_DATA_W, CHARACTER_DATA_H);
     // cwin_clear(&cd);
-    cwin_putat_string_raw(&cd, 11, 1, TXT[allCharacters[character].nameIdx], VCOL_YELLOW);
+    cwin_putat_string_raw(&cd, 13, 3, TXT[allCharacters[character].nameIdx], VCOL_YELLOW);
+    cwin_putat_string_raw(&cd, 13, 5, TXT[allCharacters[character].surnameIdx], VCOL_YELLOW);
 
     CharWin cStory;
     cwin_init(&cStory, GFX_1_SCR, CHARACTER_STORY_X, CHARACTER_STORY_Y, CHARACTER_STORY_W, CHARACTER_STORY_H);
@@ -236,16 +210,19 @@ static void _showCharacterDetails(byte character){
     cwin_write_string_raw(&cStory, TXT[allCharacters[character].storyTextIdx]);
 
     cwin_putat_string_raw(&cd, 0, 0, TXT_CACHE[LTXT_IDX_CREW_STAT_STR], VCOL_WHITE);
-    cwin_putat_string_raw(&cd, 0, 2, TXT_CACHE[LTXT_IDX_CREW_STAT_CUN], VCOL_WHITE);
+    cwin_putat_string_raw(&cd, 0, 2, TXT_CACHE[LTXT_IDX_CREW_STAT_AGI], VCOL_WHITE);
     cwin_putat_string_raw(&cd, 0, 4, TXT_CACHE[LTXT_IDX_CREW_STAT_INT], VCOL_WHITE);
 
     byte str[2];
     sprintf(str, "%u", allCharacters[character].stat[STAT_STR]);
-    cwin_putat_string_raw(&cd, 6, 0, str, VCOL_GREEN);
-    sprintf(str, "%u", allCharacters[character].stat[STAT_CUN]);
-    cwin_putat_string_raw(&cd, 6, 2, str, VCOL_GREEN);
+    cwin_putat_string_raw(&cd, 8, 0, str, VCOL_GREEN);
+    cwin_putat_string_raw(&cd, 5, 0, NUM_BAR[allCharacters[character].stat[STAT_STR]], 15);
+    sprintf(str, "%u", allCharacters[character].stat[STAT_AGI]);
+    cwin_putat_string_raw(&cd, 8, 2, str, VCOL_GREEN);
+    cwin_putat_string_raw(&cd, 5, 2, NUM_BAR[allCharacters[character].stat[STAT_AGI]], 15);
     sprintf(str, "%u", allCharacters[character].stat[STAT_INT]);
-    cwin_putat_string_raw(&cd, 6, 4, str, VCOL_GREEN);
+    cwin_putat_string_raw(&cd, 8, 4, str, VCOL_GREEN);
+    cwin_putat_string_raw(&cd, 5, 4, NUM_BAR[allCharacters[character].stat[STAT_INT]], 15);
 
     // cwin_putat_string_raw(&cd, 11,  7, TXT_CACHE[LTXT_IDX_CREW_SKILL_ANI], VCOL_LT_BLUE);
     // cwin_putat_string_raw(&cd, 11,  8, TXT_CACHE[LTXT_IDX_CREW_SKILL_FRM], VCOL_LT_BLUE);
@@ -261,7 +238,7 @@ static void _showCharacterDetails(byte character){
     // sprintf(str, "%u", allCharacters[character].skill[SKILL_TRADE]);
     // cwin_putat_string_raw(&cd, 22, 10, str, VCOL_GREEN);
 
-    // _drawBarsFor(character);
+    _drawBarsFor(character);
     _setCharacterPic(character);
 }
 
@@ -304,6 +281,7 @@ static void _menuHandler(void){
     cwin_init(&cw, GFX_1_SCR, 0, 13, 40, 11);
     cwin_clear(&cw);
     displayMenu(CREW_MENU);
+    // set global var responsible for background color - used by IRQ Handler
     mcScrBackground = VCOL_ORANGE;
     _displayBackground();
 

@@ -54,7 +54,7 @@ void _sowFieldTask(char taskId){
         char skill       = allCharacters[charIdx].skill[ task_reqType[taskId] ];
         char priModifier = allCharacters[charIdx].stat[ STAT_STR ] -1;
         char secModifier = allCharacters[charIdx].stat[ STAT_INT ] -1;
-        char terModifier = allCharacters[charIdx].stat[ STAT_CUN ] -1;
+        char terModifier = allCharacters[charIdx].stat[ STAT_AGI ] -1;
         partDone = skill + priModifierTable[priModifier] + secModifierTable[secModifier] + terModifierTable[terModifier];
         if(partDone <= 0){
             partDone = 1;
@@ -167,7 +167,7 @@ void _reapFieldTask(char taskId){
         char skill       = allCharacters[charIdx].skill[ task_reqType[taskId] ];
         char priModifier = allCharacters[charIdx].stat[ STAT_STR ] -1;
         char secModifier = allCharacters[charIdx].stat[ STAT_INT ] -1;
-        char terModifier = allCharacters[charIdx].stat[ STAT_CUN ] -1;
+        char terModifier = allCharacters[charIdx].stat[ STAT_AGI ] -1;
         signed int partDone = skill + priModifierTable[priModifier] + secModifierTable[secModifier] + terModifierTable[terModifier];
         if(partDone <= 0){
             partDone = 1;
@@ -230,7 +230,7 @@ void _plowFieldTask(char taskId) {
         char skill       = allCharacters[charIdx].skill[ task_reqType[taskId] ];
         char priModifier = allCharacters[charIdx].stat[ STAT_STR ] -1;
         char secModifier = allCharacters[charIdx].stat[ STAT_INT ] -1;
-        char terModifier = allCharacters[charIdx].stat[ STAT_CUN ] -1;
+        char terModifier = allCharacters[charIdx].stat[ STAT_AGI ] -1;
         signed int partDone = skill + priModifierTable[priModifier] + secModifierTable[secModifier] + terModifierTable[terModifier];
         if(partDone <= 0){
             partDone = 1;

@@ -10,7 +10,7 @@
 
 //      "pragma_label": Txt,
 //      "array_label": TXT,
-//      "indexes_count": 79
+//      "indexes_count": 83
 //      "array_length": 1710
 
 #pragma data ( enTxtData )
@@ -226,7 +226,7 @@ const char TXT_EN_CREW_STAT_INT[] = {0x49, 0x0e, 0x14, 0x3a, 0x20, 0x00};
 //     "en": "Str: "
 const char TXT_EN_CREW_STAT_STR[] = {0x53, 0x14, 0x12, 0x3a, 0x20, 0x00};
 //     "en": "Agi: "
-const char TXT_EN_CREW_STAT_CUN[] = {0x41, 0x07, 0x09, 0x3a, 0x20, 0x00};
+const char TXT_EN_CREW_STAT_AGI[] = {0x41, 0x07, 0x09, 0x3a, 0x20, 0x00};
 //     "en": "Animal C. "
 const char TXT_EN_CREW_SKILL_ANI[] = {0x41, 0x0e, 0x09, 0x0d, 0x01, 0x0c, 0x20, 0x43, 0x2e, 0x20, 0x00};
 //     "en": "Farming   "
@@ -446,7 +446,7 @@ const char TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_10[] = {0xc3, 0x88, 0x81, 0x92,
 
 //      "pragma_label": Txt,
 //      "array_label": TXT,
-//      "indexes_count": 79
+//      "indexes_count": 83
 
 #pragma data ( enTxt )
 __export const char* EN_TXT[] = {
@@ -477,12 +477,16 @@ __export const char* EN_TXT[] = {
     TXT_EN_MENU_CREW3,
     TXT_EN_MENU_CREW4,
     TXT_CHAR_1_NAME,
+    TXT_CHAR_1_SURNAME,
     TXT_EN_CHAR_1_STORY,
     TXT_CHAR_2_NAME,
+    TXT_CHAR_2_SURNAME,
     TXT_EN_CHAR_2_STORY,
     TXT_CHAR_3_NAME,
+    TXT_CHAR_3_SURNAME,
     TXT_EN_CHAR_3_STORY,
     TXT_CHAR_4_NAME,
+    TXT_CHAR_4_SURNAME,
     TXT_EN_CHAR_4_STORY,
     TXT_EN_TASK_FARMLAND_PLOW,
     TXT_EN_TASK_FARMLAND_FARM,
@@ -541,7 +545,7 @@ __export const char* EN_TXT_CREW[] = {
 
     TXT_EN_CREW_STAT_INT,
     TXT_EN_CREW_STAT_STR,
-    TXT_EN_CREW_STAT_CUN,
+    TXT_EN_CREW_STAT_AGI,
     TXT_EN_CREW_SKILL_ANI,
     TXT_EN_CREW_SKILL_FRM,
     TXT_EN_CREW_SKILL_BTH,

@@ -9,9 +9,9 @@
 #define STAT_COUNT 3
 #define SKILL_COUNT 4
 enum CHAR_STATS {
-    STAT_INT,
     STAT_STR,
-    STAT_CUN
+    STAT_AGI,
+    STAT_INT,
 };
 
 enum CHAR_SKILLS {
@@ -31,15 +31,12 @@ enum CHAR_SKILLS {
 #define MAX_PRIO 5
 
 struct Character {
-    /* Pointer to text to display, max 5 x 28, should have newlines */
+    /* Pointer to text to display */
     char storyTextIdx;
     char nameIdx;
+    char surnameIdx;
     /* How much energy char has, starts with 100, max 100, min 0 */
     unsigned int energy;
-    // /* How much food char has, starts with 100, max 100, min 0 */
-    // char food;
-    /* How much health char has, starts with 100, max 100, min 0 */
-    char health;
     /* Amount and time of regen, gained after eating */
     unsigned int regenAmount;
     char regenAmountMin;
