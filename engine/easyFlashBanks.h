@@ -36,6 +36,7 @@ enum {
     MENU_BANK_FISHING_MENU_2,
     MENU_BANK_CHURCH_MENU,
     MENU_BANK_BATTLE_MENU,
+    MENU_BANK_RESPAWN,
 };
 
 // Set CRT bank, return previous bank that was set.
