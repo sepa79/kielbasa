@@ -240,6 +240,7 @@ void showOptionsMenu(){
     cwin_putat_string_raw(&cw, 0, HELP_Y+3, TXT_CACHE[LTXT_IDX_OPTIONS_HELP3], VCOL_MED_GREY);
     cwin_putat_string_raw(&cw, 0, HELP_Y+4, TXT_CACHE[LTXT_IDX_OPTIONS_HELP4], VCOL_MED_GREY);
     cwin_putat_string_raw(&cw, 0, HELP_Y+5, TXT_CACHE[LTXT_IDX_OPTIONS_HELP5], VCOL_MED_GREY);
+    cwin_putat_string_raw(&cw, 0, HELP_Y+6, TXT_CACHE[LTXT_IDX_OPTIONS_HELP6], VCOL_MED_GREY);
 
     displayMenu(OPTIONS_MENU);
     switchScreenTo(SCREEN_FULL_TXT);

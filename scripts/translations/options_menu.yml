@@ -15,9 +15,12 @@ TxtOptionsMenu:
     en: 'ý - Fire'
     pl: 'ý - Fire'
   - id: OPTIONS_HELP4
+    en: 'ú - Use joystick in port 2   '
+    pl: 'ú - Użyj joysticka w porcie 2'
+  - id: OPTIONS_HELP5
     en: "û - 'Return' key    "
     pl: "û - Klawisz 'Return'"
-  - id: OPTIONS_HELP5
+  - id: OPTIONS_HELP6
     en: "½ - 'Escape' key in menus and on map"
     pl: "½ - 'Escape' w menu i na mapie      "
 

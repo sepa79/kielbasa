@@ -60,13 +60,13 @@
 
 //      "pragma_label":  TxtOptionsMenu
 //      "array_label":   TXT_OPTIONS_MENU
-//      "indexes_count": 6
-//      "array_length":  132
+//      "indexes_count": 7
+//      "array_length":  162
 
 #pragma section( enTxtOptionsMenu, 0 )
 #pragma section( enTxtOptionsMenuData, 0 )
-#pragma region( bankEnTxtOptionsMenuArray, 0x8cc1, 0x8ccd, , TRANSLATION_EN_BANK, { enTxtOptionsMenu}, 0x6400 )
-#pragma region( bankEnTxtOptionsMenuData, 0x8ccd, 0x8d51, , TRANSLATION_EN_BANK, { enTxtOptionsMenuData}, 0x640c )
+#pragma region( bankEnTxtOptionsMenuArray, 0x8cc1, 0x8ccf, , TRANSLATION_EN_BANK, { enTxtOptionsMenu}, 0x6400 )
+#pragma region( bankEnTxtOptionsMenuData, 0x8ccf, 0x8d71, , TRANSLATION_EN_BANK, { enTxtOptionsMenuData}, 0x640e )
 
 //      "pragma_label":  TxtTaskManager
 //      "array_label":   TXT_TASK_MANAGER
@@ -75,8 +75,8 @@
 
 #pragma section( enTxtTaskManager, 0 )
 #pragma section( enTxtTaskManagerData, 0 )
-#pragma region( bankEnTxtTaskManagerArray, 0x8d52, 0x8d68, , TRANSLATION_EN_BANK, { enTxtTaskManager}, 0x6400 )
-#pragma region( bankEnTxtTaskManagerData, 0x8d68, 0x8f12, , TRANSLATION_EN_BANK, { enTxtTaskManagerData}, 0x6416 )
+#pragma region( bankEnTxtTaskManagerArray, 0x8d72, 0x8d88, , TRANSLATION_EN_BANK, { enTxtTaskManager}, 0x6400 )
+#pragma region( bankEnTxtTaskManagerData, 0x8d88, 0x8f32, , TRANSLATION_EN_BANK, { enTxtTaskManagerData}, 0x6416 )
 
 
 

@@ -199,7 +199,7 @@ enum TXT_VILLAGE_MAP_INDEXES {
 
 //      "pragma_label": TxtOptionsMenu,
 //      "array_label": TXT_OPTIONS_MENU,
-//      "indexes_count": 6
+//      "indexes_count": 7
 
 enum TXT_OPTIONS_MENU_INDEXES {
     LTXT_IDX_OPTIONS_HEADER,
@@ -207,7 +207,8 @@ enum TXT_OPTIONS_MENU_INDEXES {
     LTXT_IDX_OPTIONS_HELP2,
     LTXT_IDX_OPTIONS_HELP3,
     LTXT_IDX_OPTIONS_HELP4,
-    LTXT_IDX_OPTIONS_HELP5
+    LTXT_IDX_OPTIONS_HELP5,
+    LTXT_IDX_OPTIONS_HELP6
 };
 
 //      "pragma_label": TxtTaskManager,

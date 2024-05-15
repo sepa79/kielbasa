@@ -60,13 +60,13 @@
 
 //      "pragma_label":  TxtOptionsMenu
 //      "array_label":   TXT_OPTIONS_MENU
-//      "indexes_count": 6
-//      "array_length":  132
+//      "indexes_count": 7
+//      "array_length":  162
 
 #pragma section( plTxtOptionsMenu, 0 )
 #pragma section( plTxtOptionsMenuData, 0 )
-#pragma region( bankPlTxtOptionsMenuArray, 0x8cc1, 0x8ccd, , TRANSLATION_PL_BANK, { plTxtOptionsMenu}, 0x6400 )
-#pragma region( bankPlTxtOptionsMenuData, 0x8ccd, 0x8d51, , TRANSLATION_PL_BANK, { plTxtOptionsMenuData}, 0x640c )
+#pragma region( bankPlTxtOptionsMenuArray, 0x8cc1, 0x8ccf, , TRANSLATION_PL_BANK, { plTxtOptionsMenu}, 0x6400 )
+#pragma region( bankPlTxtOptionsMenuData, 0x8ccf, 0x8d71, , TRANSLATION_PL_BANK, { plTxtOptionsMenuData}, 0x640e )
 
 //      "pragma_label":  TxtTaskManager
 //      "array_label":   TXT_TASK_MANAGER
@@ -75,8 +75,8 @@
 
 #pragma section( plTxtTaskManager, 0 )
 #pragma section( plTxtTaskManagerData, 0 )
-#pragma region( bankPlTxtTaskManagerArray, 0x8d52, 0x8d68, , TRANSLATION_PL_BANK, { plTxtTaskManager}, 0x6400 )
-#pragma region( bankPlTxtTaskManagerData, 0x8d68, 0x8f12, , TRANSLATION_PL_BANK, { plTxtTaskManagerData}, 0x6416 )
+#pragma region( bankPlTxtTaskManagerArray, 0x8d72, 0x8d88, , TRANSLATION_PL_BANK, { plTxtTaskManager}, 0x6400 )
+#pragma region( bankPlTxtTaskManagerData, 0x8d88, 0x8f32, , TRANSLATION_PL_BANK, { plTxtTaskManagerData}, 0x6416 )
 
 
 // Switching code generation back to shared section
