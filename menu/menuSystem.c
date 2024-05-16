@@ -101,8 +101,8 @@ void runMenuLoop(){
     MENU_BANK_SULEJUKOWAS_HOUSE,
     MENU_BANK_FISHING_MENU,
     MENU_BANK_CHURCH_MENU,
-    MENU_BANK_BATTLE_MENU,
-    MENU_BANK_RESPAWN
+    MENU_BANK_BATTLE_MENU
+    // MENU_BANK_RESPAWN
     }, { sharedMenuCode } )
 
 // Code shared by all menu banks
