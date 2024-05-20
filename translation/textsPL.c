@@ -10,8 +10,8 @@
 
 //      "pragma_label": Txt,
 //      "array_label": TXT,
-//      "indexes_count": 83
-//      "array_length": 1710
+//      "indexes_count": 84
+//      "array_length": 1747
 
 #pragma data ( plTxtData )
 
@@ -183,6 +183,10 @@ const char TXT_PL_MENU_PIGPEN3[] = {0x73, 0x50, 0x12, 0x1a, 0x05, 0x02, 0x15, 0x
 const char TXT_PL_MENU_TASK_MANAGER_PLUS[] = {0x2b, 0x00};
 //     "pl": "-"
 const char TXT_PL_MENU_TASK_MANAGER_MINUS[] = {0x2d, 0x00};
+//     "pl": "  Naciśnij  "
+//           "   dowolny  "
+//           "   klawisz  "
+const char SB_PL_MENU_RESPAWN[] = {0x20, 0x20, 0x4e, 0x01, 0x03, 0x09, 0x61, 0x0e, 0x09, 0x0a, 0x20, 0x20, 0x20, 0x20, 0x20, 0x04, 0x0f, 0x17, 0x0f, 0x0c, 0x0e, 0x19, 0x20, 0x20, 0x20, 0x20, 0x20, 0x0b, 0x0c, 0x01, 0x17, 0x09, 0x13, 0x1a, 0x20, 0x20, 0x00};
 //     "pl": "Kup ogóra  "
 const char TXT_PL_MENU_SHOPIN1[] = {0x71, 0x4b, 0x15, 0x10, 0x20, 0x0f, 0x07, 0x60, 0x12, 0x01, 0x20, 0x20, 0x00};
 //     "pl": "Rozmowa"
@@ -448,7 +452,7 @@ const char TXT_PL_TASK_MANAGER_PRIO_TABLE_HEADER_10[] = {0xd0, 0x8f, 0x93, 0x94,
 
 //      "pragma_label": Txt,
 //      "array_label": TXT,
-//      "indexes_count": 83
+//      "indexes_count": 84
 
 #pragma data ( plTxt )
 __export const char* TXT[] = {
@@ -523,6 +527,7 @@ __export const char* TXT[] = {
     TXT_PL_MENU_PIGPEN3,
     TXT_PL_MENU_TASK_MANAGER_PLUS,
     TXT_PL_MENU_TASK_MANAGER_MINUS,
+    SB_PL_MENU_RESPAWN,
     TXT_PL_MENU_SHOPIN1,
     TXT_PL_MENU_SHOPIN2,
     TXT_PL_MENU_SHOPIN3,
@@ -686,13 +691,13 @@ struct chunk_data {
 };
 
 struct chunk_data txtCacheAddresses[] = {
-    { 0x8000, 0x0754 },
-    { 0x8755, 0x004c },
-    { 0x87a2, 0x01f2 },
-    { 0x8995, 0x00d8 },
-    { 0x8a6e, 0x0252 },
-    { 0x8cc1, 0x00b0 },
-    { 0x8d72, 0x01c0 }
+    { 0x8000, 0x077b },
+    { 0x877c, 0x004c },
+    { 0x87c9, 0x01f2 },
+    { 0x89bc, 0x00d8 },
+    { 0x8a95, 0x0252 },
+    { 0x8ce8, 0x00b0 },
+    { 0x8d99, 0x01c0 }
 };
 
 // =============================================================================
@@ -700,6 +705,6 @@ struct chunk_data txtCacheAddresses[] = {
 // =============================================================================
 
 void loadTranslation() {
-    memcpy(TRANSLATION_DST, TRANSLATION_SRC, 0x754);
+    memcpy(TRANSLATION_DST, TRANSLATION_SRC, 0x77b);
 };
 

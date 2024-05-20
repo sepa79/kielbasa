@@ -29,17 +29,59 @@ __export const char respawnGfxC1[] = {
 __export const char respawnGfxC2[] = {
     #embed 1000 0x232a "assets/multicolorGfx/staminacritical.kla"
 };
-// // just the colors
-// __export const char respawnGfxBW1[] = {
-//     #embed 1000 0x1f42 "assets/multicolorGfx/staminacritical_bw.kla"
-// };
-// __export const char respawnGfxBW2[] = {
-//     #embed 1000 0x232a "assets/multicolorGfx/staminacritical_bw.kla"
-// };
+__export const char respawnSprites[] = {
+    #embed 0xc0 20 "assets/sprites/back.spd"
+};
 
 // menu code is in ROM - data in RAM
 #pragma code(respawnCode)
 #pragma data(data)
+
+// c800 is free to use by menu
+#define SPRITE_BLOCK 0x20
+#define SPRITE_BLOCK_POINTER ((char *)0xc800)
+
+__interrupt static bool _showSprites = false;
+
+__interrupt static void _menuShowSprites(){
+    // too complex to put into irq if made as separate library, Oscar complains
+    vic.spr_expand_x = 0b11111111;
+    vic.spr_expand_y = 0b11111111;
+    vic.spr_priority = 0b00000000;
+    vic.spr_multi    = 0b00111000;
+    vic.spr_mcolor0  = VCOL_WHITE;
+    vic.spr_mcolor1  = VCOL_LT_GREY;
+
+    if(_showSprites){
+        vic.spr_enable = 0b00111111;
+    } else {
+        vic.spr_enable = 0b00000000;
+    }
+
+    #define xPos   190
+    #define yPos   174
+    #define xSize  3
+
+    vic_sprxy(0, xPos + 0*48, yPos + 42);
+    vic_sprxy(1, xPos + 1*48, yPos + 42);
+    vic_sprxy(2, xPos + 2*48, yPos + 42);
+    vic.spr_color[0] = VCOL_YELLOW;
+    vic.spr_color[1] = VCOL_YELLOW;
+    vic.spr_color[2] = VCOL_YELLOW;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+0] = SPRITE_BLOCK + 0;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+1] = SPRITE_BLOCK + 1;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+2] = SPRITE_BLOCK + 2;
+
+    vic_sprxy(3, xPos + 0*48 - 1, yPos + 42 - 9);
+    vic_sprxy(4, xPos + 1*48 - 1, yPos + 42 - 9);
+    vic_sprxy(5, xPos + 2*48 - 1, yPos + 42 - 9);
+    vic.spr_color[3] = VCOL_BLACK;
+    vic.spr_color[4] = VCOL_BLACK;
+    vic.spr_color[5] = VCOL_BLACK;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+3] = SPRITE_BLOCK + 3;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+4] = SPRITE_BLOCK + 4;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+5] = SPRITE_BLOCK + 5;
+}
 
 static void _loadBmpOnly() {
     memset(GFX_2_SCR, 0, 1000);
@@ -411,7 +453,8 @@ static void _showFrames(){
 }
 
 const struct MenuOption RESPAWN_MENU[] = {
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_MC_GFX, UI_LF+UI_HIDE, &_showFrames, 0, 2, 11},
+    { TXT_IDX_MENU_EXIT, ' ', SCREEN_MC_GFX, UI_LF+UI_HIDE, &_showFrames, 0, 2, 11},
+    // { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &revertPreviousMenu, 0, 2, 11},
     END_MENU_CHOICES
 };
 
@@ -420,13 +463,39 @@ static void _menuHandler(void) {
     gms_gameSpeed = SPEED_PAUSED;
     updateGameSpeed();
     
+    // clean sprites
+    clearStatusBar();
+    memset(SPRITE_BLOCK_POINTER, 0, 0x40*8);
+    memcpy(SPRITE_BLOCK_POINTER+3*64, respawnSprites, 3*64);
+    _showSprites = false;
     loadMenuGfx();
     switchScreenTo(SCREEN_MC_GFX);
 
     _showFrames();
 
+    allCharacters[0].energy = 50;
+    unsigned long respawnCost = lmuldiv16u(GS.cash, 10, 100);
+    GS.cash -= respawnCost;
+    updateMoney();
+
+    char str[10];
+    char format[5] = "%7d";
+    format[3] = 28; // zl
+    format[4] = 0;
+
+    sprintf(str, format, -respawnCost);
+    textToSpriteAt(str, 3, SPRITE_BLOCK_POINTER, 0, 1);
+
+    vic_waitFrames(50);
+    _showSprites = true;
+    // vic_waitFrames(200);
+
     displayMenu(RESPAWN_MENU);
-    // updateStatusBar(TXT[SB_IDX_MENU_RESPAWN]);
+    updateStatusBar(TXT[SB_IDX_MENU_RESPAWN]);
+
+    // wait for space
+    do { keyb_poll(); rand();} while (!keyb_key);
+    keyb_key = 0;
 }
 
 #pragma data(respawnLoaderData)
@@ -445,7 +514,8 @@ __export static const Loaders menuLoaders = {
     .loadMenuGfx     = &_loadBmpOnly,
     .loadMenuSprites = &_localNoop,
     .showMenu        = &_menuHandler,
-    .showSprites     = &_localSpriteNoop,
+    // .showSprites     = &_localSpriteNoop,
+    .showSprites     = &_menuShowSprites,
     .updateMenu      = &_localNoop,
     .runMenuLoop     = &_localNoop,
 };

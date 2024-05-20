@@ -10,8 +10,8 @@
 
 //      "pragma_label": Txt,
 //      "array_label": TXT,
-//      "indexes_count": 83
-//      "array_length": 1710
+//      "indexes_count": 84
+//      "array_length": 1747
 
 #pragma data ( enTxtData )
 
@@ -183,6 +183,10 @@ const char TXT_EN_MENU_PIGPEN3[] = {0x73, 0x55, 0x10, 0x07, 0x12, 0x01, 0x04, 0x
 const char TXT_EN_MENU_TASK_MANAGER_PLUS[] = {0x2b, 0x00};
 //     "en": "-"
 const char TXT_EN_MENU_TASK_MANAGER_MINUS[] = {0x2d, 0x00};
+//     "en": "    Press   "
+//           "     any    "
+//           "     key    "
+const char SB_EN_MENU_RESPAWN[] = {0x20, 0x20, 0x20, 0x20, 0x50, 0x12, 0x05, 0x13, 0x13, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x01, 0x0e, 0x19, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x0b, 0x05, 0x19, 0x20, 0x20, 0x20, 0x20, 0x00};
 //     "en": "Buy gherkin"
 const char TXT_EN_MENU_SHOPIN1[] = {0x71, 0x42, 0x15, 0x19, 0x20, 0x07, 0x08, 0x05, 0x12, 0x0b, 0x09, 0x0e, 0x00};
 //     "en": "Chat   "
@@ -448,7 +452,7 @@ const char TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_10[] = {0xc3, 0x88, 0x81, 0x92,
 
 //      "pragma_label": Txt,
 //      "array_label": TXT,
-//      "indexes_count": 83
+//      "indexes_count": 84
 
 #pragma data ( enTxt )
 __export const char* EN_TXT[] = {
@@ -524,6 +528,7 @@ __export const char* EN_TXT[] = {
     TXT_EN_MENU_PIGPEN3,
     TXT_EN_MENU_TASK_MANAGER_PLUS,
     TXT_EN_MENU_TASK_MANAGER_MINUS,
+    SB_EN_MENU_RESPAWN,
     TXT_EN_MENU_SHOPIN1,
     TXT_EN_MENU_SHOPIN2,
     TXT_EN_MENU_SHOPIN3,

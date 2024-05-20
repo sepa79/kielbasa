@@ -187,10 +187,12 @@ void mainLoop(){
                     GS.vMap.x = MAP_HOME_X;
                     GS.vMap.y = MAP_HOME_Y;
                     GS.vMap.location = LOCATION_FARM_HOUSE;
-                    allCharacters[0].energy = 50;
-                    GS.cash = lmuldiv16u(GS.cash, 90, 100);
-                    updateMoney();
-                    // TODO: some nice picture would be good here, and time shift
+
+                    prvMenu = mnu_menuBank;
+                    switchScreenTo(SCREEN_TRANSITION);
+                    loadMenu(MENU_BANK_RESPAWN);
+                    showMenu();
+
                     gotoLocation();
                     break;
             }

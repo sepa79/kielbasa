@@ -127,8 +127,7 @@ void copyCharToSprite(char c, char col, char row, char * sprBankPtr){
     setBank(pbank);
 }
 
-// width is in sprites - 4 means 12 chars will fit
-// routine will keep writing row by row, so make sure text is going to fit in
+
 void textToSprite(char * str, char width, char * sprBankPtr){
     char pbank = setBank(MAIN_GFX_BANK);
     _textToSprite(str, width, sprBankPtr, 0, 0);

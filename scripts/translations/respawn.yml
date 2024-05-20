@@ -1,0 +1,14 @@
+
+Txt:
+  array_label: TXT
+  contents:
+  - id: MENU_RESPAWN
+    prefix: SB
+    en:
+    - '    Press   '
+    - '     any    '
+    - '     key    '
+    pl:
+    - '  Naciśnij  '
+    - '   dowolny  '
+    - '   klawisz  '
