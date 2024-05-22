@@ -487,7 +487,7 @@ static void _lineUpJoyLeft(){
 
 static void _startFishing(){
     displayMenu(FISHING_MENU2);
-    updateStatusBar(TXT_FISHING[LSB_IDX_MENU_FISHING]);
+    updateStatusBar(TXT_FISHING[LSB_IDX_MENU_FISHING2]);
 }
 
 // copy fishingMenuRAMCode

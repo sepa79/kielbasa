@@ -155,10 +155,11 @@ enum TXT_FARMLAND_INDEXES {
 
 //      "pragma_label": TxtFishing,
 //      "array_label": TXT_FISHING,
-//      "indexes_count": 1
+//      "indexes_count": 2
 
 enum TXT_FISHING_INDEXES {
-    LSB_IDX_MENU_FISHING
+    LSB_IDX_MENU_FISHING,
+    LSB_IDX_MENU_FISHING2
 };
 
 //      "pragma_label": TxtKitchen,

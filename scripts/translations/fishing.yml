@@ -12,13 +12,13 @@ TxtFishing:
     - '   Pomost   '
     - ' û Na Ryby  '
     - '  ½ü Wyjdź  '
-  # - id: MENU_FISHING2
-  #   prefix: SB
-  #   en:
-  #   - '    Press   '
-  #   - '     any    '
-  #   - '     key    '
-  #   pl:
-  #   - '  Naciśnij  '
-  #   - '   dowolny  '
-  #   - '   klawisz  '
+  - id: MENU_FISHING2
+    prefix: SB
+    en:
+    - '    Press   '
+    - '     any    '
+    - '     key    '
+    pl:
+    - '  Naciśnij  '
+    - '   dowolny  '
+    - '   klawisz  '
