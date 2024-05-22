@@ -485,6 +485,10 @@ static void _lineUpJoyLeft(){
     }
 }
 
+static void _startFishing(){
+    displayMenu(FISHING_MENU2);
+    updateStatusBar(TXT_FISHING[LSB_IDX_MENU_FISHING]);
+}
 
 // copy fishingMenuRAMCode
 static void _fishingMenuCodeLoader(){
@@ -494,6 +498,12 @@ static void _fishingMenuCodeLoader(){
 const struct MenuOption FISHING_MENU[] = {
     // Add the "Exit to Map" option as shown in the example
     { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_HIDE, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 2, 5 },
+    { TXT_IDX_MENU_SELECT, KEY_RETURN, SCREEN_FISHING, UI_F+UI_HIDE, &_startFishing, 0, 1, 1 },
+    END_MENU_CHOICES
+};
+const struct MenuOption FISHING_MENU2[] = {
+    // Add the "Exit to Map" option as shown in the example
+    { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_HIDE, &showMenu, MENU_BANK_FISHING_MENU, 2, 5 },
     { TXT_IDX_MENU_SELECT, KEY_RETURN, SCREEN_FISHING, UI_F+UI_HIDE, &_lineUpFire, 0, 1, 1 },
     { TXT_IDX_MENU_W, 'w', SCREEN_FISHING, UI_U+UI_HIDE, &_lineUpJoyUp, 0, 1, 1 },
     { TXT_IDX_MENU_S, 's', SCREEN_FISHING, UI_D+UI_HIDE, &_lineUpJoyDown, 0, 1, 1 },
@@ -506,10 +516,13 @@ const struct MenuOption FISHING_MENU[] = {
 static void _menuHandler() {
     loadMenuSprites();
     loadMenuGfx();
+    // copy text cache from cart to memory
+    loadCacheTxt(TXT_FISHING_CACHE_INDEX);
 
     displayMenu(FISHING_MENU);
     _initAllFish();
     switchScreenTo(SCREEN_FISHING);
+    updateStatusBar(TXT_FISHING[LSB_IDX_MENU_FISHING]);
 }
 
 #pragma data(fishingMenuLoaderData)

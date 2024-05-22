@@ -14,6 +14,7 @@
 #pragma region(bankFishingMenuG2, 0x8000, 0xC000, , MENU_BANK_FISHING_MENU_2, { fishingMenuSprites })
 
 extern const struct MenuOption FISHING_MENU[];
+extern const struct MenuOption FISHING_MENU2[];
 
 #pragma code(fishingMenuRAMCode)
 #pragma data(fishingMenuRAMData)

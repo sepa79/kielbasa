@@ -153,6 +153,14 @@ enum TXT_FARMLAND_INDEXES {
     LTXT_IDX_PLANT_NAME_CORN
 };
 
+//      "pragma_label": TxtFishing,
+//      "array_label": TXT_FISHING,
+//      "indexes_count": 1
+
+enum TXT_FISHING_INDEXES {
+    LSB_IDX_MENU_FISHING
+};
+
 //      "pragma_label": TxtKitchen,
 //      "array_label": TXT_KITCHEN,
 //      "indexes_count": 9
@@ -259,6 +267,7 @@ enum TXT_CACHE_INDEXES {
     TXT_CACHE_INDEX,
     TXT_CREW_CACHE_INDEX,
     TXT_FARMLAND_CACHE_INDEX,
+    TXT_FISHING_CACHE_INDEX,
     TXT_KITCHEN_CACHE_INDEX,
     TXT_VILLAGE_MAP_CACHE_INDEX,
     TXT_OPTIONS_MENU_CACHE_INDEX,

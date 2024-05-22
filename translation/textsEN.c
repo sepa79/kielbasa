@@ -316,6 +316,19 @@ const char TXT_EN_PLANT_NAME_WHEAT[] = {0x57, 0x08, 0x05, 0x01, 0x14, 0x20, 0x20
 const char TXT_EN_PLANT_NAME_CORN[] = {0x43, 0x0f, 0x12, 0x0e, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00};
 
 
+//      "pragma_label": TxtFishing,
+//      "array_label": TXT_FISHING,
+//      "indexes_count": 1
+//      "array_length": 37
+
+#pragma data ( enTxtFishingData )
+
+//     "en": "    Wharf   "
+//           "û Go Fishing"
+//           "   ½ü Exit  "
+const char SB_EN_MENU_FISHING[] = {0x20, 0x20, 0x20, 0x20, 0x57, 0x08, 0x01, 0x12, 0x06, 0x20, 0x20, 0x20, 0x7b, 0x20, 0x47, 0x0f, 0x20, 0x46, 0x09, 0x13, 0x08, 0x09, 0x0e, 0x07, 0x20, 0x20, 0x20, 0x1f, 0x7c, 0x20, 0x45, 0x18, 0x09, 0x14, 0x20, 0x20, 0x00};
+
+
 //      "pragma_label": TxtKitchen,
 //      "array_label": TXT_KITCHEN,
 //      "indexes_count": 9
@@ -598,6 +611,16 @@ __export const char* EN_TXT_FARMLAND[] = {
     TXT_EN_PLANT_NAME_LUPINE,
     TXT_EN_PLANT_NAME_WHEAT,
     TXT_EN_PLANT_NAME_CORN
+};
+
+//      "pragma_label": TxtFishing,
+//      "array_label": TXT_FISHING,
+//      "indexes_count": 1
+
+#pragma data ( enTxtFishing )
+__export const char* EN_TXT_FISHING[] = {
+
+    SB_EN_MENU_FISHING
 };
 
 //      "pragma_label": TxtKitchen,

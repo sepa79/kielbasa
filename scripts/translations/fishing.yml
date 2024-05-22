@@ -1,0 +1,24 @@
+
+TxtFishing:
+  array_label: TXT_FISHING
+  contents:
+  - id: MENU_FISHING
+    prefix: SB
+    en:
+    - '    Wharf   '
+    - 'û Go Fishing'
+    - '   ½ü Exit  '
+    pl:
+    - '   Pomost   '
+    - ' û Na Ryby  '
+    - '  ½ü Wyjdź  '
+  # - id: MENU_FISHING2
+  #   prefix: SB
+  #   en:
+  #   - '    Press   '
+  #   - '     any    '
+  #   - '     key    '
+  #   pl:
+  #   - '  Naciśnij  '
+  #   - '   dowolny  '
+  #   - '   klawisz  '

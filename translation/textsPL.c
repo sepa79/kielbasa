@@ -316,6 +316,19 @@ const char TXT_PL_PLANT_NAME_WHEAT[] = {0x50, 0x13, 0x1a, 0x05, 0x0e, 0x09, 0x03
 const char TXT_PL_PLANT_NAME_CORN[] = {0x4b, 0x15, 0x0b, 0x15, 0x12, 0x19, 0x04, 0x1a, 0x01, 0x20, 0x00};
 
 
+//      "pragma_label": TxtFishing,
+//      "array_label": TXT_FISHING,
+//      "indexes_count": 1
+//      "array_length": 37
+
+#pragma data ( plTxtFishingData )
+
+//     "pl": "   Pomost   "
+//           " û Na Ryby  "
+//           "  ½ü Wyjdź  "
+const char SB_PL_MENU_FISHING[] = {0x20, 0x20, 0x20, 0x50, 0x0f, 0x0d, 0x0f, 0x13, 0x14, 0x20, 0x20, 0x20, 0x20, 0x7b, 0x20, 0x4e, 0x01, 0x20, 0x52, 0x19, 0x02, 0x19, 0x20, 0x20, 0x20, 0x20, 0x1f, 0x7c, 0x20, 0x57, 0x19, 0x0a, 0x04, 0x62, 0x20, 0x20, 0x00};
+
+
 //      "pragma_label": TxtKitchen,
 //      "array_label": TXT_KITCHEN,
 //      "indexes_count": 9
@@ -597,6 +610,15 @@ __export const char* TXT_FARMLAND[] = {
     TXT_PL_PLANT_NAME_CORN
 };
 
+//      "pragma_label": TxtFishing,
+//      "array_label": TXT_FISHING,
+//      "indexes_count": 1
+
+#pragma data ( plTxtFishing )
+__export const char* TXT_FISHING[] = {
+    SB_PL_MENU_FISHING
+};
+
 //      "pragma_label": TxtKitchen,
 //      "array_label": TXT_KITCHEN,
 //      "indexes_count": 9
@@ -694,10 +716,11 @@ struct chunk_data txtCacheAddresses[] = {
     { 0x8000, 0x077b },
     { 0x877c, 0x004c },
     { 0x87c9, 0x01f2 },
-    { 0x89bc, 0x00d8 },
-    { 0x8a95, 0x0252 },
-    { 0x8ce8, 0x00b0 },
-    { 0x8d99, 0x01c0 }
+    { 0x89bc, 0x0027 },
+    { 0x89e4, 0x00d8 },
+    { 0x8abd, 0x0252 },
+    { 0x8d10, 0x00b0 },
+    { 0x8dc1, 0x01c0 }
 };
 
 // =============================================================================
