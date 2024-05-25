@@ -31,12 +31,12 @@ Txt:
     prefix: SB
     en:
     - '    Crew    '
-    - '  ú select  '
-    - '   ½ü Exit  '
+    - '  ~ select  '
+    - '   ½ý Exit  '
     pl:
     - '   Załoga   '
-    - '  ú wybór   '
-    - '  ½ü Wyjdź  '
+    - '  ~ wybór   '
+    - '  ½ý Wyjdź  '
   - id: MENU_CREW1
     menu_opt: '1'
     en: 'Char 1'

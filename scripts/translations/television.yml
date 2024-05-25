@@ -7,11 +7,11 @@ Txt:
     en:
     - '   TV News  '
     - '            '
-    - '   ½ü Exit  '
+    - '   ½ý Exit  '
     pl:
     - ' Wiadomości '
     - '            '
-    - '  ½ü Wyjdź  '
+    - '  ½ý Wyjdź  '
   - id: MENU_TV_SCREEN_BILLS
     prefix: TV
     en:

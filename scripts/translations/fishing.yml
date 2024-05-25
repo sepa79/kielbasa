@@ -6,19 +6,19 @@ TxtFishing:
     prefix: SB
     en:
     - '    Wharf   '
-    - 'û Go Fishing'
+    - 'ý Go Fishing'
     - '   ½ü Exit  '
     pl:
     - '   Pomost   '
-    - ' û Na Ryby  '
+    - ' ý Na Ryby  '
     - '  ½ü Wyjdź  '
-  - id: MENU_FISHING2
-    prefix: SB
-    en:
-    - '    Press   '
-    - '     any    '
-    - '     key    '
-    pl:
-    - '  Naciśnij  '
-    - '   dowolny  '
-    - '   klawisz  '
+  # - id: MENU_FISHING2
+  #   prefix: SB
+  #   en:
+  #   - '    Press   '
+  #   - '     any    '
+  #   - '     key    '
+  #   pl:
+  #   - '  Naciśnij  '
+  #   - '   dowolny  '
+  #   - '   klawisz  '

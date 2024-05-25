@@ -487,7 +487,7 @@ static void _lineUpJoyLeft(){
 
 static void _startFishing(){
     displayMenu(FISHING_MENU2);
-    updateStatusBar(TXT_FISHING[LSB_IDX_MENU_FISHING2]);
+    // updateStatusBar(TXT_FISHING[LSB_IDX_MENU_FISHING2]);
 }
 
 // copy fishingMenuRAMCode
@@ -497,7 +497,7 @@ static void _fishingMenuCodeLoader(){
 
 const struct MenuOption FISHING_MENU[] = {
     // Add the "Exit to Map" option as shown in the example
-    { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_HIDE, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 2, 5 },
+    { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 2, 5 },
     { TXT_IDX_MENU_SELECT, KEY_RETURN, SCREEN_FISHING, UI_F+UI_HIDE, &_startFishing, 0, 1, 1 },
     END_MENU_CHOICES
 };

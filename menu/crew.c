@@ -238,12 +238,13 @@ static void _down(){
 }
 
 const struct MenuOption CREW_MENU[] = {
+    // keep at 1st position, as fire is automatically assigned to this menu entry (bug that became feature)
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_F & UI_HIDE, &_closeMenu, 0, 2, 5},
 //     { TXT_IDX_MENU_A, 'a', SCREEN_FULL_MC_TXT, UI_L+UI_HIDE, &_left, 0, 1, 2},
 //     { TXT_IDX_MENU_D, 'd', SCREEN_FULL_MC_TXT, UI_R+UI_HIDE, &_right, 0, 1, 2},
     { TXT_IDX_MENU_W, 'w', SCREEN_FULL_MC_TXT, UI_U+UI_HIDE, &_up, 0, 7, 2},
     { TXT_IDX_MENU_S, 's', SCREEN_FULL_MC_TXT, UI_D+UI_HIDE, &_down, 0, 9, 2},
 
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF & UI_HIDE, &_closeMenu, 0, 2, 5},
     END_MENU_CHOICES
 };
 
