@@ -26,16 +26,16 @@
 //++++++++++++++++++++++++++++++++
 
 __export const char msxMain[] = {
-    #embed 0xffff 136 rle "assets/music/FarmGame-1.sid"
+    #embed 0xffff 0x88 rle "assets/music/FarmGame-1.sid"
 };
 __export const char msxFightIntro[] = {
-    #embed 0xffff 136 rle "assets/music/FarmGame-2.sid"
+    #embed 0xffff 0x88 rle "assets/music/FarmGame-2.sid"
 };
 __export const char msxAirDef[] = {
-    #embed 0xffff 136 rle "assets/music/FarmGame-3.sid"
+    #embed 0xffff 0x88 rle "assets/music/FarmGame-3.sid"
 };
 __export const char msxVMap[] = {
-    #embed 0xffff 136 rle "assets/music/FarmGame-4.sid"
+    #embed 0xffff 0x88 rle "assets/music/FarmGame-4.sid"
 };
 
 //++++++++++++++++++++++++++++++++
@@ -68,6 +68,9 @@ __export const char radioMsx1_3[] = {
 
 __export const char radioMsx2_1[] = {
     #embed 0xffff 0x7e rle "assets/music/8k_crocket.sid"
+};
+__export const char radioMsx2_2[] = {
+    #embed 0xffff 0x88 rle "assets/music/8k_mjBillieJean.sid"
 };
 // __export const char radioMsx2_2[] = {
 //     #embed 0xffff 0x7e rle "assets/music/8k_pinbalPartyland.sid"
@@ -105,6 +108,7 @@ __export const char* sidIndex[] ={
     radioMsx1_3,
 
     radioMsx2_1,
+    radioMsx2_2,
 };
 
 // store this song data in main music section
@@ -127,6 +131,7 @@ const char TXT_PLAYLIST_RADIO_S1[]   =  s"1 Michael Jackson - Thriller         "
 const char TXT_PLAYLIST_RADIO_S2[]   =  s"2 Tina Turner - The best             ";
 const char TXT_PLAYLIST_RADIO_S3[]   =  s"3 AC/DC - Highway to Hell            ";
 const char TXT_PLAYLIST_RADIO_S4[]   =  s"4 Jan Hammer - Crockett's Theme      ";
+const char TXT_PLAYLIST_RADIO_S5[]   =  s"5 Michael Jackson - Billy Jean       ";
 // const char TXT_PLAYLIST_RADIO_S1[] =    s"1 Kraftwerk - The Model              ";
 // const char TXT_PLAYLIST_RADIO_S2[] =    s"2 Yazz - Don't Go                    ";
 // const char TXT_PLAYLIST_RADIO_S3[] =    s"3 Human League - Don't You Want Me?  ";
@@ -142,6 +147,7 @@ const struct Song RADIO_PLAYLIST[RADIO_PLAYLIST_SIZE] = {
     { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 0, 5, SPEED_1X },
     { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 0, 6, SPEED_1X },
     { TXT_PLAYLIST_RADIO_S4, MUSIC_BANK_RADIO_2, 0, 7, SPEED_1X },
+    { TXT_PLAYLIST_RADIO_S5, MUSIC_BANK_RADIO_2, 0, 8, SPEED_2X },
     // { TXT_PLAYLIST_RADIO_S1, MUSIC_BANK_RADIO_1, 0, 4, sizeof(radioMsx01) },
     // { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 1, 4, sizeof(radioMsx01) },
     // { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 2, 4, sizeof(radioMsx01) },
@@ -171,6 +177,7 @@ const struct Song PLAYLIST[PLAYLIST_SIZE] = {
     { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 0, 5, SPEED_1X },
     { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 0, 6, SPEED_1X },
     { TXT_PLAYLIST_RADIO_S4, MUSIC_BANK_RADIO_2, 0, 7, SPEED_1X },
+    { TXT_PLAYLIST_RADIO_S5, MUSIC_BANK_RADIO_2, 0, 8, SPEED_2X },
     // { TXT_PLAYLIST_RADIO_S1, MUSIC_BANK_RADIO_1, 0, 4, sizeof(radioMsx01) },
     // { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 1, 4, sizeof(radioMsx01) },
     // { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 2, 4, sizeof(radioMsx01) },

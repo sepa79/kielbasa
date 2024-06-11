@@ -19,7 +19,7 @@ struct Song {
 
 // don't forget to add space for album titles - radio playlist MUST NOT have these, so +1 to main playlist
 #define TITLE_ONLY 0xff
-#define RADIO_PLAYLIST_SIZE 4
+#define RADIO_PLAYLIST_SIZE 5
 #define PLAYLIST_SIZE 8 + RADIO_PLAYLIST_SIZE
 
 extern const struct Song PLAYLIST[];

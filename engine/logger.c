@@ -33,9 +33,8 @@ void logger(byte msgId) {
     LOG_MSGS[log_index].yearL = GS.calendar.dateYearL;
     LOG_MSGS[log_index].msgId = msgId;
 
-    if(log_index < LOG_MAX_MSGS){
-        log_index++;
-    } else {
+    log_index++;
+    if(log_index == LOG_MAX_MSGS){
         log_index = 0;
     }
 }
