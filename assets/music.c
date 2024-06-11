@@ -138,7 +138,6 @@ const char TXT_PLAYLIST_RADIO_S4[]   =  s"4 Jan Hammer - Crockett's Theme      "
 // const char TXT_PLAYLIST_RADIO_S9[] =    s"9 Eurythmics - Sweet Dreams          ";
 
 const struct Song RADIO_PLAYLIST[RADIO_PLAYLIST_SIZE] = {
-    { TXT_PLAYLIST_RADIO_NAME, TITLE_ONLY, TITLE_ONLY, TITLE_ONLY, 0 },
     { TXT_PLAYLIST_RADIO_S1, MUSIC_BANK_RADIO_1, 0, 4, SPEED_1X },
     { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 0, 5, SPEED_1X },
     { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 0, 6, SPEED_1X },
