@@ -4,6 +4,7 @@
 #include <c64/cia.h>
 #include <string.h>
 #include <stdlib.h>
+#include <oscar.h>
 
 #include <engine/logger.h>
 #include <engine/easyFlashBanks.h>
@@ -87,7 +88,8 @@ void initGameStartScreen(){
     splashScreen(true, 3);
 
     setBank(MUSIC_BANK);
-    loadMusic(&PLAYLIST[MSX_MAIN_THEME]);
+    // loadMusic(&PLAYLIST[MSX_MAIN_THEME]);
+    oscar_expand_rle((char*)MSX_DST_ADR, (char*)MSX_DST_ADR);
 
     __asm {
         sei
@@ -104,7 +106,7 @@ void initGameStartScreen(){
         lda #MSX_ROM
         sta $01
         lda #$00
-        // jsr MSX_INIT
+        jsr MSX_INIT
     }
     *(void **)0x0314 = titleScreenIrq1;     // Install interrupt routine
     vic.intr_enable = 1;             // Enable raster interrupt
@@ -120,7 +122,7 @@ void initGameStartScreen(){
 
     // show sprites for menu text
     #define TITLE_SPR_POS_X 12
-    #define TITLE_SPR_POS_Y 54
+    #define TITLE_SPR_POS_Y 53
 
     vic.spr_enable = 0;
     vic.spr_expand_x = 0b00000000;

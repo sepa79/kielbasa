@@ -48,12 +48,13 @@ static void _displayPlaylist(){
     // songs list
     char pbank = setBank(MUSIC_BANK);
     // now songs are visible from ROM
+    _displayPlaylistPage(0, PLAYLIST_SIZE);
 
-    if(_page == 0){
-        _displayPlaylistPage(0, 11);
-    } else {
-        _displayPlaylistPage(11, PLAYLIST_SIZE);
-    }
+    // if(_page == 0){
+    //     _displayPlaylistPage(0, 11);
+    // } else {
+    //     _displayPlaylistPage(11, PLAYLIST_SIZE);
+    // }
 
     setBank(pbank);
 }
@@ -149,16 +150,21 @@ static void _playMsx(const struct Song * song, bool restart){
         gms_enableMusic = false;
         ((byte *)0xd418)[0] &= ~0xf;
 
-        // set Radio bank
+        // set Radio bank, it contains titles etc
         char pbank = setBank(MUSIC_BANK);
         // now songs are visible from ROM - we can use structs
-
+        // just this needs to be cached as banks might get changed during load below
+        char sidIdx = song->sidIdx;
         // check if we need to load anything
-        if(curBank != song->bank || curSidIdx != song->sidIdx){
+        if(curBank != song->bank || curSidIdx != sidIdx){
+            gms_musicPlayCount = song->speed;
+            gms_musicPlayNow = true;
             // load it
             setBank(song->bank);
+
             // load different MSX file
-            loadMusic(song);
+            oscar_expand_rle((char*)MSX_DST_ADR, sidIndex[sidIdx]);
+
             setBank(MUSIC_BANK);
             // if we have reloaded, reset SongIdx
             curSongIdx = 0xff;
@@ -283,8 +289,8 @@ void playSong(char song){
 const struct MenuOption MUSIC_MENU[] = {
     { TXT_IDX_MENU_SELECT, KEY_RETURN, SCREEN_MC_TXT_BOOMBOX, UI_SELECT+UI_HIDE, &_loadMsx, 0, 1, 1},
     { TXT_IDX_MENU_A, 'm', SCREEN_MC_TXT_BOOMBOX, UI_HIDE, &_toggleMusic, 0, 1, 1},
-    { TXT_IDX_MENU_A, 'a', SCREEN_MC_TXT_BOOMBOX, UI_L+UI_HIDE, &_left, 0, 1, 1},
-    { TXT_IDX_MENU_D, 'd', SCREEN_MC_TXT_BOOMBOX, UI_R+UI_HIDE, &_right, 0, 1, 1},
+    // { TXT_IDX_MENU_A, 'a', SCREEN_MC_TXT_BOOMBOX, UI_L+UI_HIDE, &_left, 0, 1, 1},
+    // { TXT_IDX_MENU_D, 'd', SCREEN_MC_TXT_BOOMBOX, UI_R+UI_HIDE, &_right, 0, 1, 1},
     { TXT_IDX_MENU_W, 'w', SCREEN_MC_TXT_BOOMBOX, UI_U+UI_HIDE, &_upRow, 0, 1, 1 },
     { TXT_IDX_MENU_S, 's', SCREEN_MC_TXT_BOOMBOX, UI_D+UI_HIDE, &_downRow, 0, 1, 1 },
     { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &closeMsxMenu, 0, 1, 1},

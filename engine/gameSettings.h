@@ -46,6 +46,8 @@ extern volatile bool gms_enableMenuSprites;
 
 // music on/off
 extern volatile bool gms_enableMusic;
+extern volatile char gms_musicPlayCount;
+extern volatile bool gms_musicPlayNow;
 
 // *****************************
 // External vars, kept here to simplify imports

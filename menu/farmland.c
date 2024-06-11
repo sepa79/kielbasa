@@ -57,7 +57,7 @@ enum FARMLAND_SPRITE_VIC_BANKS {
 #pragma section( farmlandSprites, 0 )
 #pragma region( bankFarmlandC, 0x8000, 0x9000, , MENU_BANK_FARMLAND, { farmlandLoaderData, farmlandCode } )
 #pragma region( bankFarmlandG1, DAY_GFX_BMP, DAY_GFX_BMP+0x12c0, , MENU_BANK_FARMLAND, { farmlandGfxDay } )
-#pragma region( bankFarmlandG2, NIGHT_GFX_BMP, NIGHT_GFX_BMP+0x12c0, , MENU_BANK_FARMLAND, { farmlandGfxNight } )
+// #pragma region( bankFarmlandG2, NIGHT_GFX_BMP, NIGHT_GFX_BMP+0x12c0, , MENU_BANK_FARMLAND, { farmlandGfxNight } )
 #pragma region( bankFarmlandG3, MENU_SPRITE_SRC, MENU_SPRITE_SRC+0x0400, , MENU_BANK_FARMLAND, { farmlandSprites } )
 
 #pragma data ( farmlandGfxDay )
@@ -66,12 +66,12 @@ __export const byte farmlandGfx1[] = {
     #embed 0x01e0 0x1f42 "assets/multicolorGfx/pole200623fix.kla"
     #embed 0x01e0 0x232a "assets/multicolorGfx/pole200623fix.kla"
 };
-#pragma data ( farmlandGfxNight )
-__export const byte farmlandGfx2[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/farmland_bottomBar_night.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/farmland_bottomBar_night.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/farmland_bottomBar_night.kla"
-};
+// #pragma data ( farmlandGfxNight )
+// __export const byte farmlandGfx2[] = {
+//     #embed 0x0f00 0x0002 "assets/multicolorGfx/farmland_bottomBar_night.kla"
+//     #embed 0x01e0 0x1f42 "assets/multicolorGfx/farmland_bottomBar_night.kla"
+//     #embed 0x01e0 0x232a "assets/multicolorGfx/farmland_bottomBar_night.kla"
+// };
 
 #pragma data ( farmlandSprites )
 

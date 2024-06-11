@@ -8,6 +8,7 @@
 #include <engine/irqHandler.h>
 #include <assets/assetsSettings.h>
 #include <engine/gameSettings.h>
+#include <assets/music.h>
 #include <translation/common.h>
 
 // screen will be split at these lines
@@ -35,13 +36,21 @@ Play msx, if enabled
 ================================================================================ */
 static void playMsx(){
     if(gms_enableMusic){
-        byte _prevRomCfgPC = ((byte *)0x01)[0];
-        __asm {
-            lda #MSX_ROM
-            sta $01
-            jsr MSX_PLAY
-        };
-        ((byte *)0x01)[0] = _prevRomCfgPC;
+        if(gms_musicPlayNow){
+
+            byte _prevRomCfgPC = ((byte *)0x01)[0];
+            __asm {
+                lda #MSX_ROM
+                sta $01
+                jsr MSX_PLAY
+            };
+            ((byte *)0x01)[0] = _prevRomCfgPC;
+        }
+        // if it's 1x speed, skip next frame
+        if(gms_musicPlayCount == SPEED_1X) {
+            // vic.color_border--;
+            gms_musicPlayNow = !gms_musicPlayNow;
+        }
     }
 }
 

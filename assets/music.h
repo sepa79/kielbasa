@@ -10,17 +10,18 @@ struct Song {
     char songIdx;
     /* SID index in the bank */
     char sidIdx;
-    /* how much to copy */
-    unsigned int size;
+    /* speed, in times per frame */
+    unsigned int speed;
 };
 
+#define SPEED_1X 1
+#define SPEED_2X 2
+
 #define TITLE_ONLY 0xff
-#define RADIO_PLAYLIST_SIZE 0
-#define PLAYLIST_SIZE 0 + RADIO_PLAYLIST_SIZE
+#define RADIO_PLAYLIST_SIZE 5
+#define PLAYLIST_SIZE 7 + RADIO_PLAYLIST_SIZE
 
 extern const struct Song PLAYLIST[];
-
-void loadMusic(const struct Song * song);
 
 #pragma compile("music.c")
 
