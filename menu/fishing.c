@@ -22,6 +22,7 @@ __export const char fishingMenuGfx1[] = {
 #pragma data(fishingMenuSprites)
 __export const char fishingMenuSprites[] = {
     #embed 0xffff 20 "assets/sprites/rybceAnim.spd"
+    #embed 0xffff 20 "assets/sprites/bar.spd"
 };
 
 #pragma code(fishingMenuRAMCode)
@@ -46,6 +47,7 @@ enum JOY_EXPECTED_POS {
 volatile char expectedJoyPos = JOY_UP;
 
 RIRQCode rirqc_frow1, rirqc_frow2;
+#define BAR_SPRITE_BANK 0x54
 #define HOOK_SPRITE_BANK 0x11
 #define JOY_SPRITE_BANK 0x12
 #define FISH_SPRITE_BANK 0x18
@@ -77,11 +79,11 @@ void fishingMenuSpriteLoader(){
     // and one more time, the remaining few
     setPort(MMAP_ROM);
     // CRT rom to buffer -> GFX_1_SCR
-    memcpy(GFX_1_SCR, fishingMenuSprites+(47+15)*64, 5*64);
+    memcpy(GFX_1_SCR, fishingMenuSprites+(47+15)*64, 8*64);
     // switch IO off
     setPort(MMAP_RAM);
     // // buffer to RAM under IO
-    memcpy(GFX_1_FNT2+15*64, GFX_1_SCR, 5*64);
+    memcpy(GFX_1_FNT2+15*64, GFX_1_SCR, 8*64);
 
     setPort(pport);
     setBank(pbank);
@@ -199,15 +201,19 @@ __interrupt static void IRQ_bottomUI() {
     vic.spr_expand_x = 0b00000000;
     vic.spr_expand_y = 0b00000000;
     vic.spr_priority = 0b00000000;
-    vic.spr_multi    = 0b00000000;
+    vic.spr_multi    = 0b00011000;
     
-    vic.spr_mcolor0  = VCOL_MED_GREY;
-    vic.spr_mcolor1  = VCOL_LT_GREY;
+    vic.spr_mcolor0  = VCOL_ORANGE;
+    vic.spr_mcolor1  = VCOL_GREEN;
 
-    vic.spr_msbx = 0b11000000;
+    vic.spr_msbx = 0b00000000;
 
     GFX_2_SCR[OFFSET_SPRITE_PTRS+0] = JOY_SPRITE_BANK+JOY_FIRE;
     GFX_2_SCR[OFFSET_SPRITE_PTRS+1] = JOY_SPRITE_BANK+expectedJoyPos;
+
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+2] = BAR_SPRITE_BANK;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+3] = BAR_SPRITE_BANK +1;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+4] = BAR_SPRITE_BANK +2;
 
     #define SPACER_WIDTH 16
     #define SPRITE_WIDTH 24
@@ -215,13 +221,27 @@ __interrupt static void IRQ_bottomUI() {
     vic.spr_pos[0].x = 24 + SPACER_WIDTH*1 + SPRITE_WIDTH;
     vic.spr_pos[1].x = 24 + SPACER_WIDTH*1 + SPRITE_WIDTH;
 
+    vic.spr_expand_x = 0b00011100;
+
+    vic.spr_pos[2].x = 24 + 160 - 24;
+    vic.spr_pos[3].x = 24 + 160 - 24;
+    vic.spr_pos[4].x = 24 + 160 - 24;
+
     vic.spr_pos[0].y = 2;
     vic.spr_pos[1].y = 2;
+
+    vic.spr_pos[2].y = 12;
+    vic.spr_pos[3].y = 12;
+    vic.spr_pos[4].y = 12;
 
     vic.spr_color[0] = VCOL_DARK_GREY;
     vic.spr_color[1] = VCOL_MED_GREY;
 
-    vic.spr_enable = 0b00000011;
+    vic.spr_color[2] = VCOL_MED_GREY;
+    vic.spr_color[3] = VCOL_BROWN;
+    vic.spr_color[4] = VCOL_BLACK;
+
+    vic.spr_enable = 0b00011111;
     // indicate frame position
     gms_framePos = FRAME_BOTTOM;
     // vic.color_border++;

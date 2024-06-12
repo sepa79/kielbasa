@@ -40,19 +40,19 @@ volatile char animDelay = 1;
 
 #pragma data ( shopOutGfxDay )
 __export const char shopOutGfx1[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/shopOutside_31.10.22.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/shopOutside_31.10.22.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/shopOutside_31.10.22.kla"
+    #embed 0x0f00 0x0002 rle "assets/multicolorGfx/shopOutside_31.10.22.kla"
+    #embed 0x01e0 0x1f42 rle "assets/multicolorGfx/shopOutside_31.10.22.kla"
+    #embed 0x01e0 0x232a rle "assets/multicolorGfx/shopOutside_31.10.22.kla"
 };
 #pragma data ( shopOutGfxNight )
 __export const char shopOutGfx2[] = {
-    #embed 0x0f00 0x0002 "assets/multicolorGfx/shopOutside_31.10.22.kla"
-    #embed 0x01e0 0x1f42 "assets/multicolorGfx/shopOutside_31.10.22.kla"
-    #embed 0x01e0 0x232a "assets/multicolorGfx/shopOutside_31.10.22.kla"
+    #embed 0x0f00 0x0002 rle "assets/multicolorGfx/shopOutside_31.10.22.kla"
+    #embed 0x01e0 0x1f42 rle "assets/multicolorGfx/shopOutside_31.10.22.kla"
+    #embed 0x01e0 0x232a rle "assets/multicolorGfx/shopOutside_31.10.22.kla"
 };
 
-__export const char shopOutGfx3[] = {
-    #embed 0x0400 20 "assets/sprites/piesGora.spd"
+__export const char shopOutSprites[] = {
+    #embed 0xffff 20 "assets/sprites/piesGora.spd"
 };
 // const data on CRT
 #pragma data ( shopOutData )
@@ -63,16 +63,7 @@ static const char shopOutAnimDelays[SHOP_OUTSIDE_ANIM_FRAMES] = { 64, 8, 6, 3, 6
 #pragma data ( data )
 
 static void _menuSpriteLoader(){
-    char i = 0;
-    do {
-#assign y 0
-#repeat
-       ((volatile char*) MENU_SPRITE_DST)[y + i] = shopOutGfx3[y + i];
-#assign y y + 0x100
-#until y == 0x0400
-        i++;
-    } while (i != 0);
-#undef y
+    memcpy((volatile char*) MENU_SPRITE_DST, shopOutSprites, 0x40*26);
 }
 
 static bool _checkIfOpen(){
@@ -90,26 +81,34 @@ static bool _checkIfOpen(){
 
 
 __interrupt static void _shopOutsideShowSprites(){
-    vic.spr_enable   = 0b00000011;
+    vic.spr_enable   = 0b00001111;
     vic.spr_expand_x = 0b00000000;
     vic.spr_expand_y = 0b00000000;
     vic.spr_priority = 0b00000000;
     vic.spr_mcolor0  = SHOP_OUTSIDE_SMC1;
     vic.spr_mcolor1  = SHOP_OUTSIDE_SMC2;
-    vic.spr_multi    = 0b11111111;
+    vic.spr_multi    = 0b00000011;
     vic.spr_msbx     = 0b00000000;
 
     vic.spr_pos[0].x = SHOP_OUTSIDE_ANIM_X;
     vic.spr_pos[1].x = SHOP_OUTSIDE_ANIM_X;
+    vic.spr_pos[2].x = SHOP_OUTSIDE_ANIM_X;
+    vic.spr_pos[3].x = SHOP_OUTSIDE_ANIM_X;
     vic.spr_pos[0].y = SHOP_OUTSIDE_ANIM_Y;
     vic.spr_pos[1].y = SHOP_OUTSIDE_ANIM_Y+21;
+    vic.spr_pos[2].y = SHOP_OUTSIDE_ANIM_Y;
+    vic.spr_pos[3].y = SHOP_OUTSIDE_ANIM_Y+21;
 
     vic.spr_color[0] = SHOP_OUTSIDE_ANIM_C1;
     vic.spr_color[1] = SHOP_OUTSIDE_ANIM_C2;
+    vic.spr_color[2] = VCOL_BLACK;
+    vic.spr_color[3] = VCOL_BLACK;
 
     char sprPtr = SHOP_OUTSIDE_SPR_BANK_ANIM + animFrame;
     GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = sprPtr;
     GFX_1_SCR[OFFSET_SPRITE_PTRS+1] = SHOP_OUTSIDE_SPR_BANK;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+2] = sprPtr+13;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+3] = SHOP_OUTSIDE_SPR_BANK+13;
 
     animDelay--;
     if(animDelay == 0){
@@ -176,7 +175,7 @@ static void _menuHandler(void){
 
 __export static const Loaders menuLoaders = {
     .loadMenuCode    = &menuNoop,
-    .loadMenuGfx     = &menuGfxLoader,
+    .loadMenuGfx     = &menuGfxLoaderRle,
     .loadMenuSprites = &_menuSpriteLoader,
     .showMenu        = &_menuHandler,
     .showSprites     = &_shopOutsideShowSprites,

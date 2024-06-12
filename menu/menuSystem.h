@@ -75,6 +75,7 @@ extern volatile char mnu_menuBank;
 void loadCacheTxt(char cache_index);
 void loadMenu(byte bank);
 void loadMenuGfx();
+void loadMenuGfxRle();
 void loadFullKoalaToBMP2();
 void loadMenuSprites();
 void showMenu();

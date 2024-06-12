@@ -21,13 +21,13 @@
 
 #pragma data(respawnGfx)
 __export const char respawnGfx[] = {
-    #embed 8000 2 rle "assets/multicolorGfx/staminacritical.kla"
+    #embed 8000 2 rle "assets/multicolorGfx/staminacritical120624.kla"
 };
 __export const char respawnGfxC1[] = {
-    #embed 1000 0x1f42 "assets/multicolorGfx/staminacritical.kla"
+    #embed 1000 0x1f42 "assets/multicolorGfx/staminacritical120624.kla"
 };
 __export const char respawnGfxC2[] = {
-    #embed 1000 0x232a "assets/multicolorGfx/staminacritical.kla"
+    #embed 1000 0x232a "assets/multicolorGfx/staminacritical120624.kla"
 };
 __export const char respawnSprites[] = {
     #embed 0xc0 20 "assets/sprites/back.spd"

@@ -19,7 +19,7 @@ __interrupt void titleScreenIrq1(){
     __asm {
         lda #MSX_ROM
         sta $01
-        jsr MSX_PLAY
+        // jsr MSX_PLAY
         // dec $d020
         lda #$37
         sta $01

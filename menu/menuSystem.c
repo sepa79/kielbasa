@@ -223,6 +223,76 @@ void menuGfxLoader(){
     }
 }
 
+static void _loadDayGfxRle(){
+    _waitForScreenMiddle();
+    _fillHalfGfxBlack();
+
+    // load bitmap
+    char i = 0;
+    do {
+#assign y 0
+#repeat
+        GFX_1_BMP[y + i] = ((char*)DAY_GFX_BMP)[y + i];
+#assign y y + 0x100
+#until y == 0x0f00
+        i++;
+    } while (i != 0);
+
+    _waitForScreenMiddle();
+
+    // load colors
+    i = 0;
+    do {
+#assign y 0
+#repeat
+        GFX_1_SCR[y + i] = ((char*)DAY_GFX_SCR)[y + i];
+        COLOR_RAM[y + i] = ((char*)DAY_GFX_COL)[y + i];
+#assign y y + 0xf0
+#until y == 0x1e0
+        i++;
+    } while (i != 0xf0);
+
+}
+
+static void _loadNightGfxRle(){
+    _waitForScreenMiddle();
+    _fillHalfGfxBlack();
+
+    // load bitmap
+    char i = 0;
+    do {
+#assign y 0
+#repeat
+        GFX_1_BMP[y + i] = ((char*)NIGHT_GFX_BMP)[y + i];
+#assign y y + 0x100
+#until y == 0x0f00
+        i++;
+    } while (i != 0);
+
+    _waitForScreenMiddle();
+
+    // load colors
+    i = 0;
+    do {
+#assign y 0
+#repeat
+        GFX_1_SCR[y + i] = ((char*)NIGHT_GFX_SCR)[y + i];
+        COLOR_RAM[y + i] = ((char*)NIGHT_GFX_COL)[y + i];
+#assign y y + 0xf0
+#until y == 0x1e0
+        i++;
+    } while (i != 0xf0);
+}
+
+// Switches graphic according to day/night cycle, using compression
+void menuGfxLoaderRle(){
+    if(GS.calendar.isDay){
+        _loadDayGfxRle();
+    } else {
+        _loadNightGfxRle();
+    }
+}
+
 void loadFullKoalaToBMP2(){
     // load colors
     char i = 0;
