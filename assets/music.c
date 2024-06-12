@@ -25,16 +25,16 @@
 #pragma data ( mainGameMsx )
 //++++++++++++++++++++++++++++++++
 
-__export const char msxTitle[] = {
-    #embed 0xffff rle "assets/music/8k_demoSong.sid"
-};
+// __export const char msxTitle[] = {
+//     #embed 0xffff rle "assets/music/8k_demoSong.sid"
+// };
 __export const char msxMain[] = {
     #embed 0xffff 0x88 rle "assets/music/FarmGame-1.sid"
 };
 
-// __export const char msxFightIntro[] = {
-//     #embed 0xffff 0x88 rle "assets/music/FarmGame-2.sid"
-// };
+__export const char msxFightIntro[] = {
+    #embed 0xffff 0x88 rle "assets/music/FarmGame-2.sid"
+};
 __export const char msxAirDef[] = {
     #embed 0xffff 0x88 rle "assets/music/FarmGame-3.sid"
 };
@@ -102,9 +102,9 @@ __export const char boomboxAtr[] = {
 #pragma code ( code )
 #pragma data ( data )
 __export const char* sidIndex[] ={
-    msxTitle,
+    // msxTitle,
     msxMain,
-    // msxFightIntro,
+    msxFightIntro,
     msxAirDef,
     msxVMap,
 
@@ -166,8 +166,8 @@ const struct Song RADIO_PLAYLIST[RADIO_PLAYLIST_SIZE] = {
 
 const struct Song PLAYLIST[PLAYLIST_SIZE] = {
     { TXT_PLAYLIST_GM_NAME, TITLE_ONLY, TITLE_ONLY, TITLE_ONLY, 0 },
-    { TXT_PLAYLIST_GM_S1, MUSIC_BANK, 0, 0, SPEED_1X },
-    { TXT_PLAYLIST_GM_S2, MUSIC_BANK, 1, 1, SPEED_2X },
+    { TXT_PLAYLIST_GM_S1, MUSIC_BANK, 0, 0, SPEED_2X },
+    { TXT_PLAYLIST_GM_S2, MUSIC_BANK, 1, 0, SPEED_2X },
     { TXT_PLAYLIST_GM_S3, MUSIC_BANK, 0, 2, SPEED_2X },
     { TXT_PLAYLIST_GM_S4, MUSIC_BANK, 0, 1, SPEED_2X },//change it
     { TXT_PLAYLIST_GM_S5, MUSIC_BANK, 0, 3, SPEED_2X },
