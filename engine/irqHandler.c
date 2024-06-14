@@ -31,6 +31,17 @@ static byte _joy2Status = 127;
 
 byte currentScreenMode = 0;
 
+// cache for msx sync marker
+volatile byte _msxMarker = 0;
+
+void clearMsxSync(){
+    _msxMarker = 0;
+}
+void waitForMsxSync(){
+    do {} while(_msxMarker == 0);
+    _msxMarker = 0;
+}
+
 /* ================================================================================
 Play msx, if enabled
 ================================================================================ */
@@ -43,6 +54,13 @@ static void playMsx(){
                 lda #MSX_ROM
                 sta $01
                 jsr MSX_PLAY
+                lda $803f
+                cmp #$10
+                bne ex
+                sta _msxMarker // copy to marker
+                lda #$00       // wipe marker in player
+                sta $803f
+            ex:
             };
             ((byte *)0x01)[0] = _prevRomCfgPC;
         }

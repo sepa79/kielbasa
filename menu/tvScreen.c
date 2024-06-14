@@ -40,7 +40,7 @@ __export const char tvScreenGfx1[] = {
 #define SPRITE_BLOCK_POINTER ((char *)0xc800)
 
 #define TV_SCANLINE_START 80
-#define TV_SCANLINE_END   210
+#define TV_SCANLINE_END   200
 volatile char line = TV_SCANLINE_START;
 
 // #define delay 16

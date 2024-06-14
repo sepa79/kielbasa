@@ -43,10 +43,10 @@ static struct LogMsg currentLogMsg;
 static void _copyCurrentLogMsg(byte i){
     // set ROM into mode that allows us to read A000-B000
     __asm{ sei };
-    mmap_set(MMAP_NO_ROM);
+    char pport = setPort(MMAP_NO_ROM);
     currentLogMsg = LOG_MSGS[i];
     // revert ROM
-    mmap_set(MMAP_ROM);
+    setPort(pport);
     __asm{ cli };
 }
 

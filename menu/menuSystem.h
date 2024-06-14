@@ -69,6 +69,16 @@ struct Loaders {
     void (*runMenuLoop)(void);
 };
 
+// Data vector table used for compressed gfx
+struct GfxData {
+    const char * DayBmp;
+    const char * DayC1;
+    const char * DayC2;
+    const char * NightBmp;
+    const char * NightC1;
+    const char * NightC2;
+};
+
 extern bool mnu_isGfxLoaded;
 extern volatile char mnu_menuBank;
 

@@ -32,28 +32,50 @@ volatile char animDelay = 1;
 #pragma section( shopOutLoaderData, 0 )
 #pragma section( shopOutCode, 0 )
 #pragma section( shopOutData, 0 )
+#pragma section( shopOutGfxData, 0 )
 #pragma section( shopOutGfxDay, 0 )
 #pragma section( shopOutGfxNight, 0 )
 #pragma region( bankShopOutC, 0x8000, 0x9000, , MENU_BANK_SHOP, { shopOutLoaderData, shopOutCode, shopOutData } )
-#pragma region( bankShopOutG1, DAY_GFX_BMP, DAY_GFX_BMP+0x12c0, , MENU_BANK_SHOP, { shopOutGfxDay } )
-#pragma region( bankShopOutG2, NIGHT_GFX_BMP, 0xbc00, , MENU_BANK_SHOP, { shopOutGfxNight } )
+#pragma region( bankShopOutG1, DAY_GFX_BMP, DAY_GFX_BMP+0x12c0+12, , MENU_BANK_SHOP, { shopOutGfxData, shopOutGfxDay } )
+#pragma region( bankShopOutG2, NIGHT_GFX_BMP+12, 0xbc00, , MENU_BANK_SHOP, { shopOutGfxNight } )
 
 #pragma data ( shopOutGfxDay )
-__export const char shopOutGfx1[] = {
+
+__export const char shopOutGfx1a[] = {
     #embed 0x0f00 0x0002 rle "assets/multicolorGfx/shopOutside_31.10.22.kla"
+};
+__export const char shopOutGfx1b[] = {
     #embed 0x01e0 0x1f42 rle "assets/multicolorGfx/shopOutside_31.10.22.kla"
+};
+__export const char shopOutGfx1c[] = {
     #embed 0x01e0 0x232a rle "assets/multicolorGfx/shopOutside_31.10.22.kla"
 };
+
 #pragma data ( shopOutGfxNight )
-__export const char shopOutGfx2[] = {
+__export const char shopOutGfx2a[] = {
     #embed 0x0f00 0x0002 rle "assets/multicolorGfx/shopOutside_31.10.22.kla"
+};
+__export const char shopOutGfx2b[] = {
     #embed 0x01e0 0x1f42 rle "assets/multicolorGfx/shopOutside_31.10.22.kla"
+};
+__export const char shopOutGfx2c[] = {
     #embed 0x01e0 0x232a rle "assets/multicolorGfx/shopOutside_31.10.22.kla"
 };
 
 __export const char shopOutSprites[] = {
     #embed 0xffff 20 "assets/sprites/piesGora.spd"
 };
+
+#pragma data ( shopOutGfxData )
+__export static const GfxData gfxData = {
+    .DayBmp   = shopOutGfx1a,
+    .DayC1    = shopOutGfx1b,
+    .DayC2    = shopOutGfx1c,
+    .NightBmp = shopOutGfx2a,
+    .NightC1  = shopOutGfx2b,
+    .NightC2  = shopOutGfx2c,
+};
+
 // const data on CRT
 #pragma data ( shopOutData )
 static const char shopOutAnimDelays[SHOP_OUTSIDE_ANIM_FRAMES] = { 64, 8, 6, 3, 6, 8, 255, 8, 6, 3, 6, 8 };
@@ -87,28 +109,28 @@ __interrupt static void _shopOutsideShowSprites(){
     vic.spr_priority = 0b00000000;
     vic.spr_mcolor0  = SHOP_OUTSIDE_SMC1;
     vic.spr_mcolor1  = SHOP_OUTSIDE_SMC2;
-    vic.spr_multi    = 0b00000011;
+    vic.spr_multi    = 0b00001100;
     vic.spr_msbx     = 0b00000000;
 
     vic.spr_pos[0].x = SHOP_OUTSIDE_ANIM_X;
     vic.spr_pos[1].x = SHOP_OUTSIDE_ANIM_X;
     vic.spr_pos[2].x = SHOP_OUTSIDE_ANIM_X;
     vic.spr_pos[3].x = SHOP_OUTSIDE_ANIM_X;
-    vic.spr_pos[0].y = SHOP_OUTSIDE_ANIM_Y;
-    vic.spr_pos[1].y = SHOP_OUTSIDE_ANIM_Y+21;
-    vic.spr_pos[2].y = SHOP_OUTSIDE_ANIM_Y;
-    vic.spr_pos[3].y = SHOP_OUTSIDE_ANIM_Y+21;
+    vic.spr_pos[0].y = SHOP_OUTSIDE_ANIM_Y+21;
+    vic.spr_pos[1].y = SHOP_OUTSIDE_ANIM_Y;
+    vic.spr_pos[2].y = SHOP_OUTSIDE_ANIM_Y+21;
+    vic.spr_pos[3].y = SHOP_OUTSIDE_ANIM_Y;
 
-    vic.spr_color[0] = SHOP_OUTSIDE_ANIM_C1;
-    vic.spr_color[1] = SHOP_OUTSIDE_ANIM_C2;
-    vic.spr_color[2] = VCOL_BLACK;
-    vic.spr_color[3] = VCOL_BLACK;
+    vic.spr_color[0] = VCOL_BLACK;
+    vic.spr_color[1] = VCOL_BLACK;
+    vic.spr_color[2] = SHOP_OUTSIDE_ANIM_C1;
+    vic.spr_color[3] = SHOP_OUTSIDE_ANIM_C2;
 
     char sprPtr = SHOP_OUTSIDE_SPR_BANK_ANIM + animFrame;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = sprPtr;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+1] = SHOP_OUTSIDE_SPR_BANK;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+2] = sprPtr+13;
-    GFX_1_SCR[OFFSET_SPRITE_PTRS+3] = SHOP_OUTSIDE_SPR_BANK+13;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+0] = SHOP_OUTSIDE_SPR_BANK+13;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+1] = sprPtr+13;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+2] = SHOP_OUTSIDE_SPR_BANK;
+    GFX_1_SCR[OFFSET_SPRITE_PTRS+3] = sprPtr;
 
     animDelay--;
     if(animDelay == 0){

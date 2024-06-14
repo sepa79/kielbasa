@@ -11,7 +11,7 @@
 
 //      "pragma_label": Txt,
 //      "array_label": TXT,
-//      "indexes_count": 84
+//      "indexes_count": 88
 
 enum TXT_INDEXES {
     TXT_IDX_BATTLE_MENU_ATTACK,
@@ -64,6 +64,10 @@ enum TXT_INDEXES {
     TXT_IDX_MENU_MAIN1,
     TXT_IDX_MENU_MAIN2,
     TXT_IDX_MENU_MAIN3,
+    TXT_IDX_DEBUG_1,
+    TXT_IDX_DEBUG_2,
+    TXT_IDX_DEBUG_3,
+    TXT_IDX_DEBUG_4,
     TXT_IDX_MENU_KITCHEN1,
     TXT_IDX_MENU_KITCHEN2,
     TXT_IDX_MENU_KITCHEN3,
@@ -155,10 +159,11 @@ enum TXT_FARMLAND_INDEXES {
 
 //      "pragma_label": TxtFishing,
 //      "array_label": TXT_FISHING,
-//      "indexes_count": 1
+//      "indexes_count": 2
 
 enum TXT_FISHING_INDEXES {
-    LSB_IDX_MENU_FISHING
+    LSB_IDX_MENU_FISHING,
+    LSB_IDX_MENU_FISHING2
 };
 
 //      "pragma_label": TxtKitchen,

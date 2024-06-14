@@ -89,7 +89,7 @@ void initGameStartScreen(){
 
     setBank(MUSIC_BANK);
     // loadMusic(&PLAYLIST[MSX_MAIN_THEME]);
-    oscar_expand_rle((char*)MSX_DST_ADR, (char*)MSX_DST_ADR);
+    oscar_expand_lzo_buf((char*)MSX_DST_ADR, (char*)MSX_DST_ADR);
 
     __asm {
         sei

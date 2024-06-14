@@ -226,62 +226,23 @@ void menuGfxLoader(){
 static void _loadDayGfxRle(){
     _waitForScreenMiddle();
     _fillHalfGfxBlack();
-
-    // load bitmap
-    char i = 0;
-    do {
-#assign y 0
-#repeat
-        GFX_1_BMP[y + i] = ((char*)DAY_GFX_BMP)[y + i];
-#assign y y + 0x100
-#until y == 0x0f00
-        i++;
-    } while (i != 0);
-
+    // load bitmap - pointers are stored at DAY_GFX_BMP, total 6 of them
+    oscar_expand_rle(GFX_1_BMP, (const char *) (*(unsigned short *)(DAY_GFX_BMP+0)));
     _waitForScreenMiddle();
-
     // load colors
-    i = 0;
-    do {
-#assign y 0
-#repeat
-        GFX_1_SCR[y + i] = ((char*)DAY_GFX_SCR)[y + i];
-        COLOR_RAM[y + i] = ((char*)DAY_GFX_COL)[y + i];
-#assign y y + 0xf0
-#until y == 0x1e0
-        i++;
-    } while (i != 0xf0);
-
+    oscar_expand_rle(GFX_1_SCR, (const char *) (*(unsigned short *)(DAY_GFX_BMP+2)));
+    oscar_expand_rle(COLOR_RAM, (const char *) (*(unsigned short *)(DAY_GFX_BMP+4)));
 }
 
 static void _loadNightGfxRle(){
     _waitForScreenMiddle();
     _fillHalfGfxBlack();
-
-    // load bitmap
-    char i = 0;
-    do {
-#assign y 0
-#repeat
-        GFX_1_BMP[y + i] = ((char*)NIGHT_GFX_BMP)[y + i];
-#assign y y + 0x100
-#until y == 0x0f00
-        i++;
-    } while (i != 0);
-
+    // load bitmap - pointers are stored at DAY_GFX_BMP, total 6 of them
+    oscar_expand_rle(GFX_1_BMP, (const char *) (*(unsigned short *)(DAY_GFX_BMP+6)));
     _waitForScreenMiddle();
-
     // load colors
-    i = 0;
-    do {
-#assign y 0
-#repeat
-        GFX_1_SCR[y + i] = ((char*)NIGHT_GFX_SCR)[y + i];
-        COLOR_RAM[y + i] = ((char*)NIGHT_GFX_COL)[y + i];
-#assign y y + 0xf0
-#until y == 0x1e0
-        i++;
-    } while (i != 0xf0);
+    oscar_expand_rle(GFX_1_SCR, (const char *) (*(unsigned short *)(DAY_GFX_BMP+8)));
+    oscar_expand_rle(COLOR_RAM, (const char *) (*(unsigned short *)(DAY_GFX_BMP+10)));
 }
 
 // Switches graphic according to day/night cycle, using compression

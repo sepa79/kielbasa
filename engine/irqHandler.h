@@ -50,6 +50,10 @@ void switchScreenTo(byte screenMode);
 // Main IRQ init - must be called first, sets up all the bits.
 void initRasterIRQ();
 
+// msx marker routines
+void clearMsxSync();
+void waitForMsxSync();
+
 #pragma compile("irqHandler.c")
 
 #endif

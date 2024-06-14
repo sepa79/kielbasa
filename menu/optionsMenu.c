@@ -163,7 +163,7 @@ static void _playMsx(const struct Song * song, bool restart){
             setBank(song->bank);
 
             // load different MSX file
-            oscar_expand_rle((char*)MSX_DST_ADR, sidIndex[sidIdx]);
+            oscar_expand_lzo_buf((char*)MSX_DST_ADR, sidIndex[sidIdx]);
 
             setBank(MUSIC_BANK);
             // if we have reloaded, reset SongIdx

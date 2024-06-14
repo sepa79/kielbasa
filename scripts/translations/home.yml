@@ -20,6 +20,23 @@ Txt:
     en: 'TV News   '
     pl: 'Wiadomości'
 
+  - id: DEBUG_1
+    menu_opt: '4'
+    en: 'D: Fishing'
+    pl: 'D: Rybce  '
+  - id: DEBUG_2
+    menu_opt: '5'
+    en: 'D: Respawn'
+    pl: 'D: Respawn'
+  - id: DEBUG_3
+    menu_opt: '6'
+    en: 'D: Battle '
+    pl: 'D: Bitka  '
+  - id: DEBUG_4
+    menu_opt: '7'
+    en: 'D: AirDef '
+    pl: 'D: Stonka '
+
 
 
 

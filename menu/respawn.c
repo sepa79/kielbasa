@@ -140,7 +140,7 @@ char recodeTable[] = {
 //-------------------------------------------------------------- F1
 #define DELAY_BW 5
 #define DELAY_W 5
-#define DELAY_F 20
+
 #define FRAME_1_SX 0
 #define FRAME_1_SY 0
 #define FRAME_1_EX 16
@@ -423,38 +423,25 @@ static void _showFrame5(){
 }
 
 static void _showFrames(){
+    clearMsxSync();
     _loadBmpOnly();
-    vic_waitFrames(DELAY_F);
+    waitForMsxSync();
     _showFrame1();
-    vic_waitFrames(DELAY_F);
+    waitForMsxSync();
     _showFrame2();
-    vic_waitFrames(DELAY_F);
+    waitForMsxSync();
     _showFrame3();
-    vic_waitFrames(DELAY_F);
+    waitForMsxSync();
     _showFrame4();
-    vic_waitFrames(DELAY_F);
+    waitForMsxSync();
     _showFrame5();
+    waitForMsxSync();
 
-//     // load colors
-//     char i = 0;
-//     do {
-// #assign y 0
-// #repeat
-//         GFX_2_SCR[y + i] = _recodeByte(respawnGfxC1[y + i]);
-//         COLOR_RAM[y + i] = recodeTable[respawnGfxC2[y + i]];
-// #assign y y + 256
-// #until y == 1024
-//         i++;
-//     } while (i != 0);
-// #undef y
-
-    // memcpy(GFX_2_SCR, respawnGfxBW1, 1000);
-    // memcpy(COLOR_RAM, respawnGfxBW2, 1000);
 }
 
 const struct MenuOption RESPAWN_MENU[] = {
-    { TXT_IDX_MENU_EXIT, ' ', SCREEN_MC_GFX, UI_LF+UI_HIDE, &_showFrames, 0, 2, 11},
-    // { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &revertPreviousMenu, 0, 2, 11},
+    // { TXT_IDX_MENU_EXIT, ' ', SCREEN_MC_GFX, UI_LF+UI_HIDE, &_showFrames, 0, 2, 11},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &revertPreviousMenu, 0, 2, 11},
     END_MENU_CHOICES
 };
 
@@ -469,6 +456,7 @@ static void _menuHandler(void) {
     memcpy(SPRITE_BLOCK_POINTER+3*64, respawnSprites, 3*64);
     _showSprites = false;
     loadMenuGfx();
+    playSong(RESPAWN_SONG);
     switchScreenTo(SCREEN_MC_GFX);
 
     _showFrames();
@@ -491,11 +479,11 @@ static void _menuHandler(void) {
     // vic_waitFrames(200);
 
     displayMenu(RESPAWN_MENU);
-    updateStatusBar(TXT[SB_IDX_MENU_RESPAWN]);
+    updateStatusBarError(TXT[SB_IDX_MENU_RESPAWN]);
 
     // wait for space
-    do { keyb_poll(); rand();} while (!keyb_key);
-    keyb_key = 0;
+    // do { keyb_poll(); rand();} while (!keyb_key);
+    // revertPreviousMenu();
 }
 
 #pragma data(respawnLoaderData)

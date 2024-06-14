@@ -105,6 +105,9 @@ void gotoLocation(){
 }
 
 void mainLoop(){
+    // set port so we have something initialised
+    setPort(MMAP_ROM);
+
     memcpy(LOG_DATA, p"Game Start", 10);
     logger(LOG_INFO | LOG_MSG_TEXT);
 

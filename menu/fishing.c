@@ -35,7 +35,8 @@ volatile Fish allFish[FISH_COUNT];
 // hook sprite coordinates
 unsigned int hx = 0;
 char hy = 0;
-
+// throw power counter, used for sprites and calculations
+volatile char _power = 0;
 enum JOY_EXPECTED_POS {
     JOY_NONE=0,
     JOY_UP=1,
@@ -201,7 +202,7 @@ __interrupt static void IRQ_bottomUI() {
     vic.spr_expand_x = 0b00000000;
     vic.spr_expand_y = 0b00000000;
     vic.spr_priority = 0b00000000;
-    vic.spr_multi    = 0b00011000;
+    vic.spr_multi    = 0b00010000;
     
     vic.spr_mcolor0  = VCOL_ORANGE;
     vic.spr_mcolor1  = VCOL_GREEN;
@@ -212,8 +213,8 @@ __interrupt static void IRQ_bottomUI() {
     GFX_2_SCR[OFFSET_SPRITE_PTRS+1] = JOY_SPRITE_BANK+expectedJoyPos;
 
     GFX_2_SCR[OFFSET_SPRITE_PTRS+2] = BAR_SPRITE_BANK;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+3] = BAR_SPRITE_BANK +1;
-    GFX_2_SCR[OFFSET_SPRITE_PTRS+4] = BAR_SPRITE_BANK +2;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+3] = BAR_SPRITE_BANK +2;
+    GFX_2_SCR[OFFSET_SPRITE_PTRS+4] = BAR_SPRITE_BANK +1;
 
     #define SPACER_WIDTH 16
     #define SPRITE_WIDTH 24
@@ -224,7 +225,7 @@ __interrupt static void IRQ_bottomUI() {
     vic.spr_expand_x = 0b00011100;
 
     vic.spr_pos[2].x = 24 + 160 - 24;
-    vic.spr_pos[3].x = 24 + 160 - 24;
+    vic.spr_pos[3].x = 24 + 160 - 24 - _power;
     vic.spr_pos[4].x = 24 + 160 - 24;
 
     vic.spr_pos[0].y = 2;
@@ -238,8 +239,8 @@ __interrupt static void IRQ_bottomUI() {
     vic.spr_color[1] = VCOL_MED_GREY;
 
     vic.spr_color[2] = VCOL_MED_GREY;
-    vic.spr_color[3] = VCOL_BROWN;
-    vic.spr_color[4] = VCOL_BLACK;
+    vic.spr_color[3] = VCOL_BLACK;
+    vic.spr_color[4] = VCOL_BROWN;
 
     vic.spr_enable = 0b00011111;
     // indicate frame position
@@ -428,6 +429,12 @@ char ang = 0; // angle, 0-127 for 0-89.xx
 
 static void _fishLoop(){
     vic.color_border--;
+    // power indicator demo
+    _power++;
+    if(_power > 48){
+        _power = 0;
+    }
+
     // check line length
     if(r < 50){
         r = 130;
@@ -507,7 +514,8 @@ static void _lineUpJoyLeft(){
 
 static void _startFishing(){
     displayMenu(FISHING_MENU2);
-    // updateStatusBar(TXT_FISHING[LSB_IDX_MENU_FISHING2]);
+    updateStatusBar(TXT_FISHING[LSB_IDX_MENU_FISHING2]);
+    _power = 0;
 }
 
 // copy fishingMenuRAMCode
@@ -521,6 +529,7 @@ const struct MenuOption FISHING_MENU[] = {
     { TXT_IDX_MENU_SELECT, KEY_RETURN, SCREEN_FISHING, UI_F+UI_HIDE, &_startFishing, 0, 1, 1 },
     END_MENU_CHOICES
 };
+
 const struct MenuOption FISHING_MENU2[] = {
     // Add the "Exit to Map" option as shown in the example
     { TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_HIDE, &showMenu, MENU_BANK_FISHING_MENU, 2, 5 },

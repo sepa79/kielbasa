@@ -25,21 +25,24 @@
 #pragma data ( mainGameMsx )
 //++++++++++++++++++++++++++++++++
 
-// __export const char msxTitle[] = {
-//     #embed 0xffff rle "assets/music/8k_demoSong.sid"
-// };
+__export const char msxTitle[] = {
+    #embed 0xffff lzo "assets/music/8k_demoSong.sid"
+};
 __export const char msxMain[] = {
-    #embed 0xffff 0x88 rle "assets/music/FarmGame-1.sid"
+    #embed 0xffff 0x88 lzo "assets/music/FarmGame-1.sid"
+};
+__export const char msxRespawn[] = {
+    #embed 0xffff 0x7e lzo "assets/music/pigs_v01.sid"
 };
 
-__export const char msxFightIntro[] = {
-    #embed 0xffff 0x88 rle "assets/music/FarmGame-2.sid"
-};
+// __export const char msxFightIntro[] = {
+//     #embed 0xffff 0x88 lzo "assets/music/FarmGame-2.sid"
+// };
 __export const char msxAirDef[] = {
-    #embed 0xffff 0x88 rle "assets/music/FarmGame-3.sid"
+    #embed 0xffff 0x88 lzo "assets/music/FarmGame-3.sid"
 };
 __export const char msxVMap[] = {
-    #embed 0xffff 0x88 rle "assets/music/FarmGame-4.sid"
+    #embed 0xffff 0x88 lzo "assets/music/FarmGame-4.sid"
 };
 
 //++++++++++++++++++++++++++++++++
@@ -48,19 +51,19 @@ __export const char msxVMap[] = {
 
 __export const char radioMsx1_1[] = {
     // #embed 0xffff 136 "assets/music/FarmGameRadio1.sid"
-    #embed 0xffff 0x7e rle "assets/music/8k_mjThriller.sid"
+    #embed 0xffff 0x7e lzo "assets/music/8k_mjThriller.sid"
 };
 __export const char radioMsx1_2[] = {
-    #embed 0xffff 0x7e rle "assets/music/8k_tinaTheBest.sid"
+    #embed 0xffff 0x7e lzo "assets/music/8k_tinaTheBest.sid"
 };
 __export const char radioMsx1_3[] = {
-    #embed 0xffff 0x7e rle "assets/music/8k_highwayToHell.sid"
+    #embed 0xffff 0x7e lzo "assets/music/8k_highwayToHell.sid"
 };
 // __export const char radioMsx1_4[] = {
-//     #embed 0xffff 0x7e rle "assets/music/8k_pinbalBDG.sid"
+//     #embed 0xffff 0x7e lzo "assets/music/8k_pinbalBDG.sid"
 // };
 // __export const char radioMsx1_5[] = {
-//     #embed 0xffff 0x7e rle "assets/music/8k_pinbalPartyland.sid"
+//     #embed 0xffff 0x7e lzo "assets/music/8k_pinbalPartyland.sid"
 // };
 
 //++++++++++++++++++++++++++++++++
@@ -71,13 +74,13 @@ __export const char radioMsx1_3[] = {
 // };
 
 __export const char radioMsx2_1[] = {
-    #embed 0xffff 0x7e rle "assets/music/8k_crocket.sid"
+    #embed 0xffff 0x7e lzo "assets/music/8k_crocket.sid"
 };
 __export const char radioMsx2_2[] = {
-    #embed 0xffff 0x88 rle "assets/music/8k_mjBillieJean.sid"
+    #embed 0xffff 0x88 lzo "assets/music/8k_mjBillieJean.sid"
 };
 // __export const char radioMsx2_2[] = {
-//     #embed 0xffff 0x7e rle "assets/music/8k_pinbalPartyland.sid"
+//     #embed 0xffff 0x7e lzo "assets/music/8k_pinbalPartyland.sid"
 // };
 
 //++++++++++++++++++++++++++++++++
@@ -102,9 +105,10 @@ __export const char boomboxAtr[] = {
 #pragma code ( code )
 #pragma data ( data )
 __export const char* sidIndex[] ={
-    // msxTitle,
+    msxTitle,
     msxMain,
-    msxFightIntro,
+    msxRespawn,
+    // msxFightIntro,
     msxAirDef,
     msxVMap,
 
@@ -121,17 +125,17 @@ __export const char* sidIndex[] ={
 #pragma data ( musicData )
 
 const char TXT_PLAYLIST_GM_NAME[] =     s" Kielbasa music                      ";
-const char TXT_PLAYLIST_GM_S1[] =       s"1 Take me for a dance                ";
-const char TXT_PLAYLIST_GM_S2[] =       s"2 For Sausage and Stonka             ";
-const char TXT_PLAYLIST_GM_S3[] =       s"3 Flack Attack                       ";
-const char TXT_PLAYLIST_GM_S4[] =       s"4 Dare to Lair                       ";
-const char TXT_PLAYLIST_GM_S5[] =       s"5 Forest Froth                       ";
-const char TXT_PLAYLIST_GM_S6[] =       s"6 War of the Crops and Worlds        ";
+const char TXT_PLAYLIST_GM_S1[] =       s"1 Jeroen Tel - Demo Song             ";
+const char TXT_PLAYLIST_GM_S2[] =       s"2 Crisps - For Sausage and Stonka    ";
+const char TXT_PLAYLIST_GM_S3[] =       s"3 Mibri - Respawn theme              ";
+const char TXT_PLAYLIST_GM_S4[] =       s"4 Crisps - Flack Attack              ";
+const char TXT_PLAYLIST_GM_S5[] =       s"5 Crisps - Forest Froth              ";
+const char TXT_PLAYLIST_GM_S6[] =       s"6 C. - War of the Crops and Worlds   ";
 // const char TXT_PLAYLIST_RETRO_NAME[] =  s" Retro Tributes                      ";
 // const char TXT_PLAYLIST_RETRO_S1[] =    s"1 Robbing Mr Hubbard                 ";
 // const char TXT_PLAYLIST_RETRO_S2[] =    s"2 From Bangladesh to Bankok          ";
 // const char TXT_PLAYLIST_RETRO_S3[] =    s"3 Gray walls torn down               ";
-const char TXT_PLAYLIST_RADIO_NAME[] =  s" 90's Radio                          ";
+const char TXT_PLAYLIST_RADIO_NAME[] =  s" 90's Radio - Nordishsound           ";
 const char TXT_PLAYLIST_RADIO_S1[]   =  s"1 Michael Jackson - Thriller         ";
 const char TXT_PLAYLIST_RADIO_S2[]   =  s"2 Tina Turner - The best             ";
 const char TXT_PLAYLIST_RADIO_S3[]   =  s"3 AC/DC - Highway to Hell            ";
@@ -148,11 +152,11 @@ const char TXT_PLAYLIST_RADIO_S5[]   =  s"5 Michael Jackson - Billy Jean       "
 // const char TXT_PLAYLIST_RADIO_S9[] =    s"9 Eurythmics - Sweet Dreams          ";
 
 const struct Song RADIO_PLAYLIST[RADIO_PLAYLIST_SIZE] = {
-    { TXT_PLAYLIST_RADIO_S1, MUSIC_BANK_RADIO_1, 0, 4, SPEED_1X },
-    { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 0, 5, SPEED_1X },
-    { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 0, 6, SPEED_1X },
-    { TXT_PLAYLIST_RADIO_S4, MUSIC_BANK_RADIO_2, 0, 7, SPEED_1X },
-    { TXT_PLAYLIST_RADIO_S5, MUSIC_BANK_RADIO_2, 0, 8, SPEED_2X },
+    { TXT_PLAYLIST_RADIO_S1, MUSIC_BANK_RADIO_1, 0, 5, SPEED_1X },
+    { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 0, 6, SPEED_1X },
+    { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 0, 7, SPEED_1X },
+    { TXT_PLAYLIST_RADIO_S4, MUSIC_BANK_RADIO_2, 0, 8, SPEED_1X },
+    { TXT_PLAYLIST_RADIO_S5, MUSIC_BANK_RADIO_2, 0, 9, SPEED_2X },
     // { TXT_PLAYLIST_RADIO_S1, MUSIC_BANK_RADIO_1, 0, 4, sizeof(radioMsx01) },
     // { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 1, 4, sizeof(radioMsx01) },
     // { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 2, 4, sizeof(radioMsx01) },
@@ -166,23 +170,23 @@ const struct Song RADIO_PLAYLIST[RADIO_PLAYLIST_SIZE] = {
 
 const struct Song PLAYLIST[PLAYLIST_SIZE] = {
     { TXT_PLAYLIST_GM_NAME, TITLE_ONLY, TITLE_ONLY, TITLE_ONLY, 0 },
-    { TXT_PLAYLIST_GM_S1, MUSIC_BANK, 0, 0, SPEED_2X },
-    { TXT_PLAYLIST_GM_S2, MUSIC_BANK, 1, 0, SPEED_2X },
-    { TXT_PLAYLIST_GM_S3, MUSIC_BANK, 0, 2, SPEED_2X },
-    { TXT_PLAYLIST_GM_S4, MUSIC_BANK, 0, 1, SPEED_2X },//change it
-    { TXT_PLAYLIST_GM_S5, MUSIC_BANK, 0, 3, SPEED_2X },
-    { TXT_PLAYLIST_GM_S6, MUSIC_BANK, 1, 3, SPEED_2X },
+    { TXT_PLAYLIST_GM_S1, MUSIC_BANK, 0, 0, SPEED_1X },
+    { TXT_PLAYLIST_GM_S2, MUSIC_BANK, 1, 1, SPEED_2X },
+    { TXT_PLAYLIST_GM_S3, MUSIC_BANK, 0, 2, SPEED_1X },
+    { TXT_PLAYLIST_GM_S4, MUSIC_BANK, 0, 3, SPEED_2X },
+    { TXT_PLAYLIST_GM_S5, MUSIC_BANK, 0, 4, SPEED_2X },
+    { TXT_PLAYLIST_GM_S6, MUSIC_BANK, 1, 4, SPEED_2X },
     // { TXT_PLAYLIST_RETRO_NAME, TITLE_ONLY, TITLE_ONLY, TITLE_ONLY, 0 },
     // { TXT_PLAYLIST_RETRO_S1, MUSIC_BANK_RETRO_1, 0, 6, sizeof(retroMsx01) },
     // { TXT_PLAYLIST_RETRO_S2, MUSIC_BANK_RETRO_1, 1, 6, sizeof(retroMsx01) },
     // { TXT_PLAYLIST_RETRO_S3, MUSIC_BANK_RETRO_1, 2, 6, sizeof(retroMsx01) },
     // // find a way to avoid duplicating these
     { TXT_PLAYLIST_RADIO_NAME, TITLE_ONLY, TITLE_ONLY, TITLE_ONLY, 0 },
-    { TXT_PLAYLIST_RADIO_S1, MUSIC_BANK_RADIO_1, 0, 4, SPEED_1X },
-    { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 0, 5, SPEED_1X },
-    { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 0, 6, SPEED_1X },
-    { TXT_PLAYLIST_RADIO_S4, MUSIC_BANK_RADIO_2, 0, 7, SPEED_1X },
-    { TXT_PLAYLIST_RADIO_S5, MUSIC_BANK_RADIO_2, 0, 8, SPEED_2X },
+    { TXT_PLAYLIST_RADIO_S1, MUSIC_BANK_RADIO_1, 0, 5, SPEED_1X },
+    { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 0, 6, SPEED_1X },
+    { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 0, 7, SPEED_1X },
+    { TXT_PLAYLIST_RADIO_S4, MUSIC_BANK_RADIO_2, 0, 8, SPEED_1X },
+    { TXT_PLAYLIST_RADIO_S5, MUSIC_BANK_RADIO_2, 0, 9, SPEED_2X },
     // { TXT_PLAYLIST_RADIO_S1, MUSIC_BANK_RADIO_1, 0, 4, sizeof(radioMsx01) },
     // { TXT_PLAYLIST_RADIO_S2, MUSIC_BANK_RADIO_1, 1, 4, sizeof(radioMsx01) },
     // { TXT_PLAYLIST_RADIO_S3, MUSIC_BANK_RADIO_1, 2, 4, sizeof(radioMsx01) },
