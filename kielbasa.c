@@ -194,7 +194,7 @@ void mainLoop(){
                     prvMenu = mnu_menuBank;
                     switchScreenTo(SCREEN_TRANSITION);
                     loadMenu(MENU_BANK_RESPAWN);
-                    showMenu();
+                    showMenu(); // achtung - menu routine has to wait for space
 
                     gotoLocation();
                     break;

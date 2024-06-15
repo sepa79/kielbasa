@@ -441,7 +441,7 @@ static void _showFrames(){
 
 const struct MenuOption RESPAWN_MENU[] = {
     // { TXT_IDX_MENU_EXIT, ' ', SCREEN_MC_GFX, UI_LF+UI_HIDE, &_showFrames, 0, 2, 11},
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &revertPreviousMenu, 0, 2, 11},
+    // { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &revertPreviousMenu, 0, 2, 11},
     END_MENU_CHOICES
 };
 
@@ -459,12 +459,11 @@ static void _menuHandler(void) {
     playSong(RESPAWN_SONG);
     switchScreenTo(SCREEN_MC_GFX);
 
-    _showFrames();
-
-    allCharacters[0].energy = 50;
+    // regen some energy
+    allCharacters[0].energy = 150;
+    // finder's fee
     unsigned long respawnCost = lmuldiv16u(GS.cash, 10, 100);
     GS.cash -= respawnCost;
-    updateMoney();
 
     char str[10];
     char format[5] = "%7d";
@@ -474,16 +473,16 @@ static void _menuHandler(void) {
     sprintf(str, format, -respawnCost);
     textToSpriteAt(str, 3, SPRITE_BLOCK_POINTER, 0, 1);
 
-    vic_waitFrames(50);
+    _showFrames();
     _showSprites = true;
-    // vic_waitFrames(200);
+    updateMoney();
+    drawBattery(0);
 
     displayMenu(RESPAWN_MENU);
     updateStatusBarError(TXT[SB_IDX_MENU_RESPAWN]);
 
-    // wait for space
-    // do { keyb_poll(); rand();} while (!keyb_key);
-    // revertPreviousMenu();
+    // wait for any key, once we exit here the event code is going to reload main menu
+    do { keyb_poll(); rand();} while (!keyb_key);
 }
 
 #pragma data(respawnLoaderData)
