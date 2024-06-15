@@ -1,6 +1,7 @@
 #ifndef PIGSLE_CMD_IRQ_H
 #define PIGSLE_CMD_IRQ_H
-#include <miniGame/pigsleCmdMain.h>
+// #include <miniGame/pigsleCmdMain.h>
+#include <menu/pigsleCommand.h>
 
 #define IRQ_TOP_PLANE 1
 #define IRQ_TOP_PESTS 40
@@ -18,6 +19,8 @@ __interrupt void pigsleCmdIrq_cannonAnims();
 __interrupt void pigsleCmdIrq_openBorder();
 
 __interrupt void _pigsleCmdSpriteInit();
+
+void initRasterIRQ_Pigsle();
 
 extern volatile byte crosshairBank;
 // Switching code generation back to shared section

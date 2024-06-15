@@ -11,6 +11,9 @@
 #include <assets/music.h>
 #include <translation/common.h>
 
+// #include <menu/pigsleCommand.h>
+#include <miniGame/pigsleCmdIrq.h>
+
 // screen will be split at these lines
 #define IRQ_RASTER_TOP_MC_SCREEN 0x2e
 #define IRQ_RASTER_MIDDLE_TXT_SCREEN 0x91
@@ -731,6 +734,11 @@ void switchScreenTo(byte screenMode){
             case SCREEN_FISHING:
                 vic_waitLine(80);
                 initRasterIRQ_Fishing();
+                break;
+            // in menu/pigsleCommand.c
+            case SCREEN_PIGSLE:
+                vic_waitLine(80);
+                // initRasterIRQ_Pigsle();
                 break;
         }
 

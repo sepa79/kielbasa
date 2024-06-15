@@ -167,8 +167,6 @@ const char charX2[16] = {
 #pragma code ( pigsleCommandRAMCode )
 #pragma data ( pigsleCommandRAMData )
 #include <gfx/mcbitmap.h>
-#include <c64/rasterirq.h>
-RIRQCode topPlane, topPests, middlePests, cannonAnims, open;
 
 // Display bitmap
 Bitmap sbm;
@@ -565,13 +563,13 @@ static void _aimInit(){
     crosshairBank = PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK;
 }
 
-// State of the bomb plane
-volatile struct DropRun {
-    bool inProgress;
-    int x;
-    char dropsRemaining;
-    char nextDropDelay;
-} TheB29Plane;
+// // State of the bomb plane
+// volatile struct DropRun {
+//     bool inProgress;
+//     int x;
+//     char dropsRemaining;
+//     char nextDropDelay;
+// } TheB29Plane;
 
 static void _dropRunInit(){
     TheB29Plane.x = 320+72;
