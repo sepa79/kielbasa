@@ -10,8 +10,8 @@
 
 //      "pragma_label": Txt,
 //      "array_label": TXT,
-//      "indexes_count": 88
-//      "array_length": 1795
+//      "indexes_count": 89
+//      "array_length": 1807
 
 #pragma data ( plTxtData )
 
@@ -143,6 +143,8 @@ const char TXT_PL_DEBUG_2[] = {0x75, 0x44, 0x3a, 0x20, 0x52, 0x05, 0x13, 0x10, 0
 const char TXT_PL_DEBUG_3[] = {0x76, 0x44, 0x3a, 0x20, 0x42, 0x09, 0x14, 0x0b, 0x01, 0x20, 0x20, 0x00};
 //     "pl": "D: Stonka "
 const char TXT_PL_DEBUG_4[] = {0x77, 0x44, 0x3a, 0x20, 0x53, 0x14, 0x0f, 0x0e, 0x0b, 0x01, 0x20, 0x00};
+//     "pl": "D: ADIntro"
+const char TXT_PL_DEBUG_5[] = {0x78, 0x44, 0x3a, 0x20, 0x41, 0x44, 0x49, 0x0e, 0x14, 0x12, 0x0f, 0x00};
 //     "pl": "Upiecz chleb"
 const char TXT_PL_MENU_KITCHEN1[] = {0x71, 0x55, 0x10, 0x09, 0x05, 0x03, 0x1a, 0x20, 0x03, 0x08, 0x0c, 0x05, 0x02, 0x00};
 //     "pl": "Piecz codziennie"
@@ -477,7 +479,7 @@ const char TXT_PL_TASK_MANAGER_PRIO_TABLE_HEADER_10[] = {0xd0, 0x8f, 0x93, 0x94,
 
 //      "pragma_label": Txt,
 //      "array_label": TXT,
-//      "indexes_count": 88
+//      "indexes_count": 89
 
 #pragma data ( plTxt )
 __export const char* TXT[] = {
@@ -535,6 +537,7 @@ __export const char* TXT[] = {
     TXT_PL_DEBUG_2,
     TXT_PL_DEBUG_3,
     TXT_PL_DEBUG_4,
+    TXT_PL_DEBUG_5,
     TXT_PL_MENU_KITCHEN1,
     TXT_PL_MENU_KITCHEN2,
     TXT_PL_MENU_KITCHEN3,
@@ -730,14 +733,14 @@ struct chunk_data {
 };
 
 struct chunk_data txtCacheAddresses[] = {
-    { 0x8000, 0x07b3 },
-    { 0x87b4, 0x004c },
-    { 0x8801, 0x01f2 },
-    { 0x89f4, 0x004e },
-    { 0x8a43, 0x00d8 },
-    { 0x8b1c, 0x0252 },
-    { 0x8d6f, 0x00b0 },
-    { 0x8e20, 0x01c0 }
+    { 0x8000, 0x07c1 },
+    { 0x87c2, 0x004c },
+    { 0x880f, 0x01f2 },
+    { 0x8a02, 0x004e },
+    { 0x8a51, 0x00d8 },
+    { 0x8b2a, 0x0252 },
+    { 0x8d7d, 0x00b0 },
+    { 0x8e2e, 0x01c0 }
 };
 
 // =============================================================================
@@ -745,6 +748,6 @@ struct chunk_data txtCacheAddresses[] = {
 // =============================================================================
 
 void loadTranslation() {
-    memcpy(TRANSLATION_DST, TRANSLATION_SRC, 0x7b3);
+    memcpy(TRANSLATION_DST, TRANSLATION_SRC, 0x7c1);
 };
 

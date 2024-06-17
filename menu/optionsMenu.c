@@ -282,8 +282,14 @@ void playNextRadioSong(){
     _playMsx(&RADIO_PLAYLIST[_currentRadioSong], true);
 }
 
+// Plays given song, does not restart it if already playing
 void playSong(char song){
     _playMsx(&PLAYLIST[song], false);
+}
+
+// Starts given song from the beginning, regardles if it is playing already or not
+void startSong(char song){
+    _playMsx(&PLAYLIST[song], true);
 }
 
 const struct MenuOption MUSIC_MENU[] = {

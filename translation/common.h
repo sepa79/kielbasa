@@ -11,7 +11,7 @@
 
 //      "pragma_label": Txt,
 //      "array_label": TXT,
-//      "indexes_count": 88
+//      "indexes_count": 89
 
 enum TXT_INDEXES {
     TXT_IDX_BATTLE_MENU_ATTACK,
@@ -68,6 +68,7 @@ enum TXT_INDEXES {
     TXT_IDX_DEBUG_2,
     TXT_IDX_DEBUG_3,
     TXT_IDX_DEBUG_4,
+    TXT_IDX_DEBUG_5,
     TXT_IDX_MENU_KITCHEN1,
     TXT_IDX_MENU_KITCHEN2,
     TXT_IDX_MENU_KITCHEN3,

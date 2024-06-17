@@ -5,10 +5,14 @@
 #include <c64/sprites.h>
 #include <c64/easyflash.h>
 #include <c64/memmap.h>
+#include <c64/rasterirq.h>
 
 #include <engine/easyFlashBanks.h>
+
+#include <menu/pigsleCommand.h>
+#include <miniGame/pigsleCmdIrq.h>
 #include <miniGame/pigsleCmdAnims.h>
-#include <miniGame/pigsleCmdMain.h>
+// #include <miniGame/pigsleCmdMain.h>
 
 #define CROSSHAIR_MIN_X 24-6
 #define CROSSHAIR_MAX_X 320 + 6
@@ -17,6 +21,8 @@
 
 #pragma code ( pigsleCommandRAMCode )
 #pragma data ( pigsleCommandRAMData )
+
+RIRQCode topPlane, topPests, middlePests, cannonAnims, open;
 
 volatile byte _flashDelay = 2;
 volatile byte crosshairBank = PIGSLE_CMD_ANIM_CROSSHAIR_LOADED_BANK;
@@ -238,4 +244,44 @@ __interrupt void pigsleCmdIrq_openBorder() {
     // vic.color_border++;
     vic.spr_enable = 0b00000000;
     // vic.color_border--;
+}
+
+void initRasterIRQ_Pigsle(){
+    // clean 0xffff - so we don't have artefacts when we open borders
+    ((char *)0xffff)[0] = 0;
+
+    // initialize raster IRQ
+    rirq_init(true);
+    // topPlane, topPests, middlePests, cannonAnims, open
+    // Top - Plane
+    rirq_build(&topPlane, 2);
+    rirq_write(&topPlane, 0, &vic.ctrl1, VIC_CTRL1_BMM | VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3 );
+    rirq_call(&topPlane, 1, pigsleCmdIrq_topPlane);
+    rirq_set(0, IRQ_TOP_PLANE, &topPlane);
+
+    // Top - Pests
+    rirq_build(&topPests, 1);
+    rirq_call(&topPests, 0, pigsleCmdIrq_topPests);
+    rirq_set(1, IRQ_TOP_PESTS, &topPests);
+
+    // Middle - Pests
+    // rirq_build(&middlePests, 1);
+    // rirq_call(&middlePests, 0, pigsleCmdIrq_middlePests);
+    // rirq_set(2, IRQ_MIDDLE_PESTS, &middlePests);
+
+    // Bottom - Cannon anims
+    rirq_build(&cannonAnims, 1);
+    rirq_call(&cannonAnims, 0, pigsleCmdIrq_cannonAnims);
+    rirq_set(2, IRQ_CANNON, &cannonAnims);
+
+    // Open border raster IRQ
+    rirq_build(&open, 2);
+    // Reduce vertical screen size to fool VIC counter
+    rirq_write(&open, 0, &vic.ctrl1, VIC_CTRL1_BMM |VIC_CTRL1_DEN | 3);
+    rirq_call(&open, 1, pigsleCmdIrq_openBorder);
+    // Place it into the last line of the screen
+    rirq_set(3, IRQ_FRAME_OPEN, &open);
+
+    // sort the raster IRQs
+    rirq_sort();
 }

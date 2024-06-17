@@ -36,6 +36,10 @@ Txt:
     menu_opt: '7'
     en: 'D: AirDef '
     pl: 'D: Stonka '
+  - id: DEBUG_5
+    menu_opt: '8'
+    en: 'D: ADIntro'
+    pl: 'D: ADIntro'
 
 
 
