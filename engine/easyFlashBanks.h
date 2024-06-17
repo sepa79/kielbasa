@@ -38,6 +38,7 @@ enum {
     MENU_BANK_CHURCH_MENU,
     MENU_BANK_BATTLE_MENU,
     MENU_BANK_RESPAWN,
+    MENU_BANK_PIGSLE_INTRO,
 };
 
 // Set CRT bank, return previous bank that was set.

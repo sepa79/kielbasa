@@ -738,7 +738,7 @@ void switchScreenTo(byte screenMode){
             // in menu/pigsleCommand.c
             case SCREEN_PIGSLE:
                 vic_waitLine(80);
-                // initRasterIRQ_Pigsle();
+                initRasterIRQ_Pigsle();
                 break;
         }
 

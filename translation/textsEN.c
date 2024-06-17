@@ -10,8 +10,8 @@
 
 //      "pragma_label": Txt,
 //      "array_label": TXT,
-//      "indexes_count": 88
-//      "array_length": 1795
+//      "indexes_count": 89
+//      "array_length": 1807
 
 #pragma data ( enTxtData )
 
@@ -143,6 +143,8 @@ const char TXT_EN_DEBUG_2[] = {0x75, 0x44, 0x3a, 0x20, 0x52, 0x05, 0x13, 0x10, 0
 const char TXT_EN_DEBUG_3[] = {0x76, 0x44, 0x3a, 0x20, 0x42, 0x01, 0x14, 0x14, 0x0c, 0x05, 0x20, 0x00};
 //     "en": "D: AirDef "
 const char TXT_EN_DEBUG_4[] = {0x77, 0x44, 0x3a, 0x20, 0x41, 0x09, 0x12, 0x44, 0x05, 0x06, 0x20, 0x00};
+//     "en": "D: ADIntro"
+const char TXT_EN_DEBUG_5[] = {0x78, 0x44, 0x3a, 0x20, 0x41, 0x44, 0x49, 0x0e, 0x14, 0x12, 0x0f, 0x00};
 //     "en": "Bake bread  "
 const char TXT_EN_MENU_KITCHEN1[] = {0x71, 0x42, 0x01, 0x0b, 0x05, 0x20, 0x02, 0x12, 0x05, 0x01, 0x04, 0x20, 0x20, 0x00};
 //     "en": "Bake bread daily"
@@ -477,7 +479,7 @@ const char TXT_EN_TASK_MANAGER_PRIO_TABLE_HEADER_10[] = {0xc3, 0x88, 0x81, 0x92,
 
 //      "pragma_label": Txt,
 //      "array_label": TXT,
-//      "indexes_count": 88
+//      "indexes_count": 89
 
 #pragma data ( enTxt )
 __export const char* EN_TXT[] = {
@@ -536,6 +538,7 @@ __export const char* EN_TXT[] = {
     TXT_EN_DEBUG_2,
     TXT_EN_DEBUG_3,
     TXT_EN_DEBUG_4,
+    TXT_EN_DEBUG_5,
     TXT_EN_MENU_KITCHEN1,
     TXT_EN_MENU_KITCHEN2,
     TXT_EN_MENU_KITCHEN3,

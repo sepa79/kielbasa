@@ -89,7 +89,9 @@
         "vector.h": "c",
         "optionsmenu.h": "c",
         "fishing.cpp": "c",
-        "pigslecmdirq.h": "c"
+        "pigslecmdirq.h": "c",
+        "respawn.h": "c",
+        "pigsleintro.h": "c"
     },
     "C_Cpp.clang_format_fallbackStyle": "none"
 }

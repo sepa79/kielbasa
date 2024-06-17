@@ -20,6 +20,7 @@
 #include <menu/fishing.h>
 #include <menu/church.h>
 #include <menu/respawn.h>
+#include <menu/pigsleIntro.h>
 #include <engine/easyFlashBanks.h>
 #include <engine/gameSettings.h>
 #include <engine/irqSpriteController.h>

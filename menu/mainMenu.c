@@ -15,6 +15,7 @@
 #include "shopOutside.h"
 #include "shopInside.h"
 #include "crew.h"
+#include "pigsleIntro.h"
 #include "pigsleCommand.h"
 #include "villiageMap.h"
 #include "tvScreen.h"
@@ -340,6 +341,7 @@ const struct MenuOption MAIN_MENU[] = {
     {TXT_IDX_DEBUG_2, '5', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_RESPAWN, 1, 8 },
     {TXT_IDX_DEBUG_3, '6', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_BATTLE_MENU, 1, 9 },
     {TXT_IDX_DEBUG_4, '7', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_PIGSLE_COMMAND_1, 1, 10 },
+    {TXT_IDX_DEBUG_5, '8', SCREEN_TRANSITION, UI_SELECT, &showMenu, MENU_BANK_PIGSLE_INTRO, 1, 11 },
     {TXT_IDX_EXIT_TO_MAP, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF, &showMenu, MENU_BANK_MAP_VILLIAGE_1, 1, 6},
     END_MENU_CHOICES
 };
