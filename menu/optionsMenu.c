@@ -62,15 +62,15 @@ static void _displayPlaylist(){
 static void _displayBoombox(){
 
     char pbank = setBank(MUSIC_BANK_RETRO_1);
-    char pport = setPort(MMAP_ROM);
+    char pport = mmap_set(MMAP_ROM);
 
     // rom to buffer -> GFX_1_SCR
     memcpy(GFX_1_SCR, boomboxFnt, 0x400);
     // switch IO off
-    setPort(MMAP_RAM);
+    mmap_set(MMAP_RAM);
     // buffer to RAM under IO
     memcpy(GFX_1_FNT+0x400, GFX_1_SCR, 0x400);
-    setPort(pport);
+    mmap_set(pport);
     memcpy(GFX_1_SCR+12*40, boomboxScr, 13*40);
 
     // colors
@@ -175,7 +175,7 @@ static void _playMsx(const struct Song * song, bool restart){
 
         char songIdx = song->songIdx;
         if(curSongIdx != songIdx || restart){
-            char pport = setPort(MMAP_NO_BASIC);
+            char pport = mmap_set(MMAP_NO_BASIC);
             // init it
             __asm {
                 lda songIdx
@@ -183,7 +183,7 @@ static void _playMsx(const struct Song * song, bool restart){
             };
 
             // set ROM back
-            setPort(pport);
+            mmap_set(pport);
         }
         curSongIdx = songIdx;
 
@@ -205,15 +205,15 @@ static void _loadMsx() {
 static void closeMsxMenu(){
    // reload fonts
     char pBank = setBank(MAIN_GFX_BANK);
-    char pport = setPort(MMAP_ROM);
+    char pport = mmap_set(MMAP_ROM);
 
     // rom to buffer -> GFX_1_SCR
     memcpy(GFX_1_SCR, GFX_1_FNT_SRC+0x400, 0x400);
     // switch IO off
-    setPort(MMAP_RAM);
+    mmap_set(MMAP_RAM);
     // buffer to RAM under IO
     memcpy(GFX_1_FNT+0x400, GFX_1_SCR, 0x400);
-    setPort(pport);
+    mmap_set(pport);
     setBank(pBank);
     showOptionsMenu();
 }

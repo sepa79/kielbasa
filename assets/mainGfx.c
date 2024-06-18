@@ -62,7 +62,7 @@ static void _loadMainGfx(){
 
 static void _loadMainFont(){
     // ROM on, I/O off - as we will copy to RAM under I/O ports
-    char pport = setPort(MMAP_ALL_ROM);
+    char pport = mmap_set(MMAP_ALL_ROM);
     // fonts & aux (but only half of the cart region atm - copy as needed later)
     char i = 0;
     do {
@@ -78,7 +78,7 @@ static void _loadMainFont(){
     } while (i != 0);
 
     // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
-    setPort(pport);
+    mmap_set(pport);
 }
 // Switching code generation back to shared section
 #pragma code ( code )

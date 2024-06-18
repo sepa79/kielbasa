@@ -11,10 +11,3 @@ char setBank(char bank){
     eflash.bank = bank;
     return pbank;
 }
-
-char setPort(char port){
-    char pport  = curport;
-    curport     = port;
-    mmap_set(port);
-    return pport;
-}

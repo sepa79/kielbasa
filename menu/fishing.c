@@ -69,24 +69,24 @@ void fishingMenuSpriteLoader(){
     // save us some trouble, don't overwrite main cursor (+64 below)
     memcpy((char *)GFX_1_SPR_DST_ADR+64, fishingMenuSprites, 47*64);
     // now the tricky part - to buffer -> to $d000
-    char pport = setPort(MMAP_ROM);
+    char pport = mmap_set(MMAP_ROM);
     // CRT rom to buffer -> GFX_1_SCR
     memcpy(GFX_1_SCR, fishingMenuSprites+47*64, 15*64);
     // switch IO off
-    setPort(MMAP_RAM);
+    mmap_set(MMAP_RAM);
     // // buffer to RAM under IO
     memcpy(GFX_1_FNT2, GFX_1_SCR, 15*64);
 
     // and one more time, the remaining few
-    setPort(MMAP_ROM);
+    mmap_set(MMAP_ROM);
     // CRT rom to buffer -> GFX_1_SCR
     memcpy(GFX_1_SCR, fishingMenuSprites+(47+15)*64, 8*64);
     // switch IO off
-    setPort(MMAP_RAM);
+    mmap_set(MMAP_RAM);
     // // buffer to RAM under IO
     memcpy(GFX_1_FNT2+15*64, GFX_1_SCR, 8*64);
 
-    setPort(pport);
+    mmap_set(pport);
     setBank(pbank);
 }
 

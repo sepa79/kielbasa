@@ -53,29 +53,29 @@ static void _setCharacterPic(char character_nr){
 
 static void _fontLoader(){
     char pbank = setBank(MENU_BANK_CREW);
-    char pport = setPort(MMAP_ROM);
+    char pport = mmap_set(MMAP_ROM);
 
     // rom to buffer -> GFX_1_SCR
     memcpy(GFX_1_SCR, crewFnt, 0x400);
     // switch IO off
-    setPort(MMAP_RAM);
+    mmap_set(MMAP_RAM);
     // buffer to RAM under IO
     memcpy(GFX_1_FNT+0x400, GFX_1_SCR, 0x400);
-    setPort(pport);
+    mmap_set(pport);
 }
 
 static void _closeMenu(){
     // reload fonts
     char pBank = setBank(MAIN_GFX_BANK);
-    char pport = setPort(MMAP_ROM);
+    char pport = mmap_set(MMAP_ROM);
 
     // rom to buffer -> GFX_1_SCR
     memcpy(GFX_1_SCR, GFX_1_FNT_SRC+0x400, 0x400);
     // switch IO off
-    setPort(MMAP_RAM);
+    mmap_set(MMAP_RAM);
     // buffer to RAM under IO
     memcpy(GFX_1_FNT+0x400, GFX_1_SCR, 0x400);
-    setPort(pport);
+    mmap_set(pport);
     setBank(pBank);
 
     // switchScreenTo(SCREEN_TRANSITION);

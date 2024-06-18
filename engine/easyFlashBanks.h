@@ -43,8 +43,6 @@ enum {
 
 // Set CRT bank, return previous bank that was set.
 char setBank(char bank);
-// Set Port ($01), return previous value that was set.
-char setPort(char port);
 
 extern volatile char curport;
 

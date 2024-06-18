@@ -22,7 +22,7 @@
 
 int main(void){
     // Enable ROM
-    setPort(MMAP_ROM);
+    mmap_set(MMAP_ROM);
     // screen off
     vic.ctrl1 = VIC_CTRL1_BMM | VIC_CTRL1_RSEL | 3;
     vic.spr_enable   = 0b00000000;

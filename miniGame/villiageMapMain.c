@@ -258,25 +258,25 @@ void villiageMapScreenInit(void){
 
     // copy fonts
     char pbank = setBank(MENU_BANK_MAP_VILLIAGE_1);
-    char pport = setPort(MMAP_ROM);
+    char pport = mmap_set(MMAP_ROM);
     
     // rom to buffer -> GFX_1_SCR
     memcpy(GFX_1_SCR, _chars, 0x400);
     // switch IO off
-    setPort(MMAP_RAM);
+    mmap_set(MMAP_RAM);
     // buffer to RAM under IO
     memcpy(GFX_1_FNT2, GFX_1_SCR, 0x400);
 
     // repeat to copy 2nd half
     // rom to buffer -> GFX_1_SCR
-    setPort(MMAP_ROM);
+    mmap_set(MMAP_ROM);
     memcpy(GFX_1_SCR, _chars+0x400, 0x400);
     // switch IO off
-    setPort(MMAP_RAM);
+    mmap_set(MMAP_RAM);
     // buffer to RAM under IO
     memcpy(GFX_1_FNT2+0x400, GFX_1_SCR, 0x400);
 
-    setPort(pport);
+    mmap_set(pport);
     setBank(pbank);
 
     // saving mem - call ROM code

@@ -207,7 +207,7 @@ __interrupt void pigsleCmdIrq_topPests() {
     playMsx();
 
     byte _prevRomCfgPC = ((byte *)0x01)[0];
-    char pport = setPort(MMAP_ROM);
+    char pport = mmap_set(MMAP_ROM);
     char pbank = setBank(MENU_BANK_PIGSLE_COMMAND_2);
 
     if(CrossX < 60)
@@ -222,7 +222,7 @@ __interrupt void pigsleCmdIrq_topPests() {
         copyCannonR60();
 
     setBank(pbank);
-    setPort(pport);
+    mmap_set(pport);
     // vic.color_border--;
 }
 

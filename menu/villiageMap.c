@@ -62,10 +62,10 @@ __interrupt void _showVilliageMapSprites(){
     vic.spr_pos[0].y = 34 + 100;
     vic.spr_pos[1].y = 34 + 100;
 
-    // char pport = setPort(MMAP_NO_ROM);
+    // char pport = mmap_set(MMAP_NO_ROM);
     vic.spr_color[0] = 0;
     vic.spr_color[1] = 6;
-    // setPort(pport);
+    // mmap_set(pport);
 
     vic.spr_enable = 0b00000011;
     // vic.color_border++;
@@ -93,14 +93,14 @@ static char _getMaterialCost(char scrChar){
 
 static void _mapUp(){
     // check if tiles above us are walkable
-    char pport = setPort(MMAP_RAM);
+    char pport = mmap_set(MMAP_RAM);
     char mapChar1 = mapScreen[40*11+19];
     char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapChar1];
     bool canWalk1 = mapCharAttr1 & WALKABLE;
     char mapChar2 = mapScreen[40*11+20];
     char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapChar2];
     bool canWalk = canWalk1 && (mapCharAttr2 & WALKABLE);
-    setPort(pport);
+    mmap_set(pport);
     
     if(canWalk){
         if (GS.vMap.y > 0){
@@ -117,14 +117,14 @@ static void _mapUp(){
 }
 static void _mapDown(){
     // check if tile below us is walkable
-    char pport = setPort(MMAP_RAM);
+    char pport = mmap_set(MMAP_RAM);
     char mapChar1 = mapScreen[40*13+19];
     char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapChar1];
     bool canWalk1 = mapCharAttr1 & WALKABLE;
     char mapChar2 = mapScreen[40*13+20];
     char mapCharAttr2 = colorMap[CHAR_ATTRIBS][mapChar2];
     bool canWalk = canWalk1 && (mapCharAttr2 & WALKABLE);
-    setPort(pport);
+    mmap_set(pport);
 
     if(canWalk){
         if (GS.vMap.y < V_MAP_SIZE_Y*4-6*4){
@@ -142,11 +142,11 @@ static void _mapDown(){
 }
 static void _mapLeft(){
     // check if tile to the left is walkable
-    char pport = setPort(MMAP_RAM);
+    char pport = mmap_set(MMAP_RAM);
     char mapChar1 = mapScreen[40*12+18];
     char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapChar1];
     bool canWalk = mapCharAttr1 & WALKABLE;
-    setPort(pport);
+    mmap_set(pport);
 
     if(canWalk){
         if (GS.vMap.x > 0){
@@ -159,11 +159,11 @@ static void _mapLeft(){
 }
 static void _mapRight(){
     // check if tile to the right is walkable
-    char pport = setPort(MMAP_RAM);
+    char pport = mmap_set(MMAP_RAM);
     char mapChar1 = mapScreen[40*12+21];
     char mapCharAttr1 = colorMap[CHAR_ATTRIBS][mapChar1];
     bool canWalk = mapCharAttr1 & WALKABLE;
-    setPort(pport);
+    mmap_set(pport);
 
     if(canWalk){
         if (GS.vMap.x < V_MAP_SIZE_X*4-10*4){
