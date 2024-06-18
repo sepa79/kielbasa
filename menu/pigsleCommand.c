@@ -74,7 +74,7 @@ void pigsleSpriteLoader(){
 
     char pbank = setBank(MENU_BANK_PIGSLE_COMMAND_GFX_1);
     // ROM on, I/O off - as we will copy to RAM under I/O ports
-    // char pport = mmap_set(MMAP_ALL_ROM);
+    char pport = mmap_set(MMAP_ALL_ROM);
 
     memcpy((char *)GFX_1_SPR_DST_ADR, PIGSLE_CMD_SPR_AIM, 0x80);
     // memcpy((char *)GFX_1_SPR_DST_ADR+0x80, PIGSLE_CMD_SPR_BOOM_1, 64*EXPLOSION_ANIM_FRAMES);
@@ -84,17 +84,17 @@ void pigsleSpriteLoader(){
        ((volatile char*) GFX_1_SPR_DST_ADR)[0x80 + i] = ((char*)PIGSLE_CMD_SPR_BOOM_1)[i];
        ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*EXPLOSION_ANIM_FRAMES + i] = ((char*)PIGSLE_CMD_SPR_BOOM_2)[i];
     }
-    // #pragma unroll(page)
-    // for(int i=0; i<64*DROP_ANIM_FRAMES*2; i++){
-    //    ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*EXPLOSION_ANIM_FRAMES*2 + i] = ((char*)PIGSLE_CMD_SPR_PESTS)[i];
-    // }
-    // #pragma unroll(page)
-    // for(int i=0; i<64*8; i++){
-    //    ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*(EXPLOSION_ANIM_FRAMES*2 + DROP_ANIM_FRAMES*2) + i] = ((char*)PIGSLE_CMD_SPR_B29)[i];
-    // }
+    #pragma unroll(page)
+    for(int i=0; i<64*DROP_ANIM_FRAMES*2; i++){
+       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*EXPLOSION_ANIM_FRAMES*2 + i] = ((char*)PIGSLE_CMD_SPR_PESTS)[i];
+    }
+    #pragma unroll(page)
+    for(int i=0; i<64*8; i++){
+       ((volatile char*) GFX_1_SPR_DST_ADR)[0x80+64*(EXPLOSION_ANIM_FRAMES*2 + DROP_ANIM_FRAMES*2) + i] = ((char*)PIGSLE_CMD_SPR_B29)[i];
+    }
 
     // turn ROMS and I/O back on, so that we don't get a problem when bank tries to be switched but I/O is not visible
-    // mmap_set(pport);
+    mmap_set(pport);
     setBank(pbank);
 }
 
