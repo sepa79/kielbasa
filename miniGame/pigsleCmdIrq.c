@@ -249,7 +249,7 @@ __interrupt void pigsleCmdIrq_openBorder() {
 void initRasterIRQ_Pigsle(){
     // vic.color_border--;
     // clean 0xffff - so we don't have artefacts when we open borders
-    // ((char *)0xffff)[0] = 0;
+    ((char *)0xffff)[0] = 0;
 
     // initialize raster IRQ
     // rirq_init(true);

@@ -21,10 +21,22 @@
 // ---------------------------------------------------------------------------------------------
 
 #pragma data ( pigsleCommandGfx1 )
-__export const char pigsleCommandGfxBg[] = {
-    #embed 0x2713 0x0002 lzo "assets/multicolorGfx/dzialoKoval.kla"
-    // #embed 0x2713 0x0002 lzo "assets/multicolorGfx/flak_88_dark.kla"
+// __export const char pigsleCommandGfxBg[] = {
+//     #embed 0x2713 0x0002 "assets/multicolorGfx/dzialoKoval.kla"
+//     // #embed 0x2713 0x0002 "assets/multicolorGfx/flak_88_dark.kla"
+// };
+
+__export const char pigsleCommandGfxBgBmp[] = {
+    #embed 8000 2 lzo "assets/multicolorGfx/dzialoKoval.kla"
 };
+__export const char pigsleCommandGfxBgC1[] = {
+    #embed 1000 0x1f42 lzo "assets/multicolorGfx/dzialoKoval.kla"
+};
+__export const char pigsleCommandGfxBgC2[] = {
+    #embed 1000 0x232a lzo "assets/multicolorGfx/dzialoKoval.kla"
+};
+
+
 
 const char PIGSLE_CMD_SPR_AIM[] = {
     #embed 0x0080 20 "assets/sprites/crosshair.spd"
@@ -47,23 +59,10 @@ const char PIGSLE_CMD_SPR_PESTS[] = {
 #pragma data ( pigsleCommandRAMData )
 
 void pigsleScreenInit(void){
-    // vic.color_border = VCOL_RED;
-    // vic.color_back  = VCOL_RED;
-    // mmap_set(MMAP_ROM);
     char pbank = setBank(MENU_BANK_PIGSLE_COMMAND_GFX_1);
-
-    // load colors
-    #pragma unroll(page)
-    for(int i=0; i<1000; i++){
-        GFX_1_SCR[i] = pigsleCommandGfxBg[0x1f40 + i];
-        COLOR_RAM[i] = pigsleCommandGfxBg[0x2328 + i];
-    }
-
-    // // load bitmap
-    // #pragma unroll(page)
-    // for(int i=0; i<8000; i++){
-    //     GFX_1_BMP[i] = pigsleCommandGfxBg[i];
-    // }
+    oscar_expand_lzo_buf(GFX_2_BMP, pigsleCommandGfxBgBmp);
+    oscar_expand_lzo_buf(GFX_2_SCR, pigsleCommandGfxBgC1);
+    oscar_expand_lzo_buf(COLOR_RAM, pigsleCommandGfxBgC2);
 
     setBank(pbank);
 }
@@ -162,6 +161,8 @@ __interrupt static void _pigsleSpriteCmdNoop(){
 // }
 
 static void _pigsleMenuHandler(void){
+    // need to add no-sprite handler, where splash can work nicely
+    // something like splash on sprites, or fly away?
     // splashScreen(false, 1);
 
     loadMenuSprites();
@@ -172,7 +173,7 @@ static void _pigsleMenuHandler(void){
 
     switchScreenTo(SCREEN_PIGSLE);
     // Init bitmap
-    // vic_setmode(VICM_HIRES_MC, GFX_1_SCR, GFX_1_BMP);
+    vic_setmode(VICM_HIRES_MC, GFX_1_SCR, GFX_1_BMP);
 
     // splashScreen(false, 2);
 
