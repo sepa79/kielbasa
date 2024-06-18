@@ -22,8 +22,8 @@
 
 #pragma data ( pigsleCommandGfx1 )
 __export const char pigsleCommandGfxBg[] = {
-    #embed 0x2713 0x0002 "assets/multicolorGfx/dzialoKoval.kla"
-    // #embed 0x2713 0x0002 "assets/multicolorGfx/flak_88_dark.kla"
+    #embed 0x2713 0x0002 lzo "assets/multicolorGfx/dzialoKoval.kla"
+    // #embed 0x2713 0x0002 lzo "assets/multicolorGfx/flak_88_dark.kla"
 };
 
 const char PIGSLE_CMD_SPR_AIM[] = {
@@ -46,31 +46,31 @@ const char PIGSLE_CMD_SPR_PESTS[] = {
 #pragma code ( pigsleCommandRAMCode )
 #pragma data ( pigsleCommandRAMData )
 
-// void pigsleScreenInit(void){
-//     // vic.color_border = VCOL_RED;
-//     // vic.color_back  = VCOL_RED;
-//     // mmap_set(MMAP_ROM);
-//     char pbank = setBank(MENU_BANK_PIGSLE_COMMAND_GFX_1);
+void pigsleScreenInit(void){
+    // vic.color_border = VCOL_RED;
+    // vic.color_back  = VCOL_RED;
+    // mmap_set(MMAP_ROM);
+    char pbank = setBank(MENU_BANK_PIGSLE_COMMAND_GFX_1);
 
-//     // load colors
-//     #pragma unroll(page)
-//     for(int i=0; i<1000; i++){
-//         GFX_1_SCR[i] = pigsleCommandGfxBg[0x1f40 + i];
-//         COLOR_RAM[i] = pigsleCommandGfxBg[0x2328 + i];
-//     }
+    // load colors
+    #pragma unroll(page)
+    for(int i=0; i<1000; i++){
+        GFX_1_SCR[i] = pigsleCommandGfxBg[0x1f40 + i];
+        COLOR_RAM[i] = pigsleCommandGfxBg[0x2328 + i];
+    }
 
-//     // load bitmap
-//     #pragma unroll(page)
-//     for(int i=0; i<8000; i++){
-//         GFX_1_BMP[i] = pigsleCommandGfxBg[i];
-//     }
+    // // load bitmap
+    // #pragma unroll(page)
+    // for(int i=0; i<8000; i++){
+    //     GFX_1_BMP[i] = pigsleCommandGfxBg[i];
+    // }
 
-//     setBank(pbank);
-// }
+    setBank(pbank);
+}
 
 void pigsleSpriteLoader(){
-    vic.color_border = VCOL_RED;
-    vic.color_back  = VCOL_RED;
+    // vic.color_border = VCOL_RED;
+    // vic.color_back  = VCOL_RED;
 
     char pbank = setBank(MENU_BANK_PIGSLE_COMMAND_GFX_1);
     // ROM on, I/O off - as we will copy to RAM under I/O ports
@@ -105,7 +105,7 @@ void pigsleSpriteLoader(){
 #pragma data ( data )
 
 const struct MenuOption PIGSLE_COMMAND_MENU[] = {
-    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_SPLIT_MC_TXT, UI_LF+UI_HIDE, &showMenu, MENU_BANK_HERMANS_HOUSE, 2, 5},
+    { TXT_IDX_MENU_EXIT, KEY_ARROW_LEFT, SCREEN_TRANSITION, UI_LF+UI_HIDE, &showMenu, MENU_BANK_HERMANS_HOUSE, 2, 5},
     END_MENU_CHOICES
 };
 
@@ -164,15 +164,18 @@ __interrupt static void _pigsleSpriteCmdNoop(){
 static void _pigsleMenuHandler(void){
     // splashScreen(false, 1);
 
-    vic.color_border++;
     loadMenuSprites();
-
+    // loadMenuGfx();
+    pigsleScreenInit();
+    playSong(PIGSLE_CMD_SONG);
     displayMenu(PIGSLE_COMMAND_MENU);
 
-    switchScreenTo(SCREEN_SPLIT_MC_TXT);
-    // switchScreenTo(SCREEN_PIGSLE);
+    switchScreenTo(SCREEN_PIGSLE);
+    // Init bitmap
+    // vic_setmode(VICM_HIRES_MC, GFX_1_SCR, GFX_1_BMP);
 
     // splashScreen(false, 2);
+
     // TODO: return to main menu
 }
 
@@ -191,7 +194,7 @@ static void _pigsleCmdLoop(void){
 
 __export static const Loaders menuLoaders = {
     .loadMenuCode    = &_pigsleCmdCodeLoader,
-    .loadMenuGfx     = &menuNoop,
+    .loadMenuGfx     = &pigsleScreenInit,
     .loadMenuSprites = &pigsleSpriteLoader,
     .showMenu        = &_pigsleMenuHandler,
     .showSprites     = &spriteNoop,

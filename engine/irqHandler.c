@@ -11,13 +11,14 @@
 #include <assets/music.h>
 #include <translation/common.h>
 
+// #include <menu/pigsleCommand.h>
 #include <miniGame/pigsleCmdIrq.h>
 
 // screen will be split at these lines
 #define IRQ_RASTER_TOP_MC_SCREEN 0x2e
 #define IRQ_RASTER_MIDDLE_TXT_SCREEN 0x91
 // special irqs to control sprites
-#define IRQ_RASTER_BOTTOM_UI 0xf8
+#define IRQ_RASTER_BOTTOM_UI 0xf9
 #define IRQ_RASTER_TOP_UI_SPRITES 0x01
 
 volatile char mcScrBackground = VCOL_BLACK;
@@ -51,8 +52,7 @@ static void playMsx(){
     if(gms_enableMusic){
         if(gms_musicPlayNow){
 
-            char pport = mmap_set(MMAP_ROM);
-            // byte _prevRomCfgPC = ((byte *)0x01)[0];
+            byte _prevRomCfgPC = ((byte *)0x01)[0];
             __asm {
                 lda #MSX_ROM
                 sta $01
@@ -65,8 +65,7 @@ static void playMsx(){
                 sta $803f
             ex:
             };
-            // ((byte *)0x01)[0] = _prevRomCfgPC;
-            mmap_set(pport);
+            ((byte *)0x01)[0] = _prevRomCfgPC;
         }
         // if it's 1x speed, skip next frame
         if(gms_musicPlayCount == SPEED_1X) {
@@ -112,7 +111,6 @@ static void _timeControl() {
 Top raster/split
 ================================================================================ */
 __interrupt static void IRQ_topMCGfxScreen() {
-    char pport = mmap_set(MMAP_ROM);
     // vic.color_back++;
     // vic.color_border++;
     // Select GFX screen
@@ -131,11 +129,9 @@ __interrupt static void IRQ_topMCGfxScreen() {
 
     // vic.color_back--;
     // vic.color_border--;
-    mmap_set(pport);
 }
 
 __interrupt static void IRQ_topTxtScreen() {
-    char pport = mmap_set(MMAP_ROM);
     // vic.color_back++;
     // vic.color_border++;
     // Select TEXT screen
@@ -152,11 +148,8 @@ __interrupt static void IRQ_topTxtScreen() {
 
     // vic.color_back--;
     // vic.color_border--;
-    mmap_set(pport);
 }
-
 __interrupt static void IRQ_topHiresTxtScreen() {
-    char pport = mmap_set(MMAP_ROM);
     // vic.color_back++;
     // vic.color_border++;
     // Select TEXT screen
@@ -182,11 +175,9 @@ __interrupt static void IRQ_topHiresTxtScreen() {
 
     // vic.color_back--;
     // vic.color_border--;
-    mmap_set(pport);
 }
 
 __interrupt static void IRQ_topMCTxtScreen() {
-    char pport = mmap_set(MMAP_ROM);
     // vic.color_back++;
     // vic.color_border++;
     
@@ -212,11 +203,9 @@ __interrupt static void IRQ_topMCTxtScreen() {
 
     // vic.color_back--;
     // vic.color_border--;
-    mmap_set(pport);
 }
 
 __interrupt static void IRQ_topMCTxtBoomBoxScreen() {
-    char pport = mmap_set(MMAP_ROM);
     // vic.color_back++;
     // vic.color_border++;
     // Select TEXT screen
@@ -233,11 +222,9 @@ __interrupt static void IRQ_topMCTxtBoomBoxScreen() {
 
     // vic.color_back--;
     // vic.color_border--;
-    mmap_set(pport);
 }
 
 __interrupt static void IRQ_topNoScreen() {
-    char pport = mmap_set(MMAP_ROM);
     // vic.color_back++;
     // vic.color_border++;
     // screen off
@@ -247,7 +234,6 @@ __interrupt static void IRQ_topNoScreen() {
     gms_framePos = FRAME_TOP;
     // vic.color_back--;
     // vic.color_border--;
-    mmap_set(pport);
 }
 
 /* ================================================================================
@@ -273,15 +259,14 @@ __interrupt static void IRQ_middleScreenMsx() {
 }
 
 __interrupt void IRQ_middleTxtScreen(){
-    char pport = mmap_set(MMAP_ROM);
 
     __asm {
-        ldx #$05
+        ldx #$07
     la: dex
         bne la
-        // nop
-        // nop
-        // nop
+        nop
+        nop
+        nop
     }
     vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
     vic.ctrl2 = VIC_CTRL2_CSEL | 0;
@@ -290,7 +275,6 @@ __interrupt void IRQ_middleTxtScreen(){
     // Select TEXT screen
     setSpritesBottomScr();
     IRQ_middleScreenMsx();
-    mmap_set(pport);
 }
 
 
@@ -300,7 +284,6 @@ char cassette_anim_delay = 0;
 
 // used in Music Menu, displays Boombox anims
 __interrupt void IRQ_middleMCTxtBoomBoxScreen(){
-    char pport = mmap_set(MMAP_ROM);
     // run after playMsx so that we have player visible in RAM
     IRQ_middleScreenMsx();
 
@@ -464,14 +447,12 @@ exitEq:
     spk2[0+80] = ll;
     spk2[1+80] = lr;
 
-    mmap_set(pport);
 }
 
 /* ================================================================================
 Bottom UI
 ================================================================================ */
 static void IRQ_bottomMsxEtc() {
-    char pport = mmap_set(MMAP_ROM);
     // vic.color_border++;
     // vic.color_back++;
 
@@ -493,11 +474,9 @@ static void IRQ_bottomMsxEtc() {
 
     // vic.color_border--;
     // vic.color_back--;
-    mmap_set(pport);
 }
 //********************************************
 __interrupt static void IRQ_bottomUI() {
-    char pport = mmap_set(MMAP_ROM);
     // wait for right line
     // while (vic.raster != 0xfa){}
     // Set screen height to 24 lines - this is done after the border should have started drawing - so it wont start
@@ -509,11 +488,9 @@ __interrupt static void IRQ_bottomUI() {
     vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
     showUiSpritesBottom();
     IRQ_bottomMsxEtc();
-    mmap_set(pport);
 }
 
 __interrupt static void IRQ_bottomMapUI() {
-    char pport = mmap_set(MMAP_ROM);
     // wait for right line
     // while (vic.raster != 0xfa){}
     // Set screen height to 24 lines - this is done after the border should have started drawing - so it wont start
@@ -523,19 +500,15 @@ __interrupt static void IRQ_bottomMapUI() {
     vic.ctrl1 = VIC_CTRL1_DEN | VIC_CTRL1_RSEL | 3;
     showMapSpritesBottom();
     IRQ_bottomMsxEtc();
-    mmap_set(pport);
 }
 
 
 //********************************************
 __interrupt static void IRQ_topUISprites() {
-    char pport = mmap_set(MMAP_ROM);
 
     // VICII->BORDER_COLOR = BLUE;
     showUiSpritesTop();
     // vic.color_border--;
-    
-    mmap_set(pport);
 }
 
 /* ================================================================================
@@ -661,11 +634,11 @@ void initRasterIRQ_Transition(){
     // Place it into the last line of the screen
     rirq_set(3, IRQ_RASTER_BOTTOM_UI, &rirqc_bottomUI);
 
-    // vic.color_border--;
+    vic.color_border--;
     for( char i=4; i<16;i++){
         rirq_clear(i);
     }
-    // vic.color_border++;
+    vic.color_border++;
 
     // sort the raster IRQs
     rirq_sort();
@@ -716,7 +689,7 @@ void initRasterIRQ(){
     // ((char *)0xffff)[0] = 0;
 
     // initialize raster IRQ
-    rirq_init(true);
+    rirq_init_kernal_io();
 
     // load standard IRQ routine
     initRasterIRQ_Transition();
