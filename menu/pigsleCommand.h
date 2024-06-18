@@ -91,15 +91,14 @@ struct Explosion {
 #pragma section( pigsleCommandConsts, 0 )
 #pragma section( pigsleCommandRAMCode, 0 )
 #pragma section( pigsleCommandRAMData, 0 )
-#pragma region( regionPigsleCommandCrt, 0x8000, 0xafff, , MENU_BANK_PIGSLE_COMMAND_1, { pigsleCommandLoaderData, pigsleCommandCode, pigsleCommandConsts } )
-#pragma region( regionPigsleCommandRam, 0xb000, 0xbfff, , MENU_BANK_PIGSLE_COMMAND_1, { pigsleCommandRAMCode, pigsleCommandRAMData }, 0x7000 )
+#pragma region( regionPigsleCommandCrt, 0x8000, 0xafff, , MENU_BANK_PIGSLE_MENU, { pigsleCommandLoaderData, pigsleCommandCode, pigsleCommandConsts } )
+#pragma region( regionPigsleCommandRam, 0xb000, 0xbc00, , MENU_BANK_PIGSLE_MENU, { pigsleCommandRAMCode, pigsleCommandRAMData }, 0x7000 )
 
 #pragma section( pigsleCommandGfx1, 0 )
 #pragma section( pigsleCommandGfx1Loaders, 0 )
 #pragma region( regionPigsleCommandG1, 0x8000, 0xbfff, , MENU_BANK_PIGSLE_COMMAND_GFX_1, { pigsleCommandGfx1, pigsleCommandGfx1Loaders } )
 //------------------------------------------------------------------------------------
 
-#pragma data ( pigsleCommandRAMData )
 #pragma data ( pigsleCommandRAMData )
 
 // Joystick and crosshair control
@@ -126,6 +125,11 @@ extern volatile char pestDropsOver255;
 
 // used in IRQs
 extern volatile DropRun TheB29Plane;
+
+#pragma code ( pigsleCommandRAMCode )
+void pigsleScreenInit();
+void pigsleSpriteLoader();
+// void pigsleCmdInit();
 
 // Switching code generation back to shared section
 #pragma code ( code )

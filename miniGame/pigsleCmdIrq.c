@@ -247,11 +247,12 @@ __interrupt void pigsleCmdIrq_openBorder() {
 }
 
 void initRasterIRQ_Pigsle(){
+    // vic.color_border--;
     // clean 0xffff - so we don't have artefacts when we open borders
     ((char *)0xffff)[0] = 0;
 
     // initialize raster IRQ
-    rirq_init(true);
+    // rirq_init(true);
     // topPlane, topPests, middlePests, cannonAnims, open
     // Top - Plane
     rirq_build(&topPlane, 2);
@@ -282,6 +283,10 @@ void initRasterIRQ_Pigsle(){
     // Place it into the last line of the screen
     rirq_set(3, IRQ_FRAME_OPEN, &open);
 
+    // clear remaining irqs
+    for( char i=4; i<16;i++){
+        rirq_clear(i);
+    }
     // sort the raster IRQs
     rirq_sort();
 }

@@ -14,10 +14,6 @@
 // #pragma section( pigsleCommandGfx1Loaders, 0 )
 // #pragma region( regionPigsleCommandG1, 0x8000, 0xbfff, , MENU_BANK_PIGSLE_COMMAND_GFX_1, { pigsleCommandGfx1, pigsleCommandGfx1Loaders } )
 
-#pragma code ( pigsleCommandRAMCode )
-void pigsleScreenInit();
-void pigsleSpriteLoader();
-void pigsleCmdInit();
 
 #pragma code ( pigsleCommandCode )
 void gameState(GameState state);

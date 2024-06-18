@@ -11,7 +11,6 @@
 #include <assets/music.h>
 #include <translation/common.h>
 
-// #include <menu/pigsleCommand.h>
 #include <miniGame/pigsleCmdIrq.h>
 
 // screen will be split at these lines
@@ -634,11 +633,11 @@ void initRasterIRQ_Transition(){
     // Place it into the last line of the screen
     rirq_set(3, IRQ_RASTER_BOTTOM_UI, &rirqc_bottomUI);
 
-    vic.color_border--;
+    // vic.color_border--;
     for( char i=4; i<16;i++){
         rirq_clear(i);
     }
-    vic.color_border++;
+    // vic.color_border++;
 
     // sort the raster IRQs
     rirq_sort();
